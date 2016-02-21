@@ -2,6 +2,7 @@ package core;
 
 import java.util.Stack;
 
+import org.apache.poi.ss.formula.FormulaParseException;
 import org.apache.poi.ss.formula.FormulaParser;
 import org.apache.poi.ss.formula.FormulaParsingWorkbook;
 import org.apache.poi.ss.formula.FormulaRenderingWorkbook;
@@ -14,9 +15,21 @@ import org.apache.poi.ss.formula.ptg.ParenthesisPtg;
 import org.apache.poi.ss.formula.ptg.Ptg;
 
 public class Parser {
-  //TODO: Outermost SUM is stored has AttrPtg instead of FuncPtg??
-  public static String parseFormula(String formula, int sheet, FormulaParsingWorkbook parse) {
-    Ptg[] tokens = FormulaParser.parse(formula, parse, FormulaType.CELL, sheet);
+  public static String parseFormula(String formula, int sheet, FormulaParsingWorkbook parse) 
+      throws FormulaParseException, UnsupportedOperationException {
+    Ptg[] tokens = null;
+    
+    if (formula.equals(""))
+      throw new UnsupportedOperationException("Formula is an empty string.");
+    
+    try { 
+      tokens = FormulaParser.parse(formula, parse, FormulaType.CELL, sheet);
+    } catch (FormulaParseException e) {
+      //TODO: define own error?
+      //throw new FormulaParseException("parseFormula: nonstandard function detected.");
+      throw e;
+    }
+    
     FormulaRenderingWorkbook render = (FormulaRenderingWorkbook) parse;
     return parseFormula(tokens, render);
   }
@@ -61,7 +74,7 @@ public class Parser {
   }
 
   /**
-   * SUM with one argument counts as AttrPtg so yeah!
+   * SUM with one area argument counts as AttrPtg instead of FuncPtg so yeah!
    * @param formula
    * @param ptg
    * @return

@@ -1,5 +1,8 @@
 package tests;
 
+import static org.junit.Assert.fail;
+
+import org.apache.poi.ss.formula.FormulaParseException;
 import org.apache.poi.xssf.usermodel.XSSFEvaluationWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Test;
@@ -14,10 +17,7 @@ public class SingleTests {
            formula = "SUM(IF((DelPoint= \"4C\")*(DType = \"pre\")*(OFFSET(DelPoint,0,B3+2)<0),OFFSET(DelPoint,0,B3+2),0))";
     int    sheetNum = 0;
     
-    XSSFWorkbook wb = TestUtils.getWorkbook(filename);
-    XSSFEvaluationWorkbook parse = XSSFEvaluationWorkbook.create(wb);
-    String result = Parser.parseFormula(formula, sheetNum, parse);
-    TestUtils.compare(formula, result);
+    singleSuccessTest(filename, formula, sheetNum);
   }
   
   @Test
@@ -26,10 +26,7 @@ public class SingleTests {
            formula = "IF(A1>A2, SUM(A3:A4), SUM(A5, A6))";
     int    sheetNum = 0;
     
-    XSSFWorkbook wb = TestUtils.getWorkbook(filename);
-    XSSFEvaluationWorkbook parse = XSSFEvaluationWorkbook.create(wb);
-    String result = Parser.parseFormula(formula, sheetNum, parse);
-    TestUtils.compare(formula, result);
+    singleSuccessTest(filename, formula, sheetNum);
   }
   
   //TODO: MissingArgPtg present, which included space in my parser's result.
@@ -39,10 +36,7 @@ public class SingleTests {
            formula = "IF(-SUM(B18:B20,B35:B37)>134,\"err\",-SUM(B18:B20,))";
     int    sheetNum = 0;
 
-    XSSFWorkbook wb = TestUtils.getWorkbook(filename);
-    XSSFEvaluationWorkbook parse = XSSFEvaluationWorkbook.create(wb);
-    String result = Parser.parseFormula(formula, sheetNum, parse);
-    TestUtils.compare(formula, result);
+    singleSuccessTest(filename, formula, sheetNum);
   }
   
   /**
@@ -55,14 +49,12 @@ public class SingleTests {
            formula = "IF(SUM(Deals!#REF!)=0,0,SUM(Deals!#REF!*Deals!#REF!)/SUM(Deals!#REF!))";
     int    sheetNum = 0;
 
-    XSSFWorkbook wb = TestUtils.getWorkbook(filename);
-    XSSFEvaluationWorkbook parse = XSSFEvaluationWorkbook.create(wb);
-    String result = Parser.parseFormula(formula, sheetNum, parse);
-    TestUtils.compare(formula, result);
+    singleSuccessTest(filename, formula, sheetNum);
   }
   
   /**
-   * PROBLEM: Third-party functions throw an error.
+   * PROBLEM: Third-party functions throw an exception (FormulaParseException)
+   * TODO: Either change the expected thrown Exception or define own exception.
    */
   @Test
   public void test_05_thirdparty() {
@@ -70,6 +62,51 @@ public class SingleTests {
            formula = "IndGencost(D104,OFFSET(HeatRateStart,1,MATCH($A104,HeatRateNames,0)-1,250,1),$A105)";
     int    sheetNum = 0;
 
+    XSSFWorkbook wb = TestUtils.getWorkbook(filename);
+    XSSFEvaluationWorkbook parse = XSSFEvaluationWorkbook.create(wb);
+    
+    try {
+      Parser.parseFormula(formula, sheetNum, parse);
+      fail("No FormulaParseException thrown");
+    } catch (FormulaParseException e) {
+      assert(true);
+    } catch (Exception | Error e) {
+      fail("Wrong exception/error caught: " + e.getClass());
+    }
+      
+  }
+  
+  /**
+   * PROBLEM: java.lang.AssertionError: Parse error near char 0'
+   *          Even though the formula is in the cell, trying to
+   *          access it yields an empty string.
+   * SOLUTION:Throw and handle an UnsupportedOperationException.
+   */
+  @Test
+  public void test_06_parseerrornear0() {
+    //0%
+    String filename = "./testSheets/andy_zipper__112__mODEL 3 7 01 Base.xlsx";
+    int    sheetNum = 2, row = 42, col = 4;
+    
+    XSSFWorkbook wb = TestUtils.getWorkbook(filename);
+    String formula = wb.getSheetAt(sheetNum)
+        .getRow(row)
+        .getCell(col)
+        .toString();
+    
+    XSSFEvaluationWorkbook parse = XSSFEvaluationWorkbook.create(wb);
+    
+    try {
+      Parser.parseFormula(formula, sheetNum, parse);
+      fail("No UnsupportedOperationException caught.");
+    } catch (UnsupportedOperationException e) {
+      //Success!
+    } catch (Exception | Error e) {
+      fail("Wrong exception/error caught.");
+    }
+  }
+  
+  private void singleSuccessTest(String filename, String formula, int sheetNum) {
     XSSFWorkbook wb = TestUtils.getWorkbook(filename);
     XSSFEvaluationWorkbook parse = XSSFEvaluationWorkbook.create(wb);
     String result = Parser.parseFormula(formula, sheetNum, parse);
