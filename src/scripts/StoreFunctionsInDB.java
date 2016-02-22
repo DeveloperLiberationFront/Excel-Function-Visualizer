@@ -22,9 +22,9 @@ import org.apache.poi.xssf.usermodel.XSSFEvaluationWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class StoreFunctionsInDB {
-  private static String insert = "INSERT INTO function_locations "
-                                  + "(function, file, sheet, row, col) "
-                                  + "VALUES (?, ?, ?, ?, ?);";
+  private static String insert = "INSERT INTO funcs "
+                                  + "(function, src, file, sheet, row, col) "
+                                  + "VALUES (?, 'ENRON', ?, ?, ?, ?);";
   private static PreparedStatement ps = null;
   
   public static void main(String[] args) throws Throwable {
@@ -97,9 +97,11 @@ public class StoreFunctionsInDB {
         }
       }      
     }
+    
+    ps.executeBatch();
   }
 
-  static int total = 0;
+  static int total = 0, batchsize = 1000;
   private static void store(String formula, String file, int sheet, int rowIndex, int columnIndex) throws SQLException {
     
     try {
@@ -108,13 +110,16 @@ public class StoreFunctionsInDB {
       ps.setInt(3, sheet);
       ps.setInt(4, rowIndex);
       ps.setInt(5, columnIndex);
-      
-      ps.executeUpdate();
+      ps.addBatch();
       ++total;
     } catch (Exception e) {
       System.err.println(e.getMessage());
       System.err.println("\t" + formula);
       System.err.println();
+    }
+    
+    if (total % batchsize == 0) {
+    	ps.executeBatch();
     }
     
   }
@@ -143,8 +148,8 @@ public class StoreFunctionsInDB {
       return null;
     }
     
-    Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/spreadsheets_funcs", 
-                                                 "root", env.get("MYSQL_PASSWORD"));
+    Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/spreadsheet_funcs", 
+                                                 "root", System.getenv("MYSQL_PASSWORD"));
     return con;
   }
 }
