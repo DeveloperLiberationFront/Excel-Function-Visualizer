@@ -145,9 +145,8 @@ public class TestUtils {
    */
   private static String isThirdPartyFunc(String message) {
     String func = "";
-    boolean isThirdParty = message.trim()
-                          .matches("(Name '[^']+' is completely unknown in the current workbook"
-                              + "|java.lang.AssertionError: Specified named range '[^']+' does not exist in the current workbook.");
+    boolean isThirdParty = message.trim().matches("Name '[^']+' is completely unknown in the current workbook")
+                          || message.trim().matches("Specified named range '[^']+' does not exist in the current workbook.");
     
     if (isThirdParty) {
       func = message.replaceFirst("[^']+'", "").replaceFirst("'[^']+", "");
