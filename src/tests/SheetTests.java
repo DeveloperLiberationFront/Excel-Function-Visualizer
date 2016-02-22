@@ -85,4 +85,65 @@ public class SheetTests {
     String filename = "./testSheets/craig_dean__4356__11-9act.xlsx";
     TestUtils.parseFullFile(filename);
   }
+  
+  /**
+   * 0(#1):3:3::IF(C4>1,C4-B4,0)
+   * 0(GELPOILDELIVERYSHEET#1):3:3::IF(C4>1,C4-B4,0)
+   */
+  @Test
+  public void test_10_chrisgermany01() {
+    String filename = "./testSheets/chris_germany__2913__Fall 99GELP OIL BY VENDOR.xlsx";
+    TestUtils.parseFullFile(filename);
+  }
+  
+  /**
+   * 4(Summary):26:2::+'Edison Int'#REF!
+   * 4(Summary):26:2::+#REF!
+   * PROBLEM: There were initially multiple quotes before the #, and it got rid of only the first.
+   */
+  @Test
+  public void test_11_elizabethsager() {
+    String filename = "./testSheets/elizabeth_sager__9473__California Exposure 033001a.xlsx";
+    TestUtils.parseFullFile(filename);
+  }
+  
+  /**
+   * 5(QueryPage):4:7::"SELECTrms_open_position.REF_DT,rms_open_position.BOOK_ID,rms_open_position.PR_CRV_CD,Sum(rms_open_position.DELTA_POSITION),Sum(rms_open_position.BENCHMARK_POSITION_QTY)FROMrms_open_positionWHERE(rms_open_position.EFF_DT='" & E5 & "')AND(rms_open_position.BOOK_IDIN("&BookList&"))GROUPBYrms_open_position.BOOK_ID,rms_open_position.REF_DT,rms_open_position.PR_CRV_CD"
+   * 5(QueryPage):4:7::"SELECTrms_open_position.REF_DT,rms_open_position.BOOK_ID,rms_open_position.PR_CRV_CD,Sum(rms_open_position.DELTA_POSITION),Sum(rms_open_position.BENCHMARK_POSITION_QTY)FROMrms_open_positionWHERE(rms_open_position.EFF_DT='"&E5&"')AND(rms_open_position.BOOK_IDIN("&BookList&"))GROUPBYrms_open_position.BOOK_ID,rms_open_position.REF_DT,rms_open_position.PR_CRV_CD"
+   */
+  @Test
+  public void test_12_frankermis() {
+    String filename = "./testSheets/frank_ermis__11206__HS_WESTminusPA1115.xlsx";
+    TestUtils.parseFullFile(filename);
+  }
+  
+  /**
+   * 7(HubTracking):1:6::IF(E2=21:21,E$22:E$23,"")
+   * 7(HubTracking):1:6::IF(E2=$A21:$XFD21,E$22:E$23,"")
+   */
+  @Test
+  public void test_13_geraldnemec() {
+    String filename = "./testSheets/gerald_nemec__11555__TPALIST _ENAUP.xlsx";
+    TestUtils.parseFullFile(filename);
+  }
+  
+  /**
+   * 5(DWRpurchases):61:3::++5155000+3985000+1194000
+   * 5(DWRpurchases):61:3::+5155000+3985000+1194000
+   */
+  @Test
+  public void test_14_jeffdasovich() {
+    String filename = "./testSheets/jeff_dasovich__14070__m010508.xlsx";
+    TestUtils.parseFullFile(filename);
+  }
+  
+  /**
+   * 0(Sheet1):55:159::[1]#REF!
+   * 0(Sheet1):55:159::#REF!
+   */
+  @Test
+  public void test_15_jimschwieger() {
+    String filename = "./testSheets/jim_schwieger__14383__AGA_PREDICTION_1998.xlsx";
+    TestUtils.parseFullFile(filename);
+  }
 }

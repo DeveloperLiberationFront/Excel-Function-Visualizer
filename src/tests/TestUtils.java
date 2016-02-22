@@ -112,22 +112,9 @@ public class TestUtils {
     
     System.out.println(numOfTests + " tests successful!");
     System.out.println(numOfParse + " formulas with errors!");
-    System.out.println(numOfEmpty + " formulas empty!");
+    System.out.println(numOfEmpty + " formulas empty/with bad quotes!");
     System.out.println();
   }
-
-  /**
-   * Compare the expected result with actual result, all whitespace removed.
-   * TODO:  Make sure white-space in quotes remains.
-   * 
-   * @param formula The entered formula.
-   * @param result  The return formula after parsing and piecing back together.
-   */
-  public static void compare(String formula, String result) {
-    String formulaNoWhite = format(formula),
-           resultNoWhite = format(result);
-    assertEquals(formulaNoWhite, resultNoWhite);
-  } 
   
   /**
    * If the test throws a FormulaParseException, figure out whether it's an expected error
@@ -159,7 +146,8 @@ public class TestUtils {
   private static String isThirdPartyFunc(String message) {
     String func = "";
     boolean isThirdParty = message.trim()
-                          .matches("Name '[^']+' is completely unknown in the current workbook");
+                          .matches("(Name '[^']+' is completely unknown in the current workbook"
+                              + "|java.lang.AssertionError: Specified named range '[^']+' does not exist in the current workbook.");
     
     if (isThirdParty) {
       func = message.replaceFirst("[^']+'", "").replaceFirst("'[^']+", "");
@@ -168,23 +156,56 @@ public class TestUtils {
     return func;
   }
   
-  /* TODO: What about whitespace in quotes? */
   /**
-   * 1. Remove white space
-   * 2. Remove sheets for errors.
+   * Compare the expected result with actual result, all whitespace removed.
+   * TODO:  Make sure white-space in quotes remains.
+   * 
+   * @param formula The entered formula.
+   * @param result  The return formula after parsing and piecing back together.
+   */
+  public static void compare(String formula, String result) {
+    String formulaNoWhite = formatInitial(formula),
+           resultNoWhite = formatResult(result);
+    assertEquals(formulaNoWhite, resultNoWhite);
+  } 
+  
+  //TODO: THESE THINGS ARE A MESS: TOO MANY REGEXES YIELDS TOO MANY UNCERTAINTIES
+  /**
    * @param str String to format.
    * @return    String with all above steps applied to it.
    */
-  public static String format(String str) {
+  public static String formatInitial(String str) {
     return str
+            //http://stackoverflow.com/questions/9577930/regular-expression-to-select-all-whitespace-that-isnt-in-quotes
+            //.replaceAll("\\s+(?=([^']*'[^']*')*[^']*$)", "")                //          removes on non-quoted spaces 
+        
+            .replaceAll("('[^']*')+!?#", "#")                                 //          removes quoted reference before error
+            .replaceAll("[\\w\\[\\]]+!?(#[a-zA-Z])", "$1")                    //test 4    removes unquoted reference before error;
+        
             .replaceAll("[ \t\r\n]", "")
-            .replaceAll("\\w+!#", "#");   //Added in test_04
+            .replaceAll("'([^' -]*)'!", "$1!")                                //test 13   removes quotes around sheet name
+            
+            .replaceAll("\\$?(\\w*)\\$1:\\$?(\\w*)\\$65536", "$1:$2")         //test 11   replaces large area with only column names
+            .replaceAll("\\$?(\\w*)\\$1:\\$?(\\w*)\\$1048576", "$1:$2")       //test 10   replaces another large area with column names
+            .replaceAll("\\$(\\w+):\\$(\\w+)", "$1:$2")
+            
+            .replaceAll("::\\+\\+", "::+");
+  }
+  
+  public static String formatResult(String str) {
+    return str//.replaceAll("\\s+(?=([^']*'[^']*')*[^']*$)", "")
+              .replaceAll("[ \t\r\n]", "")
+              
+              .replaceAll("\\$?(\\w+)\\$1:\\$?(\\w+)\\$1048576", "$1:$2")     //test 10
+              .replaceAll("\\$A(\\d+):\\$XFD(\\d+)", "$1:$2")
+              .replaceAll("\\$(\\w+):\\$(\\w+)", "$1:$2")
+              
+              .replaceAll("'([^' -]*)'!", "$1!")
+              .replaceAll("::\\+\\+", "::+");
   }
   
   /**
-   * Gets the coordinates of a certain cell in the spread-sheet. The functions getRowIndex
-   * and -Column- return 0-indexed coordinates, but the spreadsheet is 1-indexed, so I added 
-   * one to each.
+   * Gets the coordinates of a certain cell in the spread-sheet. All zero-indexed.
    * 
    * HOWEVER, sheetIndex remains 0-index because that's how the FormulaParser.parse function
    * takes it. Annoying, I know.
@@ -194,6 +215,6 @@ public class TestUtils {
    * @return            String in form of "<sheet_num>:<row_num>:<col_num>:"
    */
   private static String cellToString(Cell cell, int sheetIndex) {
-    return sheetIndex + ":" + (cell.getRowIndex()+1) + ":" + (cell.getColumnIndex()+1) + ":";
+    return sheetIndex + "(" + cell.getSheet().getSheetName() + "):" + (cell.getRowIndex()) + ":" + (cell.getColumnIndex()) + ":";
   } 
 }

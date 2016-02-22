@@ -185,6 +185,30 @@ public class SingleTests {
     singleSuccessTest(filename, sheetNum, row, col);
   }
   
+  /**
+   * 4(Summary):26:2::+'Edison Int'#REF!
+   * 4(Summary):26:2::+#REF!
+   */
+  @Test
+  public void test_14_quotepound() {
+    String filename = "./testSheets/elizabeth_sager__9473__California Exposure 033001a.xlsx";
+    int sheetNum = 4, row = 26, col = 2;
+    
+    singleSuccessTest(filename, sheetNum, row, col);
+  }
+  
+  /**
+   * 0(Sheet1):55:159::[1]#REF!
+   * 0(Sheet1):55:159::#REF!
+   */
+  @Test
+  public void test_15_bracketerror() {
+    String filename = "./testSheets/jim_schwieger__14383__AGA_PREDICTION_1998.xlsx";
+    int sheetNum = 0, row = 55, col = 159;
+    
+    singleSuccessTest(filename, sheetNum, row, col);
+  }
+  
   private void singleSuccessTest(String filename, int sheetNum, int row, int col) {
     XSSFWorkbook wb = TestUtils.getWorkbook(filename);
     String formula = getFormulaAt(wb, sheetNum, row, col);
