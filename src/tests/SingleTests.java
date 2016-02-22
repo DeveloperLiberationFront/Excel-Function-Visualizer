@@ -89,10 +89,7 @@ public class SingleTests {
     int    sheetNum = 2, row = 42, col = 4;
     
     XSSFWorkbook wb = TestUtils.getWorkbook(filename);
-    String formula = wb.getSheetAt(sheetNum)
-        .getRow(row)
-        .getCell(col)
-        .toString();
+    String formula = getFormulaAt(wb, sheetNum, row, col);
     
     XSSFEvaluationWorkbook parse = XSSFEvaluationWorkbook.create(wb);
     
@@ -105,6 +102,94 @@ public class SingleTests {
       fail("Wrong exception/error caught.");
     }
   }
+
+  //java.lang.AssertionError: Parse error near char 4 ''' in specified formula '[1]!'NGH1,PRIM ACT 1''. Expected number, string, or defined name
+  @Test
+  public void test_07_singlequote() {
+    String filename = "./testSheets/albert_meyers__1__1-25act.xlsx",
+           formula = "[1]!'NGH1,PRIM ACT 1'";
+    int    sheetNum = 0;
+    
+    XSSFWorkbook wb = TestUtils.getWorkbook(filename);
+    XSSFEvaluationWorkbook parse = XSSFEvaluationWorkbook.create(wb);
+    
+    try {
+      Parser.parseFormula(formula, sheetNum, parse);
+      fail("No UnsupportedOperationException caught.");
+    } catch (UnsupportedOperationException e) {
+      //Success!
+    } catch (Exception | Error e) {
+      fail("Wrong exception/error caught.");
+    }
+  }
+
+  //IF(D6<='ASSUM1'!M42,'ASSUM1'!#REF!/100,IF(D6<='ASSUM1'!M43,'ASSUM1'!N43/100,'ASSUM1'!N44/100))
+  @Test
+  public void test_08_sheetBadRef() {
+    String filename = "./testSheets/benjamin_rogers__1013__Pro Forma2.xlsx";
+    int    sheetNum = 6, row = 48, col = 3;
+    
+    singleSuccessTest(filename, sheetNum, row, col);
+  }
+  
+  @Test
+  public void test_09_ampersand() {
+    String filename = "./testSheets/benjamin_rogers__1239__Simple Cycle Florida model.xlsx";
+    int    sheetNum = 11, row = 31, col = 3;
+    
+    singleSuccessTest(filename, sheetNum, row, col);
+  }
+  
+  //1(RawData):0:21::MATCH(Strips!B1,A:A,0)-2
+  @Test
+  public void test_10_dollarsign() {
+    String filename = "./testSheets/sum.xlsx",
+           formula = "SUM(A:A)";
+    int    sheetNum = 1;
+    
+    singleSuccessTest(filename, formula, sheetNum);
+  }
+  
+  /**
+   * 2(TCPLMap):35:20::VLOOKUP(T36,[2]data!$E$1:$FM$65536,[2]data!$FI$1)/36.66/28.174
+   * 2(TCPLMap):35:20::VLOOKUP(T36,[2]data!E:FM,[2]data!$FI$1)/36.66/28.174
+   */
+  @Test
+  public void test_11_dollararea() {
+    String filename = "./testSheets/chris_dorland__1586__opspackage.xlsx";
+    int sheetNum = 2, row = 35, col = 20;
+    
+    singleSuccessTest(filename, sheetNum, row, col);
+  }
+  
+  /**
+   * java.lang.AssertionError: Second part of cell reference expected after sheet name at index 8.
+   */
+  @Test
+  public void test_12_index8() {
+    String filename = "./testSheets/chris_dorland__1588__Reuters CQG Model.xlsx";
+    int sheetNum = 0, row = 3, col = 4;
+    
+    singleSuccessTest(filename, sheetNum, row, col);
+  }
+  
+  /**
+   * 1(Preschedule):30:1::SUM(Deals!F9:'Deals'!F16)
+   * 1(Preschedule):30:1::SUM(Deals!F9:Deals!F16)
+   */
+  @Test
+  public void test_13_disappearingquotes() {
+    String filename = "./testSheets/craig_dean__4356__11-9act.xlsx";
+    int sheetNum = 1, row = 30, col = 1;
+    
+    singleSuccessTest(filename, sheetNum, row, col);
+  }
+  
+  private void singleSuccessTest(String filename, int sheetNum, int row, int col) {
+    XSSFWorkbook wb = TestUtils.getWorkbook(filename);
+    String formula = getFormulaAt(wb, sheetNum, row, col);
+    singleSuccessTest(filename, formula, sheetNum);
+  }
   
   private void singleSuccessTest(String filename, String formula, int sheetNum) {
     XSSFWorkbook wb = TestUtils.getWorkbook(filename);
@@ -112,4 +197,12 @@ public class SingleTests {
     String result = Parser.parseFormula(formula, sheetNum, parse);
     TestUtils.compare(formula, result);
   }
+  
+  private String getFormulaAt(XSSFWorkbook wb, int sheetNum, int row, int col) {
+    return wb.getSheetAt(sheetNum)
+        .getRow(row)
+        .getCell(col)
+        .toString();
+  }
+  
 }

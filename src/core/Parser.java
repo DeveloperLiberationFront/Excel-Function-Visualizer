@@ -21,6 +21,8 @@ public class Parser {
     
     if (formula.equals(""))
       throw new UnsupportedOperationException("Formula is an empty string.");
+    else if (formula.contains("!'"))
+      throw new UnsupportedOperationException("Formula contains illegal single quotes.");
     
     try { 
       tokens = FormulaParser.parse(formula, parse, FormulaType.CELL, sheet);
