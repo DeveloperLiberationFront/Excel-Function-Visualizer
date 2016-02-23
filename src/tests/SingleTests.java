@@ -8,6 +8,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Test;
 
 import core.Parser;
+import utils.POIUtils;
 
 public class SingleTests {
 
@@ -62,7 +63,7 @@ public class SingleTests {
            formula = "IndGencost(D104,OFFSET(HeatRateStart,1,MATCH($A104,HeatRateNames,0)-1,250,1),$A105)";
     int    sheetNum = 0;
 
-    XSSFWorkbook wb = TestUtils.getWorkbook(filename);
+    XSSFWorkbook wb = POIUtils.getWorkbook(filename);
     XSSFEvaluationWorkbook parse = XSSFEvaluationWorkbook.create(wb);
     
     try {
@@ -88,7 +89,7 @@ public class SingleTests {
     String filename = "./testSheets/andy_zipper__112__mODEL 3 7 01 Base.xlsx";
     int    sheetNum = 2, row = 42, col = 4;
     
-    XSSFWorkbook wb = TestUtils.getWorkbook(filename);
+    XSSFWorkbook wb = POIUtils.getWorkbook(filename);
     String formula = getFormulaAt(wb, sheetNum, row, col);
     
     XSSFEvaluationWorkbook parse = XSSFEvaluationWorkbook.create(wb);
@@ -110,7 +111,7 @@ public class SingleTests {
            formula = "[1]!'NGH1,PRIM ACT 1'";
     int    sheetNum = 0;
     
-    XSSFWorkbook wb = TestUtils.getWorkbook(filename);
+    XSSFWorkbook wb = POIUtils.getWorkbook(filename);
     XSSFEvaluationWorkbook parse = XSSFEvaluationWorkbook.create(wb);
     
     try {
@@ -210,15 +211,15 @@ public class SingleTests {
   }
   
   private void singleSuccessTest(String filename, int sheetNum, int row, int col) {
-    XSSFWorkbook wb = TestUtils.getWorkbook(filename);
+    XSSFWorkbook wb = POIUtils.getWorkbook(filename);
     String formula = getFormulaAt(wb, sheetNum, row, col);
     singleSuccessTest(filename, formula, sheetNum);
   }
   
   private void singleSuccessTest(String filename, String formula, int sheetNum) {
-    XSSFWorkbook wb = TestUtils.getWorkbook(filename);
+    XSSFWorkbook wb = POIUtils.getWorkbook(filename);
     XSSFEvaluationWorkbook parse = XSSFEvaluationWorkbook.create(wb);
-    String result = Parser.parseFormula(formula, sheetNum, parse);
+    String result = Parser.parseFormula(formula, sheetNum, parse).toString();
     TestUtils.compare(formula, result);
   }
   

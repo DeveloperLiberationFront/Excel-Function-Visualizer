@@ -26,12 +26,11 @@ public class FormulaToken {
   }
   
   /**
-   * Wrap this token in parenthesis, but only if it's not already wrapped.
+   * Wrap this token in parenthesis.
    * @return
    */
   public String wrap() {
-    if (!(token.startsWith("(") && token.endsWith(")")))
-      this.token = "(" + token + ")";
+    this.token = "(" + token + ")";
     return token;
   }
   
@@ -56,7 +55,7 @@ public class FormulaToken {
   protected String tabs(int depth) {
     StringBuilder str = new StringBuilder();
     for (int i = 0; i < depth; ++i) {
-      str.append("\t");
+      str.append("....");
     }
     return str.toString();
   }

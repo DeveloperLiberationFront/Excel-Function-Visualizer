@@ -20,6 +20,8 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFEvaluationWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import utils.DBUtils;
+
 public class StoreFunctionsInDB {
   private static String insert = "INSERT INTO funcs "
       + "(function, src, file, sheet, row, col) "
@@ -27,7 +29,7 @@ public class StoreFunctionsInDB {
   private static PreparedStatement ps = null;
 
   public static void main(String[] args) throws Throwable {
-    Connection con = connectToDatabase();
+    Connection con = DBUtils.connectToDatabase();
     ps = con.prepareStatement(insert);
 
     String ENRON = System.getenv("ENRON_DIR");
@@ -157,19 +159,5 @@ public class StoreFunctionsInDB {
     }
 
     return true;
-  }
-
-  public static Connection connectToDatabase() throws SQLException {
-    Map<String, String> env = System.getenv();
-    try {
-      Class.forName("com.mysql.jdbc.Driver");
-    } catch (ClassNotFoundException e) {
-      System.err.println("connectToDatabase: No database driver found.");
-      return null;
-    }
-
-    Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/spreadsheet_funcs", 
-        "root", System.getenv("MYSQL_PASSWORD"));
-    return con;
   }
 }

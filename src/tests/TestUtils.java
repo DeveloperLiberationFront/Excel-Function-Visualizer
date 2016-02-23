@@ -23,36 +23,9 @@ import org.apache.poi.xssf.usermodel.XSSFEvaluationWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import core.Parser;
+import utils.POIUtils;
 
-public class TestUtils {
-  /**
-   * Get the XSSFWorkbook for a given filename, and fails if the file doesn't exist.
-   * 
-   * @param filename  The name of the spreadsheet file.
-   * @return          The XSSFWorkbook for the file that corresponds to the name.
-   */
-  public static XSSFWorkbook getWorkbook(String filename) {
-    File file = new File(filename);
-    return getWorkbook(file);
-  }
-
-  /**
-   * Get the XSSFWorkbook for a given file, and fails if the file doesn't exist.
-   * @param file  The spreadsheet file.
-   * @return      The XSSFWorkbook for that file.
-   */
-  public static XSSFWorkbook getWorkbook(File file) {
-    XSSFWorkbook wb = null;
-
-    try {
-      wb = new XSSFWorkbook(OPCPackage.open(file, PackageAccess.READ));
-    } catch (InvalidFormatException | IOException e) {
-      fail("File not found");
-    }
-    
-    return wb;
-  }
-  
+public class TestUtils { 
   /**
    * Given a filename, test all formulas in that file.
    * @param filename  The filename (and not the File object itself)
@@ -67,7 +40,7 @@ public class TestUtils {
    * @param file  The spreadsheet.
    */
   public static void parseFullFile(File file) {
-    XSSFWorkbook wb = getWorkbook(file);
+    XSSFWorkbook wb = POIUtils.getWorkbook(file);
     assertNotNull(wb);  
     iterateOverFormulas(wb);
   }
@@ -94,7 +67,7 @@ public class TestUtils {
           //System.out.println(coord);
           try {
             String formula = cell.getCellFormula();
-            String result = Parser.parseFormula(formula, i, parse);
+            String result = Parser.parseFormula(formula, i, parse).toString();
             ++numOfTests;
             compare(coord+":"+formula, coord+":"+result);             
           } catch (FormulaParseException e) {

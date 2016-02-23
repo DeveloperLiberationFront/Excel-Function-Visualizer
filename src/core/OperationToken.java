@@ -26,7 +26,7 @@ public class OperationToken extends FormulaToken {
    * @param args    All the arguments in the function defined by token.
    */
   public OperationToken(OperationPtg token, FormulaToken[] args) {
-    String[] sArgs = (String[]) Arrays.stream(args).map(s -> s.toString()).toArray();
+    String[] sArgs = Arrays.stream(args).map(s -> s.toString()).toArray(String[]::new);
     this.token = token.toFormulaString(sArgs);
     
     if (token.getNumberOfOperands() != args.length)
