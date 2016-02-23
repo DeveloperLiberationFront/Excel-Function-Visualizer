@@ -1,0 +1,29 @@
+Approach to finding formulas:
+	Use Apache POI's provided Formula Parser
+	
+	Create a workbook for each spreadsheet
+		74 threw errors when trying to open: isolated
+		15855 work well: proceed
+		(Option to try again with erring 74: open)
+		(Format in which files must be opened lest corruption: read-only)
+		
+	Iterate over sheets -> rows -> cells for formula-type cells:
+		Formulas too long to fit in database's 900-character (somewhat arbitrary) limit: 172
+			(Reasons why I can't change limit and include them: 0)
+		Formulas unparsable by POI (whether for third-party function use or other reasons): 198401
+		Reference-only formulas: 2981818
+		Valid formulas: 17585500
+		R1C1 unique formulas: ???????
+		Time it took Lenovo to go upload to database: like, 10 hours or something (11pm ~ 9am)
+		Time it would've taken the HP laptop: project 9ish days (2 million records in 24 hours)
+		
+				
+NOTE: This file would probably fare better as a spreadsheet, as it goes.
+		
+	Testing method:
+		Get the formula out of the cell
+		Parse it down to tokens (in RPN)
+		Piece tokens back into a single string 
+		Compare new string with initial formula string
+			(with some formatting on either side to normalize some non-essential formula changes 
+			in process, like less whitespace)

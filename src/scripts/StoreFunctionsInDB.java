@@ -59,7 +59,7 @@ public class StoreFunctionsInDB {
 
     }
 
-    System.out.println(total + " (" + tooLarge + ") [" + error + "]");
+    System.out.println(total + " (" + tooLarge + ") [" + error + "] !" + single +"! #" + cantbeparsed + "#");
   }
 
   /**
@@ -69,6 +69,7 @@ public class StoreFunctionsInDB {
    * @param parse
    * @throws SQLException 
    */
+  static int single = 0, cantbeparsed = 0;
   private static void iterateOverSheets(String file, Workbook wb, FormulaParsingWorkbook parse) throws SQLException {    
     for (int i = 0; i < wb.getNumberOfSheets(); ++i) {
       Sheet sheet = wb.getSheetAt(i);
@@ -84,6 +85,8 @@ public class StoreFunctionsInDB {
               formula = cell.getCellFormula();           
               tokens = FormulaParser.parse(formula, parse, FormulaType.CELL, i);
             } catch (Exception | Error e) {
+              ++cantbeparsed;
+              //System.out.println(e.getMessage());
               continue;
             }
 
@@ -97,6 +100,8 @@ public class StoreFunctionsInDB {
                 continue;
               }          
 
+            } else {
+              ++single;
             }
 
 
