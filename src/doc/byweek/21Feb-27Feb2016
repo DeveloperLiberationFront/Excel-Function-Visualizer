@@ -11,6 +11,7 @@ Approach to finding formulas:
 		Formulas too long to fit in database's 900-character (somewhat arbitrary) limit: 172
 			(Reasons why I can't change limit and include them: 0)
 		Formulas unparsable by POI (whether for third-party function use or other reasons): 198401
+			(Example: Name '_xludf.EOMONTH' is completely unknown in the current workbook)
 		Reference-only formulas: 2981818
 		Valid formulas: 17585500
 		R1C1 unique formulas: ???????

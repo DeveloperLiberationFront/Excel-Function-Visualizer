@@ -15,7 +15,7 @@ import org.apache.poi.ss.formula.ptg.ParenthesisPtg;
 import org.apache.poi.ss.formula.ptg.Ptg;
 
 public class Parser {
-  public static String parseFormula(String formula, int sheet, FormulaParsingWorkbook parse) 
+  public static FormulaToken parseFormula(String formula, int sheet, FormulaParsingWorkbook parse) 
       throws FormulaParseException, UnsupportedOperationException {
     Ptg[] tokens = null;
     
@@ -41,13 +41,13 @@ public class Parser {
    * @param tokens
    * @param render
    */
-  public static String parseFormula(Ptg[] tokens, FormulaRenderingWorkbook render) {
-    Stack<String> formula = new Stack<String>();
+  public static FormulaToken parseFormula(Ptg[] tokens, FormulaRenderingWorkbook render) {
+    Stack<FormulaToken> formula = new Stack<FormulaToken>();
     
     int i = 0;
     for (Ptg ptg : tokens) {
       //System.out.print(i++ + " ");
-      String form = "";
+      FormulaToken form = null;
       
       if (ptg instanceof OperationPtg) {        
         form = operationParse(formula, ptg);       
@@ -58,10 +58,10 @@ public class Parser {
       } else if (ptg instanceof AttrPtg) {
         form = parseAttr(formula, ptg);
       } else {              
-        form = ptg.toFormulaString();
+        form = new FormulaToken(ptg);
       }
       
-      if (form.compareTo("") == 0) { 
+      if (form == null) { 
         //System.out.println(); 
         continue; 
       }
@@ -71,7 +71,7 @@ public class Parser {
       
     }
     
-    String finalFormula = formula.pop();        
+    FormulaToken finalFormula = formula.pop();        
     return finalFormula;
   }
 
@@ -81,12 +81,13 @@ public class Parser {
    * @param ptg
    * @return
    */
-  private static String parseAttr(Stack<String> formula, Ptg ptg) {
-    String form = "",
-           formulaStr = ptg.toFormulaString().trim();
+  private static FormulaToken parseAttr(Stack<FormulaToken> formula, Ptg ptg) {
+    FormulaToken form = null;
+    String formulaStr = ptg.toFormulaString().trim();
     
     if (formulaStr.equalsIgnoreCase("sum")) {
-      form = "SUM(" + formula.pop() + ")";
+      FormulaToken arg = formula.pop();
+      form = new OperationToken("SUM(" + arg.toString() + ")", arg);
     }
     
     return form;
@@ -97,9 +98,9 @@ public class Parser {
    * @param formula
    * @return
    */
-  private static String parseParen(Stack<String> formula) {
-    String last = formula.pop();
-    last = "(" + last + ")";    
+  private static FormulaToken parseParen(Stack<FormulaToken> formula) {
+    FormulaToken last = formula.pop();
+    last.wrap();    
     return last;    
   }
 
@@ -109,16 +110,16 @@ public class Parser {
    * @param ptg
    * @return
    */
-  private static String operandParse(FormulaRenderingWorkbook render, Ptg ptg) {
-    String form;
+  private static FormulaToken operandParse(FormulaRenderingWorkbook render, Ptg ptg) {
+    FormulaToken form;
     
     //Name tokens need renderer, others don't.
     if (ptg instanceof NamePtg) {
       NamePtg name = (NamePtg) ptg;
-      form = name.toFormulaString(render);
+      form = new FormulaToken(name, render);
     } else {
       OperandPtg operand = (OperandPtg) ptg;
-      form = operand.toFormulaString();
+      form = new FormulaToken(operand);
     }
     
     return form;
@@ -130,18 +131,18 @@ public class Parser {
    * @param ptg
    * @return
    */
-  private static String operationParse(Stack<String> formula, Ptg ptg) {
+  private static FormulaToken operationParse(Stack<FormulaToken> formula, Ptg ptg) {
     OperationPtg op = (OperationPtg) ptg;
     
     int len = op.getNumberOfOperands();
-    String[] operands = new String[len];
+    FormulaToken[] operands = new FormulaToken[len];
     
     //Start from the end, else arguments are filled in backwards.
     for (int i = len - 1; i >= 0; --i) {
       operands[i] = formula.pop();
     }
     
-    String form = op.toFormulaString(operands);
+    FormulaToken form = new OperationToken(op, operands);
     return form;
   }
 }
