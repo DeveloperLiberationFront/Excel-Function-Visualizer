@@ -1,7 +1,6 @@
 package scripts;
 
 import java.io.File;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -23,44 +22,44 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class StoreFunctionsInDB {
   private static String insert = "INSERT INTO funcs "
-                                  + "(function, src, file, sheet, row, col) "
-                                  + "VALUES (?, 'ENRON', ?, ?, ?, ?);";
+      + "(function, src, file, sheet, row, col) "
+      + "VALUES (?, 'ENRON', ?, ?, ?, ?);";
   private static PreparedStatement ps = null;
-  
+
   public static void main(String[] args) throws Throwable {
     Connection con = connectToDatabase();
     ps = con.prepareStatement(insert);
-    
+
     String ENRON = System.getenv("ENRON_DIR");
     for (File file : new File(ENRON).listFiles()) {
       if (file.isDirectory()) continue;
-      
+
       String name = file.toString().replaceAll(".*\\\\", "");
       //System.out.println(name);
       XSSFWorkbook wb = null;
 
       try {
-        
+
         wb = new XSSFWorkbook(OPCPackage.open(file, PackageAccess.READ));
         FormulaParsingWorkbook parse = XSSFEvaluationWorkbook.create(wb);
         iterateOverSheets(name, wb, parse);
-        
+
       } catch (Exception | Error e) {
-        
+
         System.out.println(file);
         System.out.println(e);
         System.out.println();
         throw e;
-        
+
       } finally {
         if (wb != null) {
           wb.close();  //If it throws an IOException here, I'll just give up.
         }
       }
-      
+
     }
-    
-    System.out.println(total);
+
+    System.out.println(total + " (" + tooLarge + ") [" + error + "]");
   }
 
   /**
@@ -76,34 +75,50 @@ public class StoreFunctionsInDB {
 
       for (Row row : sheet) {
         for (Cell cell : row) {
-          
+
           if (cell.getCellType() == Cell.CELL_TYPE_FORMULA) {
             String formula = "";
             Ptg[] tokens = null;
-            
+
             try {
               formula = cell.getCellFormula();           
               tokens = FormulaParser.parse(formula, parse, FormulaType.CELL, i);
             } catch (Exception | Error e) {
               continue;
             }
-            
+
             if (isUseful(tokens)) {
-              store(formula, file, i, cell.getRowIndex(), cell.getColumnIndex());
+
+              try {
+                store(formula, file, i, cell.getRowIndex(), cell.getColumnIndex());
+              } catch (SQLException e) {
+                System.err.println(file + " " + sheet + " " + cell.getRowIndex() + " " + cell.getColumnIndex());
+                System.err.println();
+                continue;
+              }          
+
             }
-            
-            
+
+
           }          
         }
       }      
     }
-    
+
     ps.executeBatch();
   }
 
-  static int total = 0, batchsize = 1000;
+  static int total = 0, batchsize = 1000, tooLarge = 0, error = 0;
   private static void store(String formula, String file, int sheet, int rowIndex, int columnIndex) throws SQLException {
-    
+
+    if (formula.length() > 900 || file.length() > 150) {
+      System.err.println(formula);
+      System.err.println(file + " " + sheet + " " + rowIndex + " " + columnIndex);
+      System.err.println();
+      ++tooLarge;
+      return;
+    }
+
     try {
       ps.setString(1, formula);
       ps.setString(2, file);
@@ -117,11 +132,11 @@ public class StoreFunctionsInDB {
       System.err.println("\t" + formula);
       System.err.println();
     }
-    
+
     if (total % batchsize == 0) {
-    	ps.executeBatch();
+      ps.executeBatch();
     }
-    
+
   }
 
   private static boolean isUseful(Ptg[] tokens) {
@@ -131,14 +146,14 @@ public class StoreFunctionsInDB {
         //if (tokens[0].toFormulaString().equals("NOW") || tokens[0].toFormulaString().equals("TODAY")
         //    || tokens[0].toFormulaString().equals("NA") || tokens[0].toFormulaString().equals("ROW")
         //    || tokens[0].toFormulaString().equals("RAND")) {
-          return false;
+        return false;
         //}
       }
     }
-    
+
     return true;
   }
-  
+
   public static Connection connectToDatabase() throws SQLException {
     Map<String, String> env = System.getenv();
     try {
@@ -147,9 +162,9 @@ public class StoreFunctionsInDB {
       System.err.println("connectToDatabase: No database driver found.");
       return null;
     }
-    
+
     Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/spreadsheet_funcs", 
-                                                 "root", System.getenv("MYSQL_PASSWORD"));
+        "root", System.getenv("MYSQL_PASSWORD"));
     return con;
   }
 }
