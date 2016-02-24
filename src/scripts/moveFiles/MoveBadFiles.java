@@ -1,4 +1,4 @@
-package scripts;
+package scripts.moveFiles;
 
 import java.io.BufferedReader;
 import java.io.File;

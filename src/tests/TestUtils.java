@@ -5,17 +5,11 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 import java.io.File;
-import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.openxml4j.opc.OPCPackage;
-import org.apache.poi.openxml4j.opc.PackageAccess;
 import org.apache.poi.ss.formula.FormulaParseException;
-import org.apache.poi.ss.formula.FormulaParser;
 import org.apache.poi.ss.formula.FormulaParsingWorkbook;
-import org.apache.poi.ss.formula.FormulaRenderingWorkbook;
-import org.apache.poi.ss.formula.FormulaType;
-import org.apache.poi.ss.formula.ptg.Ptg;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -143,6 +137,15 @@ public class TestUtils {
         resultNoWhite = formatResult(result);
     assertEquals(formulaNoWhite, resultNoWhite);
   } 
+  
+  private static Matcher whiteSpace                  = Pattern.compile("[ \t\r\n$]")             .matcher(""),
+                         quotesBeforeErrors          = Pattern.compile("('[^']*')+!?#")          .matcher(""),
+                         wordsOrBracketsBeforeErrors = Pattern.compile("[\\w \\[\\]]+!?(#[A-Z])").matcher(""),
+                         allColumns1                 = Pattern.compile("(\\w*)1:(\\w*)65536")    .matcher(""),
+                         allColumns2                 = Pattern.compile("(\\w*)1:(\\w*)1048576")  .matcher(""),
+                         allRows                     = Pattern.compile("A(\\d+):XFD(\\d+)")      .matcher(""),
+                         quotesInSheetName           = Pattern.compile("'([^' \\-0-9]*)'!")      .matcher(""),
+                         doublePlus                  = Pattern.compile("\\+\\+")                 .matcher("");
 
   //TODO: THESE THINGS ARE A MESS: TOO MANY REGEXES YIELDS TOO MANY UNCERTAINTIES
   /**
@@ -150,37 +153,28 @@ public class TestUtils {
    * @return    String with all above steps applied to it.
    */
   public static String formatInitial(String str) {
-    return str
+    String formatted = whiteSpace.reset(str).replaceAll("");
+           formatted = quotesBeforeErrors.reset(formatted).replaceAll("#");
+           formatted = wordsOrBracketsBeforeErrors.reset(formatted).replaceAll("$1");
+           formatted = allColumns1.reset(formatted).replaceAll("$1:$2");
+           formatted = allColumns2.reset(formatted).replaceAll("$1:$2");
+           formatted = quotesInSheetName.reset(formatted).replaceAll("$1!");
+           formatted = doublePlus.reset(formatted).replaceAll("+");
+    
+    return formatted;
         //http://stackoverflow.com/questions/9577930/regular-expression-to-select-all-whitespace-that-isnt-in-quotes
         //.replaceAll("\\s+(?=([^']*'[^']*')*[^']*$)", "")                //          removes on non-quoted spaces 
-        .replaceAll("[ \t\r\n]", "")
-        
-        .replaceAll("('[^']*')+!?#", "#")                                 //          removes quoted reference before error
-        .replaceAll("[\\w \\[\\]]+!?(#[A-Z])", "$1")                            //test 4    removes unquoted reference before error;
-    
-        .replaceAll("(\\$?\\w*)\\$1:(\\$?\\w*)\\$65536", "$1:$2")         //test 11   replaces large area with only column names
-        .replaceAll("(\\$?\\w*)\\$1:(\\$?\\w*)\\$1048576", "$1:$2")       //test 10   replaces another large area with column names
-
-        .replaceAll("'([^' \\-0-9]*)'!", "$1!")                               //test 13   removes quotes around sheet name
-
-       
-        //.replaceAll("\\$(\\w+):\\$(\\w+)", "$1:$2")
-
-        .replaceAll("\\+\\+", "+");
   }
 
   public static String formatResult(String str) {
-    return str//.replaceAll("\\s+(?=([^']*'[^']*')*[^']*$)", "")
-        .replaceAll("[ \t\r\n]", "")
-        
-        .replaceAll("(\\$?\\w*)\\$1:(\\$?\\w*)\\$65536", "$1:$2")          //test 11   replaces large area with only column names
-        .replaceAll("(\\$?\\w*)\\$1:(\\$?\\w*)\\$1048576", "$1:$2")        //test 10   replaces another large area with column names
-        .replaceAll("\\$A(\\$?\\d+):\\$XFD(\\$?\\d+)", "$1:$2")
+    String formatted = whiteSpace.reset(str).replaceAll("");
+           formatted = allColumns1.reset(formatted).replaceAll("$1:$2");
+           formatted = allColumns2.reset(formatted).replaceAll("$1:$2");
+           formatted = allRows.reset(formatted).replaceAll("$1:$2");
+           formatted = quotesInSheetName.reset(formatted).replaceAll("$1!");
+           formatted = doublePlus.reset(formatted).replaceAll("+");
     
-        .replaceAll("'([^' \\-0-9]*)'!", "$1!")                           //test 13   removes quotes around sheet name
-
-        //.replaceAll("'([^' -]*)'!", "$1!")
-         .replaceAll("\\+\\+", "+");
+    return formatted;
   }
 
   /**
