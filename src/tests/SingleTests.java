@@ -210,10 +210,66 @@ public class SingleTests {
     singleSuccessTest(filename, sheetNum, row, col);
   }
   
+  /**
+   * 3(Returns):7:2::XIRR($Y$7:INDEX($D3:AS$7,5,MATCH(Assumptions!$C$18,Returns!$D3:AS$3)),$Y$3:INDEX($D3:AS$3,1,MATCH(Assumptions!$C$18,Returns!$D3:AS$3)))
+   * 3(Returns):7:2::$Y$7:INDEX($D3:AS$7,5,MATCH(Assumptions!$C$18,Returns!$D3:AS$3))(,$Y$3:INDEX($D3:AS$3,1,MATCH(Assumptions!$C$18,Returns!$D3:AS$3)))
+   * SOLUTION: Skip MemFuncPtg
+   */
+  @Test
+  public void test_16_outermostmissing() {
+    String filename = "./testSheets/benjamin_rogers__1037__CFTejon8a revised 21 - 750 MW.xlsx";
+    int sheetNum = 3, row = 7, col = 2;
+    
+    singleSuccessTest(filename, sheetNum, row, col);
+  }
+  
+  /**
+   * 9(BS):32:3::ProjectAssumtions!$C$8-SUM(BookIncomeStatement!$D$66:BookIncomeStatement!D66)
+   * 9(BS):32:3::-SUM(BookIncomeStatement!$D$66:BookIncomeStatement!D66)
+   * Skip MemAreaPtg
+   */
+  @Test
+  public void test_17_missingtopleveloperand() {
+    String filename = "./testSheets/benjamin_rogers__1172__Wheatland_New - W 501 D5A.xlsx";
+    int sheetNum = 9, row = 32, col = 3;
+    
+    singleSuccessTest(filename, sheetNum, row, col);
+  }
+  
+  /**
+   * 1(CF):20:3::NPV($B$21,$D$20:D20)+MAX(PV($B$21,D2,,-D20/($B$21-$C$21)),SUM(Costs!$D$52:Costs!D52)-SUM(Costs!$D$55:D55))
+   * 1(CF):20:3::PV($B$21,D2,,-D20/($B$21-$C$21))+MAX(,SUM(Costs!$D$52:Costs!D52)-SUM(Costs!$D$55:D55))
+   * SOLUTION: Solved with 16 and 17
+   */
+  @Test
+  public void test_18_multipletoplevelmissing() {
+    String filename = "./testSheets/danny_mccarty__4661__XTRANSCO - Economics.xlsx";
+    int sheetNum = 1, row = 20, col = 3;
+    
+    singleSuccessTest(filename, sheetNum, row, col);
+  }
+  
+  /**
+   * 1(Relation):3:2::IF(C3=1,1,LINEST(OFFSET(C$5,ABS($A$2-$A$1)+1,0):OFFSET(C$5,$A$1,0),OFFSET($B$5,ABS($A$2-$A$1)+1,0):OFFSET($B5,$A$1,0)))
+   * 1(Relation):3:2::IF(,OFFSET(C$5,ABS($A$2-$A$1)+1,0):OFFSET(C$5,$A$1,0),LINEST(,OFFSET($B$5,ABS($A$2-$A$1)+1,0):OFFSET($B5,$A$1,0)))
+   * SOLUTION: Solved with 16 and 17
+   */
+  @Test
+  public void test_19_missinginternal() {
+    String filename = "./testSheets/john_griffith__15855__Vol Move.xlsx";
+    int sheetNum = 1, row = 3, col = 2;
+    
+    singleSuccessTest(filename, sheetNum, row, col);
+  }
+  
   private void singleSuccessTest(String filename, int sheetNum, int row, int col) {
     XSSFWorkbook wb = POIUtils.getWorkbook(filename);
     String formula = getFormulaAt(wb, sheetNum, row, col);
-    singleSuccessTest(filename, formula, sheetNum);
+    
+    /*Used to call function below, but that would create two workbooks.*/
+    XSSFEvaluationWorkbook parse = XSSFEvaluationWorkbook.create(wb);
+    String result = Parser.parseFormula(formula, sheetNum, parse).toString();
+    TestUtils.compare(formula, result);
   }
   
   private void singleSuccessTest(String filename, String formula, int sheetNum) {

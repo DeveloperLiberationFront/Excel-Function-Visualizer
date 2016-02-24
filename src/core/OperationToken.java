@@ -45,14 +45,12 @@ public class OperationToken extends FormulaToken {
     return children;
   }
   
-  public String toTreeString(int depth) {
-    StringBuilder str = new StringBuilder();  
-    
-    str.append(super.toTreeString(depth));    
+  public StringBuilder toTreeString(StringBuilder sb, int depth) {    
+    super.toTreeString(sb, depth);    
     for (FormulaToken child : children) {
-      str.append(child.toTreeString(depth + 1));
+      child.toTreeString(sb, depth + 1);
     }
     
-    return str.toString();
+    return sb;
   }
 }

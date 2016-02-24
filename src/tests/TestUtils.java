@@ -44,8 +44,8 @@ public class TestUtils {
     assertNotNull(wb);  
     iterateOverFormulas(wb);
   }
-  
-  
+
+
   /**
    * Iterate and test all the formulas in a given workbook.
    * 
@@ -54,7 +54,7 @@ public class TestUtils {
   public static void iterateOverFormulas(XSSFWorkbook wb) {
     FormulaParsingWorkbook parse = XSSFEvaluationWorkbook.create(wb);
     int numOfTests = 0, numOfParse = 0, numOfEmpty = 0;
-    
+
     for (int i = 0; i < wb.getNumberOfSheets(); ++i) {
       Sheet sheet = wb.getSheetAt(i);
 
@@ -62,7 +62,7 @@ public class TestUtils {
         for (Cell cell : row) {          
           if (cell.getCellType() != Cell.CELL_TYPE_FORMULA) 
             continue;
-          
+
           String coord = cellToString(cell, i);       
           //System.out.println(coord);
           try {
@@ -77,18 +77,18 @@ public class TestUtils {
             //I'm assuming the only UOE I'll deal with is the one I throw...
             ++numOfEmpty;
           }
-     
+
         }
       }
-      
+
     }
-    
+
     System.out.println(numOfTests + " tests successful!");
     System.out.println(numOfParse + " formulas with errors!");
     System.out.println(numOfEmpty + " formulas empty/with bad quotes!");
     System.out.println();
   }
-  
+
   /**
    * If the test throws a FormulaParseException, figure out whether it's an expected error
    * from a third-party/user-defined function (then pass) or something else (then fail).
@@ -106,7 +106,7 @@ public class TestUtils {
       //System.err.println("Third party: " + thirdParty + "(" + coord + ")");
     }
   }
-  
+
   /**
    * Checks to see if a FormulaParseException is because of a third-party/user-defined
    * function, and returns the function name if it is.
@@ -119,15 +119,15 @@ public class TestUtils {
   private static String isThirdPartyFunc(String message) {
     String func = "";
     boolean isThirdParty = message.trim().matches("Name '[^']+' is completely unknown in the current workbook")
-                          || message.trim().matches("Specified named range '[^']+' does not exist in the current workbook.");
-    
+        || message.trim().matches("Specified named range '[^']+' does not exist in the current workbook.");
+
     if (isThirdParty) {
       func = message.replaceFirst("[^']+'", "").replaceFirst("'[^']+", "");
     }
-    
+
     return func;
   }
-  
+
   /**
    * Compare the expected result with actual result, all whitespace removed.
    * TODO:  Make sure white-space in quotes remains.
@@ -136,11 +136,14 @@ public class TestUtils {
    * @param result  The return formula after parsing and piecing back together.
    */
   public static void compare(String formula, String result) {
+    if (formula.equals(result)) 
+      return;
+    
     String formulaNoWhite = formatInitial(formula),
-           resultNoWhite = formatResult(result);
+        resultNoWhite = formatResult(result);
     assertEquals(formulaNoWhite, resultNoWhite);
   } 
-  
+
   //TODO: THESE THINGS ARE A MESS: TOO MANY REGEXES YIELDS TOO MANY UNCERTAINTIES
   /**
    * @param str String to format.
@@ -148,34 +151,38 @@ public class TestUtils {
    */
   public static String formatInitial(String str) {
     return str
-            //http://stackoverflow.com/questions/9577930/regular-expression-to-select-all-whitespace-that-isnt-in-quotes
-            //.replaceAll("\\s+(?=([^']*'[^']*')*[^']*$)", "")                //          removes on non-quoted spaces 
+        //http://stackoverflow.com/questions/9577930/regular-expression-to-select-all-whitespace-that-isnt-in-quotes
+        //.replaceAll("\\s+(?=([^']*'[^']*')*[^']*$)", "")                //          removes on non-quoted spaces 
+        .replaceAll("[ \t\r\n]", "")
         
-            .replaceAll("('[^']*')+!?#", "#")                                 //          removes quoted reference before error
-            .replaceAll("[\\w\\[\\]]+!?(#[a-zA-Z])", "$1")                    //test 4    removes unquoted reference before error;
-        
-            .replaceAll("[ \t\r\n]", "")
-            .replaceAll("'([^' -]*)'!", "$1!")                                //test 13   removes quotes around sheet name
-            
-            .replaceAll("\\$?(\\w*)\\$1:\\$?(\\w*)\\$65536", "$1:$2")         //test 11   replaces large area with only column names
-            .replaceAll("\\$?(\\w*)\\$1:\\$?(\\w*)\\$1048576", "$1:$2")       //test 10   replaces another large area with column names
-            .replaceAll("\\$(\\w+):\\$(\\w+)", "$1:$2")
-            
-            .replaceAll("::\\+\\+", "::+");
+        .replaceAll("('[^']*')+!?#", "#")                                 //          removes quoted reference before error
+        .replaceAll("[\\w \\[\\]]+!?(#[A-Z])", "$1")                            //test 4    removes unquoted reference before error;
+    
+        .replaceAll("(\\$?\\w*)\\$1:(\\$?\\w*)\\$65536", "$1:$2")         //test 11   replaces large area with only column names
+        .replaceAll("(\\$?\\w*)\\$1:(\\$?\\w*)\\$1048576", "$1:$2")       //test 10   replaces another large area with column names
+
+        .replaceAll("'([^' \\-0-9]*)'!", "$1!")                               //test 13   removes quotes around sheet name
+
+       
+        //.replaceAll("\\$(\\w+):\\$(\\w+)", "$1:$2")
+
+        .replaceAll("\\+\\+", "+");
   }
-  
+
   public static String formatResult(String str) {
     return str//.replaceAll("\\s+(?=([^']*'[^']*')*[^']*$)", "")
-              .replaceAll("[ \t\r\n]", "")
-              
-              .replaceAll("\\$?(\\w+)\\$1:\\$?(\\w+)\\$1048576", "$1:$2")     //test 10
-              .replaceAll("\\$A(\\d+):\\$XFD(\\d+)", "$1:$2")
-              .replaceAll("\\$(\\w+):\\$(\\w+)", "$1:$2")
-              
-              .replaceAll("'([^' -]*)'!", "$1!")
-              .replaceAll("::\\+\\+", "::+");
+        .replaceAll("[ \t\r\n]", "")
+        
+        .replaceAll("(\\$?\\w*)\\$1:(\\$?\\w*)\\$65536", "$1:$2")          //test 11   replaces large area with only column names
+        .replaceAll("(\\$?\\w*)\\$1:(\\$?\\w*)\\$1048576", "$1:$2")        //test 10   replaces another large area with column names
+        .replaceAll("\\$A(\\$?\\d+):\\$XFD(\\$?\\d+)", "$1:$2")
+    
+        .replaceAll("'([^' \\-0-9]*)'!", "$1!")                           //test 13   removes quotes around sheet name
+
+        //.replaceAll("'([^' -]*)'!", "$1!")
+         .replaceAll("\\+\\+", "+");
   }
-  
+
   /**
    * Gets the coordinates of a certain cell in the spread-sheet. All zero-indexed.
    * 

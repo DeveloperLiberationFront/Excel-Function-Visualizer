@@ -39,17 +39,15 @@ public class FormulaToken {
   }
   
   public String toTreeString() {
-    return this.toTreeString(0);
+    return this.toTreeString(new StringBuilder(), 0).toString();
   }
   
-  public String toTreeString(int depth) {
-    StringBuilder str = new StringBuilder();  
+  protected StringBuilder toTreeString(StringBuilder sb, int depth) {    
+    sb.append(tabs(depth));
+    sb.append(this.token);
+    sb.append("\n");
     
-    str.append(tabs(depth));
-    str.append(this.token);
-    str.append("\n");
-    
-    return str.toString();
+    return sb;
   }
 
   protected String tabs(int depth) {

@@ -8,6 +8,8 @@ import org.apache.poi.ss.formula.FormulaParsingWorkbook;
 import org.apache.poi.ss.formula.FormulaRenderingWorkbook;
 import org.apache.poi.ss.formula.FormulaType;
 import org.apache.poi.ss.formula.ptg.AttrPtg;
+import org.apache.poi.ss.formula.ptg.MemAreaPtg;
+import org.apache.poi.ss.formula.ptg.MemFuncPtg;
 import org.apache.poi.ss.formula.ptg.NamePtg;
 import org.apache.poi.ss.formula.ptg.OperandPtg;
 import org.apache.poi.ss.formula.ptg.OperationPtg;
@@ -49,7 +51,10 @@ public class Parser {
       //System.out.print(i++ + " ");
       FormulaToken form = null;
       
-      if (ptg instanceof OperationPtg) {        
+      if (ptg instanceof MemFuncPtg || ptg instanceof MemAreaPtg) {
+        continue;   //As per test_16_outermostmissing, MemFuncPtg act as tokens but have no 
+                    //representation in the function, pushing the tokens off by one.
+      } else if (ptg instanceof OperationPtg) {        
         form = operationParse(formula, ptg);       
       } else if (ptg instanceof OperandPtg) {           
         form = operandParse(render, ptg);        
