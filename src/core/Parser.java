@@ -61,7 +61,7 @@ public class Parser {
       } else if (ptg instanceof ParenthesisPtg) {
         form = parseParen(formula);
       } else if (ptg instanceof AttrPtg) {
-        form = parseAttr(formula, ptg);
+        form = parseAttr(formula, (AttrPtg) ptg);
       } else {              
         form = new FormulaToken(ptg);
       }
@@ -86,13 +86,13 @@ public class Parser {
    * @param ptg
    * @return
    */
-  private static FormulaToken parseAttr(Stack<FormulaToken> formula, Ptg ptg) {
+  private static FormulaToken parseAttr(Stack<FormulaToken> formula, AttrPtg ptg) {
     FormulaToken form = null;
     String formulaStr = ptg.toFormulaString().trim();
     
     if (formulaStr.equalsIgnoreCase("sum")) {
       FormulaToken arg = formula.pop();
-      form = new OperationToken("SUM(" + arg.toString() + ")", arg);
+      form = new OperationToken(ptg, arg);//"SUM(" + arg.toString() + ")", arg);
     }
     
     return form;
