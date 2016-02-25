@@ -53,7 +53,7 @@ public class Parser {
       
       if (ptg instanceof MemFuncPtg || ptg instanceof MemAreaPtg) {
         continue;   //As per test_16_outermostmissing, MemFuncPtg act as tokens but have no 
-                    //representation in the function, pushing the tokens off by one.
+                    //representation in the function, pushing the tokens in the stack off by one.
       } else if (ptg instanceof OperationPtg) {        
         form = operationParse(formula, ptg);       
       } else if (ptg instanceof OperandPtg) {           

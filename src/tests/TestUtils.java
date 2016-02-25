@@ -45,6 +45,7 @@ public class TestUtils {
    * 
    * @param wb      The workbook to iterate over.
    */
+  static String formula;
   public static void iterateOverFormulas(XSSFWorkbook wb) {
     FormulaParsingWorkbook parse = XSSFEvaluationWorkbook.create(wb);
     int numOfTests = 0, numOfParse = 0, numOfEmpty = 0;
@@ -60,7 +61,7 @@ public class TestUtils {
           String coord = cellToString(cell, i);       
           //System.out.println(coord);
           try {
-            String formula = cell.getCellFormula();
+            formula = cell.getCellFormula();
             String result = Parser.parseFormula(formula, i, parse).toString();
             ++numOfTests;
             compare(coord+":"+formula, coord+":"+result);             
@@ -77,10 +78,10 @@ public class TestUtils {
 
     }
 
-    System.out.println(numOfTests + " tests successful!");
-    System.out.println(numOfParse + " formulas with errors!");
-    System.out.println(numOfEmpty + " formulas empty/with bad quotes!");
-    System.out.println();
+//    System.out.println(numOfTests + " tests successful!");
+//    System.out.println(numOfParse + " formulas with errors!");
+//    System.out.println(numOfEmpty + " formulas empty/with bad quotes!");
+//    System.out.println();
   }
 
   /**
@@ -95,12 +96,19 @@ public class TestUtils {
     String thirdParty = isThirdPartyFunc(e.getMessage());              
     if (thirdParty.equals("")) {
       System.err.println(e.getMessage() + " (" + coord + ")");
+      System.out.println(formula);
       fail(e.getMessage());
     } else {
       //System.err.println("Third party: " + thirdParty + "(" + coord + ")");
     }
   }
 
+  
+  private static Matcher thirdparty = Pattern.compile(
+                    "Name '[^']+' is completely unknown in the current workbook"
+                  + "|Specified named range '[^']+' does not exist in the current workbook."
+                  + "|Attempt to use name '[^']+' as a function, but defined name in workbook does not refer to a function")
+                .matcher("");
   /**
    * Checks to see if a FormulaParseException is because of a third-party/user-defined
    * function, and returns the function name if it is.
@@ -112,9 +120,8 @@ public class TestUtils {
    */
   private static String isThirdPartyFunc(String message) {
     String func = "";
-    boolean isThirdParty = message.trim().matches("Name '[^']+' is completely unknown in the current workbook")
-        || message.trim().matches("Specified named range '[^']+' does not exist in the current workbook.");
-
+    boolean isThirdParty = thirdparty.reset(message.trim()).matches();
+       
     if (isThirdParty) {
       func = message.replaceFirst("[^']+'", "").replaceFirst("'[^']+", "");
     }
@@ -138,13 +145,14 @@ public class TestUtils {
     assertEquals(formulaNoWhite, resultNoWhite);
   } 
   
-  private static Matcher whiteSpace                  = Pattern.compile("[ \t\r\n$]")             .matcher(""),
+  private static Matcher whiteSpace                  = Pattern.compile("\\s+(?=([^']*'[^']*')*[^']*$)").matcher(""),
+                                                   //= Pattern.compile("[ \t\r\n$]")             .matcher(""),
                          quotesBeforeErrors          = Pattern.compile("('[^']*')+!?#")          .matcher(""),
                          wordsOrBracketsBeforeErrors = Pattern.compile("[\\w \\[\\]]+!?(#[A-Z])").matcher(""),
                          allColumns1                 = Pattern.compile("(\\w*)1:(\\w*)65536")    .matcher(""),
                          allColumns2                 = Pattern.compile("(\\w*)1:(\\w*)1048576")  .matcher(""),
-                         allRows                     = Pattern.compile("A(\\d+):XFD(\\d+)")      .matcher(""),
-                         quotesInSheetName           = Pattern.compile("'([^' \\-0-9]*)'!")      .matcher(""),
+                         allRows                     = Pattern.compile("A(\\d+)?:XFD(\\d+)?")    .matcher(""),
+                         quotesInSheetName           = Pattern.compile("'([^' \\-]*)'!")         .matcher(""),
                          doublePlus                  = Pattern.compile("\\+\\+")                 .matcher("");
 
   //TODO: THESE THINGS ARE A MESS: TOO MANY REGEXES YIELDS TOO MANY UNCERTAINTIES
