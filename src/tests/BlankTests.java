@@ -38,7 +38,7 @@ public class BlankTests {
     Collection<Object[]> files = new ArrayList<Object[]>();
     
     Connection con = DBUtils.connectToDatabase();
-    ResultSet rs = con.createStatement().executeQuery("SELECT * from funcs WHERE id % 1853 = 0 LIMIT 1000");
+    ResultSet rs = con.createStatement().executeQuery("SELECT * from formulas WHERE id % 18537 = 0 LIMIT 1000");
     
     while (rs.next()) {
       String function = rs.getString(2),

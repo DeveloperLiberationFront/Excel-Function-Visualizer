@@ -51,7 +51,7 @@ public class FormulaToken {
   }
 
   protected String tabs(int depth) {
-    StringBuilder str = new StringBuilder();
+    StringBuilder str = new StringBuilder(depth + ".");
     for (int i = 0; i < depth; ++i) {
       str.append("....");
     }

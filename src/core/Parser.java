@@ -46,7 +46,7 @@ public class Parser {
   public static FormulaToken parseFormula(Ptg[] tokens, FormulaRenderingWorkbook render) {
     Stack<FormulaToken> formula = new Stack<FormulaToken>();
     
-    int i = 0;
+    //int i = 0;
     for (Ptg ptg : tokens) {
       //System.out.print(i++ + " ");
       FormulaToken form = null;

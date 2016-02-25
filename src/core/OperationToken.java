@@ -35,7 +35,7 @@ public class OperationToken extends FormulaToken {
     
     String[] sArgs = Arrays.stream(args).map(s -> s.toString()).toArray(String[]::new);
     this.tokenStr = token.toFormulaString(sArgs);
-    this.op = extractOp(token.getClass(), tokenStr);
+    this.op = extractOp(token, len);
         
     addChildren(len, args);
     this.toString();
@@ -47,14 +47,11 @@ public class OperationToken extends FormulaToken {
       children[i] = args[i];
   }
   
-  private static final Matcher NULL = Pattern.compile("null").matcher("");
-  private String extractOp(Class<? extends OperationPtg> clazz, String func) {
-    String funcOp;
-    if (clazz.equals(ValueOperatorPtg.class)) 
-      funcOp = func.replaceAll("[[:alnum:]]", "");
-    else
-      funcOp = func.replaceAll("\\(.+", "()");
-    
+  private static final Matcher NULL = Pattern.compile("null,?").matcher("");
+  private String extractOp(OperationPtg func, int len) {
+    String[] nulls = new String[len];
+    String funcOp = func.toFormulaString(nulls);
+    funcOp = NULL.reset(funcOp).replaceAll("");    
     return funcOp;    
   }
    

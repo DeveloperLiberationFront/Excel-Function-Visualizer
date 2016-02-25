@@ -28,3 +28,12 @@ NOTE: This file would probably fare better as a spreadsheet, as it goes.
 		Compare new string with initial formula string
 			(with some formatting on either side to normalize some non-essential formula changes 
 			in process, like less whitespace)
+
+TESTING WITH BLANK WORKBOOKS:
+	The function is parsable as long as it doesn't try to use a variable.
+	 BlankTests: 75 out of 948 tests failed.
+	 Examples of failure:
+	 	VLOOKUP(I114, DDEPM_USERS,2, False) 		--Because of DDEPM_USERS
+	 	IF(BD237, IF(Underlying=1,O239,AT239),"")	--Because of Underlying
+	 	J746/UOM									--Because of UOM
+	 	

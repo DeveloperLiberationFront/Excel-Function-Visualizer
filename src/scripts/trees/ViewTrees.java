@@ -17,7 +17,7 @@ import utils.POIUtils;
 public class ViewTrees {
   public static void main(String[] args) throws SQLException, InvalidFormatException, IOException {
     Connection con = DBUtils.connectToDatabase();
-    ResultSet rs = con.createStatement().executeQuery("SELECT * FROM funcs LIMIT 1;");
+    ResultSet rs = con.createStatement().executeQuery("SELECT * FROM formulas where id % 382935 = 0 LIMIT 5;");
     
     while (rs.next()) {
       String filepath = System.getenv("ENRON_DIR") + "\\" +  rs.getString(4),
@@ -28,7 +28,9 @@ public class ViewTrees {
       FormulaParsingWorkbook parse = POIUtils.getParser(wb);
       FormulaToken tree = Parser.parseFormula(formula, sheet, parse);
       
+      System.out.println(tree);
       System.out.println(tree.toTreeString());
+      System.out.println();
     }
     
   }
