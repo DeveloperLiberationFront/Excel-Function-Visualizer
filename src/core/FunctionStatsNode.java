@@ -40,7 +40,7 @@ public class FunctionStatsNode implements Comparable<FunctionStatsNode> {
     FormulaToken[] children = token.getChildren();
     for (int i = 0; i < children.length; ++i) {
       FormulaToken child = children[i];
-      HashMap<String, FunctionStatsNode> argumentPosition = arguments.get(i);
+      HashMap<String, FunctionStatsNode> argumentPosition = getArgumentPosition(i);
       
       String childFunc = child.toSimpleString();
       if (argumentPosition.containsKey(childFunc)) {
@@ -54,6 +54,29 @@ public class FunctionStatsNode implements Comparable<FunctionStatsNode> {
         
       }
     }
+  }
+
+  /**
+   * Some functions, like SUM can have a variable number of arguments. This function prevents the case of 
+   * trying to access an argument position that hasn't been instantiated yet.
+   * 
+   * This function works on the assumption that if we need to create a new argument position, it will only
+   * ever be one above the current maximum position and never more than one above.
+   * 
+   * @param i       Position in {@link #arguments} we're trying to access.
+   * @return        A HashMap referring to that position.
+   */
+  private HashMap<String, FunctionStatsNode> getArgumentPosition(int i) {
+    HashMap<String, FunctionStatsNode> argumentPosition;
+    
+    if (i < arguments.size()) {
+      argumentPosition = arguments.get(i);
+    } else {
+      argumentPosition = new HashMap<String, FunctionStatsNode>();
+      arguments.add(argumentPosition);
+    }
+    
+    return argumentPosition;
   }
   
   /**
@@ -82,7 +105,7 @@ public class FunctionStatsNode implements Comparable<FunctionStatsNode> {
     sb.append("\n");
     
     for (int i = 0; i < arguments.size(); ++i) {
-      HashMap<String, FunctionStatsNode> argument = arguments.get(i);
+      HashMap<String, FunctionStatsNode> argument = getArgumentPosition(i);
       sb.append(tabs(depth+1));
       sb.append("Argument #" + (i+1));
       sb.append("\n");
@@ -97,8 +120,15 @@ public class FunctionStatsNode implements Comparable<FunctionStatsNode> {
     return sb;
   }
   
+  /**
+   * TODO: Why create a new stringbuilder here instead of passing it in like elsewhere?
+   * @param depth
+   * @return
+   */
   protected String tabs(int depth) {
-    StringBuilder str = new StringBuilder(depth + ".");
+    StringBuilder str = depth % 2 == 0 
+                          ? new StringBuilder(depth/2 + ".")
+                          : new StringBuilder("..");
     for (int i = 0; i < depth; ++i) {
       str.append("..");
     }
@@ -138,6 +168,6 @@ public class FunctionStatsNode implements Comparable<FunctionStatsNode> {
    */
   @Override
   public int compareTo(FunctionStatsNode o) {
-    return this.frequency - o.getFrequency();
+    return o.getFrequency() - this.frequency;
   }
 }

@@ -1,8 +1,14 @@
 package core;
 
 import org.apache.poi.ss.formula.FormulaRenderingWorkbook;
+import org.apache.poi.ss.formula.ptg.AreaPtgBase;
+import org.apache.poi.ss.formula.ptg.BoolPtg;
+import org.apache.poi.ss.formula.ptg.IntPtg;
 import org.apache.poi.ss.formula.ptg.NamePtg;
+import org.apache.poi.ss.formula.ptg.NumberPtg;
 import org.apache.poi.ss.formula.ptg.Ptg;
+import org.apache.poi.ss.formula.ptg.RefPtgBase;
+import org.apache.poi.ss.formula.ptg.StringPtg;
 
 public class FormulaToken {
   protected String tokenStr;
@@ -14,9 +20,22 @@ public class FormulaToken {
     this.token = null;
   }
   
-  public FormulaToken(Ptg token) {
-    this.token = token;
-    this.tokenStr = token.toFormulaString().trim();
+  public FormulaToken(Ptg tok) {
+    this.token = tok;
+    //this.tokenStr = token.toFormulaString().trim();
+
+    if (tok instanceof RefPtgBase)
+      this.tokenStr = "<REF>";
+    else if (tok instanceof AreaPtgBase) 
+      this.tokenStr = "<AREA>";
+    else if (tok instanceof IntPtg || tok instanceof NumberPtg) 
+      this.tokenStr = "<NUM>";
+    else if (tok instanceof StringPtg)
+      this.tokenStr = "<STR>";
+    else if (tok instanceof BoolPtg)
+      this.tokenStr = "<BOOL>";
+    else
+      this.tokenStr = "<OTHER>";
   }
   
   public FormulaToken(NamePtg token, FormulaRenderingWorkbook render) {

@@ -14,6 +14,8 @@ import org.apache.poi.xssf.usermodel.XSSFEvaluationWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class POIUtils {
+  public static final XSSFEvaluationWorkbook BLANK = XSSFEvaluationWorkbook.create(POIUtils.getWorkbook("./testSheets/sum.xlsx"));
+  
   /**
    * Get the XSSFWorkbook for a given filename, and fails if the file doesn't exist.
    * 

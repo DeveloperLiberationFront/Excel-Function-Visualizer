@@ -15,7 +15,7 @@ import utils.POIUtils;
 
 public class SUMTree {
   public static void main(String[] args) throws SQLException {
-    int limit = 20000, offset = 0, currentlyAt;
+    int limit = 50000, offset = 0, currentlyAt;
     Connection con = DBUtils.connectToDatabase();
     PreparedStatement ps = con.prepareStatement("SELECT * FROM formulas WHERE formula like 'SUM%' LIMIT " + limit + " OFFSET ?");
     
@@ -26,25 +26,32 @@ public class SUMTree {
       ResultSet rs = ps.executeQuery();
       
       while (rs.next()) {
-        String formula = rs.getString(2), file = rs.getString(4);
+        ++currentlyAt;
+        String formula = rs.getString(2);
         int sheet = rs.getInt(5);
-        FormulaParsingWorkbook parse = POIUtils.getParser(POIUtils.getWorkbook(file));
         
-        FormulaToken tree = Parser.parseFormula(formula, sheet, parse);
+        FormulaToken tree = null;
+        try {
+          tree = Parser.parseFormula(formula, sheet, POIUtils.BLANK);
+        } catch (Exception e) {
+          continue;
+        }
+        
+        if (!tree.toSimpleString().equals("SUM()"))
+          continue;
         
         if (sum == null)
           sum = new FunctionStatsNode(tree);
         else
           sum.add(tree);
         
-        System.out.println(formula);
-        System.out.println(sum.toString());
-        
-        ++currentlyAt;
+        System.out.println(currentlyAt + " : " + formula);        
       }
       
       offset += limit;
-      break;
+      System.out.println("At " + offset + "...");
     } while (limit == currentlyAt);
+    System.out.println(sum.toString());
+
   }
 }

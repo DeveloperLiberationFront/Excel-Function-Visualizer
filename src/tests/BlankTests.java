@@ -24,7 +24,6 @@ import utils.TestUtils;
 //http://stackoverflow.com/questions/358802/junit-test-with-dynamic-number-of-tests
 @RunWith(Parameterized.class)
 public class BlankTests {
-  private static final XSSFEvaluationWorkbook BLANK = XSSFEvaluationWorkbook.create(POIUtils.getWorkbook("sum.xlsx"));
   private FormulaParsingWorkbook parse;
   private String formula;
   
@@ -54,7 +53,7 @@ public class BlankTests {
   @Test
   public void test() {
     try {
-      String result = Parser.parseFormula(formula, 0, BLANK).toString();
+      String result = Parser.parseFormula(formula, 0, POIUtils.BLANK).toString();
       TestUtils.compare(formula, result);
     } catch (Exception | Error e) {
       fail(e.getMessage());
