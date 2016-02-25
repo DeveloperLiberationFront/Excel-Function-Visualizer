@@ -1,4 +1,4 @@
-package tests;
+package utils;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -17,7 +17,6 @@ import org.apache.poi.xssf.usermodel.XSSFEvaluationWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import core.Parser;
-import utils.POIUtils;
 
 public class TestUtils { 
   /**
@@ -162,14 +161,15 @@ public class TestUtils {
    * @return    String with all above steps applied to it.
    */
   public static String format(String str) {
-    String formatted = dollar.reset(str).replaceAll("");
-           formatted = whiteSpace.reset(formatted).replaceAll("");
-           formatted = quotesBeforeErrors.reset(formatted).replaceAll("#");
+    String formatted = dollar                     .reset(str)      .replaceAll("");
+           formatted = whiteSpace                 .reset(formatted).replaceAll("");
+           formatted = quotesBeforeErrors         .reset(formatted).replaceAll("#");
            formatted = wordsOrBracketsBeforeErrors.reset(formatted).replaceAll("$1");
-           formatted = allColumns1.reset(formatted).replaceAll("$1:$2");
-           formatted = allColumns2.reset(formatted).replaceAll("$1:$2");
-           formatted = quotesInSheetName.reset(formatted).replaceAll("$1!");
-           formatted = doublePlus.reset(formatted).replaceAll("+");
+           formatted = allColumns1                .reset(formatted).replaceAll("$1:$2");
+           formatted = allColumns2                .reset(formatted).replaceAll("$1:$2");
+           formatted = allRows                    .reset(formatted).replaceAll("$1:$2");
+           formatted = quotesInSheetName          .reset(formatted).replaceAll("$1!");
+           formatted = doublePlus                 .reset(formatted).replaceAll("+");
     
     return formatted;
         //http://stackoverflow.com/questions/9577930/regular-expression-to-select-all-whitespace-that-isnt-in-quotes

@@ -5,24 +5,24 @@ import org.apache.poi.ss.formula.ptg.NamePtg;
 import org.apache.poi.ss.formula.ptg.Ptg;
 
 public class FormulaToken {
-  protected String token;
+  protected String tokenStr;
   
   //TODO: Don't like this blank string possibility, but OperationToken needs a blank super...
   public FormulaToken() {
-    this.token = "";
+    this.tokenStr = "";
   }
   
   public FormulaToken(String token) {
-    this.token = token.trim();
+    this.tokenStr = token.trim();
   }
   
   //TODO: Type checking for the Ptg?
   public FormulaToken(Ptg token) {
-    this.token = token.toFormulaString().trim();
+    this.tokenStr = token.toFormulaString().trim();
   }
   
   public FormulaToken(NamePtg token, FormulaRenderingWorkbook render) {
-    this.token = token.toFormulaString(render).trim();
+    this.tokenStr = token.toFormulaString(render).trim();
   }
   
   /**
@@ -30,12 +30,12 @@ public class FormulaToken {
    * @return
    */
   public String wrap() {
-    this.token = "(" + token + ")";
-    return token;
+    this.tokenStr = "(" + tokenStr + ")";
+    return tokenStr;
   }
   
   public String toString() {
-    return token;
+    return tokenStr;
   }
   
   public String toTreeString() {
@@ -44,7 +44,7 @@ public class FormulaToken {
   
   protected StringBuilder toTreeString(StringBuilder sb, int depth) {    
     sb.append(tabs(depth));
-    sb.append(this.token);
+    sb.append(this.tokenStr);
     sb.append("\n");
     
     return sb;

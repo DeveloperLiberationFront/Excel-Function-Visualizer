@@ -2,6 +2,8 @@ package tests;
 
 import org.junit.Test;
 
+import utils.TestUtils;
+
 public class SheetTests {
 
   @Test

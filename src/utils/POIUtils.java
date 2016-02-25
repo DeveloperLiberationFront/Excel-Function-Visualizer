@@ -21,6 +21,9 @@ public class POIUtils {
    * @return          The XSSFWorkbook for the file that corresponds to the name.
    */
   public static XSSFWorkbook getWorkbook(String filename) {
+    if (!filename.contains("\\") && !filename.contains("/")) 
+      filename = ".\\testSheets\\" + filename;
+    
     File file = new File(filename);
     return getWorkbook(file);
   }

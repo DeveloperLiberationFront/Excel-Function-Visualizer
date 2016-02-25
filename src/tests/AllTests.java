@@ -9,6 +9,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
+import utils.TestUtils;
+
 //http://stackoverflow.com/questions/358802/junit-test-with-dynamic-number-of-tests
 @RunWith(Parameterized.class)
 public class AllTests {

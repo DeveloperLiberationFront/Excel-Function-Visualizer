@@ -1,12 +1,15 @@
 package core;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.poi.ss.formula.ptg.OperationPtg;
+import org.apache.poi.ss.formula.ptg.ValueOperatorPtg;
 
 public class OperationToken extends FormulaToken {
-  private ArrayList<FormulaToken> children = new ArrayList<FormulaToken>();
+  private FormulaToken[] children;
+  private String op;
   
   /**
    * Constructor used primarily for single-arg SUM. We expect only one arg.
@@ -17,36 +20,62 @@ public class OperationToken extends FormulaToken {
   public OperationToken(String token, FormulaToken... args) {
     super(token);
     
-    for (FormulaToken arg : args)
-      children.add(arg);
+    this.op = "SUM()";
+    addChildren(args.length, args);
   }
-  
+
   /**
    * @param token   Spreadsheet operation.
    * @param args    All the arguments in the function defined by token.
    */
   public OperationToken(OperationPtg token, FormulaToken[] args) {
-    String[] sArgs = Arrays.stream(args).map(s -> s.toString()).toArray(String[]::new);
-    this.token = token.toFormulaString(sArgs);
-    
-    if (token.getNumberOfOperands() != args.length)
+    int len = args.length;
+    if (token.getNumberOfOperands() != len)
       throw new UnsupportedOperationException("OperationToken: not enough arguments to the operation.");   
     
-    for (FormulaToken arg : args)
-      children.add(arg);
+    String[] sArgs = Arrays.stream(args).map(s -> s.toString()).toArray(String[]::new);
+    this.tokenStr = token.toFormulaString(sArgs);
+    this.op = extractOp(token.getClass(), tokenStr);
+        
+    addChildren(len, args);
+    this.toString();
   }
- 
-  
-  public void addChild(FormulaToken child) {
-    children.add(child);
+
+  private void addChildren(int len, FormulaToken... args) {
+    children = new FormulaToken[len];
+    for (int i = 0; i < len; ++i)
+      children[i] = args[i];
   }
   
-  public ArrayList<FormulaToken> getChildren() {
+  private static final Matcher NULL = Pattern.compile("null").matcher("");
+  private String extractOp(Class<? extends OperationPtg> clazz, String func) {
+    String funcOp;
+    if (clazz.equals(ValueOperatorPtg.class)) 
+      funcOp = func.replaceAll("[[:alnum:]]", "");
+    else
+      funcOp = func.replaceAll("\\(.+", "()");
+    
+    return funcOp;    
+  }
+   
+  public FormulaToken[] getChildren() {
     return children;
   }
   
+  /**
+   * Using a matcher to recursively replace null ends up in some weirdness,
+   * like strings being split in half and duplicated and so on.
+   * The current "store whole string and op individually" is a workaround.
+   */
+  public String toString() {
+    return tokenStr;
+  }
+  
   public StringBuilder toTreeString(StringBuilder sb, int depth) {    
-    super.toTreeString(sb, depth);    
+    sb.append(tabs(depth));
+    sb.append(this.op);
+    sb.append("\n");
+    
     for (FormulaToken child : children) {
       child.toTreeString(sb, depth + 1);
     }
