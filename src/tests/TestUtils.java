@@ -140,13 +140,14 @@ public class TestUtils {
     if (formula.equals(result)) 
       return;
     
-    String formulaNoWhite = formatInitial(formula),
-        resultNoWhite = formatResult(result);
-    assertEquals(formulaNoWhite, resultNoWhite);
+    String formulFormat = format(formula),
+           resultFormat = format(result);
+    assertEquals(formulFormat, resultFormat);
   } 
   
-  private static Matcher whiteSpace                  = Pattern.compile("\\s+(?=([^']*'[^']*')*[^']*$)").matcher(""),
-                                                   //= Pattern.compile("[ \t\r\n$]")             .matcher(""),
+  private static Matcher dollar                      = Pattern.compile("\\$")                    .matcher(""),
+                         whiteSpace                  //= Pattern.compile("\\s+(?=([^']*'[^']*')*[^']*$)").matcher(""),
+                                                     = Pattern.compile("[ \t\r\n$]")             .matcher(""),
                          quotesBeforeErrors          = Pattern.compile("('[^']*')+!?#")          .matcher(""),
                          wordsOrBracketsBeforeErrors = Pattern.compile("[\\w \\[\\]]+!?(#[A-Z])").matcher(""),
                          allColumns1                 = Pattern.compile("(\\w*)1:(\\w*)65536")    .matcher(""),
@@ -160,8 +161,9 @@ public class TestUtils {
    * @param str String to format.
    * @return    String with all above steps applied to it.
    */
-  public static String formatInitial(String str) {
-    String formatted = whiteSpace.reset(str).replaceAll("");
+  public static String format(String str) {
+    String formatted = dollar.reset(str).replaceAll("");
+           formatted = whiteSpace.reset(formatted).replaceAll("");
            formatted = quotesBeforeErrors.reset(formatted).replaceAll("#");
            formatted = wordsOrBracketsBeforeErrors.reset(formatted).replaceAll("$1");
            formatted = allColumns1.reset(formatted).replaceAll("$1:$2");
@@ -172,17 +174,6 @@ public class TestUtils {
     return formatted;
         //http://stackoverflow.com/questions/9577930/regular-expression-to-select-all-whitespace-that-isnt-in-quotes
         //.replaceAll("\\s+(?=([^']*'[^']*')*[^']*$)", "")                //          removes on non-quoted spaces 
-  }
-
-  public static String formatResult(String str) {
-    String formatted = whiteSpace.reset(str).replaceAll("");
-           formatted = allColumns1.reset(formatted).replaceAll("$1:$2");
-           formatted = allColumns2.reset(formatted).replaceAll("$1:$2");
-           formatted = allRows.reset(formatted).replaceAll("$1:$2");
-           formatted = quotesInSheetName.reset(formatted).replaceAll("$1!");
-           formatted = doublePlus.reset(formatted).replaceAll("+");
-    
-    return formatted;
   }
 
   /**
