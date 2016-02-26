@@ -15,8 +15,36 @@ import org.apache.poi.ss.formula.ptg.OperandPtg;
 import org.apache.poi.ss.formula.ptg.OperationPtg;
 import org.apache.poi.ss.formula.ptg.ParenthesisPtg;
 import org.apache.poi.ss.formula.ptg.Ptg;
+import org.apache.poi.xssf.usermodel.XSSFEvaluationWorkbook;
+
+import utils.POIUtils;
 
 public class Parser {
+  public static final XSSFEvaluationWorkbook BLANK = XSSFEvaluationWorkbook.create(POIUtils.getWorkbook("./testSheets/sum.xlsx"));
+
+  /**
+   * Break down a formula into individual tokens and wrap them up in nested FormulaTokens.
+   * @param formula                         Formula to parse.
+   * @return                                A FormulaToken which represents the top-level function
+   *                                          of the formula and contains all interior FormulaTokens.
+   */
+  public static FormulaToken parseFormula(String formula) 
+      throws FormulaParseException, UnsupportedOperationException {
+    return parseFormula(formula, 0, BLANK);
+  }
+  
+  /**
+   * Break down a formula into individual tokens and wrap them up in nested FormulaTokens.
+   * @param formula                         Formula to parse.
+   * @param sheet                           Sheet number of the formula.
+   * @param parse                           The workbook in which the formula was found.
+   * @return                                A FormulaToken which represents the top-level function
+   *                                          of the formula and contains all interior FormulaTokens.
+   * @throws FormulaParseException          If Apache POI can't properly parse the formula.
+   *                                          (Like if there's a Name used that it can't resolve)
+   * @throws UnsupportedOperationException  If the formula is blank or has quotes after exclamation
+   *                                          ( !' ), which I saw in a few and it couldn't parse.
+   */
   public static FormulaToken parseFormula(String formula, int sheet, FormulaParsingWorkbook parse) 
       throws FormulaParseException, UnsupportedOperationException {
     Ptg[] tokens = null;
@@ -39,39 +67,35 @@ public class Parser {
   }
   
   /**
-   * 
-   * @param tokens
-   * @param render
+   * After using POI to parse a formula down into tokens, package them into recursive FormulaTokens.
+   * @param tokens  The Ptg tokens from POI.
+   * @param render  The rendering workbook which contained the formula.
    */
   public static FormulaToken parseFormula(Ptg[] tokens, FormulaRenderingWorkbook render) {
     Stack<FormulaToken> formula = new Stack<FormulaToken>();
     
-    //int i = 0;
     for (Ptg ptg : tokens) {
-      //System.out.print(i++ + " ");
       FormulaToken form = null;
       
       if (ptg instanceof MemFuncPtg || ptg instanceof MemAreaPtg) {
         continue;   //As per test_16_outermostmissing, MemFuncPtg act as tokens but have no 
                     //representation in the function, pushing the tokens in the stack off by one.
       } else if (ptg instanceof OperationPtg) {        
-        form = operationParse(formula, ptg);       
+        form = operationParse(ptg, formula);       
       } else if (ptg instanceof OperandPtg) {           
-        form = operandParse(render, ptg);        
+        form = operandParse(ptg, render);        
       } else if (ptg instanceof ParenthesisPtg) {
         form = parseParen(formula);
       } else if (ptg instanceof AttrPtg) {
-        form = parseAttr(formula, (AttrPtg) ptg);
+        form = parseAttr(ptg, formula);
       } else {              
         form = new FormulaToken(ptg);
       }
       
       if (form == null) { 
-        //System.out.println(); 
         continue; 
       }
       
-      //System.out.println(form);        
       formula.push(form);
       
     }
@@ -82,26 +106,30 @@ public class Parser {
 
   /**
    * SUM with one area argument counts as AttrPtg instead of FuncPtg so yeah!
-   * @param formula
    * @param ptg
+   * @param formula
    * @return
    */
-  private static FormulaToken parseAttr(Stack<FormulaToken> formula, AttrPtg ptg) {
+  private static FormulaToken parseAttr(Ptg ptg, Stack<FormulaToken> formula) {
+    AttrPtg attr = (AttrPtg) ptg;
+    
     FormulaToken form = null;
-    String formulaStr = ptg.toFormulaString().trim();
+    String formulaStr = attr.toFormulaString().trim();
     
     if (formulaStr.equalsIgnoreCase("sum")) {
       FormulaToken arg = formula.pop();
-      form = new OperationToken(ptg, arg);//"SUM(" + arg.toString() + ")", arg);
+      form = new OperationToken(attr, arg);
     }
     
     return form;
   }
 
   /**
+   * Don't represent parentheses as their own node but rather wrap the representation
+   * of the most recent node in parentheses.
    * 
-   * @param formula
-   * @return
+   * @param formula   All FormulaTokens so far.
+   * @return          The newly-wrapped formula token.
    */
   private static FormulaToken parseParen(Stack<FormulaToken> formula) {
     FormulaToken last = formula.pop();
@@ -110,12 +138,12 @@ public class Parser {
   }
 
   /**
-   * 
-   * @param render
-   * @param ptg
-   * @return
+   * Wrap operands in FormulaTokens. If the operand is a name, pass in the rendering workbook too.
+   * @param ptg     The operand token.
+   * @param render  The rendering workbook in which the formula was found.
+   * @return        The new formula token.
    */
-  private static FormulaToken operandParse(FormulaRenderingWorkbook render, Ptg ptg) {
+  private static FormulaToken operandParse(Ptg ptg, FormulaRenderingWorkbook render) {
     FormulaToken form;
     
     //Name tokens need renderer, others don't.
@@ -131,12 +159,12 @@ public class Parser {
   }
   
   /**
-   * 
-   * @param formula
-   * @param ptg
-   * @return
+   * Wrap an operation (function) token and make sure it gets its respective arguments.
+   * @param ptg     The operation token.
+   * @param formula The stack of all tokens so far, which includes the arguments this will need.
+   * @return        The new formula token.
    */
-  private static FormulaToken operationParse(Stack<FormulaToken> formula, Ptg ptg) {
+  private static FormulaToken operationParse(Ptg ptg, Stack<FormulaToken> formula) {
     OperationPtg op = (OperationPtg) ptg;
     
     int len = op.getNumberOfOperands();

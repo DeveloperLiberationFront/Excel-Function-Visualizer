@@ -53,7 +53,7 @@ public class BlankTests {
   @Test
   public void test() {
     try {
-      String result = Parser.parseFormula(formula, 0, POIUtils.BLANK).toString();
+      String result = Parser.parseFormula(formula, 0, Parser.BLANK).toString();
       TestUtils.compare(formula, result);
     } catch (Exception | Error e) {
       fail(e.getMessage());

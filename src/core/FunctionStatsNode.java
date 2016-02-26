@@ -16,8 +16,18 @@ public class FunctionStatsNode implements Comparable<FunctionStatsNode> {
   private int frequency = 1;
   
   /**
+   * Represents a certain type of function or primitive type that can appear in a formula. Stores
+   * the number of times that this function has been observed here, and it records every type of argument
+   * that has been passed into a function like this, if any.
    * 
-   * @param token
+   * NOTE: In a single tree of FunctionStatsNodes, there may be several nodes which represent the
+   * same kind of formula, but they are not the same because they occur in different places in the
+   * tree.
+   * 
+   * Therefore, a tree which has been generated from the formula `SUM(SUM(A:A), 10)` will have at least
+   * two nodes with the function "SUM()". They are not the same.
+   * 
+   * @param token The type of formula token that this node wraps.
    */
   public FunctionStatsNode(FormulaToken token) {
     function = token.toSimpleString();
@@ -31,10 +41,20 @@ public class FunctionStatsNode implements Comparable<FunctionStatsNode> {
   }
   
   /**
+   * Record the occurrence of whatever type of formula element the parameter `token` is, and then
+   * recursively record the occurrences of all of `tokens` children further down in the tree.
+   * @param token   The type of formula token to record, which should be of the same type as this stats node.
    * 
-   * @param token
+   * Example: If we have the formula IF(A1<A2, SUM(B1:B10), 0), then we want to say we have observed
+   * 1 more instance of a formula which has IF() as its uppermost function, and then record that it has
+   * the tokens `<`, SUM(), and 0 (<NUM>) one level below that, and so on.
    */
   public void add(FormulaToken token) {
+    if (!this.equals(token))
+      throw new UnsupportedOperationException("Trying to pass a FormulaToken which does not "
+          + "refer to the same type of token as the FunctionStatsNode: " + token.toSimpleString() 
+          + " vs. " + this.function);
+    
     increment();
     
     FormulaToken[] children = token.getChildren();
@@ -95,25 +115,30 @@ public class FunctionStatsNode implements Comparable<FunctionStatsNode> {
     return frequency;
   }
   
+  /**
+   * Using {@link #toTreeString(StringBuilder, int)}, this returns a string
+   * which conveys the hierarchical nature of the formulas and displays the
+   * frequency of each kind of argument.
+   */
   public String toString() {
-    return toString(new StringBuilder(), 0).toString();
+    return toTreeString(new StringBuilder(), 0).toString();
   }
   
-  private StringBuilder toString(StringBuilder sb, int depth) {
-    sb.append(tabs(depth));
+  private StringBuilder toTreeString(StringBuilder sb, int depth) {
+    tabs(sb, depth);
     sb.append(function + " (" + frequency + ")");
     sb.append("\n");
     
     for (int i = 0; i < arguments.size(); ++i) {
       HashMap<String, FunctionStatsNode> argument = getArgumentPosition(i);
-      sb.append(tabs(depth+1));
+      tabs(sb, depth+1);
       sb.append("Argument #" + (i+1));
       sb.append("\n");
       
       ArrayList<FunctionStatsNode> funcs = new ArrayList<FunctionStatsNode>(argument.values());
       Collections.sort(funcs);
       for (FunctionStatsNode func : funcs) {
-        func.toString(sb, depth+2);
+        func.toTreeString(sb, depth+2);
       }
     }
     
@@ -121,31 +146,33 @@ public class FunctionStatsNode implements Comparable<FunctionStatsNode> {
   }
   
   /**
-   * TODO: Why create a new stringbuilder here instead of passing it in like elsewhere?
-   * @param depth
-   * @return
+   * Adds the appropriate amount of tabbing to an element this deep in the tree
+   * @param sb    The stringbuilder which is compiling the string for the entire tree.
+   * @param depth How deep we are into the hierarchy right now.
    */
-  protected String tabs(int depth) {
-    StringBuilder str = depth % 2 == 0 
-                          ? new StringBuilder(depth/2 + ".")
-                          : new StringBuilder("..");
+  protected void tabs(StringBuilder sb, int depth) {
+    sb.append(depth % 2 == 0 
+                ? depth/2 + "."
+                : "..");
+    
     for (int i = 0; i < depth; ++i) {
-      str.append("..");
+      sb.append("..");
     }
-    return str.toString();
   }
 
   /**
-   * Equality based on function name equality.
+   * When comparing to FunctionStatsNodes, equality must be exact since distinct
+   * FSNs can have the exact same content. (Consider the case for SUM(A:A, 2) + SUM(A:A, 2)
+   * and how the two SUM nodes will be constructed.)
+   * 
+   * When comparing to FormulaTokens, equality is based on name.
+   * 
+   * TODO: This double-class equality checking might be dangerous.
    */
   @Override
-  public boolean equals(Object o) {
-    if (o == this)
-      return true;
-    
+  public boolean equals(Object o) {   
     if (o instanceof FunctionStatsNode) {
-      FunctionStatsNode fsn = (FunctionStatsNode) o;
-      return this.function.equals(fsn.getFunction());
+      return o == this;
     } else if (o instanceof FormulaToken) {
       FormulaToken ft = (FormulaToken) o;
       return this.function.equals(ft.toSimpleString());

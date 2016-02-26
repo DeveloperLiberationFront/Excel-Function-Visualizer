@@ -20,24 +20,51 @@ public class FormulaToken {
     this.token = null;
   }
   
+  /**
+   * Creates a class that refers to a discrete token within an Excel formula.
+   * ex:  SUM(A:A)+IF(B1<B2, B1, B2) -> SUM(), A:A, +, IF(), B1, <, B2, B1, B2 
+   * @param tok   The discrete token in the formula, expected to not be an operation
+   *              token and thus have no arguments.
+   */
   public FormulaToken(Ptg tok) {
     this.token = tok;
     //this.tokenStr = token.toFormulaString().trim();
 
-    if (tok instanceof RefPtgBase)
-      this.tokenStr = "<REF>";
-    else if (tok instanceof AreaPtgBase) 
-      this.tokenStr = "<AREA>";
-    else if (tok instanceof IntPtg || tok instanceof NumberPtg) 
-      this.tokenStr = "<NUM>";
-    else if (tok instanceof StringPtg)
-      this.tokenStr = "<STR>";
-    else if (tok instanceof BoolPtg)
-      this.tokenStr = "<BOOL>";
-    else
-      this.tokenStr = "<OTHER>";
+    this.tokenStr = getTypeString(tok);
+  }
+
+  /**
+   * Replaces a specific basic type (reference, range, int, string, bool) with a generic
+   * string representing it so it can be equated with all other FormulaTokens of the 
+   * same type.
+   * 
+   * @param tok   The same type.
+   * @return      A generic string representation for that type.
+   */
+  private String getTypeString(Ptg tok) {
+    String type = "";
+    
+    if (tok instanceof RefPtgBase)                                //A1
+      type = "<REF>";
+    else if (tok instanceof AreaPtgBase)                          //A1:A10
+      type = "<RANGE>";
+    else if (tok instanceof IntPtg || tok instanceof NumberPtg)   //1 or 1.0
+      type = "<NUM>";
+    else if (tok instanceof StringPtg)                            //"str"
+      type = "<STR>";
+    else if (tok instanceof BoolPtg)                              //TRUE
+      type = "<BOOL>";
+    else                                                          //errors, for example
+      type = "<OTHER>";
+    
+    return type;
   }
   
+  /**
+   * Names in a spreadsheet require the spreadsheet context in order to parse correctly.
+   * @param token   The Name token.
+   * @param render  The contain spreadsheet.
+   */
   public FormulaToken(NamePtg token, FormulaRenderingWorkbook render) {
     this.token = token;
     this.tokenStr = token.toFormulaString(render).trim();
@@ -71,28 +98,44 @@ public class FormulaToken {
     return toString();
   }
   
+  /**
+   * Get a string which conveys the hierarchical nature of the formula.
+   * @return
+   */
   public String toTreeString() {
     return this.toTreeString(new StringBuilder(), 0).toString();
   }
   
+  /**
+   * Represent the entire hierarchy of the formula as indented list.
+   * @param sb      The stringbuilder which is passed between formula tokens
+   *                and compiles the entire string.
+   * @param depth   How many levels deep we are into the hierarchy. Determines tabbing.
+   * @return        The StringBuilder passed in, now altered.
+   */
   protected StringBuilder toTreeString(StringBuilder sb, int depth) {    
-    sb.append(tabs(depth));
+    tabs(sb, depth);
     sb.append(this.tokenStr);
     sb.append("\n");
     
     return sb;
   }
 
-  protected String tabs(int depth) {
-    StringBuilder str = new StringBuilder(depth + ".");
+  /**
+   * Adds the correct tabbing for an element of this depth.
+   * @param sb      The stringbuilder compiling all parts of the tree string representation.
+   * @param depth   How many levels down into the tree we are right now.
+   */
+  protected void tabs(StringBuilder sb, int depth) {
+    sb.append(depth + ".");
     for (int i = 0; i < depth; ++i) {
-      str.append("....");
+      sb.append("....");
     }
-    return str.toString();
   }
   
   /**
-   * Equality based on function name equality.
+   * Equality based on function name equality. Can be compared to either FormulaToken or FormulaStatsNode.
+   * TODO: Is this double equality dangerous?
    */
   @Override
   public boolean equals(Object o) {

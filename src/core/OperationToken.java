@@ -8,10 +8,17 @@ import org.apache.poi.ss.formula.ptg.AttrPtg;
 import org.apache.poi.ss.formula.ptg.OperationPtg;
 
 public class OperationToken extends FormulaToken {
-  private FormulaToken[] children;
-  private String op;
-
+  private FormulaToken[] children;          //The arguments of this function.
+  private String op;                        //A string representation of this token without
+                                            //  any information about arguments.
   /**
+   * An Operation token represents a function in the overall formula which itself takes 
+   * other tokens as arguments. For example, IF() can take 2 or 3 arguments: so `tok`
+   * is the Ptg token that refers to IF() individually, and `args` is an array of the 
+   * tokens that serve as the 2 or 3 arguments.
+   * 
+   * Arithmetical operations, like + - * /, also count as operations which take arguments.
+   * 
    * @param tok   Spreadsheet operation.
    * @param args    All the arguments in the function defined by token.
    */
@@ -32,7 +39,8 @@ public class OperationToken extends FormulaToken {
   
   /**
    * Constructor used primarily for single-arg SUM. We expect only one arg.
-   * Vararged, just in case it's needed in a future case.
+   * Vararged for automatic conversion to array. (TODO: Is that good form?)
+   * 
    * @param tok   String representation of the function, including arguments.
    * @param args    Individual FormulaToken arguments.
    */
@@ -51,7 +59,7 @@ public class OperationToken extends FormulaToken {
    * @param len   Number of expected children for this function.
    * @param args  The array of children to this node.
    */
-  private void addChildren(int len, FormulaToken... args) {
+  private void addChildren(int len, FormulaToken[] args) {
     children = new FormulaToken[len];
     for (int i = 0; i < len; ++i)
       children[i] = args[i];
@@ -97,7 +105,7 @@ public class OperationToken extends FormulaToken {
    * @param depth How many levels down the tree we are now.
    */
   public StringBuilder toTreeString(StringBuilder sb, int depth) {    
-    sb.append(tabs(depth));
+    tabs(sb, depth);
     sb.append(this.op);
     sb.append("\n");
     
