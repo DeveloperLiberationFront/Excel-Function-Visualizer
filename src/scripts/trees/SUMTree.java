@@ -1,11 +1,17 @@
 package scripts.trees;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.apache.poi.ss.formula.FormulaParsingWorkbook;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import core.FormulaToken;
 import core.FunctionStatsNode;
@@ -14,7 +20,7 @@ import utils.DBUtils;
 import utils.POIUtils;
 
 public class SUMTree {
-  public static void main(String[] args) throws SQLException {
+  public static void main(String[] args) throws SQLException, IOException {
     int limit = 2000, offset = 1850, currentlyAt;
     Connection con = DBUtils.connectToDatabase();
     PreparedStatement ps = con.prepareStatement("SELECT * FROM formulas WHERE formula like 'SUM%' LIMIT " + limit + " OFFSET ?");
@@ -52,7 +58,15 @@ public class SUMTree {
       System.out.println("At " + offset + "...");
       break;
     } while (limit == currentlyAt);
-    System.out.println(sum.toString());
+    
+    GsonBuilder builder = new GsonBuilder();
+    builder.setPrettyPrinting().serializeNulls();
+    Gson gson = builder.create();
+    
+    BufferedWriter write = new BufferedWriter(new FileWriter("testJson.txt"));
+    write.write(gson.toJson(sum));
+    System.out.println(gson.toJson(sum));
+    write.close();
 
   }
 }

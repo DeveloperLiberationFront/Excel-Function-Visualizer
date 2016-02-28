@@ -45,17 +45,17 @@ public class FormulaToken {
     String type = "";
     
     if (tok instanceof RefPtgBase)                                //A1
-      type = "<REF>";
+      type = "~REF~";
     else if (tok instanceof AreaPtgBase)                          //A1:A10
-      type = "<RANGE>";
+      type = "~RANGE~";
     else if (tok instanceof IntPtg || tok instanceof NumberPtg)   //1 or 1.0
-      type = "<NUM>";
+      type = "~NUM~";
     else if (tok instanceof StringPtg)                            //"str"
-      type = "<STR>";
+      type = "~STR~";
     else if (tok instanceof BoolPtg)                              //TRUE
-      type = "<BOOL>";
+      type = "~BOOL~";
     else                                                          //errors, for example
-      type = "<OTHER>";
+      type = "~OTHER~";
     
     return type;
   }
