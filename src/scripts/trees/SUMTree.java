@@ -21,9 +21,9 @@ import utils.POIUtils;
 
 public class SUMTree {
   public static void main(String[] args) throws SQLException, IOException {
-    int limit = 2000, offset = 1850, currentlyAt;
+    int limit = 100000, offset = 0, currentlyAt;
     Connection con = DBUtils.connectToDatabase();
-    PreparedStatement ps = con.prepareStatement("SELECT * FROM formulas WHERE formula like 'SUM%' LIMIT " + limit + " OFFSET ?");
+    PreparedStatement ps = con.prepareStatement("SELECT * FROM formulas WHERE formula like 'SUM%' and ID > ? LIMIT " + limit + ";");
     
     FunctionStatsNode sum = null;
     do {
@@ -54,9 +54,9 @@ public class SUMTree {
         System.out.println(currentlyAt + " : " + formula);        
       }
       
-      offset += limit;
+      rs.previous();
+      offset = rs.getInt(1);
       System.out.println("At " + offset + "...");
-      break;
     } while (limit == currentlyAt);
     
     GsonBuilder builder = new GsonBuilder();

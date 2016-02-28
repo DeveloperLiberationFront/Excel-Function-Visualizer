@@ -12,8 +12,8 @@ public class FunctionStatsNode implements Comparable<FunctionStatsNode> {
    *                                having to remove/reinsert nodes in a priority queue.
    */
   private String function;
-  private ArrayList<HashMap<String, FunctionStatsNode>> arguments = new ArrayList<HashMap<String, FunctionStatsNode>>();
   private int frequency = 1;
+  private ArrayList<FunctionArgumentNode> arguments = new ArrayList<FunctionArgumentNode>();
   
   /**
    * Represents a certain type of function or primitive type that can appear in a formula. Stores
@@ -33,10 +33,11 @@ public class FunctionStatsNode implements Comparable<FunctionStatsNode> {
     function = token.toSimpleString();
     
     FormulaToken[] children = token.getChildren();
-    for (FormulaToken child : children) {
-      HashMap<String, FunctionStatsNode> map = new HashMap<String, FunctionStatsNode>();
-      map.put(child.toSimpleString(), new FunctionStatsNode(child));
-      arguments.add(map);
+    for (int i = 0; i < children.length; ++i) {
+      FormulaToken child = children[i];
+      FunctionArgumentNode arg = new FunctionArgumentNode(i);
+      arg.add(child);//map.put(child.toSimpleString(), new FunctionStatsNode(child));
+      arguments.add(arg);
     }
   }
   
@@ -60,17 +61,17 @@ public class FunctionStatsNode implements Comparable<FunctionStatsNode> {
     FormulaToken[] children = token.getChildren();
     for (int i = 0; i < children.length; ++i) {
       FormulaToken child = children[i];
-      HashMap<String, FunctionStatsNode> argumentPosition = getArgumentPosition(i);
+      FunctionArgumentNode argumentPosition = getArgumentAtPosition(i);
       
       String childFunc = child.toSimpleString();
-      if (argumentPosition.containsKey(childFunc)) {
+      if (argumentPosition.contains(child)) {
         
         FunctionStatsNode function = argumentPosition.get(childFunc);
         function.add(child);
         
       } else {
         
-        argumentPosition.put(childFunc, new FunctionStatsNode(child));
+        argumentPosition.add(child);
         
       }
     }
@@ -86,13 +87,13 @@ public class FunctionStatsNode implements Comparable<FunctionStatsNode> {
    * @param i       Position in {@link #arguments} we're trying to access.
    * @return        A HashMap referring to that position.
    */
-  private HashMap<String, FunctionStatsNode> getArgumentPosition(int i) {
-    HashMap<String, FunctionStatsNode> argumentPosition;
+  private FunctionArgumentNode getArgumentAtPosition(int i) {
+    FunctionArgumentNode argumentPosition;
     
     if (i < arguments.size()) {
       argumentPosition = arguments.get(i);
     } else {
-      argumentPosition = new HashMap<String, FunctionStatsNode>();
+      argumentPosition = new FunctionArgumentNode(i);
       arguments.add(argumentPosition);
     }
     
@@ -130,12 +131,12 @@ public class FunctionStatsNode implements Comparable<FunctionStatsNode> {
     sb.append("\n");
     
     for (int i = 0; i < arguments.size(); ++i) {
-      HashMap<String, FunctionStatsNode> argument = getArgumentPosition(i);
+      FunctionArgumentNode argument = getArgumentAtPosition(i);
       tabs(sb, depth+1);
       sb.append("Argument #" + (i+1));
       sb.append("\n");
       
-      ArrayList<FunctionStatsNode> funcs = new ArrayList<FunctionStatsNode>(argument.values());
+      ArrayList<FunctionStatsNode> funcs = argument.getPossibilities();
       Collections.sort(funcs);
       for (FunctionStatsNode func : funcs) {
         func.toTreeString(sb, depth+2);
