@@ -2,17 +2,17 @@ package core;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+
+import com.google.gson.annotations.Expose;
 
 public class FunctionStatsNode implements Comparable<FunctionStatsNode> {
-  /**
-   * ArrayList of HashMaps:         For each argument position, there will be a number of possibilities. The possibilities
-   *                                should be ordered by frequency descending, but I will sort them afterward to avoid 
-   *                                having to remove/reinsert nodes in a priority queue.
-   */
+  @Expose
   private String function;
-  private int frequency = 1;
+  
+  @Expose
+  private int frequency = 0;    
+  
+  @Expose
   private ArrayList<FunctionArgumentNode> arguments = new ArrayList<FunctionArgumentNode>();
   
   /**
@@ -32,6 +32,7 @@ public class FunctionStatsNode implements Comparable<FunctionStatsNode> {
   public FunctionStatsNode(FormulaToken token) {
     function = token.toSimpleString();
     
+    increment();    //Construction entails one use.
     FormulaToken[] children = token.getChildren();
     for (int i = 0; i < children.length; ++i) {
       FormulaToken child = children[i];
@@ -50,7 +51,7 @@ public class FunctionStatsNode implements Comparable<FunctionStatsNode> {
    * 1 more instance of a formula which has IF() as its uppermost function, and then record that it has
    * the tokens `<`, SUM(), and 0 (<NUM>) one level below that, and so on.
    */
-  public void add(FormulaToken token) {
+  public void addChildrenOf(FormulaToken token) {
     if (!this.equals(token))
       throw new UnsupportedOperationException("Trying to pass a FormulaToken which does not "
           + "refer to the same type of token as the FunctionStatsNode: " + token.toSimpleString() 
@@ -63,11 +64,10 @@ public class FunctionStatsNode implements Comparable<FunctionStatsNode> {
       FormulaToken child = children[i];
       FunctionArgumentNode argumentPosition = getArgumentAtPosition(i);
       
-      String childFunc = child.toSimpleString();
       if (argumentPosition.contains(child)) {
         
-        FunctionStatsNode function = argumentPosition.get(childFunc);
-        function.add(child);
+        FunctionStatsNode function = argumentPosition.get(child);
+        function.addChildrenOf(child);
         
       } else {
         
@@ -98,6 +98,11 @@ public class FunctionStatsNode implements Comparable<FunctionStatsNode> {
     }
     
     return argumentPosition;
+  }
+  
+  public void sortArgumentsByFrequency() {
+    for (FunctionArgumentNode arg : arguments)
+      arg.sortArgumentsByFrequency();
   }
   
   /**

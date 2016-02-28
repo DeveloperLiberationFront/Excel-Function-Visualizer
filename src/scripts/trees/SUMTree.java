@@ -49,7 +49,7 @@ public class SUMTree {
         if (sum == null)
           sum = new FunctionStatsNode(tree);
         else
-          sum.add(tree);
+          sum.addChildrenOf(tree);
         
         System.out.println(currentlyAt + " : " + formula);        
       }
@@ -59,8 +59,10 @@ public class SUMTree {
       System.out.println("At " + offset + "...");
     } while (limit == currentlyAt);
     
+    sum.sortArgumentsByFrequency();
+    
     GsonBuilder builder = new GsonBuilder();
-    builder.setPrettyPrinting().serializeNulls();
+    builder.setPrettyPrinting().serializeNulls().excludeFieldsWithoutExposeAnnotation();
     Gson gson = builder.create();
     
     BufferedWriter write = new BufferedWriter(new FileWriter("testJson.txt"));
