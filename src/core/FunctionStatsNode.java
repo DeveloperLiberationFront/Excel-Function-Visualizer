@@ -2,18 +2,18 @@ package core;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 
 import com.google.gson.annotations.Expose;
 
 public class FunctionStatsNode implements Comparable<FunctionStatsNode> {
-  @Expose
   private String function;
   
   @Expose
   private int frequency = 0;    
   
   @Expose
-  private ArrayList<FunctionArgumentNode> arguments = new ArrayList<FunctionArgumentNode>();
+  private LinkedHashMap<Integer, FunctionArgumentNode> arguments = new LinkedHashMap<Integer, FunctionArgumentNode>();
   
   /**
    * Represents a certain type of function or primitive type that can appear in a formula. Stores
@@ -38,7 +38,7 @@ public class FunctionStatsNode implements Comparable<FunctionStatsNode> {
       FormulaToken child = children[i];
       FunctionArgumentNode arg = new FunctionArgumentNode(i);
       arg.add(child);//map.put(child.toSimpleString(), new FunctionStatsNode(child));
-      arguments.add(arg);
+      arguments.put(i, arg);
     }
   }
   
@@ -94,14 +94,14 @@ public class FunctionStatsNode implements Comparable<FunctionStatsNode> {
       argumentPosition = arguments.get(i);
     } else {
       argumentPosition = new FunctionArgumentNode(i);
-      arguments.add(argumentPosition);
+      arguments.put(i, argumentPosition);
     }
     
     return argumentPosition;
   }
   
   public void sortArgumentsByFrequency() {
-    for (FunctionArgumentNode arg : arguments)
+    for (FunctionArgumentNode arg : arguments.values())
       arg.sortArgumentsByFrequency();
   }
   

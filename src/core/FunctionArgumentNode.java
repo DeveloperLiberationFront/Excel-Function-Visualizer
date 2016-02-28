@@ -3,6 +3,7 @@ package core;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import com.google.gson.annotations.Expose;
 
@@ -13,7 +14,6 @@ import com.google.gson.annotations.Expose;
  *
  */
 public class FunctionArgumentNode {
-  @Expose
   private int argumentPosition;
   
   @Expose
@@ -21,11 +21,11 @@ public class FunctionArgumentNode {
                                       //      and could probably eventually cause a bug. (FSN increments first
                                       //      in constructor because it adds all children there. This doesn't add
                                       //      anything in constructor, only in `add` and `get`
-  //Not exposed.
+  
   private HashMap<String, FunctionStatsNode> possibleArguments_unsorted = new HashMap<String, FunctionStatsNode>();
   
   @Expose
-  private ArrayList<FunctionStatsNode> possibleArguments = null;
+  private LinkedHashMap<String, FunctionStatsNode> possibleArguments = null;
   
   public FunctionArgumentNode(int pos) {
     this.argumentPosition = pos;
@@ -61,10 +61,14 @@ public class FunctionArgumentNode {
   }
   
   public void sortArgumentsByFrequency() {
-    possibleArguments = new ArrayList<FunctionStatsNode>(possibleArguments_unsorted.values());
-    Collections.sort(possibleArguments);
-    
-    for (FunctionStatsNode arg : possibleArguments) 
+    ArrayList<FunctionStatsNode> sort = new ArrayList<FunctionStatsNode>(possibleArguments_unsorted.values());
+    Collections.sort(sort);
+
+    possibleArguments = new LinkedHashMap<String, FunctionStatsNode>();    
+    for (FunctionStatsNode arg : sort) {
+      String key = arg.getFunction();     
+      possibleArguments.put(key, arg);
       arg.sortArgumentsByFrequency();
+    }
   }
 }
