@@ -1,0 +1,8 @@
+The transition from Java object to JSON was handled mostly by GSON:
+	-library takes care of most of representation by itself
+	-all fields within a class are represented unless explicitly @Excluded
+	-even classes within data structures are represented recursively
+	-when the object occurs within a map, the json objects are given labels
+		-I updated a fair amount of the code to take advantage of this, after testing representation in http://jsonviewer.stack.hu/
+		-Unexpanded objects in a list were named with a numerical index -- 0,1,2,3... -- which wasn't helpful for debugging
+		-instead, each object now is labeled with the name of its function or its argument

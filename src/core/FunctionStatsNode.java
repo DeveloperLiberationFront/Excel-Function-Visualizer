@@ -7,6 +7,7 @@ import java.util.LinkedHashMap;
 import com.google.gson.annotations.Expose;
 
 public class FunctionStatsNode implements Comparable<FunctionStatsNode> {
+  @Expose
   private String function;
   
   @Expose

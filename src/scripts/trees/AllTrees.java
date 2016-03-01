@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -26,7 +27,7 @@ public class AllTrees {
     Connection con = DBUtils.connectToDatabase();
     PreparedStatement ps = con.prepareStatement("SELECT * FROM formulas WHERE ID > ? LIMIT " + limit + ";");
     
-    HashMap<String, FunctionStatsNode> trees = new HashMap<String, FunctionStatsNode>();
+    Map<String, FunctionStatsNode> trees = new HashMap<String, FunctionStatsNode>();
     do {
       long start = System.currentTimeMillis();
       currentlyAt = 0;
@@ -73,7 +74,7 @@ public class AllTrees {
     builder.setPrettyPrinting().serializeNulls().excludeFieldsWithoutExposeAnnotation();
     Gson gson = builder.create();
     
-    BufferedWriter write = new BufferedWriter(new FileWriter("testJson.txt"));
+    BufferedWriter write = new BufferedWriter(new FileWriter("./src/scripts/viz/all.json"));
     write.write(gson.toJson(allFuncs));
     //System.out.println(gson.toJson(sum));
     write.close();

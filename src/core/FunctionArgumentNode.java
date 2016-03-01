@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 import com.google.gson.annotations.Expose;
 
@@ -14,7 +15,8 @@ import com.google.gson.annotations.Expose;
  *
  */
 public class FunctionArgumentNode {
-  private int argumentPosition;
+  @Expose
+  private int position;
   
   @Expose
   private int positionFrequency = 0;  //TODO: The way this freq differs from FunctionStatsNode is very slight
@@ -22,15 +24,15 @@ public class FunctionArgumentNode {
                                       //      in constructor because it adds all children there. This doesn't add
                                       //      anything in constructor, only in `add` and `get`
   
-  private HashMap<String, FunctionStatsNode> possibleArguments_unsorted = new HashMap<String, FunctionStatsNode>();
+  private Map<String, FunctionStatsNode> possibleArguments_unsorted = new HashMap<String, FunctionStatsNode>();
   
   @Expose
-  private LinkedHashMap<String, FunctionStatsNode> possibleArguments = null;
-  
-  public FunctionArgumentNode(int pos) {
-    this.argumentPosition = pos;
-  }
+  private LinkedHashMap<String, FunctionStatsNode> possibleArguments = null;  //because it preserves insertion order
 
+  public FunctionArgumentNode(int pos) {
+    this.position = pos;
+  }
+  
   public void add(FormulaToken child) {
     increment();
     possibleArguments_unsorted.put(child.toSimpleString(), new FunctionStatsNode(child));
