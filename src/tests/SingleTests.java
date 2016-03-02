@@ -15,7 +15,7 @@ public class SingleTests {
 
   @Test
   public void test_01() {
-    String filename = "./testSheets/albert_meyers__1__1-25act.xlsx",
+    String filename = "./sheets/albert_meyers__1__1-25act.xlsx",
            formula = "SUM(IF((DelPoint= \"4C\")*(DType = \"pre\")*(OFFSET(DelPoint,0,B3+2)<0),OFFSET(DelPoint,0,B3+2),0))";
     int    sheetNum = 0;
     
@@ -24,7 +24,7 @@ public class SingleTests {
   
   @Test
   public void test_02_sum() {
-    String filename = "./testSheets/sum.xlsx",
+    String filename = "./core/utils/sum.xlsx",
            formula = "IF(A1>A2, SUM(A3:A4), SUM(A5, A6))";
     int    sheetNum = 0;
     
@@ -34,7 +34,7 @@ public class SingleTests {
   //TODO: MissingArgPtg present, which included space in my parser's result.
   @Test
   public void test_03_blanksum() {
-    String filename = "./testSheets/albert_meyers__1__1-25act.xlsx",
+    String filename = "./sheets/albert_meyers__1__1-25act.xlsx",
            formula = "IF(-SUM(B18:B20,B35:B37)>134,\"err\",-SUM(B18:B20,))";
     int    sheetNum = 0;
 
@@ -47,7 +47,7 @@ public class SingleTests {
    */
   @Test
   public void test_04_referror() {
-    String filename = "./testSheets/albert_meyers__1__1-25act.xlsx",
+    String filename = "./sheets/albert_meyers__1__1-25act.xlsx",
            formula = "IF(SUM(Deals!#REF!)=0,0,SUM(Deals!#REF!*Deals!#REF!)/SUM(Deals!#REF!))";
     int    sheetNum = 0;
 
@@ -60,7 +60,7 @@ public class SingleTests {
    */
   @Test
   public void test_05_thirdparty() {
-    String filename = "./testSheets/albert_meyers__1__1-25act.xlsx",
+    String filename = "./sheets/albert_meyers__1__1-25act.xlsx",
            formula = "IndGencost(D104,OFFSET(HeatRateStart,1,MATCH($A104,HeatRateNames,0)-1,250,1),$A105)";
     int    sheetNum = 0;
 
@@ -87,7 +87,7 @@ public class SingleTests {
   @Test
   public void test_06_parseerrornear0() {
     //0%
-    String filename = "./testSheets/andy_zipper__112__mODEL 3 7 01 Base.xlsx";
+    String filename = "./sheets/andy_zipper__112__mODEL 3 7 01 Base.xlsx";
     int    sheetNum = 2, row = 42, col = 4;
     
     XSSFWorkbook wb = POIUtils.getWorkbook(filename);
@@ -108,7 +108,7 @@ public class SingleTests {
   //java.lang.AssertionError: Parse error near char 4 ''' in specified formula '[1]!'NGH1,PRIM ACT 1''. Expected number, string, or defined name
   @Test
   public void test_07_singlequote() {
-    String filename = "./testSheets/albert_meyers__1__1-25act.xlsx",
+    String filename = "./sheets/albert_meyers__1__1-25act.xlsx",
            formula = "[1]!'NGH1,PRIM ACT 1'";
     int    sheetNum = 0;
     
@@ -128,7 +128,7 @@ public class SingleTests {
   //IF(D6<='ASSUM1'!M42,'ASSUM1'!#REF!/100,IF(D6<='ASSUM1'!M43,'ASSUM1'!N43/100,'ASSUM1'!N44/100))
   @Test
   public void test_08_sheetBadRef() {
-    String filename = "./testSheets/benjamin_rogers__1013__Pro Forma2.xlsx";
+    String filename = "./sheets/benjamin_rogers__1013__Pro Forma2.xlsx";
     int    sheetNum = 6, row = 48, col = 3;
     
     singleSuccessTest(filename, sheetNum, row, col);
@@ -136,7 +136,7 @@ public class SingleTests {
   
   @Test
   public void test_09_ampersand() {
-    String filename = "./testSheets/benjamin_rogers__1239__Simple Cycle Florida model.xlsx";
+    String filename = "./sheets/benjamin_rogers__1239__Simple Cycle Florida model.xlsx";
     int    sheetNum = 11, row = 31, col = 3;
     
     singleSuccessTest(filename, sheetNum, row, col);
@@ -145,7 +145,7 @@ public class SingleTests {
   //1(RawData):0:21::MATCH(Strips!B1,A:A,0)-2
   @Test
   public void test_10_dollarsign() {
-    String filename = "./testSheets/sum.xlsx",
+    String filename = "./core/utils/sum.xlsx",
            formula = "SUM(A:A)";
     int    sheetNum = 1;
     
@@ -158,7 +158,7 @@ public class SingleTests {
    */
   @Test
   public void test_11_dollararea() {
-    String filename = "./testSheets/chris_dorland__1586__opspackage.xlsx";
+    String filename = "./sheets/chris_dorland__1586__opspackage.xlsx";
     int sheetNum = 2, row = 35, col = 20;
     
     singleSuccessTest(filename, sheetNum, row, col);
@@ -169,7 +169,7 @@ public class SingleTests {
    */
   @Test
   public void test_12_index8() {
-    String filename = "./testSheets/chris_dorland__1588__Reuters CQG Model.xlsx";
+    String filename = "./sheets/chris_dorland__1588__Reuters CQG Model.xlsx";
     int sheetNum = 0, row = 3, col = 4;
     
     singleSuccessTest(filename, sheetNum, row, col);
@@ -181,7 +181,7 @@ public class SingleTests {
    */
   @Test
   public void test_13_disappearingquotes() {
-    String filename = "./testSheets/craig_dean__4356__11-9act.xlsx";
+    String filename = "./sheets/craig_dean__4356__11-9act.xlsx";
     int sheetNum = 1, row = 30, col = 1;
     
     singleSuccessTest(filename, sheetNum, row, col);
@@ -193,7 +193,7 @@ public class SingleTests {
    */
   @Test
   public void test_14_quotepound() {
-    String filename = "./testSheets/elizabeth_sager__9473__California Exposure 033001a.xlsx";
+    String filename = "./sheets/elizabeth_sager__9473__California Exposure 033001a.xlsx";
     int sheetNum = 4, row = 26, col = 2;
     
     singleSuccessTest(filename, sheetNum, row, col);
@@ -205,7 +205,7 @@ public class SingleTests {
    */
   @Test
   public void test_15_bracketerror() {
-    String filename = "./testSheets/jim_schwieger__14383__AGA_PREDICTION_1998.xlsx";
+    String filename = "./sheets/jim_schwieger__14383__AGA_PREDICTION_1998.xlsx";
     int sheetNum = 0, row = 55, col = 159;
     
     singleSuccessTest(filename, sheetNum, row, col);
@@ -218,7 +218,7 @@ public class SingleTests {
    */
   @Test
   public void test_16_outermostmissing() {
-    String filename = "./testSheets/benjamin_rogers__1037__CFTejon8a revised 21 - 750 MW.xlsx";
+    String filename = "./sheets/benjamin_rogers__1037__CFTejon8a revised 21 - 750 MW.xlsx";
     int sheetNum = 3, row = 7, col = 2;
     
     singleSuccessTest(filename, sheetNum, row, col);
@@ -231,7 +231,7 @@ public class SingleTests {
    */
   @Test
   public void test_17_missingtopleveloperand() {
-    String filename = "./testSheets/benjamin_rogers__1172__Wheatland_New - W 501 D5A.xlsx";
+    String filename = "./sheets/benjamin_rogers__1172__Wheatland_New - W 501 D5A.xlsx";
     int sheetNum = 9, row = 32, col = 3;
     
     singleSuccessTest(filename, sheetNum, row, col);
@@ -244,7 +244,7 @@ public class SingleTests {
    */
   @Test
   public void test_18_multipletoplevelmissing() {
-    String filename = "./testSheets/danny_mccarty__4661__XTRANSCO - Economics.xlsx";
+    String filename = "./sheets/danny_mccarty__4661__XTRANSCO - Economics.xlsx";
     int sheetNum = 1, row = 20, col = 3;
     
     singleSuccessTest(filename, sheetNum, row, col);
@@ -257,7 +257,7 @@ public class SingleTests {
    */
   @Test
   public void test_19_missinginternal() {
-    String filename = "./testSheets/john_griffith__15855__Vol Move.xlsx";
+    String filename = "./sheets/john_griffith__15855__Vol Move.xlsx";
     int sheetNum = 1, row = 3, col = 2;
     
     singleSuccessTest(filename, sheetNum, row, col);

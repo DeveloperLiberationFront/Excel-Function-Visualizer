@@ -22,8 +22,7 @@ public class POIUtils {
    */
   public static XSSFWorkbook getWorkbook(String filename) {
     if (!filename.contains("\\") && !filename.contains("/")) 
-      filename = System.getenv("ENRON_DIR") + filename;
-      //filename = ".\\testSheets\\" + filename;
+      filename = "./sheets/" + filename;
     
     File file = new File(filename);
     return getWorkbook(file);
