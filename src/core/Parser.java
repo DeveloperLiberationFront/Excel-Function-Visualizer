@@ -20,7 +20,7 @@ import org.apache.poi.xssf.usermodel.XSSFEvaluationWorkbook;
 import utils.POIUtils;
 
 public class Parser {
-  public static final XSSFEvaluationWorkbook BLANK = XSSFEvaluationWorkbook.create(POIUtils.getWorkbook("./core/utils/sum.xlsx"));
+  public static final XSSFEvaluationWorkbook BLANK = XSSFEvaluationWorkbook.create(POIUtils.getWorkbook("./src/utils/sum.xlsx"));
 
   /**
    * Break down a formula into individual tokens and wrap them up in nested FormulaTokens.

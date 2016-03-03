@@ -13,8 +13,10 @@ public class FunctionStatsNode implements Comparable<FunctionStatsNode> {
   @Expose
   private int frequency = 0;    
   
+  private LinkedHashMap<Integer, FunctionArgumentNode> arguments_unsorted = new LinkedHashMap<Integer, FunctionArgumentNode>();
+  
   @Expose
-  private LinkedHashMap<Integer, FunctionArgumentNode> arguments = new LinkedHashMap<Integer, FunctionArgumentNode>();
+  private FunctionArgumentNode[] children = null;
   
   /**
    * Represents a certain type of function or primitive type that can appear in a formula. Stores
@@ -39,7 +41,7 @@ public class FunctionStatsNode implements Comparable<FunctionStatsNode> {
       FormulaToken child = children[i];
       FunctionArgumentNode arg = new FunctionArgumentNode(i);
       arg.add(child);//map.put(child.toSimpleString(), new FunctionStatsNode(child));
-      arguments.put(i, arg);
+      arguments_unsorted.put(i, arg);
     }
   }
   
@@ -85,24 +87,26 @@ public class FunctionStatsNode implements Comparable<FunctionStatsNode> {
    * This function works on the assumption that if we need to create a new argument position, it will only
    * ever be one above the current maximum position and never more than one above.
    * 
-   * @param i       Position in {@link #arguments} we're trying to access.
+   * @param i       Position in {@link #arguments_unsorted} we're trying to access.
    * @return        A HashMap referring to that position.
    */
   private FunctionArgumentNode getArgumentAtPosition(int i) {
     FunctionArgumentNode argumentPosition;
     
-    if (i < arguments.size()) {
-      argumentPosition = arguments.get(i);
+    if (i < arguments_unsorted.size()) {
+      argumentPosition = arguments_unsorted.get(i);
     } else {
       argumentPosition = new FunctionArgumentNode(i);
-      arguments.put(i, argumentPosition);
+      arguments_unsorted.put(i, argumentPosition);
     }
     
     return argumentPosition;
   }
   
   public void sortArgumentsByFrequency() {
-    for (FunctionArgumentNode arg : arguments.values())
+    children = arguments_unsorted.values().stream().toArray(FunctionArgumentNode[]::new);
+    
+    for (FunctionArgumentNode arg : arguments_unsorted.values())
       arg.sortArgumentsByFrequency();
   }
   
@@ -136,7 +140,7 @@ public class FunctionStatsNode implements Comparable<FunctionStatsNode> {
     sb.append(function + " (" + frequency + ")");
     sb.append("\n");
     
-    for (int i = 0; i < arguments.size(); ++i) {
+    for (int i = 0; i < arguments_unsorted.size(); ++i) {
       FunctionArgumentNode argument = getArgumentAtPosition(i);
       tabs(sb, depth+1);
       sb.append("Argument #" + (i+1));

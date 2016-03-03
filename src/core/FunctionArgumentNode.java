@@ -19,7 +19,7 @@ public class FunctionArgumentNode {
   private int position;
   
   @Expose
-  private int positionFrequency = 0;  //TODO: The way this freq differs from FunctionStatsNode is very slight
+  private int frequency = 0;  //TODO: The way this freq differs from FunctionStatsNode is very slight
                                       //      and could probably eventually cause a bug. (FSN increments first
                                       //      in constructor because it adds all children there. This doesn't add
                                       //      anything in constructor, only in `add` and `get`
@@ -27,7 +27,7 @@ public class FunctionArgumentNode {
   private Map<String, FunctionStatsNode> possibleArguments_unsorted = new HashMap<String, FunctionStatsNode>();
   
   @Expose
-  private LinkedHashMap<String, FunctionStatsNode> possibleArguments = null;  //because it preserves insertion order
+  private FunctionStatsNode[] children = null;  //because it preserves insertion order
 
   public FunctionArgumentNode(int pos) {
     this.position = pos;
@@ -55,7 +55,7 @@ public class FunctionArgumentNode {
  
   
   public int increment() {
-    return ++positionFrequency;
+    return ++frequency;
   }
 
   public ArrayList<FunctionStatsNode> getPossibilities() {
@@ -63,14 +63,16 @@ public class FunctionArgumentNode {
   }
   
   public void sortArgumentsByFrequency() {
-    ArrayList<FunctionStatsNode> sort = new ArrayList<FunctionStatsNode>(possibleArguments_unsorted.values());
-    Collections.sort(sort);
+    //ArrayList<FunctionStatsNode> sort = new ArrayList<FunctionStatsNode>(possibleArguments_unsorted.values());
+    //Collections.sort(sort);
 
-    possibleArguments = new LinkedHashMap<String, FunctionStatsNode>();    
-    for (FunctionStatsNode arg : sort) {
-      String key = arg.getFunction();     
-      possibleArguments.put(key, arg);
+    children = possibleArguments_unsorted.values().stream().toArray(FunctionStatsNode[]::new); //new FunctionStatsNode[sort.size()]; 
+    for (FunctionStatsNode node : children)
+      node.sortArgumentsByFrequency();
+    /*for (int i = 0; i < sort.size(); ++i) {
+      FunctionStatsNode arg = sort.get(i);
+      possibleArguments[i] = arg;
       arg.sortArgumentsByFrequency();
-    }
+    }*/
   }
 }

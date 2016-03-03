@@ -65,7 +65,7 @@ public class SUMTree {
     builder.setPrettyPrinting().serializeNulls().excludeFieldsWithoutExposeAnnotation();
     Gson gson = builder.create();
     
-    BufferedWriter write = new BufferedWriter(new FileWriter("testJson.txt"));
+    BufferedWriter write = new BufferedWriter(new FileWriter("./src/scripts/viz/sumtree.json"));
     write.write(gson.toJson(sum));
     System.out.println(gson.toJson(sum));
     write.close();
