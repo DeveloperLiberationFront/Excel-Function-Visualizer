@@ -18,6 +18,9 @@ public class FunctionStatsNode implements Comparable<FunctionStatsNode> {
   @Expose
   private FunctionArgumentNode[] children = null;
   
+  @Expose
+  private FunctionExample example = null;
+  
   /**
    * Represents a certain type of function or primitive type that can appear in a formula. Stores
    * the number of times that this function has been observed here, and it records every type of argument

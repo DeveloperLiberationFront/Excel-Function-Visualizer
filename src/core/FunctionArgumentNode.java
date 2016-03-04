@@ -26,7 +26,7 @@ public class FunctionArgumentNode {
   
   @Expose
   private FunctionStatsNode[] children = null;  //because it preserves insertion order
-
+  
   public FunctionArgumentNode(int pos) {
     this.position = pos;
   }
