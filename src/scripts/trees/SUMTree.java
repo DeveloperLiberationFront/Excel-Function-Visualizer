@@ -8,8 +8,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.apache.poi.ss.formula.FormulaParsingWorkbook;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -17,7 +15,6 @@ import core.FormulaToken;
 import core.FunctionStatsNode;
 import core.Parser;
 import utils.DBUtils;
-import utils.POIUtils;
 
 public class SUMTree {
   public static void main(String[] args) throws SQLException, IOException {

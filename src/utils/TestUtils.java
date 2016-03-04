@@ -77,10 +77,10 @@ public class TestUtils {
 
     }
 
-//    System.out.println(numOfTests + " tests successful!");
-//    System.out.println(numOfParse + " formulas with errors!");
-//    System.out.println(numOfEmpty + " formulas empty/with bad quotes!");
-//    System.out.println();
+    System.out.println(numOfTests + " tests successful!");
+    System.out.println(numOfParse + " formulas with errors!");
+    System.out.println(numOfEmpty + " formulas empty/with bad quotes!");
+    System.out.println();
   }
 
   /**
