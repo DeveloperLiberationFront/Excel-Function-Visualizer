@@ -2,6 +2,8 @@
  * Makes the tree.
  * https://bl.ocks.org/mbostock/4339184
  * https://bl.ocks.org/mbostock/4339083
+ * http://bl.ocks.org/robschmuecker/6afc2ecb05b191359862
+ * http://bl.ocks.org/mbostock/3680999
  */
 
 var margin = {
@@ -10,9 +12,11 @@ var margin = {
     left: 100,
     right: 100
   },
-  height = 1000 - margin.left - margin.right,
-  width = 5000 - margin.top - margin.bottom,
-  duration = 500;
+  height = window.innerHeight - margin.top - margin.bottom - 20,
+  width = window.innerWidth - margin.left - margin.right - 20,
+  duration = 500
+  square_side = 20,
+  square_side_half = square_side / 2;
 
 var scale; //To be determined when when tree chosen.
 
@@ -24,10 +28,19 @@ var tree = d3.layout.tree()
 
 var svg = d3.select("body")
   .append("svg")
-  .attr("width", width + margin.left + margin.right)
-  .attr("height", height + margin.top + margin.bottom)
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
   .append("g")
-  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    .call(d3.behavior.zoom()
+      .scaleExtent([-10, 8])
+      .on("zoom", zoom))
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+  .append("g")
+
+function zoom() {
+    svg.attr("transform", "translate(" + d3.event.translate
+      + ")scale(" + d3.event.scale + ")");
+}
 
 var lines = d3.svg.line()
   .x(function(d) {
@@ -70,7 +83,6 @@ d3.select(self.frameElement)
   .style("height", height + "px");
 
 var i = 0;
-
 function update(src) {
   var nodes = tree.nodes(root),
       links = tree.links(nodes);
@@ -118,24 +130,27 @@ function enterNode(node, src) {
     })
     .on("click", click);
 
-  if (areArguments(src)) {
-    enterCircle(nodeEnter, src);
-  } else {
-    enterRect(nodeEnter, src);
-  }
+  var circles = nodeEnter.filter(function(d) {
+    return d.depth % 2 == 0;
+  }), rects = nodeEnter.filter(function(d) {
+    return d.depth % 2 != 0;
+  })
+
+  enterCircle(circles, src);
+  enterRect(rects, src);
 }
-function enterCircle(nodeEnter, src) {
-  nodeEnter.append("circle")
+function enterCircle(circles, src) {
+  circles.append("circle")
     .attr("r", 1e-6)
-    .transition().duration(duration)
+    /*.transition().duration(duration)
     .attr("r", function(d) {
       return scale(d.frequency);
-    })
+    })*/
     .style("fill", function(d) {
       return d._children ? "#4C7B61" : "white";
     });
 
-  nodeEnter.append("text")
+  circles.append("text")
     .attr("dx", function(d) {
       return d.children || d._children ? -8 : 8;
     })
@@ -146,22 +161,25 @@ function enterCircle(nodeEnter, src) {
       return d.function;
     })
 }
-function enterRect(nodeEnter, src) {
-  nodeEnter.append("rect")
-    .attr("width", 20)
+function enterRect(rects, src) {
+  rects.append("rect")
+    /*.attr("width", 20)
     .attr("height", 20)
     .attr("x", -10)
-    .attr("y", -10)
+    .attr("y", -10)*/
     .style("fill", function(d) {
       return d._children ? "#627884" : "white";
     });
 
-  nodeEnter.append("text")
+  rects.append("text")
     .text(function(d) {
       return d.position;
-    });
+    })
+    .attr("dx", function(d) {
+      return d.position > 9 ? -7 : -3;
+    })
+    .attr("dy", 5);
 }
-
 function updateNode(node, src) {
   var nodeUpdate = node.transition()
     .duration(duration)
@@ -169,16 +187,6 @@ function updateNode(node, src) {
       return "translate(" + d.y + "," + d.x + ")";
     });
 
-  if (areArguments(src)) {
-    updateCircle(nodeUpdate, src);
-  } else {
-    updateRect(nodeUpdate, src);
-  }
-
-  nodeUpdate.select("text")
-    .style("fill-opacity", 1);
-}
-function updateCircle(nodeUpdate, src) {
   nodeUpdate.select("circle")
     .attr("r", function(d) {
       return scale(d.frequency);
@@ -186,50 +194,40 @@ function updateCircle(nodeUpdate, src) {
     .style("fill", function(d) {
       return d._children ? "rgb(32, 114, 68)" : "white";
     });
-}
-function updateRect(nodeUpdate, src) {
+
   nodeUpdate.select("rect")
-    .attr("width", 20)
-    .attr("height", 20)
-    .attr("x", -10)
-    .attr("y", -10)
+    .attr("width", square_side)
+    .attr("height", square_side)
+    .attr("x", -square_side_half)
+    .attr("y", -square_side_half)
     .style("fill", function(d) {
       return d._children ? "#627884" : "white";
     });
-}
 
+  nodeUpdate.select("text")
+    .style("fill-opacity", 1);
+}
 function exitNode(node, src) {
   var nodeExit = node.exit().transition()
     .duration(duration)
     .attr("transform", function(d) {
-      return "translate(" + src.y + "," + src.x + ")";
+      if (d.depth % 2 == 0)
+        return "translate(" + src.y + "," + src.x + ")";
+      else
+        return "translate(" + (src.y + square_side_half)
+                + "," + (src.x + square_side_half) + ")";
     })
     .remove()
 
-  var i = 0;
-  console.log(nodeExit);
-  nodeExit.forEach(function(d) {
-    ++i;
-  });
-  console.log("HEY " + i);
+  nodeExit.select("circle")
+    .attr("r", 1e-6);
 
-  if (areArguments(src)) {
-    exitCircle(nodeExit, src);
-  } else {
-    exitRect(nodeExit, src);
-  }
+  nodeExit.select("rect")
+    .attr("width", 1e-6)
+    .attr("height", 1e-6);
 
   nodeExit.select("text")
     .attr("fill-opacity", 1e-6);
-}
-function exitCircle(nodeExit) {
-  nodeExit.select("circle")
-    .attr("r", 1e-6)
-}
-function exitRect(nodeExit) {
-  nodeExit.select("rect")
-    .attr("width", 1e-6)
-    .attr("height", 1e-6)
 }
 
 function enterLink(link, src) {
