@@ -16,37 +16,34 @@ var margin = {
   width = window.innerWidth - margin.left - margin.right - 20,
   duration = 500,
   square_side = 20,
-  square_side_half = square_side / 2;
+  square_side_half = square_side / 2,
+
+  view_start_x = margin.left,
+  view_start_y = height / 2 + margin.top;
 
 var scale; //To be determined when when tree chosen.
 
 var tree = d3.layout.tree()
   //.size([height, width])
   .nodeSize([square_side, square_side])
-  //.separation(function(d) { return 5; })
-  .sort(function(a, b) {
-    return b.frequency - a.frequency;
-  });
+  .sort(function(a, b) { return b.frequency - a.frequency; });
+
+var zoomer = d3.behavior.zoom()
+  .scaleExtent([.5, 8])
+  .on("zoom", function() {
+    svg.attr("transform", "translate(" + d3.event.translate + ")scale("
+      + d3.event.scale + ")")
+  })
 
 var svg = d3.select("body")
   .append("svg")
   .attr("width", width + margin.left + margin.right)
   .attr("height", height + margin.top + margin.bottom)
-  //  .append("rect")
-  //    .attr("width", "100%")
-  //    .attr("height", "100%")
-  //    .attr("fill", "lightgray")
   .append("g")
-  .call(d3.behavior.zoom()
-    .scaleExtent([.5, 8])
-    .on("zoom", zoom))
+  .call(zoomer)
   .on("dblclick.zoom", null)
-  .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+  .attr("transform", "translate(" + view_start_x + "," + view_start_y + ")")
   .append("g");
-
-function zoom() {
-  svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
-}
 
 var lines = d3.svg.line()
   .x(function(d) { return d.ly; })
@@ -57,13 +54,13 @@ d3.text('examples.php?id=1', function(error, data) {
   console.log(data);
 })
 
-var src = "sumtree.json"; //If python server started in tree folder
+var src ="iftree.json"; //If python server started in tree folder
 var root;
 d3.json(src, function(error, json) {
   if (error) throw error;
 
   root = json;
-  root.x0 = height / 2;
+  root.x0 = 0;
   root.y0 = 0;
 
   scale = d3.scale.log()
@@ -98,18 +95,14 @@ function update(src) {
   nodes.forEach(function(d) { d.y = d.depth * 100; })
 
   var node = svg.selectAll("g")
-    .data(nodes, function(d) {
-      return d.id || (d.id = ++i);
-    });
+    .data(nodes, function(d) { return d.id || (d.id = ++i); });
 
   enterNode(node, src);
   updateNode(node, src);
   exitNode(node, src);
 
   var link = svg.selectAll("path.link")
-    .data(links, function(d) {
-      return d.target.id;
-    });
+    .data(links, function(d) { return d.target.id; });
 
   enterLink(link, src);
   updateLink(link, src);
@@ -133,12 +126,8 @@ function enterNode(node, src) {
     })
     .on("click", click);
 
-  var circles = nodeEnter.filter(function(d) {
-      return d.depth % 2 == 0;
-    }),
-    rects = nodeEnter.filter(function(d) {
-      return d.depth % 2 != 0;
-    })
+  var circles = nodeEnter.filter(function(d) { return d.depth % 2 == 0; }),
+    rects = nodeEnter.filter(function(d) { return d.depth % 2 != 0; })
 
   enterCircle(circles, src);
   enterRect(rects, src);
@@ -147,43 +136,28 @@ function enterNode(node, src) {
 function enterCircle(circles, src) {
   circles.append("circle")
     .attr("r", 1e-6)
-    /*.transition().duration(duration)
-    .attr("r", function(d) {
-      return scale(d.frequency);
-    })*/
-    .style("fill", function(d) {
-      return d._children ? "#4C7B61" : "white";
-    });
+    .style("fill", function(d) { return d._children ? "#4C7B61" : "white"; });
 
   circles.append("text")
-    .attr("dx", function(d) {
-      return d.children || d._children ? -15 : 10;
-    })
+    .attr("dx", function(d) { return d.children || d._children ? -15 : 10; })
     .attr("dy", 3)
     .attr("text-anchor", function(d) {
       return d.children || d._children ? "end" : "start";
-    }).text(function(d) {
-      return d.function;
-    })
+    }).text(function(d) { return d.function; })
 }
 
 function enterRect(rects, src) {
+  //Starts rectangle infinitesimally small, so updateNode brings it to size.
   rects.append("rect")
     .attr("width", 1e-6)
     .attr("height", 1e-6)
     .attr("x", -square_side_half)
     .attr("y", -square_side_half)
-    .style("fill", function(d) {
-      return d._children ? "#627884" : "white";
-    });
+    .style("fill", function(d) { return d._children ? "#627884" : "white"; });
 
   rects.append("text")
-    .text(function(d) {
-      return d.position;
-    })
-    .attr("dx", function(d) {
-      return d.position > 9 ? -7 : -3;
-    })
+    .text(function(d) { return d.position; })
+    .attr("dx", function(d) { return d.position > 9 ? -7 : -3; })
     .attr("dy", 5);
 }
 
@@ -195,9 +169,7 @@ function updateNode(node, src) {
     });
 
   nodeUpdate.select("circle")
-    .attr("r", function(d) {
-      return scale(d.frequency);
-    })
+    .attr("r", function(d) { return scale(d.frequency); })
     .style("fill", function(d) {
       return d._children ? "rgb(32, 114, 68)" : "white";
     });
@@ -205,11 +177,7 @@ function updateNode(node, src) {
   nodeUpdate.select("rect")
     .attr("width", square_side)
     .attr("height", square_side)
-    .attr("x", -square_side_half)
-    .attr("y", -square_side_half)
-    .style("fill", function(d) {
-      return d._children ? "#627884" : "white";
-    });
+    .style("fill", function(d) { return d._children ? "#627884" : "white"; });
 
   nodeUpdate.select("text")
     .style("fill-opacity", 1);
@@ -219,11 +187,10 @@ function exitNode(node, src) {
   var nodeExit = node.exit().transition()
     .duration(duration)
     .attr("transform", function(d) {
-      if (d.depth % 2 == 0)
-        return "translate(" + src.y + "," + src.x + ")";
-      else
-        return "translate(" + (src.y + square_side_half) + "," + (src.x + square_side_half) + ")";
-    })
+      var functionNode = d.depth % 2 == 0,
+        y = src.y + (functionNode ? 0 : square_side_half),
+        x = src.x + (functionNode ? 0 : square_side_half);
+      return "translate(" + y + "," + x + ")";    })
     .remove()
 
   nodeExit.select("circle")
@@ -257,9 +224,7 @@ function enterLink(link, src) {
 function updateLink(link, src) {
   link.transition()
     .duration(duration)
-    .attr("d", function(d) {
-      return getLine(d);
-    });
+    .attr("d", function(d) { return getLine(d); });
 }
 
 function exitLink(link, src) {
@@ -312,9 +277,6 @@ function getDeepestLevel(src) {
       deepest = deepLevel > deepest ? deepLevel : deepest;
     })
   }
-  return deepest;
-}
 
-function areArguments(d) {
-  return d.depth % 2 == 0 ? false : true;
+  return deepest;
 }
