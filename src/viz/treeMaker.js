@@ -26,7 +26,13 @@ var scale; //To be determined when when tree chosen.
 var tree = d3.layout.tree()
   //.size([height, width])
   .nodeSize([square_side, square_side])
-  .sort(function(a, b) { return b.frequency - a.frequency; });
+  .sort(function(a, b) {
+    var order = b.frequency - a.frequency;
+    if (order == 0)
+      if (a.function) order = a.function.localeCompare(b.function);
+      else order = a.position - b.position;
+    return order;
+  });
 
 var zoomer = d3.behavior.zoom()
   .scaleExtent([.5, 8])
@@ -44,6 +50,11 @@ var svg = d3.select("body")
   .on("dblclick.zoom", null)
   .attr("transform", "translate(" + view_start_x + "," + view_start_y + ")")
   .append("g");
+
+var div = d3.select("body")
+  .append("svg")
+  .attr("class", "tooltip")
+  .style("display", "none");
 
 var lines = d3.svg.line()
   .x(function(d) { return d.ly; })
@@ -136,7 +147,9 @@ function enterNode(node, src) {
 function enterCircle(circles, src) {
   circles.append("circle")
     .attr("r", 1e-6)
-    .style("fill", function(d) { return d._children ? "#4C7B61" : "white"; });
+    .style("fill", function(d) { return d._children ? "#4C7B61" : "white"; })
+    .on("mouseover", mouseover)
+    .on("mouseleave", mouseleave);
 
   circles.append("text")
     .attr("dx", function(d) { return d.children || d._children ? -15 : 10; })
@@ -144,6 +157,18 @@ function enterCircle(circles, src) {
     .attr("text-anchor", function(d) {
       return d.children || d._children ? "end" : "start";
     }).text(function(d) { return d.function; })
+}
+
+function mouseover(d) {
+  console.log("show! " + d.x0 + " " + d.y0)//d3.event.pageX + " " + d3.event.pageY);
+  div.text("Test!")
+    .style("left", d.x + "px")
+    .style("top", d.y + "px")
+    .style("display", "inline");
+}
+
+function mouseleave(d) {
+  div.style("display", "none");
 }
 
 function enterRect(rects, src) {

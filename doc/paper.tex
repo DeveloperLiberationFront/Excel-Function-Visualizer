@@ -1,0 +1,224 @@
+
+%% bare_conf.tex
+%% V1.4b
+%% 2015/08/26
+%% by Michael Shell
+%% See:
+%% http://www.michaelshell.org/
+%% for current contact information.
+%%
+%% This is a skeleton file demonstrating the use of IEEEtran.cls
+%% (requires IEEEtran.cls version 1.8b or later) with an IEEE
+%% conference paper.
+%%
+%% Support sites:
+%% http://www.michaelshell.org/tex/ieeetran/
+%% http://www.ctan.org/pkg/ieeetran
+%% and
+%% http://www.ieee.org/
+
+%%*************************************************************************
+%% Legal Notice:
+%% This code is offered as-is without any warranty either expressed or
+%% implied; without even the implied warranty of MERCHANTABILITY or
+%% FITNESS FOR A PARTICULAR PURPOSE! 
+%% User assumes all risk.
+%% In no event shall the IEEE or any contributor to this code be liable for
+%% any damages or losses, including, but not limited to, incidental,
+%% consequential, or any other damages, resulting from the use or misuse
+%% of any information contained here.
+%%
+%% All comments are the opinions of their respective authors and are not
+%% necessarily endorsed by the IEEE.
+%%
+%% This work is distributed under the LaTeX Project Public License (LPPL)
+%% ( http://www.latex-project.org/ ) version 1.3, and may be freely used,
+%% distributed and modified. A copy of the LPPL, version 1.3, is included
+%% in the base LaTeX documentation of all distributions of LaTeX released
+%% 2003/12/01 or later.
+%% Retain all contribution notices and credits.
+%% ** Modified files should be clearly indicated as such, including  **
+%% ** renaming them and changing author support contact information. **
+%%*************************************************************************
+
+
+% *** Authors should verify (and, if needed, correct) their LaTeX system  ***
+% *** with the testflow diagnostic prior to trusting their LaTeX platform ***
+% *** with production work. The IEEE's font choices and paper sizes can   ***
+% *** trigger bugs that do not appear when using other class files.       ***                          ***
+% The testflow support page is at:
+% http://www.michaelshell.org/tex/testflow/
+
+
+
+\documentclass[conference]{IEEEtran}
+
+
+% *** CITATION PACKAGES ***
+%
+%\usepackage{cite}
+% cite.sty was written by Donald Arseneau
+% V1.6 and later of IEEEtran pre-defines the format of the cite.sty package
+% \cite{} output to follow that of the IEEE. Loading the cite package will
+% result in citation numbers being automatically sorted and properly
+% "compressed/ranged". e.g., [1], [9], [2], [7], [5], [6] without using
+% cite.sty will become [1], [2], [5]--[7], [9] using cite.sty. cite.sty's
+% \cite will automatically add leading space, if needed. Use cite.sty's
+% noadjust option (cite.sty V3.8 and later) if you want to turn this off
+% such as if a citation ever needs to be enclosed in parenthesis.
+% cite.sty is already installed on most LaTeX systems. Be sure and use
+% version 5.0 (2009-03-20) and later if using hyperref.sty.
+% The latest version can be obtained at:
+% http://www.ctan.org/pkg/cite
+% The documentation is contained in the cite.sty file itself.
+
+
+% *** GRAPHICS RELATED PACKAGES ***
+%
+\ifCLASSINFOpdf
+  % \usepackage[pdftex]{graphicx}
+  % declare the path(s) where your graphic files are
+  % \graphicspath{{../pdf/}{../jpeg/}}
+  % and their extensions so you won't have to specify these with
+  % every instance of \includegraphics
+  % \DeclareGraphicsExtensions{.pdf,.jpeg,.png}
+\else
+  % or other class option (dvipsone, dvipdf, if not using dvips). graphicx
+  % will default to the driver specified in the system graphics.cfg if no
+  % driver is specified.
+  % \usepackage[dvips]{graphicx}
+  % declare the path(s) where your graphic files are
+  % \graphicspath{{../eps/}}
+  % and their extensions so you won't have to specify these with
+  % every instance of \includegraphics
+  % \DeclareGraphicsExtensions{.eps}
+\fi
+
+% correct bad hyphenation here
+\hyphenation{op-tical net-works semi-conduc-tor}
+
+
+\begin{document}
+\title{The Protracted and Generally Unpleasant Death\\ of Justin A. Middleton\\ \large A Methodological Obituary}
+
+
+% author names and affiliations
+% use a multiple column layout for up to three different
+% affiliations
+\author{\IEEEauthorblockN{Justin A. Middleton (posthumous)}
+\IEEEauthorblockA{North Carolina State University\\
+Raleigh, North Carolina\\
+(Please address all flowers and review notes to cemetery lot 126, grave 2)}}
+
+
+% use for special paper notices
+%\IEEEspecialpapernotice{(Invited Paper)}
+
+
+
+
+% make the title area
+\maketitle
+
+% As a general rule, do not put math, special symbols or citations
+% in the abstract
+\begin{abstract}
+Finding information on how people use built-in Excel functions individually is easy; how they're used together is not. With no analysis of functions in conjunction, a dearth on information about how end users construct more sophisticated programs within spreadsheets restricts current research. I've developed a visualization tool, informed by existing spreadsheet corpora, which offers insight into the patterns of how formulas comprise several functions in practice. Even in its initial state, the tool illustrates how some people think that have 27 arguments in a single SUM function is, for whatever reason, a good idea.
+\end{abstract}
+
+% no keywords
+
+
+
+
+% For peer review papers, you can put extra information on the cover
+% page as needed:
+% \ifCLASSOPTIONpeerreview
+% \begin{center} \bfseries EDICS Category: 3-BBND \end{center}
+% \fi
+%
+% For peerreview papers, this IEEEtran command inserts a page break and
+% creates the second title. It will be ignored for other modes.
+\IEEEpeerreviewmaketitle
+
+
+
+\section{Introduction}
+% no \IEEEPARstart
+The world of business owes a considerable debt to spreadsheets, the table-based interface which enables organization and manipulation of massive amounts of data. Their allure is in their versatility: while the end user does not need sophisticated programming skills to fill out a spreadsheet, the expert user has at their disposal numerous built-in operations, or functions, to expedite their work. As such, it should be of little surprise when Scaffidi and colleagues estimated that by 2012, over 50 million workers could be using them, including the 25 million who would be writing programs out of the functions included (citation and such).\par
+
+Considering this ubiquity, it's crucial to get spreadsheets right. Something, something. \par
+
+Fortunately, the vanguards of spreadsheet research have assembled, organized, and released a number of spreadsheet corpora to inform work on how people actually use these tools in different contexts. Collections like EUSES[yada], FUSE[yada], and the Enron corpus[yada] have already enabled fruitful work across the field: [WORK PENDING MORE RESEARCH]. A number of these studies focus on discovering which built-in functions are the most common (enabling something). \par
+
+This paper presents a tool, informed by such variegated sources, that visualizes not how people employ individual Excel functions but how they combine to make more sophisticated shreadsheet formulas. 
+
+
+\section{Related Work}
+Spreadsheets, being a core component of business that they are, have prompted the development of many tools to evaluate them and their many qualities. [RESEARCH ON NON-VISUAL ANALYSIS TOOLS] \par
+Furthermore, this tool comes from a line of spreadsheet visualization tools before it, each with a different focus. For example, Breviz, developed by Hermans and colleagues, uses visualization to illustrate workbook dataflow to address the need for a clearly communicable representation of spreadsheets as they move from person to person. \par
+Other studies focus on API and built-in function use outside the domain of spreadsheets. [BUT FIRST I HAVE TO FIND THEM]  
+
+\section{Approach}
+In visualizing the spreadsheet data, I aimed to accomplish the following goals:
+\begin{itemize}
+	\item The data should come from a varied enough sources to avoid having too narrow or specialized a scope.
+	\item The tool should accommodate dataset sizes from the single spreadsheet to corpora of thousands.
+	\item The tool should visualize as much data as possible in order to capture (and clearly indicate) both the most typical and the most anomalous cases...
+	\item ...while being interactive enough to let the user choose which cases they see, as to not sacrifice readability.
+	\item The tool should facilitate quantitative understanding by showing which functions and which combinations are used most frequently...
+	\item ...and it should facilitate qualitative understanding by incorporating actual examples into the visualization from the datasets it studies, and it should help the user find these examples in their original context.
+	\item The tool, by the same method as above, should thus guide a user from the abstract patterns of function usage into the specific and applied techniques of functions in their natural habitat.
+\end{itemize} \par
+Likewise, there were a few goals that I was specifically not trying to accomplish with this:
+\begin{itemize}
+	\item The tool should not be, by itself, responsible for generating functions from the data it collects. It is purely analytical.
+	%TODO: I do have an idea which could actually do the below, but, eh, it would take
+	%TODO: a fair amount of time to implement.
+	\item The tool will not visualize isolated Excel functions, linking the specific instance to the abstract pattern. It works only the other way.
+	\item Likewise, the tool will make no effort to explain what any given set of functions in combination actually does; the function of any given example is up to the user to infer.
+\end{itemize}
+
+\section{Case Study}
+The patient exhibits strong cadaverous tendencies.
+
+\section{Conclusion}
+This paper is the end-all, be-all. There is no future work simply because the concept of future work cannot exist with reference to this paper. The work is done. I perfected it. Go home, kiss your love, kick back, call it a day. This is not just a good thing, but the best thing. Your job here is done, and I'm the one who did it. 
+
+
+% conference papers do not normally have an appendix
+
+
+% use section* for acknowledgment
+\section*{Acknowledgment}
+This material is based upon work supported in whole or in part with funding from the Laboratory for Analytic Sciences (LAS). Any opinions, findings, conclusions, or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the LAS and/or any agency or entity of the United States Government.
+
+% references section
+
+% can use a bibliography generated by BibTeX as a .bbl file
+% BibTeX documentation can be easily obtained at:
+% http://mirror.ctan.org/biblio/bibtex/contrib/doc/
+% The IEEEtran BibTeX style support page is at:
+% http://www.michaelshell.org/tex/ieeetran/bibtex/
+%\bibliographystyle{IEEEtran}
+% argument is your BibTeX string definitions and bibliography database(s)
+%\bibliography{IEEEabrv,../bib/paper}
+%
+% <OR> manually copy in the resultant .bbl file
+% set second argument of \begin to the number of references
+% (used to reserve space for the reference number labels box)
+\begin{thebibliography}{1}
+
+\bibitem{IEEEhowto:kopka}
+H.~Kopka and P.~W. Daly, \emph{A Guide to \LaTeX}, 3rd~ed.\hskip 1em plus
+  0.5em minus 0.4em\relax Harlow, England: Addison-Wesley, 1999.
+
+\end{thebibliography}
+
+
+
+
+% that's all folks
+\end{document}
+
+

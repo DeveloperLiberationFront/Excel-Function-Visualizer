@@ -1,0 +1,65 @@
+Abstract
+	-Four sentence abstract (https://plg.uwaterloo.ca/~migod/research/beckOOPSLA.html)
+
+Introduction
+	-Establish importance / current situation
+	-Spreadsheets are important
+		-Bugs cost money
+		-
+	-Lots of corpora/spreadsheets available 
+		-ENRON, EUSES, FUSE
+		-Useful for variety of purposes
+		-How are they useful? Provide examples? 
+		-Researchers? Practitioners?
+		-(Code smells?)
+		-Looking for anomalies in function organization spreadsheets
+
+	-We present a tool that...<connects to above>
+		-Helps researchers understand functions better
+		-(connect explicitly to above)
+		-STATEMENT OF CONTRIBUTION
+
+Related Work
+	Spreadsheet analysis tools
+	Spreadsheet visualization
+		Breviz
+	API usage - studies and tools
+
+	[[Sentence to start -- The three related areas to this are yada yada yada
+			    -- each area a paragraph
+			    -- sentence on why it's similar to ours (There are existing approaches to analyzes spreadsheets)
+			    -- Per paper : what they did, what they found
+			    -- 3, 5, 10 most related
+			    -- Final sentence: in contrast to this work, ours... (does something different)
+			    -- Option: how it differs from each paper individually, but could be painful]]
+
+Approach (not methodology)
+	((Get Ubuntu VM with everything preloaded)) [worth no more than a day]
+	What were the design goals? (More than "Visualize the data")
+		-The technique should enable the exploration of formulas across a wide dataset
+		-Scalability/Interactivity
+		-Associate high-level summary (going from pattern to specific)
+		-enable understanding frequent patterns of function use and also find anomalous function use
+		-enable quantitative function usage analysis
+		-qualitatively understand function usage (linking to example)
+		-
+		[[Go back to tasks in introduction]]
+	What is NOT a design goal
+		-Going from specific to pattern
+	What it produces as output and how to interpret it -- what is each node? weights? etc
+							   -- what are affordances? limitations?
+	Analysis steps that are involved -- example: if r1c1 uniqueness done
+					 -- apache poi
+					 -- link to the tool on GitHub
+	Examples -- links to graphs for each corpora (or combined)
+	Limitations/trade-offs (what prevents us from reach design goals):
+		Syntactically invalid functions are lost
+		
+		 
+Case Study -- What I learned about the data
+	-Range number of arguments for functions (SUM has 1 to 27)
+	-How [often] do certain functions use recursion?
+	-Things that seem wrong
+Conclusion/Future work
+	-Enable personality analysis by usage
+Sources
