@@ -23,6 +23,9 @@ var margin = {
 
 var scale; //To be determined when when tree chosen.
 
+/**
+ * Create the tree and define it's general behavior.
+ */
 var tree = d3.layout.tree()
   //.size([height, width])
   .nodeSize([square_side, square_side])
@@ -34,6 +37,9 @@ var tree = d3.layout.tree()
     return order;
   });
 
+/**
+ * Define the zooming behavior for the svg element below this.
+ */
 var zoomer = d3.behavior.zoom()
   .scaleExtent([.5, 8])
   .on("zoom", function() {
@@ -41,6 +47,9 @@ var zoomer = d3.behavior.zoom()
       + d3.event.scale + ")")
   })
 
+/**
+ * Create the svg box in which you will see everything.
+ */
 var svg = d3.select("body")
   .append("svg")
   .attr("width", width + margin.left + margin.right)
@@ -51,20 +60,17 @@ var svg = d3.select("body")
   .attr("transform", "translate(" + view_start_x + "," + view_start_y + ")")
   .append("g");
 
-var div = d3.select("body")
-  .append("svg")
-  .attr("class", "tooltip")
-  .style("display", "none");
-
+/**
+ * Create a line generator, into which you must pass two x,y coordinates.
+ */
 var lines = d3.svg.line()
   .x(function(d) { return d.ly; })
   .y(function(d) { return d.lx; })
   .interpolate("linear");
 
-d3.text('examples.php?id=1', function(error, data) {
-  console.log(data);
-})
-
+/**
+ * Initialize the tree with only one level down expanded.
+ */
 var src ="iftree.json"; //If python server started in tree folder
 var root;
 d3.json(src, function(error, json) {
@@ -97,13 +103,15 @@ d3.json(src, function(error, json) {
 d3.select(self.frameElement)
   .style("height", height + "px");
 
+/**
+ * Update the tree after a clicking event.
+ */
 var i = 0;
-
 function update(src) {
   var nodes = tree.nodes(root),
     links = tree.links(nodes);
 
-  nodes.forEach(function(d) { d.y = d.depth * 100; })
+  nodes.forEach(function(d) { d.y = d.depth * 150; })
 
   var node = svg.selectAll("g")
     .data(nodes, function(d) { return d.id || (d.id = ++i); });
@@ -125,6 +133,9 @@ function update(src) {
   });
 }
 
+/**
+ * Creates both circular function nodes and rectangular function argument nodes.
+ */
 function enterNode(node, src) {
   var nodeEnter = node.enter()
     .append("g")
@@ -144,11 +155,15 @@ function enterNode(node, src) {
   enterRect(rects, src);
 }
 
+/**
+ * Creates the new function nodes.
+ */
 function enterCircle(circles, src) {
   circles.append("circle")
     .attr("r", 1e-6)
     .style("fill", function(d) { return d._children ? "#4C7B61" : "white"; })
     .on("mouseover", mouseover)
+    .on("mousemove", mousemove)
     .on("mouseleave", mouseleave);
 
   circles.append("text")
@@ -159,18 +174,70 @@ function enterCircle(circles, src) {
     }).text(function(d) { return d.function; })
 }
 
+/**
+ * The tooltip that will appear over a moused-over function node.
+ * Has function name, frequency, boilerplate, actual example.
+ */
+var tip = d3.select("body")
+  .append("svg.rect")
+  .attr("class", "tooltip")
+  .attr("color", "gray")
+  .style("display", "none");
+
+/**
+ * Makes the tooltip visible over current mouse position over node. Sets text.
+ */
+var tip_x = 5,
+    tip_y = -50;
 function mouseover(d) {
-  console.log("show! " + d.x0 + " " + d.y0)//d3.event.pageX + " " + d3.event.pageY);
-  div.text("Test!")
-    .style("left", d.x + "px")
-    .style("top", d.y + "px")
+  var i = "<i>", ii = "</i>",
+      br = "<br/>",
+      func = d.function + br,
+      freq = d.frequency + br,
+      full = i + "unavailable" + ii + br,
+      ex = i + "unavailable" + ii,
+
+      id = d.example;
+
+  d3.json("examples.php?id=" + id, function(error, data) {
+    if (error) throw error;
+
+    ex = i + data["formula"] + ii + br;
+    tip.html(func + freq + full + ex)
+
+    //TODO: Changing widths of the tooltip?
+    /*var width = $('.tooltip').width();
+    console.log(width);
+    if (width > 200) {
+      tip.style("width", width + "px");
+    }*/
+  })
+
+  tip.html(func + freq + full + ex)
+    .style("left", (d3.event.pageX + tip_x) + "px")
+    .style("top", (d3.event.pageY + tip_y) + "px")
     .style("display", "inline");
 }
 
-function mouseleave(d) {
-  div.style("display", "none");
+/**
+ * Moves the tooltip in relation to mouse pointer.
+ */
+function mousemove(d) {
+  return tip.style("left", (d3.event.pageX + tip_x) + "px")
+    .style("top", (d3.event.pageY + tip_y) + "px");
 }
 
+/**
+ * Dismisses the tooltip once the mouse leaves the node.
+ */
+function mouseleave(d) {
+  tip.style("display", "none");
+}
+
+/**
+ * Create the rectangles which represent the argument
+ * positions in a given function.
+ */
 function enterRect(rects, src) {
   //Starts rectangle infinitesimally small, so updateNode brings it to size.
   rects.append("rect")
@@ -186,6 +253,9 @@ function enterRect(rects, src) {
     .attr("dy", 5);
 }
 
+/**
+ * Transitions the new nodes to their intended position and shape.
+ */
 function updateNode(node, src) {
   var nodeUpdate = node.transition()
     .duration(duration)
@@ -208,6 +278,9 @@ function updateNode(node, src) {
     .style("fill-opacity", 1);
 }
 
+/**
+ * Dismisses the nodes that will no longer be visible.
+ */
 function exitNode(node, src) {
   var nodeExit = node.exit().transition()
     .duration(duration)
@@ -229,6 +302,9 @@ function exitNode(node, src) {
     .attr("fill-opacity", 1e-6);
 }
 
+/**
+ * Creates links to new nodes.
+ */
 function enterLink(link, src) {
   link.enter()
     .insert("path", "g")
@@ -246,12 +322,18 @@ function enterLink(link, src) {
     });
 }
 
+/**
+ * Transitions the new lines to their intended position.
+ */
 function updateLink(link, src) {
   link.transition()
     .duration(duration)
     .attr("d", function(d) { return getLine(d); });
 }
 
+/**
+ * Dismisses the links that are no longer necessary.
+ */
 function exitLink(link, src) {
   link.exit().transition()
     .duration(duration)
@@ -269,6 +351,9 @@ function exitLink(link, src) {
     .remove();
 }
 
+/**
+ * Generates a new line between two points.
+ */
 function getLine(d) {
   var coords = [{
     lx: d.source.x,
@@ -281,6 +366,9 @@ function getLine(d) {
   return lines(coords);
 }
 
+/**
+ * Expands or dismisses children nodes when a given node is clicked.
+ */
 function click(d) {
   if (d.children) {
     d._children = d.children;
@@ -293,6 +381,7 @@ function click(d) {
   update(d);
 }
 
+/**
 function getDeepestLevel(src) {
   var deepest = src.depth;
 
@@ -305,3 +394,4 @@ function getDeepestLevel(src) {
 
   return deepest;
 }
+**I don't think this is necessary anymore.*/

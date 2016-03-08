@@ -18,7 +18,7 @@
 
       circle, rect {
         stroke: black;
-        stroke-width: 2px;
+        stroke-width: 0px;
       }
 
       .link {
@@ -30,15 +30,26 @@
 
       .tooltip {
         position: absolute;
-        text-align: right;
-        width: 60px;
-        height: 12px;
-        background: rgb(0, 0, 0);
+        text-align: left;
+        font-size: 11px;
+        padding: 3px;
+        <!--width: 200px;-->
+        height: 48px;
+        border-radius: 5px;
+        background: gray;
+        opacity: .90;
       }
+
+      tspan {
+        x = 0;
+        dy = "1.4em";
+      }
+
     </style>
   </head>
 
   <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.0.min.js"></script>
 
   <body>
   </body>

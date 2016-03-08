@@ -30,6 +30,7 @@ public class SUMTree {
       
       while (rs.next()) {
         ++currentlyAt;
+        int id = rs.getInt(1);
         String formula = rs.getString(2);
         int sheet = rs.getInt(5);
         
@@ -44,9 +45,9 @@ public class SUMTree {
           continue;
         
         if (sum == null)
-          sum = new FunctionStatsNode(tree);
+          sum = new FunctionStatsNode(id, tree);
         else
-          sum.addChildrenOf(tree);
+          sum.addChildrenOf(id, tree);
         
         System.out.println(currentlyAt + " : " + formula);        
       }
@@ -62,7 +63,7 @@ public class SUMTree {
     builder.setPrettyPrinting().serializeNulls().excludeFieldsWithoutExposeAnnotation();
     Gson gson = builder.create();
     
-    BufferedWriter write = new BufferedWriter(new FileWriter("./src/scripts/viz/sumtree.json"));
+    BufferedWriter write = new BufferedWriter(new FileWriter("./src/viz/sumtree.json"));
     write.write(gson.toJson(sum));
     System.out.println(gson.toJson(sum));
     write.close();

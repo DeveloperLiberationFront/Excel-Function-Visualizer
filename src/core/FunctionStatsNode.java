@@ -19,8 +19,10 @@ public class FunctionStatsNode implements Comparable<FunctionStatsNode> {
   private FunctionArgumentNode[] children = null;
   
   @Expose
-  private FunctionExample example = null;
+  private int example;
   
+  private int shortestExampleLen;
+    
   /**
    * Represents a certain type of function or primitive type that can appear in a formula. Stores
    * the number of times that this function has been observed here, and it records every type of argument
@@ -35,7 +37,10 @@ public class FunctionStatsNode implements Comparable<FunctionStatsNode> {
    * 
    * @param token The type of formula token that this node wraps.
    */
-  public FunctionStatsNode(FormulaToken token) {
+  public FunctionStatsNode(int ex, FormulaToken token) {
+    this.example = ex;
+    this.shortestExampleLen = token.toString().length();  //TODO: What if reconstructed length different from original?
+    
     function = token.toSimpleString();
     
     increment();    //Construction entails one use.
@@ -43,7 +48,7 @@ public class FunctionStatsNode implements Comparable<FunctionStatsNode> {
     for (int i = 0; i < children.length; ++i) {
       FormulaToken child = children[i];
       FunctionArgumentNode arg = new FunctionArgumentNode(i);
-      arg.add(child);//map.put(child.toSimpleString(), new FunctionStatsNode(child));
+      arg.add(ex, child);//map.put(child.toSimpleString(), new FunctionStatsNode(child));
       arguments_unsorted.put(i, arg);
     }
   }
@@ -51,17 +56,24 @@ public class FunctionStatsNode implements Comparable<FunctionStatsNode> {
   /**
    * Record the occurrence of whatever type of formula element the parameter `token` is, and then
    * recursively record the occurrences of all of `tokens` children further down in the tree.
+   * @param id 
    * @param token   The type of formula token to record, which should be of the same type as this stats node.
    * 
    * Example: If we have the formula IF(A1<A2, SUM(B1:B10), 0), then we want to say we have observed
    * 1 more instance of a formula which has IF() as its uppermost function, and then record that it has
    * the tokens `<`, SUM(), and 0 (<NUM>) one level below that, and so on.
    */
-  public void addChildrenOf(FormulaToken token) {
+  public void addChildrenOf(int id, FormulaToken token) {    
     if (!this.equals(token))
       throw new UnsupportedOperationException("Trying to pass a FormulaToken which does not "
           + "refer to the same type of token as the FunctionStatsNode: " + token.toSimpleString() 
           + " vs. " + this.function);
+    
+    int otherExampleLen = token.toString().length();
+    if (shortestExampleLen > otherExampleLen) {
+      example = id;
+      shortestExampleLen = otherExampleLen;
+    }
     
     increment();
     
@@ -73,11 +85,11 @@ public class FunctionStatsNode implements Comparable<FunctionStatsNode> {
       if (argumentPosition.contains(child)) {
         
         FunctionStatsNode function = argumentPosition.get(child);
-        function.addChildrenOf(child);
+        function.addChildrenOf(id, child);
         
       } else {
         
-        argumentPosition.add(child);
+        argumentPosition.add(id, child);
         
       }
     }

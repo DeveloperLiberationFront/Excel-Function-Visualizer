@@ -36,6 +36,7 @@ public class AllTrees {
       
       while (rs.next()) {
         ++currentlyAt;
+        int id = rs.getInt(1);
         String formula = rs.getString(2);
         int sheet = rs.getInt(5);
         
@@ -48,9 +49,9 @@ public class AllTrees {
         
         String toplevel = tree.toSimpleString();
         if (!trees.containsKey(toplevel))
-          trees.put(toplevel, new FunctionStatsNode(tree));
+          trees.put(toplevel, new FunctionStatsNode(id ,tree));
         else
-          trees.get(toplevel).addChildrenOf(tree);
+          trees.get(toplevel).addChildrenOf(id, tree);
         
         //System.out.println(currentlyAt + " : " + formula);        
       }

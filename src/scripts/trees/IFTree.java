@@ -47,7 +47,7 @@ public class IFTree {
         if (sum == null)
           sum = new FunctionStatsNode(id, tree);
         else
-          sum.addChildrenOf(tree);
+          sum.addChildrenOf(id, tree);
         
         System.out.println(currentlyAt + " : " + formula);        
       }

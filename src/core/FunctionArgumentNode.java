@@ -31,9 +31,9 @@ public class FunctionArgumentNode {
     this.position = pos;
   }
   
-  public void add(FormulaToken child) {
+  public void add(int ex, FormulaToken child) {
     increment();
-    possibleArguments_unsorted.put(child.toSimpleString(), new FunctionStatsNode(child));
+    possibleArguments_unsorted.put(child.toSimpleString(), new FunctionStatsNode(ex, child));
   }
 
   public boolean contains(FormulaToken child) {
