@@ -49,9 +49,8 @@ public class AllTrees {
         
         String toplevel = tree.toSimpleString();
         if (!trees.containsKey(toplevel))
-          trees.put(toplevel, new FunctionStatsNode(id ,tree));
-        else
-          trees.get(toplevel).addChildrenOf(id, tree);
+          trees.put(toplevel, new FunctionStatsNode(tree.toSimpleString()));
+        trees.get(toplevel).add(id, tree);
         
         //System.out.println(currentlyAt + " : " + formula);        
       }
@@ -68,7 +67,7 @@ public class AllTrees {
     LinkedHashMap<String, FunctionStatsNode> allFuncs = new LinkedHashMap<String, FunctionStatsNode>();
     for (FunctionStatsNode node : sort) {
       allFuncs.put(node.getFunction(), node);
-      node.sortArgumentsByFrequency();
+      node.setChildren();
     }
     
     GsonBuilder builder = new GsonBuilder();

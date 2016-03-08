@@ -12,7 +12,7 @@ import com.google.gson.annotations.Expose;
  * @author dlf
  *
  */
-public class FunctionArgumentNode {
+public class FunctionArgumentNode implements Node {
   @Expose
   private int position;
   
@@ -25,32 +25,26 @@ public class FunctionArgumentNode {
   private Map<String, FunctionStatsNode> possibleArguments_unsorted = new HashMap<String, FunctionStatsNode>();
   
   @Expose
-  private FunctionStatsNode[] children = null;  //because it preserves insertion order
+  private Node[] children = null;  //because it preserves insertion order
   
   public FunctionArgumentNode(int pos) {
     this.position = pos;
   }
   
   public void add(int ex, FormulaToken child) {
+    String func = child.toSimpleString();
     increment();
-    possibleArguments_unsorted.put(child.toSimpleString(), new FunctionStatsNode(ex, child));
-  }
 
-  public boolean contains(FormulaToken child) {
-    String funcName = child.toSimpleString();
-    return possibleArguments_unsorted.containsKey(funcName);
-  }
-
-  public FunctionStatsNode get(FormulaToken child) {
-    String childFunc = child.toSimpleString();
-    if (!possibleArguments_unsorted.containsKey(childFunc)) 
-      throw new UnsupportedOperationException("Tried to retrieve instance of a possible argument "
-          + "that hasn't been observed yet.");
+    FunctionStatsNode statsNode;
+    if (possibleArguments_unsorted.containsKey(func)) {
+      statsNode = possibleArguments_unsorted.get(func);
+    } else {
+      statsNode = new FunctionStatsNode(child.toSimpleString());
+      possibleArguments_unsorted.put(child.toSimpleString(), statsNode);
+    }
     
-    increment();
-    return possibleArguments_unsorted.get(childFunc);
+    statsNode.add(ex, child);
   }
- 
   
   public int increment() {
     return ++frequency;
@@ -60,17 +54,14 @@ public class FunctionArgumentNode {
     return new ArrayList<FunctionStatsNode>(possibleArguments_unsorted.values());
   }
   
-  public void sortArgumentsByFrequency() {
-    //ArrayList<FunctionStatsNode> sort = new ArrayList<FunctionStatsNode>(possibleArguments_unsorted.values());
-    //Collections.sort(sort);
+  public void setChildren() {
+    children = possibleArguments_unsorted.values().stream().toArray(Node[]::new); //new FunctionStatsNode[sort.size()]; 
+    for (Node node : children)
+      node.setChildren();
+  }
 
-    children = possibleArguments_unsorted.values().stream().toArray(FunctionStatsNode[]::new); //new FunctionStatsNode[sort.size()]; 
-    for (FunctionStatsNode node : children)
-      node.sortArgumentsByFrequency();
-    /*for (int i = 0; i < sort.size(); ++i) {
-      FunctionStatsNode arg = sort.get(i);
-      possibleArguments[i] = arg;
-      arg.sortArgumentsByFrequency();
-    }*/
+  @Override
+  public int getFrequency() {
+    return frequency;
   }
 }

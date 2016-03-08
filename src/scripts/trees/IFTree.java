@@ -13,6 +13,7 @@ import com.google.gson.GsonBuilder;
 
 import core.FormulaToken;
 import core.FunctionStatsNode;
+import core.Node;
 import core.Parser;
 import utils.DBUtils;
 
@@ -22,8 +23,10 @@ public class IFTree {
     Connection con = DBUtils.connectToDatabase();
     PreparedStatement ps = con.prepareStatement("SELECT * FROM formulas WHERE formula like 'IF%' and ID > ? LIMIT " + limit + ";");
     
-    FunctionStatsNode sum = null;
+    Node sum = null;
     do {
+      long start = System.currentTimeMillis();
+
       currentlyAt = 0;
       ps.setInt(1, offset);
       ResultSet rs = ps.executeQuery();
@@ -45,19 +48,19 @@ public class IFTree {
           continue;
         
         if (sum == null)
-          sum = new FunctionStatsNode(id, tree);
-        else
-          sum.addChildrenOf(id, tree);
+          sum = new FunctionStatsNode(tree.toSimpleString());
+        sum.add(id, tree);
         
-        //System.out.println(currentlyAt + " : " + formula);        
+        System.out.println(currentlyAt + " : " + formula);        
       }
       
       rs.previous();
       offset = rs.getInt(1);
-      System.out.println("At " + offset + "...");
+      long end = System.currentTimeMillis() - start;
+      System.out.println("At " + offset + "... (" + (end/1000.) + "sec)");      
     } while (limit == currentlyAt);
     
-    sum.sortArgumentsByFrequency();
+    sum.setChildren();
     
     GsonBuilder builder = new GsonBuilder();
     builder.setPrettyPrinting().serializeNulls().excludeFieldsWithoutExposeAnnotation();

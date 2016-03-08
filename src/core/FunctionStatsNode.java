@@ -3,17 +3,22 @@ package core;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 import com.google.gson.annotations.Expose;
 
-public class FunctionStatsNode implements Comparable<FunctionStatsNode> {
+public class FunctionStatsNode implements Node, Comparable<FunctionStatsNode> {
   @Expose
   private String function;
   
   @Expose
   private int frequency = 0;    
   
-  private LinkedHashMap<Integer, FunctionArgumentNode> arguments_unsorted = new LinkedHashMap<Integer, FunctionArgumentNode>();
+  @Expose
+  private Map<Integer, QuantityOfArgumentsNode> specific_quantities 
+    = new LinkedHashMap<Integer, QuantityOfArgumentsNode>();
+  
+  private Map<Integer, FunctionArgumentNode> all_quantities = new LinkedHashMap<Integer, FunctionArgumentNode>();
   
   @Expose
   private FunctionArgumentNode[] children = null;
@@ -21,7 +26,7 @@ public class FunctionStatsNode implements Comparable<FunctionStatsNode> {
   @Expose
   private int example;
   
-  private int shortestExampleLen;
+  private int shortestExampleLen = Integer.MAX_VALUE;
     
   /**
    * Represents a certain type of function or primitive type that can appear in a formula. Stores
@@ -37,33 +42,22 @@ public class FunctionStatsNode implements Comparable<FunctionStatsNode> {
    * 
    * @param token The type of formula token that this node wraps.
    */
-  public FunctionStatsNode(int ex, FormulaToken token) {
-    this.example = ex;
-    this.shortestExampleLen = token.getOrigLen();  //TODO: What if reconstructed length different from original?
-    
-    function = token.toSimpleString();
-    
-    increment();    //Construction entails one use.
-    FormulaToken[] children = token.getChildren();
-    for (int i = 0; i < children.length; ++i) {
-      FormulaToken child = children[i];
-      FunctionArgumentNode arg = new FunctionArgumentNode(i);
-      arg.add(ex, child);//map.put(child.toSimpleString(), new FunctionStatsNode(child));
-      arguments_unsorted.put(i, arg);
-    }
+  public FunctionStatsNode(String func) {    
+    this.function = func;
   }
   
   /**
    * Record the occurrence of whatever type of formula element the parameter `token` is, and then
    * recursively record the occurrences of all of `tokens` children further down in the tree.
-   * @param id 
+   * @param ex 
    * @param token   The type of formula token to record, which should be of the same type as this stats node.
    * 
    * Example: If we have the formula IF(A1<A2, SUM(B1:B10), 0), then we want to say we have observed
    * 1 more instance of a formula which has IF() as its uppermost function, and then record that it has
    * the tokens `<`, SUM(), and 0 (<NUM>) one level below that, and so on.
    */
-  public void addChildrenOf(int id, FormulaToken token) {    
+  @Override
+  public void add(int ex, FormulaToken token) {    
     if (!this.equals(token))
       throw new UnsupportedOperationException("Trying to pass a FormulaToken which does not "
           + "refer to the same type of token as the FunctionStatsNode: " + token.toSimpleString() 
@@ -71,27 +65,20 @@ public class FunctionStatsNode implements Comparable<FunctionStatsNode> {
     
     int otherExampleLen = token.getOrigLen();
     if (shortestExampleLen > otherExampleLen) {
-      example = id;
+      example = ex;
       shortestExampleLen = otherExampleLen;
     }
     
     increment();
-    
     FormulaToken[] children = token.getChildren();
+    
+    QuantityOfArgumentsNode quantityNode = getArgumentQuantityNode(children.length);
+    quantityNode.add(ex, token);
+    
     for (int i = 0; i < children.length; ++i) {
       FormulaToken child = children[i];
       FunctionArgumentNode argumentPosition = getArgumentAtPosition(i);
-      
-      if (argumentPosition.contains(child)) {
-        
-        FunctionStatsNode function = argumentPosition.get(child);
-        function.addChildrenOf(id, child);
-        
-      } else {
-        
-        argumentPosition.add(id, child);
-        
-      }
+      argumentPosition.add(ex, child);
     }
   }
 
@@ -102,33 +89,62 @@ public class FunctionStatsNode implements Comparable<FunctionStatsNode> {
    * This function works on the assumption that if we need to create a new argument position, it will only
    * ever be one above the current maximum position and never more than one above.
    * 
-   * @param i       Position in {@link #arguments_unsorted} we're trying to access.
+   * @param i       Position in {@link #all_quantities} we're trying to access.
    * @return        A HashMap referring to that position.
    */
   private FunctionArgumentNode getArgumentAtPosition(int i) {
     FunctionArgumentNode argumentPosition;
     
-    if (i < arguments_unsorted.size()) {
-      argumentPosition = arguments_unsorted.get(i);
+    if (i < all_quantities.size()) {
+      argumentPosition = all_quantities.get(i);
     } else {
       argumentPosition = new FunctionArgumentNode(i);
-      arguments_unsorted.put(i, argumentPosition);
+      all_quantities.put(i, argumentPosition);
     }
     
     return argumentPosition;
   }
   
-  public void sortArgumentsByFrequency() {
-    children = arguments_unsorted.values().stream().toArray(FunctionArgumentNode[]::new);
+  /**
+   * Like above, but for the quantity nodes.
+   * @param size  The number of arguments you're looking for.
+   * @return      That premade node, or a new one if this is the first one you've found.
+   */
+  private QuantityOfArgumentsNode getArgumentQuantityNode(int size) {
+    QuantityOfArgumentsNode quantityNode;
     
-    for (FunctionArgumentNode arg : arguments_unsorted.values())
-      arg.sortArgumentsByFrequency();
+    if (specific_quantities.containsKey(size)) {
+      quantityNode = specific_quantities.get(size);
+    } else {
+      quantityNode = new QuantityOfArgumentsNode(size);
+      specific_quantities.put(size, quantityNode);
+    }
+    
+    return quantityNode;
+  }
+  
+  @Override
+  public void setChildren() {
+    //TODO: Other kinds of children too!
+    children = all_quantities.values().stream().toArray(FunctionArgumentNode[]::new);
+    
+    for (FunctionArgumentNode arg : all_quantities.values())
+      arg.setChildren();
+    
+    //Map<Integer, QuantityOfArgumentsNode> sortedQuantities = new LinkedHashMap<Integer, QuantityOfArgumentsNode>();
+    //Integer[] vals = specific_quantities.keySet().stream().toArray(Integer[]::new);
+    if (specific_quantities.size() > 1)
+      for (QuantityOfArgumentsNode node : specific_quantities.values())
+        node.setChildren();    
+    else
+      specific_quantities = null;
   }
   
   /**
    * Record this type of function as being used one more time.
    * @return    New frequency.
    */
+  @Override
   public int increment() {
     return ++frequency;
   }
@@ -137,6 +153,7 @@ public class FunctionStatsNode implements Comparable<FunctionStatsNode> {
     return function;
   }
   
+  @Override
   public int getFrequency() {
     return frequency;
   }
@@ -146,6 +163,7 @@ public class FunctionStatsNode implements Comparable<FunctionStatsNode> {
    * which conveys the hierarchical nature of the formulas and displays the
    * frequency of each kind of argument.
    */
+  @Override
   public String toString() {
     return toTreeString(new StringBuilder(), 0).toString();
   }
@@ -155,7 +173,7 @@ public class FunctionStatsNode implements Comparable<FunctionStatsNode> {
     sb.append(function + " (" + frequency + ")");
     sb.append("\n");
     
-    for (int i = 0; i < arguments_unsorted.size(); ++i) {
+    for (int i = 0; i < all_quantities.size(); ++i) {
       FunctionArgumentNode argument = getArgumentAtPosition(i);
       tabs(sb, depth+1);
       sb.append("Argument #" + (i+1));

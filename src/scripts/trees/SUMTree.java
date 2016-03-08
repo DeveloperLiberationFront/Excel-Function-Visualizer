@@ -13,16 +13,17 @@ import com.google.gson.GsonBuilder;
 
 import core.FormulaToken;
 import core.FunctionStatsNode;
+import core.Node;
 import core.Parser;
 import utils.DBUtils;
 
 public class SUMTree {
   public static void main(String[] args) throws SQLException, IOException {
-    int limit = 100000, offset = 0, currentlyAt;
+    int limit = 1000, offset = 0, currentlyAt;
     Connection con = DBUtils.connectToDatabase();
     PreparedStatement ps = con.prepareStatement("SELECT * FROM formulas WHERE formula like 'SUM%' and ID > ? LIMIT " + limit + ";");
     
-    FunctionStatsNode sum = null;
+    Node sum = null;
     do {
       currentlyAt = 0;
       ps.setInt(1, offset);
@@ -45,9 +46,8 @@ public class SUMTree {
           continue;
         
         if (sum == null)
-          sum = new FunctionStatsNode(id, tree);
-        else
-          sum.addChildrenOf(id, tree);
+          sum = new FunctionStatsNode(tree.toSimpleString());
+        sum.add(id, tree);
         
         System.out.println(currentlyAt + " : " + formula);        
       }
@@ -55,9 +55,10 @@ public class SUMTree {
       rs.previous();
       offset = rs.getInt(1);
       System.out.println("At " + offset + "...");
+      break;
     } while (limit == currentlyAt);
     
-    sum.sortArgumentsByFrequency();
+    sum.setChildren();
     
     GsonBuilder builder = new GsonBuilder();
     builder.setPrettyPrinting().serializeNulls().excludeFieldsWithoutExposeAnnotation();
