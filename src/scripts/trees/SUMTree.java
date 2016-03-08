@@ -19,12 +19,14 @@ import utils.DBUtils;
 
 public class SUMTree {
   public static void main(String[] args) throws SQLException, IOException {
-    int limit = 1000, offset = 0, currentlyAt;
+    int limit = 100000, offset = 0, currentlyAt;
     Connection con = DBUtils.connectToDatabase();
     PreparedStatement ps = con.prepareStatement("SELECT * FROM formulas WHERE formula like 'SUM%' and ID > ? LIMIT " + limit + ";");
     
     Node sum = null;
     do {
+      long start = System.currentTimeMillis();
+
       currentlyAt = 0;
       ps.setInt(1, offset);
       ResultSet rs = ps.executeQuery();
@@ -54,8 +56,8 @@ public class SUMTree {
       
       rs.previous();
       offset = rs.getInt(1);
-      System.out.println("At " + offset + "...");
-      break;
+      long end = System.currentTimeMillis() - start;
+      System.out.println("At " + offset + "... (" + (end/1000.) + "sec)");    
     } while (limit == currentlyAt);
     
     sum.setChildren();

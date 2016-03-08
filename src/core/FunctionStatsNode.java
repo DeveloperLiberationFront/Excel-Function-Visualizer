@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.google.gson.annotations.Expose;
 
@@ -15,8 +17,7 @@ public class FunctionStatsNode implements Node, Comparable<FunctionStatsNode> {
   private int frequency = 0;    
   
   @Expose
-  private Map<Integer, QuantityOfArgumentsNode> specific_quantities 
-    = new LinkedHashMap<Integer, QuantityOfArgumentsNode>();
+  private Map<Integer, QuantityOfArgumentsNode> specific_quantities = null;
   
   private Map<Integer, FunctionArgumentNode> all_quantities = new LinkedHashMap<Integer, FunctionArgumentNode>();
   
@@ -27,6 +28,8 @@ public class FunctionStatsNode implements Node, Comparable<FunctionStatsNode> {
   private int example;
   
   private int shortestExampleLen = Integer.MAX_VALUE;
+  
+  private Matcher nonvariadicFuncs = Pattern.compile("[\\+\\-\\*/\\^]").matcher("");
     
   /**
    * Represents a certain type of function or primitive type that can appear in a formula. Stores
@@ -44,6 +47,8 @@ public class FunctionStatsNode implements Node, Comparable<FunctionStatsNode> {
    */
   public FunctionStatsNode(String func) {    
     this.function = func;
+    if (!nonvariadicFuncs.reset(func).matches() && !func.startsWith("~"))
+      specific_quantities = new LinkedHashMap<Integer, QuantityOfArgumentsNode>();
   }
   
   /**
@@ -72,8 +77,10 @@ public class FunctionStatsNode implements Node, Comparable<FunctionStatsNode> {
     increment();
     FormulaToken[] children = token.getChildren();
     
-    QuantityOfArgumentsNode quantityNode = getArgumentQuantityNode(children.length);
-    quantityNode.add(ex, token);
+    if (specific_quantities != null) {
+      QuantityOfArgumentsNode quantityNode = getArgumentQuantityNode(children.length);
+      quantityNode.add(ex, token);
+    }
     
     for (int i = 0; i < children.length; ++i) {
       FormulaToken child = children[i];
@@ -133,11 +140,13 @@ public class FunctionStatsNode implements Node, Comparable<FunctionStatsNode> {
     
     //Map<Integer, QuantityOfArgumentsNode> sortedQuantities = new LinkedHashMap<Integer, QuantityOfArgumentsNode>();
     //Integer[] vals = specific_quantities.keySet().stream().toArray(Integer[]::new);
-    if (specific_quantities.size() > 1)
-      for (QuantityOfArgumentsNode node : specific_quantities.values())
-        node.setChildren();    
-    else
-      specific_quantities = null;
+    if (specific_quantities != null) {
+      if (specific_quantities.size() > 1)
+        for (QuantityOfArgumentsNode node : specific_quantities.values())
+          node.setChildren();    
+      else
+        specific_quantities = null;
+    }
   }
   
   /**
