@@ -49,7 +49,7 @@ public class IFTree {
         else
           sum.addChildrenOf(id, tree);
         
-        System.out.println(currentlyAt + " : " + formula);        
+        //System.out.println(currentlyAt + " : " + formula);        
       }
       
       rs.previous();

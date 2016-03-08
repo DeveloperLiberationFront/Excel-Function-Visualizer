@@ -39,7 +39,7 @@ public class FunctionStatsNode implements Comparable<FunctionStatsNode> {
    */
   public FunctionStatsNode(int ex, FormulaToken token) {
     this.example = ex;
-    this.shortestExampleLen = token.toString().length();  //TODO: What if reconstructed length different from original?
+    this.shortestExampleLen = token.getOrigLen();  //TODO: What if reconstructed length different from original?
     
     function = token.toSimpleString();
     
@@ -69,7 +69,7 @@ public class FunctionStatsNode implements Comparable<FunctionStatsNode> {
           + "refer to the same type of token as the FunctionStatsNode: " + token.toSimpleString() 
           + " vs. " + this.function);
     
-    int otherExampleLen = token.toString().length();
+    int otherExampleLen = token.getOrigLen();
     if (shortestExampleLen > otherExampleLen) {
       example = id;
       shortestExampleLen = otherExampleLen;

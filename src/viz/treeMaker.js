@@ -167,11 +167,10 @@ function enterCircle(circles, src) {
     .on("mouseleave", mouseleave);
 
   circles.append("text")
-    .attr("dx", function(d) { return d.children || d._children ? -15 : 10; })
+    .attr("dx", -15 )
     .attr("dy", 3)
-    .attr("text-anchor", function(d) {
-      return d.children || d._children ? "end" : "start";
-    }).text(function(d) { return d.function; })
+    .attr("text-anchor", "end")
+    .text(function(d) { return d.function; })
 }
 
 /**
@@ -190,7 +189,8 @@ var tip = d3.select("body")
 var tip_x = 5,
     tip_y = -50;
 function mouseover(d) {
-  var i = "<i>", ii = "</i>",
+  var b = "<b>", bb = "</b>",
+      i = "<i>", ii = "</i>",
       br = "<br/>",
       func = d.function + br,
       freq = d.frequency + br,
@@ -202,14 +202,16 @@ function mouseover(d) {
   d3.json("examples.php?id=" + id, function(error, data) {
     if (error) throw error;
 
-    ex = i + data["formula"] + ii + br;
+    form = data["formula"].replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    ex = b + i + form + ii + bb + br;
     tip.html(func + freq + full + ex)
 
+    console.log(ex);
     //TODO: Changing widths of the tooltip?
     /*var width = $('.tooltip').width();
     console.log(width);
     if (width > 200) {
-      tip.style("width", width + "px");
+      tip.style("width", null);
     }*/
   })
 
@@ -231,7 +233,8 @@ function mousemove(d) {
  * Dismisses the tooltip once the mouse leaves the node.
  */
 function mouseleave(d) {
-  tip.style("display", "none");
+  tip.style("display", "none")
+     .style("width", null);
 }
 
 /**
@@ -248,7 +251,7 @@ function enterRect(rects, src) {
     .style("fill", function(d) { return d._children ? "#627884" : "white"; });
 
   rects.append("text")
-    .text(function(d) { return d.position; })
+    .text(function(d) { return d.position + 1; })
     .attr("dx", function(d) { return d.position > 9 ? -7 : -3; })
     .attr("dy", 5);
 }

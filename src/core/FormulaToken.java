@@ -13,6 +13,7 @@ import org.apache.poi.ss.formula.ptg.StringPtg;
 public class FormulaToken {
   protected String tokenStr;
   protected Ptg token;
+  private int origLen = Integer.MAX_VALUE;
   
   //TODO: Don't like this blank string possibility, but OperationToken needs a blank super...
   public FormulaToken() {
@@ -84,6 +85,24 @@ public class FormulaToken {
    */
   public FormulaToken[] getChildren() {
     return new FormulaToken[0];
+  }
+  
+  /**
+   * This is to store the length of the original formula turned into tokens. Since the length
+   * can differ between how the parser can reconstruct it and what it was originally, I want
+   * to store the number with this extra step rather than trying to recalculate.
+   * 
+   * Mainly so I can pick out the shortest example from the database to display.
+   * @param origLen   The length in characters of the original formula.
+   */
+  public void setOrigLen(int origLen) {
+    this.origLen = origLen;
+    for (FormulaToken child : getChildren())
+      child.setOrigLen(origLen);
+  }
+  
+  public int getOrigLen() {
+    return origLen;
   }
   
   public String toString() {

@@ -263,6 +263,15 @@ public class SingleTests {
     singleSuccessTest(filename, sheetNum, row, col);
   }
   
+  /**
+   * IF(AND(I676,I722>0),IF(I676-I719<=0,0,IF(I676<I722,I676,I722)),0)
+   */
+  @Test
+  public void test_20_graphmistake1() {
+    String formula = "IF(AND(I676,I722>0),IF(I676-I719<=0,0,IF(I676<I722,I676,I722)),0)";
+    singleSuccessTest(formula);
+  }
+  
   private void singleSuccessTest(String filename, int sheetNum, int row, int col) {
     XSSFWorkbook wb = POIUtils.getWorkbook(filename);
     String formula = getFormulaAt(wb, sheetNum, row, col);
@@ -277,6 +286,11 @@ public class SingleTests {
     XSSFWorkbook wb = POIUtils.getWorkbook(filename);
     XSSFEvaluationWorkbook parse = XSSFEvaluationWorkbook.create(wb);
     String result = Parser.parseFormula(formula, sheetNum, parse).toString();
+    TestUtils.compare(formula, result);
+  }
+  
+  private void singleSuccessTest(String formula) {
+    String result = Parser.parseFormula(formula).toString();
     TestUtils.compare(formula, result);
   }
   

@@ -63,7 +63,9 @@ public class Parser {
     }
     
     FormulaRenderingWorkbook render = (FormulaRenderingWorkbook) parse;
-    return parseFormula(tokens, render);
+    FormulaToken tree = parseFormula(tokens, render);
+    tree.setOrigLen(formula.length());
+    return tree;
   }
   
   /**
