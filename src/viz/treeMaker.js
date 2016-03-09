@@ -186,14 +186,14 @@ var tip = d3.select("body")
 /**
  * Makes the tooltip visible over current mouse position over node. Sets text.
  */
-var tip_x = 5,
-    tip_y = -50;
+var tip_x = 3,
+    tip_y = -53;
 function mouseover(d) {
   var b = "<b>", bb = "</b>",
       i = "<i>", ii = "</i>",
       br = "<br/>",
-      func = d.function + br,
-      freq = d.frequency + br,
+      func = b + d.function + bb + br,
+      freq = d.frequency.toLocaleString() + br,
       full = i + "unavailable" + ii + br,
       ex = i + "unavailable" + ii,
 
@@ -203,7 +203,7 @@ function mouseover(d) {
     if (error) throw error;
 
     form = data["formula"].replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    ex = b + i + form + ii + bb + br;
+    ex = i + form + ii + br;
     tip.html(func + freq + full + ex)
 
     console.log(ex);
@@ -233,8 +233,7 @@ function mousemove(d) {
  * Dismisses the tooltip once the mouse leaves the node.
  */
 function mouseleave(d) {
-  tip.style("display", "none")
-     .style("width", null);
+  tip.style("display", "none");
 }
 
 /**
