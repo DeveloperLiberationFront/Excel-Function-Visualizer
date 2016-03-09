@@ -22,10 +22,18 @@
       }
 
       .link {
-        stroke: black;
-        stroke-width: .5px;
+        stroke: url(#gradient);
+        stroke-width: 1px;
         shape-rendering: auto;
         fill: none;
+      }
+
+      .stop-left {
+        stop-color: rgba(0,0,0,1);
+      }
+
+      .stop-right {
+        stop-color: rgba(0,0,0,0);
       }
 
       .tooltip {

@@ -23,6 +23,9 @@ var margin = {
 
 var scale; //To be determined when when tree chosen.
 
+var diagonal = d3.svg.diagonal()
+  .projection(function(d) { return [d.y, d.x]; });
+
 /**
  * Create the tree and define it's general behavior.
  */
@@ -60,13 +63,17 @@ var svg = d3.select("body")
   .attr("transform", "translate(" + view_start_x + "," + view_start_y + ")")
   .append("g");
 
-/**
- * Create a line generator, into which you must pass two x,y coordinates.
- */
-var lines = d3.svg.line()
-  .x(function(d) { return d.ly; })
-  .y(function(d) { return d.lx; })
-  .interpolate("linear");
+//gist.github.com/pnavarrc/20950640812489f13246
+var gradient = svg.append("linearGradient")
+  .attr("id", "gradient");
+
+gradient.append("stop")
+  .attr("class", "stop-left")
+  .attr("offset", ".0");
+
+gradient.append("stop")
+  .attr("class", "stop-right")
+  .attr("offset", "1");
 
 /**
  * Initialize the tree with only one level down expanded.
@@ -206,7 +213,6 @@ function mouseover(d) {
     ex = i + form + ii + br;
     tip.html(func + freq + full + ex)
 
-    console.log(ex);
     //TODO: Changing widths of the tooltip?
     /*var width = $('.tooltip').width();
     console.log(width);
@@ -312,15 +318,8 @@ function enterLink(link, src) {
     .insert("path", "g")
     .attr("class", "link")
     .attr("d", function(d) {
-      var o = {
-        x: src.x0,
-        y: src.y0
-      };
-
-      return getLine({
-        source: o,
-        target: o
-      });
+      var o = { x: src.x0, y: src.y0 };
+      return diagonal({ source: o, target: o });
     });
 }
 
@@ -330,7 +329,7 @@ function enterLink(link, src) {
 function updateLink(link, src) {
   link.transition()
     .duration(duration)
-    .attr("d", function(d) { return getLine(d); });
+    .attr("d", diagonal);
 }
 
 /**
@@ -340,32 +339,10 @@ function exitLink(link, src) {
   link.exit().transition()
     .duration(duration)
     .attr("d", function(d) {
-      var o = {
-        x: src.x,
-        y: src.y
-      };
-
-      return getLine({
-        source: o,
-        target: o
-      });
+      var o = { x: src.x, y: src.y };
+      return diagonal({ source: o, target: o });
     })
     .remove();
-}
-
-/**
- * Generates a new line between two points.
- */
-function getLine(d) {
-  var coords = [{
-    lx: d.source.x,
-    ly: d.source.y
-  }, {
-    lx: d.target.x,
-    ly: d.target.y
-  }];
-
-  return lines(coords);
 }
 
 /**
@@ -382,18 +359,3 @@ function click(d) {
 
   update(d);
 }
-
-/**
-function getDeepestLevel(src) {
-  var deepest = src.depth;
-
-  if (src.children) {
-    src.children.forEach(function(d) {
-      var deepLevel = getDeepestLevel(d);
-      deepest = deepLevel > deepest ? deepLevel : deepest;
-    })
-  }
-
-  return deepest;
-}
-**I don't think this is necessary anymore.*/
