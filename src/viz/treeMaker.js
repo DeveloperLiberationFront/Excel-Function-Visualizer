@@ -64,16 +64,23 @@ var svg = d3.select("body")
   .append("g");
 
 //gist.github.com/pnavarrc/20950640812489f13246
-var gradient = svg.append("linearGradient")
+var gradient = svg.append("defs")
+  .append("linearGradient")
   .attr("id", "gradient");
+  /*.attr("x1", "0")
+  .attr("y1", "1")
+  .attr("x2", "1")
+  .attr("y2", "1");*/
 
 gradient.append("stop")
-  .attr("class", "stop-left")
-  .attr("offset", ".0");
+  .attr("offset", "0")
+  .attr("stop-color", "black")
+  .attr("stop-opacity", "1");
 
 gradient.append("stop")
-  .attr("class", "stop-right")
-  .attr("offset", "1");
+  .attr("offset", "1")
+  .attr("stop-color", "black")
+  .attr("stop-opacity", "0");
 
 /**
  * Initialize the tree with only one level down expanded.
@@ -89,7 +96,7 @@ d3.json(src, function(error, json) {
 
   scale = d3.scale.log()
     .domain([1, root.frequency])
-    .range([5, 15])
+    .range([3, 20])
     .nice();
 
   function collapse(d) {
@@ -97,6 +104,11 @@ d3.json(src, function(error, json) {
       d._children = d.children;
       d._children.forEach(collapse);
       d.children = null;
+
+      if (d.position != null && d._children.length > 10) {
+        d._children.sort(function(a,b) { return b.frequency - a.frequency; });
+        d._holding = d._children.splice(10);
+      }
     } else {
       d.children = null;
       d._children = null;
@@ -174,7 +186,7 @@ function enterCircle(circles, src) {
     .on("mouseleave", mouseleave);
 
   circles.append("text")
-    .attr("dx", -15 )
+    .attr("dx", function(d) { return -scale(d.frequency) - 2; })
     .attr("dy", 3)
     .attr("text-anchor", "end")
     .text(function(d) { return d.function; })
@@ -257,7 +269,7 @@ function enterRect(rects, src) {
 
   rects.append("text")
     .text(function(d) { return d.position + 1; })
-    .attr("dx", function(d) { return d.position > 9 ? -7 : -3; })
+    .attr("dx", function(d) { return d.position + 1 > 9 ? -7 : -3; })
     .attr("dy", 5);
 }
 
@@ -349,6 +361,7 @@ function exitLink(link, src) {
  * Expands or dismisses children nodes when a given node is clicked.
  */
 function click(d) {
+  //Circles just have toggle functionality: click, and see all.
   if (d.children) {
     d._children = d.children;
     d.children = null;
