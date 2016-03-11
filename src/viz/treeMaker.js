@@ -19,8 +19,8 @@ var margin = {
   square_side = 20,
   square_side_half = square_side / 2,
 
-  view_start_x = margin.left,
-  view_start_y = height / 2 + margin.top,
+  view_start_x = width / 2,
+  view_start_y = height / 2,
 
   circle_col =    "#4C7B61",
   circle_hover =  "#1D5134",
@@ -129,6 +129,7 @@ d3.json(src, function(error, json) {
   }
 
   root.children.forEach(collapse);
+  center(root);
   update(root);
 })
 
@@ -188,7 +189,8 @@ function enterNode(node, src) {
       }),
       rects = nodeEnter.filter(function(d) { return d.depth % 2 != 0; })
 
-  circles.on("click", click);
+  circles.filter(function(d) { return d.children || d._children; }) //Only click those that have any children.
+    .on("click", click);
   rects.on("click", click)
     .on("mouseover", rect_mouseover)
     .on("mouseleave", rect_mouseout);
@@ -459,6 +461,7 @@ function click(d) {
     d._children = null;
   }
 
+  center(d);
   update(d);
 }
 
@@ -474,5 +477,17 @@ function expandclick(d) {
     par.children.splice(par.children.length, 0, d);
   }
 
+  center(par);
   update(par);
+}
+
+//http://bl.ocks.org/robschmuecker/7880033
+function center(d) {
+  var scale = zoomer.scale(),
+      x = -d.y0 * scale + (width/2),
+      y = -d.x0 * scale + (height/2);
+  d3.select("g").transition().duration(duration)
+    .attr("transform", "translate(" + x + "," + y + ")scale(" + scale + ")");
+  zoomer.scale(scale);
+  zoomer.translate([x, y]);
 }
