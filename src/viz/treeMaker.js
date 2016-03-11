@@ -67,11 +67,12 @@ var svg = d3.select("body")
   .append("svg")
   .attr("width", width + margin.left + margin.right)
   .attr("height", height + margin.top + margin.bottom)
-  .append("g")
   .call(zoomer)
   .on("dblclick.zoom", null)
-  .attr("transform", "translate(" + view_start_x + "," + view_start_y + ")")
-  .append("g");
+  .append("g")
+  .attr("transform", "translate(" + view_start_x + "," + view_start_y + ")");
+
+zoomer.translate([view_start_x, view_start_y]);
 
 //gist.github.com/pnavarrc/20950640812489f13246
 var gradient = svg.append("defs")
