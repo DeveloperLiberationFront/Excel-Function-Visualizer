@@ -8,11 +8,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
+import core.FormulaToken;
 import core.Parser;
 import utils.DBUtils;
 import utils.TestUtils;
@@ -42,6 +44,11 @@ public class BlankTests {
     }
     
     return files;
+  }
+  
+  @Before
+  public void setUp() {
+    FormulaToken.dontReplace();
   }
   
   @Test

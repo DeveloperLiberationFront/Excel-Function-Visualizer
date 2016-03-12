@@ -11,6 +11,7 @@ import org.apache.poi.ss.formula.ptg.RefPtgBase;
 import org.apache.poi.ss.formula.ptg.StringPtg;
 
 public class FormulaToken {
+  protected static boolean replace = true;
   protected String tokenStr;
   protected Ptg token;
   private int origLen = Integer.MAX_VALUE;
@@ -22,6 +23,16 @@ public class FormulaToken {
   }
   
   /**
+   * Names in a spreadsheet require the spreadsheet context in order to parse correctly.
+   * @param token   The Name token.
+   * @param render  The contain spreadsheet.
+   */
+  public FormulaToken(NamePtg token, FormulaRenderingWorkbook render) {
+    this.token = token;
+    this.tokenStr = token.toFormulaString(render).trim();
+  }
+  
+  /**
    * Creates a class that refers to a discrete token within an Excel formula.
    * ex:  SUM(A:A)+IF(B1<B2, B1, B2) -> SUM(), A:A, +, IF(), B1, <, B2, B1, B2 
    * @param tok   The discrete token in the formula, expected to not be an operation
@@ -29,9 +40,11 @@ public class FormulaToken {
    */
   public FormulaToken(Ptg tok) {
     this.token = tok;
-    //this.tokenStr = token.toFormulaString().trim();
-
-    this.tokenStr = getTypeString(tok);
+    this.tokenStr = replace ? getTypeString(tok) : token.toFormulaString().trim();
+  }
+  
+  public static void dontReplace() {
+    replace = false;
   }
 
   /**
@@ -59,16 +72,6 @@ public class FormulaToken {
       type = "~OTHER~";
     
     return type;
-  }
-  
-  /**
-   * Names in a spreadsheet require the spreadsheet context in order to parse correctly.
-   * @param token   The Name token.
-   * @param render  The contain spreadsheet.
-   */
-  public FormulaToken(NamePtg token, FormulaRenderingWorkbook render) {
-    this.token = token;
-    this.tokenStr = token.toFormulaString(render).trim();
   }
   
   /**

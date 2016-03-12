@@ -63,3 +63,8 @@ Case Study -- What I learned about the data
 Conclusion/Future work
 	-Enable personality analysis by usage
 Sources
+
+
+Questions:
+	What function is used most here?
+	What formula is used more here? Formula diversity?
