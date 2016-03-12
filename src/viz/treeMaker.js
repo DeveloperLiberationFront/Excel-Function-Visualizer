@@ -77,11 +77,13 @@ zoomer.translate([view_start_x, view_start_y]);
 //gist.github.com/pnavarrc/20950640812489f13246
 var gradient = svg.append("defs")
   .append("linearGradient")
-  .attr("id", "gradient");
-  /*.attr("x1", "0")
-  .attr("y1", "1")
-  .attr("x2", "1")
-  .attr("y2", "1");*/
+  .attr("id", "gradient")
+  .attr("gradientUnits", "userSpaceOnUse")
+  .attr("spreadMethod", "repeat")
+  .attr("x1", "0px")
+  .attr("y1", "0px")
+  .attr("x2", "150px")
+  .attr("y2", "0px");
 
 gradient.append("stop")
   .attr("offset", "0")
@@ -89,7 +91,7 @@ gradient.append("stop")
   .attr("stop-opacity", "1");
 
 gradient.append("stop")
-  .attr("offset", "1")
+  .attr("offset", ".9")
   .attr("stop-color", "black")
   .attr("stop-opacity", "0");
 
@@ -164,6 +166,8 @@ function update(src) {
     d.x0 = d.x;
     d.y0 = d.y;
   });
+
+  center(src);
 }
 
 /**
@@ -237,7 +241,11 @@ var tip = d3.select("body")
   .append("svg.rect")
   .attr("class", "tooltip")
   .attr("color", "gray")
-  .style("display", "none");
+  .style("display", "none")
+  .on("mouseover", function() { tip.hover = true; })
+  .on("mouseleave", function() { tip.hover = false; });
+
+console.log(tip);
 
 /**
  * Makes the tooltip visible over current mouse position over node. Sets text.
@@ -250,9 +258,8 @@ function mouseover(d) {
       br = "<br/>",
       func = b + d.function + bb + br,
       freq = d.frequency.toLocaleString() + br,
-      full = i + "unavailable" + ii + br,
-      ex = i + "unavailable" + ii,
-
+      ex = i + "unavailable" + ii + br,
+      loc = i + "unavailable" + ii,
       id = d.example;
 
   d3.json("examples.php?id=" + id, function(error, data) {
@@ -260,7 +267,11 @@ function mouseover(d) {
 
     form = data["formula"].replace(/</g, "&lt;").replace(/>/g, "&gt;");
     ex = i + form + ii + br;
-    tip.html(func + freq + full + ex)
+    loc = data["file"] + br + data["sheet"] + " " + data["row"]
+      + " " + data["col"];
+    loc = "<a href=\"http://localhost:8000/sheets/" + data["src"] + "/"
+      + data["file"] + "\">" + loc + "</a>";
+    tip.attr("height", null).html(func + freq + ex + loc)
 
     //TODO: Changing widths of the tooltip?
     /*var width = $('.tooltip').width();
@@ -270,7 +281,7 @@ function mouseover(d) {
     }*/
   })
 
-  tip.html(func + freq + full + ex)
+  tip.html(func + freq + ex + loc)
     .style("left", (d3.event.pageX + tip_x) + "px")
     .style("top", (d3.event.pageY + tip_y) + "px")
     .style("display", "inline");
@@ -297,6 +308,7 @@ function mousemove(d) {
  * Dismisses the tooltip once the mouse leaves the node.
  */
 function mouseleave(d) {
+  //if (!tip.hover)
   tip.style("display", "none");
 
   var hovered = d3.select("#n" + d.id)
@@ -461,7 +473,6 @@ function click(d) {
     d._children = null;
   }
 
-  center(d);
   update(d);
 }
 
@@ -477,7 +488,6 @@ function expandclick(d) {
     par.children.splice(par.children.length, 0, d);
   }
 
-  center(par);
   update(par);
 }
 
