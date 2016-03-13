@@ -34,7 +34,6 @@ public class OperationToken extends FormulaToken {
     this.op = extractOp(tok, len);
         
     addChildren(len, args);
-    this.toString();
   }
   
   /**

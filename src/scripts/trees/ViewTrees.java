@@ -26,7 +26,7 @@ public class ViewTrees {
       
       XSSFWorkbook wb = POIUtils.getWorkbook(filepath);
       FormulaParsingWorkbook parse = POIUtils.getParser(wb);
-      FormulaToken tree = Parser.parseFormula("SUM(A:A)+1+2+3", sheet, parse);
+      FormulaToken tree = Parser.parseFormula("SUM(A:A)+1+2+3", parse, sheet);
       
       System.out.println(tree);
       System.out.println(tree.toTreeString());

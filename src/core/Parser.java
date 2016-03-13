@@ -7,6 +7,7 @@ import org.apache.poi.ss.formula.FormulaParser;
 import org.apache.poi.ss.formula.FormulaParsingWorkbook;
 import org.apache.poi.ss.formula.FormulaRenderingWorkbook;
 import org.apache.poi.ss.formula.FormulaType;
+import org.apache.poi.ss.formula.ptg.AreaPtg;
 import org.apache.poi.ss.formula.ptg.AttrPtg;
 import org.apache.poi.ss.formula.ptg.MemAreaPtg;
 import org.apache.poi.ss.formula.ptg.MemFuncPtg;
@@ -30,14 +31,14 @@ public class Parser {
    */
   public static FormulaToken parseFormula(String formula) 
       throws FormulaParseException, UnsupportedOperationException {
-    return parseFormula(formula, 0, BLANK);
+    return parseFormula(formula, BLANK, 0);
   }
   
   /**
    * Break down a formula into individual tokens and wrap them up in nested FormulaTokens.
    * @param formula                         Formula to parse.
-   * @param sheet                           Sheet number of the formula.
    * @param parse                           The workbook in which the formula was found.
+   * @param sheet                           Sheet number of the formula.
    * @return                                A FormulaToken which represents the top-level function
    *                                          of the formula and contains all interior FormulaTokens.
    * @throws FormulaParseException          If Apache POI can't properly parse the formula.
@@ -45,7 +46,7 @@ public class Parser {
    * @throws UnsupportedOperationException  If the formula is blank or has quotes after exclamation
    *                                          ( !' ), which I saw in a few and it couldn't parse.
    */
-  public static FormulaToken parseFormula(String formula, int sheet, FormulaParsingWorkbook parse) 
+  public static FormulaToken parseFormula(String formula, FormulaParsingWorkbook parse, int sheet) 
       throws FormulaParseException, UnsupportedOperationException {
     Ptg[] tokens = null;
     
@@ -152,7 +153,8 @@ public class Parser {
     //Name tokens need renderer, others don't.
     if (ptg instanceof NamePtg) {
       NamePtg name = (NamePtg) ptg;
-      form = new FormulaToken(name, render, sheet);
+      Ptg[] nameTokens = POIUtils.resolveName(name, render, sheet);
+      form = parseFormula(nameTokens, render, sheet);
     } else {
       OperandPtg operand = (OperandPtg) ptg;
       form = new FormulaToken(operand);

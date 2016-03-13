@@ -61,7 +61,7 @@ public class TestUtils {
           //System.out.println(coord);
           try {
             formula = cell.getCellFormula();
-            String result = Parser.parseFormula(formula, i, parse).toString();
+            String result = Parser.parseFormula(formula, parse, i).toString();
             ++numOfTests;
             compare(coord+":"+formula, coord+":"+result);             
           } catch (FormulaParseException e) {
@@ -146,12 +146,12 @@ public class TestUtils {
   
   private static Matcher dollar                      = Pattern.compile("\\$")                    .matcher(""),
                          whiteSpace                  //= Pattern.compile("\\s+(?=([^']*'[^']*')*[^']*$)").matcher(""),
-                                                     = Pattern.compile("[ \t\r\n$]")             .matcher(""),
+                                                     = Pattern.compile("[ \t\r\n]")             .matcher(""),
                          quotesBeforeErrors          = Pattern.compile("('[^']*')+!?#")          .matcher(""),
                          wordsOrBracketsBeforeErrors = Pattern.compile("[\\w \\[\\]]+!?(#[A-Z])").matcher(""),
-                         allColumns1                 = Pattern.compile("(\\w*)1:(\\w*)65536")    .matcher(""),
-                         allColumns2                 = Pattern.compile("(\\w*)1:(\\w*)1048576")  .matcher(""),
-                         allRows                     = Pattern.compile("A(\\d+)?:XFD(\\d+)?")    .matcher(""),
+                         allColumns1                 = Pattern.compile("\\$?(\\w*)\\$1:\\$?(\\w*)\\$65536")    .matcher(""),
+                         allColumns2                 = Pattern.compile("\\$?(\\w*)\\$1:\\$?(\\w*)\\$1048576")  .matcher(""),
+                         allRows                     = Pattern.compile("\\$A(\\d+)?:\\$XFD(\\d+)?")    .matcher(""),
                          quotesInSheetName           = Pattern.compile("'([^' \\-]*)'!")         .matcher(""),
                          doublePlus                  = Pattern.compile("\\+\\+")                 .matcher("");
 

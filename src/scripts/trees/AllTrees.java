@@ -42,7 +42,7 @@ public class AllTrees {
         
         FormulaToken tree = null;
         try {
-          tree = Parser.parseFormula(formula, sheet, Parser.BLANK);
+          tree = Parser.parseFormula(formula, Parser.BLANK, sheet);
         } catch (Exception e) {
           continue;
         }

@@ -12,13 +12,16 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFEvaluationWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import core.FormulaToken;
 import core.Parser;
+import utils.POIUtils;
 
-public class FindFormulas {
-  private static final String SSDIRECTORY = System.getenv("ENRON_DIR");
+public class FindBetterFormulas {
+  private static final String SSDIRECTORY = "./sheets/ENRON/";
 
   public static void main(String[] args) throws Exception {
     File dir = new File(SSDIRECTORY);
+    FormulaToken.dontReplace();
     
     if (!dir.isDirectory()) {
       System.err.println("SSDirectory is not a directory!");
@@ -59,11 +62,24 @@ public class FindFormulas {
       for (Row row : sheet) {
         for (Cell cell : row) {
           
-        	if (cell.getCellType() == Cell.CELL_TYPE_FORMULA) {
-        		String formula = cell.getCellFormula();        		
-        		System.out.println(">>> " + formula);
-        		Parser.parseFormula(formula, parse, i);
-        	}          
+        	if (cell.getCellType() == Cell.CELL_TYPE_FORMULA) {        
+        	  FormulaToken tok = null;
+        	  
+        		try {
+              String formula = cell.getCellFormula();   
+              
+              System.out.println(formula);
+              
+              System.out.println(POIUtils.toR1C1String(formula, cell.getRowIndex(), cell.getColumnIndex()));
+           
+              System.out.println(">>> " + formula);
+              System.out.println();
+        		  tok = Parser.parseFormula(formula, parse, i);
+        		} catch (Exception | Error e) {
+        		  System.out.println(e + " (" + cell.getRowIndex() + "," + cell.getColumnIndex() + ")");
+        		  continue;
+        		}
+         	}          
         }
       }
       

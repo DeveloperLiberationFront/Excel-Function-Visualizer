@@ -75,7 +75,7 @@ public class SingleTests {
     XSSFEvaluationWorkbook parse = XSSFEvaluationWorkbook.create(wb);
     
     try {
-      Parser.parseFormula(formula, sheetNum, parse);
+      Parser.parseFormula(formula, parse, sheetNum);
       fail("No FormulaParseException thrown");
     } catch (FormulaParseException e) {
       assert(true);
@@ -103,7 +103,7 @@ public class SingleTests {
     XSSFEvaluationWorkbook parse = XSSFEvaluationWorkbook.create(wb);
     
     try {
-      Parser.parseFormula(formula, sheetNum, parse);
+      Parser.parseFormula(formula, parse, sheetNum);
       fail("No UnsupportedOperationException caught.");
     } catch (UnsupportedOperationException e) {
       //Success!
@@ -123,7 +123,7 @@ public class SingleTests {
     XSSFEvaluationWorkbook parse = XSSFEvaluationWorkbook.create(wb);
     
     try {
-      Parser.parseFormula(formula, sheetNum, parse);
+      Parser.parseFormula(formula, parse, sheetNum);
       fail("No UnsupportedOperationException caught.");
     } catch (UnsupportedOperationException e) {
       //Success!
@@ -285,14 +285,14 @@ public class SingleTests {
     
     /*Used to call function below, but that would create two workbooks.*/
     XSSFEvaluationWorkbook parse = XSSFEvaluationWorkbook.create(wb);
-    String result = Parser.parseFormula(formula, sheetNum, parse).toString();
+    String result = Parser.parseFormula(formula, parse, sheetNum).toString();
     TestUtils.compare(formula, result);
   }
   
   private void singleSuccessTest(String filename, String formula, int sheetNum) {
     XSSFWorkbook wb = POIUtils.getWorkbook(filename);
     XSSFEvaluationWorkbook parse = XSSFEvaluationWorkbook.create(wb);
-    String result = Parser.parseFormula(formula, sheetNum, parse).toString();
+    String result = Parser.parseFormula(formula, parse, sheetNum).toString();
     TestUtils.compare(formula, result);
   }
   
