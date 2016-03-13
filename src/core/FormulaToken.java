@@ -1,5 +1,7 @@
 package core;
 
+import org.apache.poi.ss.formula.EvaluationName;
+import org.apache.poi.ss.formula.FormulaParsingWorkbook;
 import org.apache.poi.ss.formula.FormulaRenderingWorkbook;
 import org.apache.poi.ss.formula.ptg.AreaPtgBase;
 import org.apache.poi.ss.formula.ptg.BoolPtg;
@@ -26,10 +28,17 @@ public class FormulaToken {
    * Names in a spreadsheet require the spreadsheet context in order to parse correctly.
    * @param token   The Name token.
    * @param render  The contain spreadsheet.
+   * @param sheet 
    */
-  public FormulaToken(NamePtg token, FormulaRenderingWorkbook render) {
+  public FormulaToken(NamePtg token, FormulaRenderingWorkbook render, int sheet) {
     this.token = token;
     this.tokenStr = token.toFormulaString(render).trim();
+    
+    //TODO: Make unique name class?
+    EvaluationName eval = ((FormulaParsingWorkbook) render).getName(tokenStr, sheet);
+    Ptg[] toks = eval.getNameDefinition();
+    FormulaToken expanded = Parser.parseFormula(toks, render, sheet);
+    this.tokenStr = expanded.toString();
   }
   
   /**

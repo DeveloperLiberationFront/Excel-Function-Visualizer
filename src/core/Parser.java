@@ -63,7 +63,7 @@ public class Parser {
     }
     
     FormulaRenderingWorkbook render = (FormulaRenderingWorkbook) parse;
-    FormulaToken tree = parseFormula(tokens, render);
+    FormulaToken tree = parseFormula(tokens, render, sheet);
     tree.setOrigLen(formula.length());
     return tree;
   }
@@ -73,7 +73,7 @@ public class Parser {
    * @param tokens  The Ptg tokens from POI.
    * @param render  The rendering workbook which contained the formula.
    */
-  public static FormulaToken parseFormula(Ptg[] tokens, FormulaRenderingWorkbook render) {
+  public static FormulaToken parseFormula(Ptg[] tokens, FormulaRenderingWorkbook render, int sheet) {
     Stack<FormulaToken> formula = new Stack<FormulaToken>();
     
     for (Ptg ptg : tokens) {
@@ -85,7 +85,7 @@ public class Parser {
       } else if (ptg instanceof OperationPtg) {        
         form = operationParse(ptg, formula);       
       } else if (ptg instanceof OperandPtg) {           
-        form = operandParse(ptg, render);        
+        form = operandParse(ptg, render, sheet);        
       } else if (ptg instanceof ParenthesisPtg) {
         form = parseParen(formula);
       } else if (ptg instanceof AttrPtg) {
@@ -143,15 +143,16 @@ public class Parser {
    * Wrap operands in FormulaTokens. If the operand is a name, pass in the rendering workbook too.
    * @param ptg     The operand token.
    * @param render  The rendering workbook in which the formula was found.
+   * @param sheet 
    * @return        The new formula token.
    */
-  private static FormulaToken operandParse(Ptg ptg, FormulaRenderingWorkbook render) {
+  private static FormulaToken operandParse(Ptg ptg, FormulaRenderingWorkbook render, int sheet) {
     FormulaToken form;
     
     //Name tokens need renderer, others don't.
     if (ptg instanceof NamePtg) {
       NamePtg name = (NamePtg) ptg;
-      form = new FormulaToken(name, render);
+      form = new FormulaToken(name, render, sheet);
     } else {
       OperandPtg operand = (OperandPtg) ptg;
       form = new FormulaToken(operand);

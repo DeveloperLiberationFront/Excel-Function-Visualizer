@@ -156,13 +156,14 @@ public class TestUtils {
                          doublePlus                  = Pattern.compile("\\+\\+")                 .matcher("");
 
   //TODO: THESE THINGS ARE A MESS: TOO MANY REGEXES YIELDS TOO MANY UNCERTAINTIES
+  //      AND THREATEN TO RUIN THE PURPOSE OF TESTING IN THE FIRST PLACE
   /**
    * @param str String to format.
    * @return    String with all above steps applied to it.
    */
   public static String format(String str) {
-    String formatted = dollar                     .reset(str)      .replaceAll("");
-           formatted = whiteSpace                 .reset(formatted).replaceAll("");
+    String //formatted = dollar                     .reset(str)      .replaceAll("");
+           formatted = whiteSpace                 .reset(str).replaceAll("");
            formatted = quotesBeforeErrors         .reset(formatted).replaceAll("#");
            formatted = wordsOrBracketsBeforeErrors.reset(formatted).replaceAll("$1");
            formatted = allColumns1                .reset(formatted).replaceAll("$1:$2");
