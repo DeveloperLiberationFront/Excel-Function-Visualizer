@@ -111,7 +111,7 @@ public class StoreBetterFunctionsInDB {
       }      
     }
 
-    ps.executeBatch();
+    //ps.executeBatch();
   }
 
   static int total = 0, batchsize = 1000, tooLarge = 0, error = 0;
@@ -127,13 +127,13 @@ public class StoreBetterFunctionsInDB {
     }
 
     try {
-      ps.setString(1, formula);
-      ps.setString(2, file);
-      ps.setInt(3, sheet);
-      ps.setString(4, sheetName);
-      ps.setInt(5, rowIndex);
-      ps.setString(6, column);
-      ps.addBatch();
+//      ps.setString(1, formula);
+//      ps.setString(2, file);
+//      ps.setInt(3, sheet);
+//      ps.setString(4, sheetName);
+//      ps.setInt(5, rowIndex);
+//      ps.setString(6, column);
+//      ps.addBatch();
       ++total;
     } catch (Exception e) {
       System.err.println(e.getMessage());
@@ -141,9 +141,9 @@ public class StoreBetterFunctionsInDB {
       System.err.println();
     }
 
-    if (total % batchsize == 0) {
-      ps.executeBatch();
-    }
+//    if (total % batchsize == 0) {
+//      ps.executeBatch();
+//    }
 
   }
 
