@@ -1,11 +1,11 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/W32TeX) (preloaded format=pdflatex 2016.3.5)  11 MAR 2016 16:08
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/W32TeX) (preloaded format=pdflatex 2016.1.30)  15 MAR 2016 03:14
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **./paper.tex
 (./paper.tex
-LaTeX2e <2016/02/01>
-Babel <3.9q> and hyphenation patterns for 81 language(s) loaded.
+LaTeX2e <2015/10/01> patch level 2
+Babel <3.9n> and hyphenation patterns for 79 languages loaded.
 (c:/texlive/2015/texmf-dist/tex/latex/ieeetran/IEEEtran.cls
 Document Class: IEEEtran 2015/08/26 V1.8b by Michael Shell
 -- See the "IEEEtran_HOWTO" manual for usage information.
@@ -131,18 +131,29 @@ LaTeX Font Info:    ... okay on input line 101.
 
 -- Lines per column: 56 (exact).
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 165.
+(Font)              <7> on input line 148.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 165.
+(Font)              <5> on input line 148.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 148.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 148.
+
+Underfull \hbox (badness 10000) in paragraph at lines 148--148
+[][][]\OT1/ptm/m/n/8 https://support.office.com/en-us/article/Excel-functions-a
+lphabetical-
+ []
+
 [1{c:/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
 
 ]
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 213.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 213.
+Underfull \hbox (badness 10000) in paragraph at lines 188--188
+[][][]\OT1/ptm/m/n/8 https://support.office.com/en-us/article/Excel-functions-b
+y-category-
+ []
 
+[2]
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -154,26 +165,26 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[2
+[3
 
 ] (./paper.aux) ) 
 Here is how much of TeX's memory you used:
- 1062 strings out of 493033
- 19368 string characters out of 6137755
- 80011 words of memory out of 5000000
- 4660 multiletter control sequences out of 15000+600000
- 37592 words of font info for 71 fonts, out of 8000000 for 9000
+ 1067 strings out of 493054
+ 19406 string characters out of 6138327
+ 82891 words of memory out of 5000000
+ 4648 multiletter control sequences out of 15000+600000
+ 42498 words of font info for 76 fonts, out of 8000000 for 9000
  1144 hyphenation exceptions out of 8191
- 26i,7n,19p,663b,236s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 26i,8n,19p,785b,236s stack positions out of 5000i,500n,10000p,200000b,80000s
 {c:/texlive/2015/texmf-dist/fonts/enc/dvips/base/8r.enc}<c:/te
 xlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb><c:/texlive/2015
 /texmf-dist/fonts/type1/urw/times/utmb8a.pfb><c:/texlive/2015/texmf-dist/fonts/
 type1/urw/times/utmbi8a.pfb><c:/texlive/2015/texmf-dist/fonts/type1/urw/times/u
 tmr8a.pfb><c:/texlive/2015/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on paper.pdf (2 pages, 57061 bytes).
+Output written on paper.pdf (3 pages, 68889 bytes).
 PDF statistics:
- 32 PDF objects out of 1000 (max. 8388607)
- 22 compressed objects within 1 object stream
+ 35 PDF objects out of 1000 (max. 8388607)
+ 24 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
