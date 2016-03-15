@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/W32TeX) (preloaded format=pdflatex 2016.1.30)  15 MAR 2016 03:14
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/W32TeX) (preloaded format=pdflatex 2016.1.30)  15 MAR 2016 18:04
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -131,15 +131,15 @@ LaTeX Font Info:    ... okay on input line 101.
 
 -- Lines per column: 56 (exact).
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 148.
+(Font)              <7> on input line 147.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 148.
+(Font)              <5> on input line 147.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 148.
+(Font)              <8> on input line 147.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 148.
+(Font)              <6> on input line 147.
 
-Underfull \hbox (badness 10000) in paragraph at lines 148--148
+Underfull \hbox (badness 10000) in paragraph at lines 147--147
 [][][]\OT1/ptm/m/n/8 https://support.office.com/en-us/article/Excel-functions-a
 lphabetical-
  []
@@ -153,7 +153,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 188--188
 y-category-
  []
 
-[2]
+[2] [3]
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -165,26 +165,26 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[3
+[4
 
 ] (./paper.aux) ) 
 Here is how much of TeX's memory you used:
- 1067 strings out of 493054
- 19406 string characters out of 6138327
+ 1066 strings out of 493054
+ 19400 string characters out of 6138327
  82891 words of memory out of 5000000
  4648 multiletter control sequences out of 15000+600000
- 42498 words of font info for 76 fonts, out of 8000000 for 9000
+ 41420 words of font info for 75 fonts, out of 8000000 for 9000
  1144 hyphenation exceptions out of 8191
- 26i,8n,19p,785b,236s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 26i,8n,19p,861b,236s stack positions out of 5000i,500n,10000p,200000b,80000s
 {c:/texlive/2015/texmf-dist/fonts/enc/dvips/base/8r.enc}<c:/te
 xlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb><c:/texlive/2015
 /texmf-dist/fonts/type1/urw/times/utmb8a.pfb><c:/texlive/2015/texmf-dist/fonts/
 type1/urw/times/utmbi8a.pfb><c:/texlive/2015/texmf-dist/fonts/type1/urw/times/u
 tmr8a.pfb><c:/texlive/2015/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on paper.pdf (3 pages, 68889 bytes).
+Output written on paper.pdf (4 pages, 73663 bytes).
 PDF statistics:
- 35 PDF objects out of 1000 (max. 8388607)
- 24 compressed objects within 1 object stream
+ 38 PDF objects out of 1000 (max. 8388607)
+ 26 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
