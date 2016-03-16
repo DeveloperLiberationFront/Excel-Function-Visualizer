@@ -76,12 +76,12 @@
 % *** GRAPHICS RELATED PACKAGES ***
 %
 \ifCLASSINFOpdf
-  % \usepackage[pdftex]{graphicx}
+   \usepackage[pdftex]{graphicx}
   % declare the path(s) where your graphic files are
-  % \graphicspath{{../pdf/}{../jpeg/}}
+   \graphicspath{{pic/}}
   % and their extensions so you won't have to specify these with
   % every instance of \includegraphics
-  % \DeclareGraphicsExtensions{.pdf,.jpeg,.png}
+   \DeclareGraphicsExtensions{.png}
 \else
   % or other class option (dvipsone, dvipdf, if not using dvips). graphicx
   % will default to the driver specified in the system graphics.cfg if no
@@ -176,11 +176,26 @@ Likewise, to bound our scope, we outlined a few goals to specifically avoid acco
 	\item [!3] \textbf{Do not visualize individual formulas.} Though there is room to explore the place of a single function in the group, the tool must design the core visualization around the entire body of data, not the other way around.
 \end{itemize}
 
+\subsection{Description}
+To show how this all came together and demonstrate the interface, we will use an example of a quick task: discovering what kind of conditions people use in IF statements. Considering only formulas in which the IF function itself is the top-level function (that is, not nested within another function), we will approach a tree that begins like this:
+ 
+\includegraphics{start}
 
+The visualization so far comprises two types of node: the circle, which represents a discrete function in the formula and is size according to its relative frequency (the top-level node, by definition, will be the largest); and the numbered squares, which represent the positions of arguments within its parent function. From this, we can infer that, of the times it was observed, IF can have at most three arguments passed into it, which corresponds with its specifications in the API.\footnote{https://support.office.com/en-us/article/IF-function-69aed7c9-4e8a-4755-a9bc-aa8bbff73be2} \par
+Knowing that it is the first argument which contains the conditionals, we click on the square labeled "1" to explore. To save space, when more than 10 unique arguments have been observed in any position, the tool displays only the first ten, with an option to display the rest. The results are shown below:
+
+\includegraphics[width=.43\textwidth]{IFexpand}
+
+As expected, we see that IF contains as its first argument a number of comparison operators, such as = and <=, and boolean-returning functions, like ISNA and AND, with simple equality being the most common and some use as ABS being the least seen of everything actually used.
+From here, we can further explore the common options among these functions. Clicking on the "=" node will yield two arguments, it being a binary operator, and expanding each of them will peer into the range of common values of equality comparison:
+
+\includegraphics[width = .43\textwidth]{IFargslabel}
+
+For both sides of the equal sign, the operator has certain types of arguments which predominate over the others: on the left side is most often a reference to another cell; on the right, a string or number literal, which makes sense for the case of confirming a value in another cell before assigning this one. Furthermore, if the concept is difficult to imagine is practice, a tooltip accompanies each function node in the tree, providing a concrete example of a function that uses this structure and where it can be found.
 
 \subsection{Design}
-Given the composition of formulas as functions and their arguments (which could be yet more functions), we need a visualization style that conveys this sense of parent-child relationship. As such, we decided to represent formulas as trees where the branching factor depends on both the number of arguments in a function and the number of possible functions observed as an argument in a function. \par
-Guided by these goals, we faced a number of decision points in our design, which we outline below.
+Early in the process, we decided that the tree form would be a suitable fit to represent the parent-child or caller-callee relationships inherent in the data, given the composition of formulas as functions and their arguments (which could be yet more functions). By adapting this structure to accommodate a broad range of possibilities for nested functions, the branching factor depends on both the number of arguments in a function and the number of possible functions observed as an argument in a function. \par
+Guided by the goals in section A, we faced a number of decision points, which we describe below, before we arrived at the design shown above.
 
 
 \begin{itemize}
@@ -213,9 +228,9 @@ When the presentation code displays the tree, it shows two types of nodes with d
 
 
 \subsection{Limitations}
-Because the data collection depends on POI's formula parser, it affords no leeway or partial information from a formula; it either processes it perfectly or throws it out. As such, the visualization inhibits insight into anything with syntactical errors. Note, however, that this does not include standard Excel errors like \#REF! and \#DIV/0, which the parser handles well. \par
-Unfortunately, the parse also failed to handle any externally defined functions, even if they were syntactically correct in their original context. On one hand, we don't consider the loss of these specific functions to be tragic, as they are not part of Excel proper and thus provide no insight into how people use built-in functions. However, information about other functions within them are lost. \par
+Because the data collection depends on POI's formula parser, it affords no leeway or partial information from a formula; it either processes it perfectly or throws it out. As such, the visualization inhibits insight into anything with syntactical errors or third-party functions that can't be evaluated without additional tools. Note, however, that this does not include standard Excel errors like \#REF! and \#DIV/0, which the parser handles well. \par
 Many functions have an expected order of arguments, but some, like SUM and MATCH, can be reordered in various ways and maintain their value. However, the representation that this tool uses reinforces for all functions that the order is important, even in these exceptions. \par
+A larger and related problem is the loss of argument combination. In the example in section B, we saw how the tools conveys which arguments are used most often on each side of an equals sign, but it does not encode how these whether references were actually compared to strings and numbers the most or whether it corresponded more to all the arguments beneath those two 
 
 \section{Case Study}
 
@@ -230,10 +245,6 @@ Sed a tempor velit. Maecenas congue consectetur elementum. Vestibulum dolor ante
 
 In rutrum tortor et enim fringilla, in dictum dui vulputate. Maecenas ut ligula et ipsum euismod ornare ut vel eros. Duis sit amet urna in tortor pretium convallis. Morbi vitae sollicitudin nisl. Etiam semper urna a ex aliquam malesuada. Aenean non bibendum velit, eu auctor metus. Integer vestibulum id turpis eget mattis. Donec diam nisi, rhoncus bibendum sollicitudin sed, eleifend vel massa. Curabitur ut ornare felis. Nullam viverra nulla in suscipit facilisis. Quisque mollis turpis id massa mattis sagittis. Ut vitae arcu a lectus gravida varius. Ut porttitor auctor rhoncus.
 
-Nam in est nec diam mattis suscipit. Morbi eget quam at arcu pellentesque dignissim quis vitae tellus. Sed leo dui, suscipit at feugiat a, tristique sed neque. Aenean rutrum dapibus mauris a rutrum. Nullam sapien purus, fringilla non varius nec, consectetur vitae massa. Fusce elit quam, vulputate vestibulum tempor et, pellentesque eget nisi. Vivamus ac congue dolor. Aliquam magna nulla, dapibus ac justo vitae, pharetra tristique mauris. Vivamus dictum massa a diam vestibulum, quis congue nibh mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Pellentesque quis ligula at augue pretium ullamcorper eu nec nunc. Nunc porta lorem eget purus fringilla, nec posuere purus sodales. Duis vel efficitur diam. 
-
-
-
 \section{Conclusion}
 
 
@@ -243,7 +254,7 @@ Donec ac nibh imperdiet, hendrerit mi ac, viverra dolor. Vivamus tincidunt vehic
 
 Curabitur sed ultricies nisi. Sed pharetra non dui nec dapibus. Sed tincidunt lacinia mi at elementum. Suspendisse egestas risus scelerisque viverra vestibulum. In hac habitasse platea dictumst. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Donec fermentum libero eget libero iaculis porttitor. Curabitur libero nisl, varius ac lorem vel, ornare viverra erat. Nunc id magna est. Integer interdum tristique nulla, nec mattis nisl hendrerit a. Quisque turpis nisl, feugiat in sagittis a, viverra at massa. 
 
-
+-extensible to other spreadsheets?
 % conference papers do not normally have an appendix
 
 
