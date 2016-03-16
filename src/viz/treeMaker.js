@@ -82,11 +82,11 @@ var gradient = svg.append("defs")
   .attr("spreadMethod", "repeat")
   .attr("x1", "0px")
   .attr("y1", "0px")
-  .attr("x2", "150px")
+  .attr("x2", "250px")
   .attr("y2", "0px");
 
 gradient.append("stop")
-  .attr("offset", "0")
+  .attr("offset", ".4")
   .attr("stop-color", "black")
   .attr("stop-opacity", "1");
 
@@ -94,6 +94,17 @@ gradient.append("stop")
   .attr("offset", ".9")
   .attr("stop-color", "black")
   .attr("stop-opacity", "0");
+
+/*var background = svg.select("defs")
+  .append("pattern")
+  .attr("id", "stripes")
+  .attr("width", "150px")
+  .attr("height", "150px")
+  .attr("patternUnits", "userSpaceOnUse")
+  .append("rect")
+  .attr("width", "100px")
+  .attr("height", "100px")
+  .attr("fill", "black");*/
 
 /**
  * Initialize the tree with only one level down expanded.
@@ -146,7 +157,13 @@ function update(src) {
   var nodes = tree.nodes(root),
     links = tree.links(nodes);
 
-  nodes.forEach(function(d) { d.y = d.depth * 150; })
+  nodes.forEach(function(d) {
+    if (d.depth % 2 == 0) {
+      d.y = d.depth * 125;
+    } else {
+      d.y = (d.depth - 1) * 125 + 100;
+    }
+  })
 
   var node = svg.selectAll("g")
     .data(nodes, function(d) { return d.id || (d.id = ++i); });
@@ -245,8 +262,6 @@ var tip = d3.select("body")
   .on("mouseover", function() { tip.hover = true; })
   .on("mouseleave", function() { tip.hover = false; });
 
-console.log(tip);
-
 /**
  * Makes the tooltip visible over current mouse position over node. Sets text.
  */
@@ -262,13 +277,22 @@ function mouseover(d) {
       loc = i + "unavailable" + ii,
       id = d.example;
 
+  /*var tt = d3.select("#n" + d.id)
+    .append("rect")
+    .attr("class", "tooltip")
+    .attr("color", "gray")
+    .attr("x", d.x)
+    .attr("y", d.y)
+    .style("display", "inline");
+  console.log(tt);*/
+
   d3.json("examples.php?id=" + id, function(error, data) {
     if (error) throw error;
 
     form = data["formula"].replace(/</g, "&lt;").replace(/>/g, "&gt;");
     ex = i + form + ii + br;
-    loc = data["file"] + br + data["sheet"] + " " + data["row"]
-      + " " + data["col"];
+    loc = data["file"] + br + data["sheetName"] + " " + data["col"]
+      + data["row"];
     loc = "<a href=\"http://localhost:8000/sheets/" + data["src"] + "/"
       + data["file"] + "\">" + loc + "</a>";
     tip.attr("height", null).html(func + freq + ex + loc)

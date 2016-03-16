@@ -20,16 +20,16 @@ public class FunctionStatsNode implements Node, Comparable<FunctionStatsNode> {
   private Map<Integer, QuantityOfArgumentsNode> specific_quantities = null;
   
   private Map<Integer, FunctionArgumentNode> all_quantities = new LinkedHashMap<Integer, FunctionArgumentNode>();
+    
+  @Expose
+  private int example;
   
   @Expose
   private FunctionArgumentNode[] children = null;
   
-  @Expose
-  private int example;
-  
   private int shortestExampleLen = Integer.MAX_VALUE;
   
-  private Matcher nonvariadicFuncs = Pattern.compile("[\\+\\-\\*/\\^]").matcher("");
+  private Matcher nonvariadicFuncs = Pattern.compile("[\\+\\-\\*/\\^&]").matcher("");
     
   /**
    * Represents a certain type of function or primitive type that can appear in a formula. Stores

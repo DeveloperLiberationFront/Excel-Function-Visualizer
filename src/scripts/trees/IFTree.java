@@ -21,7 +21,7 @@ public class IFTree {
   public static void main(String[] args) throws SQLException, IOException {
     int limit = 100000, offset = 0, currentlyAt;
     Connection con = DBUtils.connectToDatabase();
-    PreparedStatement ps = con.prepareStatement("SELECT * FROM formulas WHERE formula like 'IF%' and ID > ? LIMIT " + limit + ";");
+    PreparedStatement ps = con.prepareStatement("SELECT * FROM formulas_unique WHERE formula like 'IF%' and ID > ? LIMIT " + limit + ";");
     
     Node sum = null;
     do {
@@ -46,8 +46,6 @@ public class IFTree {
         
         if (!tree.toSimpleString().equals("IF()"))
           continue;
-        else if (formula.equals("IF(BQ17,IF(BP17,SQRT(LN(1+((BU17*AZ17)^2*(EXP(CG17^2*BT17)-1)+(BV17*BA17)^2*(EXP(CH17^2*BT17)-1)+(BW17*BB17)^2*(EXP(CI17^2*BT17)-1)+2*BU17*AZ17*BV17*BA17*(EXP(CG17*CH17*BT17)-1)+2*BV17*BA17*BW17*BB17*(EXP(CH17*CI17*BT17)-1)+2*BW17*BB17*BU17*AZ17*(EXP(CI17*CG17*BT17)-1))/(BY17*BP17)^2)/BT17),0),\"\")"))
-          System.out.println();
         
         if (sum == null)
           sum = new FunctionStatsNode(tree.toSimpleString());

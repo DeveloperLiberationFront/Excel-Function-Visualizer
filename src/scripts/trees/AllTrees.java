@@ -25,7 +25,7 @@ public class AllTrees {
   public static void main(String[] args) throws SQLException, IOException {
     int limit = 100000, offset = 0, currentlyAt;
     Connection con = DBUtils.connectToDatabase();
-    PreparedStatement ps = con.prepareStatement("SELECT * FROM formulas WHERE ID > ? LIMIT " + limit + ";");
+    PreparedStatement ps = con.prepareStatement("SELECT * FROM formulas_unique WHERE ID > ? LIMIT " + limit + ";");
     
     Map<String, FunctionStatsNode> trees = new HashMap<String, FunctionStatsNode>();
     do {
@@ -41,9 +41,11 @@ public class AllTrees {
         int sheet = rs.getInt(5);
         
         FormulaToken tree = null;
+
         try {
           tree = Parser.parseFormula(formula, Parser.BLANK, sheet);
         } catch (Exception e) {
+          System.err.println("ARRRGH");
           continue;
         }
         
@@ -52,7 +54,7 @@ public class AllTrees {
           trees.put(toplevel, new FunctionStatsNode(tree.toSimpleString()));
         trees.get(toplevel).add(id, tree);
         
-        //System.out.println(currentlyAt + " : " + formula);        
+        System.out.println(currentlyAt + " : " + formula);        
       }
       
       rs.previous();
@@ -74,7 +76,7 @@ public class AllTrees {
     builder.setPrettyPrinting().serializeNulls().excludeFieldsWithoutExposeAnnotation();
     Gson gson = builder.create();
     
-    BufferedWriter write = new BufferedWriter(new FileWriter("./src/scripts/viz/all.json"));
+    BufferedWriter write = new BufferedWriter(new FileWriter("./src/viz/all.json"));
     write.write(gson.toJson(allFuncs));
     //System.out.println(gson.toJson(sum));
     write.close();
