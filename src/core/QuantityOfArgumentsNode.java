@@ -2,15 +2,12 @@ package core;
 
 import com.google.gson.annotations.Expose;
 
-public class QuantityOfArgumentsNode implements Node, Comparable<QuantityOfArgumentsNode> {
+public class QuantityOfArgumentsNode extends Node {
   @Expose
   private int quantity;
   
   @Expose
-  private int frequency;
-  
-  @Expose
-  private FunctionArgumentNode[] children;  //arguments
+  private ArgumentNode[] children;  //arguments
   
   @Expose
   private int example;
@@ -19,9 +16,9 @@ public class QuantityOfArgumentsNode implements Node, Comparable<QuantityOfArgum
   
   public QuantityOfArgumentsNode(int quantity) {
     this.quantity = quantity;
-    children = new FunctionArgumentNode[quantity];
+    children = new ArgumentNode[quantity];
     for (int i = 0; i < quantity; ++i)
-      children[i] = new FunctionArgumentNode(i);
+      children[i] = new ArgumentNode(i);
   }
   
   public void add(int ex, FormulaToken token) {
@@ -39,7 +36,7 @@ public class QuantityOfArgumentsNode implements Node, Comparable<QuantityOfArgum
     
     for (int i = 0; i < tokChildren.length; ++i) {
       FormulaToken child = tokChildren[i];
-      FunctionArgumentNode argumentPosition = children[i];        
+      ArgumentNode argumentPosition = children[i];        
       argumentPosition.add(ex, child);
     }
   }
@@ -48,19 +45,17 @@ public class QuantityOfArgumentsNode implements Node, Comparable<QuantityOfArgum
     return ++frequency;
   }
 
-  @Override
   public void setChildren() {
-    for (FunctionArgumentNode node : children)
+    for (ArgumentNode node : children)
       node.setChildren();
   }
 
-  @Override
   public int getFrequency() {
     return frequency;
   }
 
   @Override
-  public int compareTo(QuantityOfArgumentsNode o) {
-    return o.getFrequency() - this.frequency;
+  public String toString() {
+    return quantity + "";
   }
 }

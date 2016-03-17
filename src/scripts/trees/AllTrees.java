@@ -17,7 +17,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import core.FormulaToken;
-import core.FunctionStatsNode;
+import core.FunctionNode;
 import core.Parser;
 import utils.DBUtils;
 
@@ -27,7 +27,7 @@ public class AllTrees {
     Connection con = DBUtils.connectToDatabase();
     PreparedStatement ps = con.prepareStatement("SELECT * FROM formulas_unique WHERE ID > ? LIMIT " + limit + ";");
     
-    Map<String, FunctionStatsNode> trees = new HashMap<String, FunctionStatsNode>();
+    Map<String, FunctionNode> trees = new HashMap<String, FunctionNode>();
     do {
       long start = System.currentTimeMillis();
       currentlyAt = 0;
@@ -51,7 +51,7 @@ public class AllTrees {
         
         String toplevel = tree.toSimpleString();
         if (!trees.containsKey(toplevel))
-          trees.put(toplevel, new FunctionStatsNode(tree.toSimpleString()));
+          trees.put(toplevel, new FunctionNode(tree.toSimpleString()));
         trees.get(toplevel).add(id, tree);
         
         System.out.println(currentlyAt + " : " + formula);        
@@ -63,11 +63,11 @@ public class AllTrees {
       System.out.println("At " + offset + "... (" + (end/1000.) + "sec)");
     } while (limit == currentlyAt);
     
-    ArrayList<FunctionStatsNode> sort = new ArrayList<FunctionStatsNode>(trees.values());
+    ArrayList<FunctionNode> sort = new ArrayList<FunctionNode>(trees.values());
     Collections.sort(sort);
     
-    LinkedHashMap<String, FunctionStatsNode> allFuncs = new LinkedHashMap<String, FunctionStatsNode>();
-    for (FunctionStatsNode node : sort) {
+    LinkedHashMap<String, FunctionNode> allFuncs = new LinkedHashMap<String, FunctionNode>();
+    for (FunctionNode node : sort) {
       allFuncs.put(node.getFunction(), node);
       node.setChildren();
     }

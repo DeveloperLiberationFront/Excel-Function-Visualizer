@@ -1,7 +1,5 @@
 package core;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -9,27 +7,24 @@ import java.util.regex.Pattern;
 
 import com.google.gson.annotations.Expose;
 
-public class FunctionStatsNode implements Node, Comparable<FunctionStatsNode> {
+public class FunctionNode extends Node {
   @Expose
-  private String function;
-  
-  @Expose
-  private int frequency = 0;    
+  private String function;  
   
   @Expose
   private Map<Integer, QuantityOfArgumentsNode> specific_quantities = null;
   
-  private Map<Integer, FunctionArgumentNode> all_quantities = new LinkedHashMap<Integer, FunctionArgumentNode>();
+  private Map<Integer, ArgumentNode> all_quantities = new LinkedHashMap<Integer, ArgumentNode>();
     
   @Expose
   private int example;
   
   @Expose
-  private FunctionArgumentNode[] children = null;
+  private ArgumentNode[] children = null;
   
   private int shortestExampleLen = Integer.MAX_VALUE;
   
-  private Matcher nonvariadicFuncs = Pattern.compile("[\\+\\-\\*/\\^&]").matcher("");
+  private static Matcher nonvariadicFuncs = Pattern.compile("[\\+\\-\\*/\\^&]").matcher("");
     
   /**
    * Represents a certain type of function or primitive type that can appear in a formula. Stores
@@ -45,9 +40,9 @@ public class FunctionStatsNode implements Node, Comparable<FunctionStatsNode> {
    * 
    * @param token The type of formula token that this node wraps.
    */
-  public FunctionStatsNode(String func) {    
+  public FunctionNode(String func) {    
     this.function = func;
-    if (!nonvariadicFuncs.reset(func).matches() && !func.startsWith("~"))
+    if (!nonvariadicFuncs.reset(func).matches())
       specific_quantities = new LinkedHashMap<Integer, QuantityOfArgumentsNode>();
   }
   
@@ -84,7 +79,7 @@ public class FunctionStatsNode implements Node, Comparable<FunctionStatsNode> {
     
     for (int i = 0; i < children.length; ++i) {
       FormulaToken child = children[i];
-      FunctionArgumentNode argumentPosition = getArgumentAtPosition(i);
+      ArgumentNode argumentPosition = getArgumentAtPosition(i);
       argumentPosition.add(ex, child);
     }
   }
@@ -99,13 +94,13 @@ public class FunctionStatsNode implements Node, Comparable<FunctionStatsNode> {
    * @param i       Position in {@link #all_quantities} we're trying to access.
    * @return        A HashMap referring to that position.
    */
-  private FunctionArgumentNode getArgumentAtPosition(int i) {
-    FunctionArgumentNode argumentPosition;
+  private ArgumentNode getArgumentAtPosition(int i) {
+    ArgumentNode argumentPosition;
     
     if (i < all_quantities.size()) {
       argumentPosition = all_quantities.get(i);
     } else {
-      argumentPosition = new FunctionArgumentNode(i);
+      argumentPosition = new ArgumentNode(i);
       all_quantities.put(i, argumentPosition);
     }
     
@@ -133,9 +128,9 @@ public class FunctionStatsNode implements Node, Comparable<FunctionStatsNode> {
   @Override
   public void setChildren() {
     //TODO: Other kinds of children too!
-    children = all_quantities.values().stream().toArray(FunctionArgumentNode[]::new);
+    children = all_quantities.values().stream().toArray(ArgumentNode[]::new);
     
-    for (FunctionArgumentNode arg : all_quantities.values())
+    for (ArgumentNode arg : all_quantities.values())
       arg.setChildren();
     
     //Map<Integer, QuantityOfArgumentsNode> sortedQuantities = new LinkedHashMap<Integer, QuantityOfArgumentsNode>();
@@ -149,22 +144,8 @@ public class FunctionStatsNode implements Node, Comparable<FunctionStatsNode> {
     }
   }
   
-  /**
-   * Record this type of function as being used one more time.
-   * @return    New frequency.
-   */
-  @Override
-  public int increment() {
-    return ++frequency;
-  }
-  
   public String getFunction() {
     return function;
-  }
-  
-  @Override
-  public int getFrequency() {
-    return frequency;
   }
   
   /**
@@ -174,45 +155,30 @@ public class FunctionStatsNode implements Node, Comparable<FunctionStatsNode> {
    */
   @Override
   public String toString() {
-    return toTreeString(new StringBuilder(), 0).toString();
+    return function; //toTreeString(new StringBuilder(), 0).toString();
   }
   
-  private StringBuilder toTreeString(StringBuilder sb, int depth) {
+  /*private StringBuilder toTreeString(StringBuilder sb, int depth) {
     tabs(sb, depth);
     sb.append(function + " (" + frequency + ")");
     sb.append("\n");
     
     for (int i = 0; i < all_quantities.size(); ++i) {
-      FunctionArgumentNode argument = getArgumentAtPosition(i);
+      ArgumentNode argument = getArgumentAtPosition(i);
       tabs(sb, depth+1);
       sb.append("Argument #" + (i+1));
       sb.append("\n");
       
-      ArrayList<FunctionStatsNode> funcs = argument.getPossibilities();
+      ArrayList<Node> funcs = argument.getPossibilities();
       Collections.sort(funcs);
-      for (FunctionStatsNode func : funcs) {
+      for (Node func : funcs) {
         func.toTreeString(sb, depth+2);
       }
     }
     
     return sb;
-  }
+  }*/
   
-  /**
-   * Adds the appropriate amount of tabbing to an element this deep in the tree
-   * @param sb    The stringbuilder which is compiling the string for the entire tree.
-   * @param depth How deep we are into the hierarchy right now.
-   */
-  protected void tabs(StringBuilder sb, int depth) {
-    sb.append(depth % 2 == 0 
-                ? depth/2 + "."
-                : "..");
-    
-    for (int i = 0; i < depth; ++i) {
-      sb.append("..");
-    }
-  }
-
   /**
    * When comparing to FunctionStatsNodes, equality must be exact since distinct
    * FSNs can have the exact same content. (Consider the case for SUM(A:A, 2) + SUM(A:A, 2)
@@ -224,7 +190,7 @@ public class FunctionStatsNode implements Node, Comparable<FunctionStatsNode> {
    */
   @Override
   public boolean equals(Object o) {   
-    if (o instanceof FunctionStatsNode) {
+    if (o instanceof FunctionNode) {
       return o == this;
     } else if (o instanceof FormulaToken) {
       FormulaToken ft = (FormulaToken) o;
@@ -241,13 +207,5 @@ public class FunctionStatsNode implements Node, Comparable<FunctionStatsNode> {
   @Override
   public int hashCode() {
     return function.hashCode();
-  }
-  
-  /**
-   * Things with higher frequency should be prioritized higher.
-   */
-  @Override
-  public int compareTo(FunctionStatsNode o) {
-    return o.getFrequency() - this.frequency;
   }
 }

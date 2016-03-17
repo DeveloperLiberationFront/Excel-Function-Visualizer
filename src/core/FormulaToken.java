@@ -173,8 +173,8 @@ public class FormulaToken {
     if (o == this)
       return true;
     
-    if (o instanceof FunctionStatsNode) {
-      FunctionStatsNode fsn = (FunctionStatsNode) o;
+    if (o instanceof FunctionNode) {
+      FunctionNode fsn = (FunctionNode) o;
       return this.tokenStr.equals(fsn.getFunction());
     } else if (o instanceof FormulaToken) {
       FormulaToken ft = (FormulaToken) o;

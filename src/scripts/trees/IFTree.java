@@ -12,7 +12,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import core.FormulaToken;
-import core.FunctionStatsNode;
+import core.FunctionNode;
 import core.Node;
 import core.Parser;
 import utils.DBUtils;
@@ -48,7 +48,7 @@ public class IFTree {
           continue;
         
         if (sum == null)
-          sum = new FunctionStatsNode(tree.toSimpleString());
+          sum = new FunctionNode(tree.toSimpleString());
         sum.add(id, tree);
         
         System.out.println(currentlyAt + " : " + formula);        

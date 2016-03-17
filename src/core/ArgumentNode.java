@@ -12,22 +12,16 @@ import com.google.gson.annotations.Expose;
  * @author dlf
  *
  */
-public class FunctionArgumentNode implements Node {
+public class ArgumentNode extends Node {
   @Expose
   private int position;
   
-  @Expose
-  private int frequency = 0;  //TODO: The way this freq differs from FunctionStatsNode is very slight
-                                      //      and could probably eventually cause a bug. (FSN increments first
-                                      //      in constructor because it adds all children there. This doesn't add
-                                      //      anything in constructor, only in `add` and `get`
-  
-  private Map<String, FunctionStatsNode> possibleArguments_unsorted = new HashMap<String, FunctionStatsNode>();
+  private Map<String, Node> possibleArguments_unsorted = new HashMap<String, Node>();
   
   @Expose
   private Node[] children = null;  //because it preserves insertion order
   
-  public FunctionArgumentNode(int pos) {
+  public ArgumentNode(int pos) {
     this.position = pos;
   }
   
@@ -35,23 +29,23 @@ public class FunctionArgumentNode implements Node {
     String func = child.toSimpleString();
     increment();
 
-    FunctionStatsNode statsNode;
+    Node statsNode;
     if (possibleArguments_unsorted.containsKey(func)) {
       statsNode = possibleArguments_unsorted.get(func);
     } else {
-      statsNode = new FunctionStatsNode(child.toSimpleString());
+      statsNode = isLeafToken(func) ? new LeafNode(func) : new FunctionNode(func);
       possibleArguments_unsorted.put(child.toSimpleString(), statsNode);
     }
     
     statsNode.add(ex, child);
   }
   
-  public int increment() {
-    return ++frequency;
+  private boolean isLeafToken(String tok) {
+    return tok.startsWith("~") && tok.endsWith("~");
   }
 
-  public ArrayList<FunctionStatsNode> getPossibilities() {
-    return new ArrayList<FunctionStatsNode>(possibleArguments_unsorted.values());
+  public ArrayList<Node> getPossibilities() {
+    return new ArrayList<Node>(possibleArguments_unsorted.values());
   }
   
   public void setChildren() {
@@ -59,9 +53,15 @@ public class FunctionArgumentNode implements Node {
     for (Node node : children)
       node.setChildren();
   }
-
+  
   @Override
-  public int getFrequency() {
-    return frequency;
+  public String toString() {
+    return position + "";
   }
+
+  /*@Override
+  public void toTreeString(StringBuilder sb, int i) {
+    // TODO Auto-generated method stub
+    
+  }*/
 }
