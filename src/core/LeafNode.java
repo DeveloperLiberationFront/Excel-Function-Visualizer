@@ -46,11 +46,4 @@ public class LeafNode extends Node {
   public String toString() {
     return function;
   }
-
-  /*@Override
-  public void toTreeString(StringBuilder sb, int i) {
-    tabs(sb, i);
-    sb.append(function);
-    sb.append('\n');
-  }*/ 
 }

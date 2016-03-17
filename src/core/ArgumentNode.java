@@ -58,10 +58,4 @@ public class ArgumentNode extends Node {
   public String toString() {
     return position + "";
   }
-
-  /*@Override
-  public void toTreeString(StringBuilder sb, int i) {
-    // TODO Auto-generated method stub
-    
-  }*/
 }

@@ -155,29 +155,8 @@ public class FunctionNode extends Node {
    */
   @Override
   public String toString() {
-    return function; //toTreeString(new StringBuilder(), 0).toString();
+    return function; 
   }
-  
-  /*private StringBuilder toTreeString(StringBuilder sb, int depth) {
-    tabs(sb, depth);
-    sb.append(function + " (" + frequency + ")");
-    sb.append("\n");
-    
-    for (int i = 0; i < all_quantities.size(); ++i) {
-      ArgumentNode argument = getArgumentAtPosition(i);
-      tabs(sb, depth+1);
-      sb.append("Argument #" + (i+1));
-      sb.append("\n");
-      
-      ArrayList<Node> funcs = argument.getPossibilities();
-      Collections.sort(funcs);
-      for (Node func : funcs) {
-        func.toTreeString(sb, depth+2);
-      }
-    }
-    
-    return sb;
-  }*/
   
   /**
    * When comparing to FunctionStatsNodes, equality must be exact since distinct

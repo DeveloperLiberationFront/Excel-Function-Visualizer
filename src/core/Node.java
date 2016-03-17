@@ -22,25 +22,7 @@ public abstract class Node implements Comparable<Node> {
     return frequency;
   }
 
-  public abstract String toString();
-
-  //public abstract void toTreeString(StringBuilder sb, int i);
-
-  /**
-   * Adds the appropriate amount of tabbing to an element this deep in the tree
-   * @param sb    The stringbuilder which is compiling the string for the entire tree.
-   * @param depth How deep we are into the hierarchy right now.
-   */
-  /*protected void tabs(StringBuilder sb, int depth) {
-    sb.append(depth % 2 == 0 
-                ? depth/2 + "."
-                : "..");
-    
-    for (int i = 0; i < depth; ++i) {
-      sb.append("..");
-    }
-  }*/
-  
+  public abstract String toString();  
   
   /**
    * Things with higher frequency should be prioritized higher.

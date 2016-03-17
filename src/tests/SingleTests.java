@@ -279,6 +279,12 @@ public class SingleTests {
     singleSuccessTest(formula);
   }
   
+  @Test
+  public void test_21_coloninsheetname() {
+    String formula = "SUM('111678 (0013):111706 (0238)'!E62:E62)";
+    singleSuccessTest(formula);
+  }
+  
   private void singleSuccessTest(String filename, int sheetNum, int row, int col) {
     XSSFWorkbook wb = POIUtils.getWorkbook(filename);
     String formula = getFormulaAt(wb, sheetNum, row, col);
