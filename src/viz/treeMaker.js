@@ -210,8 +210,12 @@ function enterNode(node, src) {
       }),
       rects = nodeEnter.filter(function(d) { return d.depth % 2 != 0; })
 
+  circles.on("mouseover", mouseover)
+    .on("mousemove", mousemove)
+    .on("mouseleave", mouseleave);
   circles.filter(function(d) { return d.children || d._children; }) //Only click those that have any children.
-    .on("click", click);
+    .on("click", click)
+    .on("dblclick", newWindow);
   rects.on("click", click)
     .on("mouseover", rect_mouseover)
     .on("mouseleave", rect_mouseout);
@@ -238,10 +242,7 @@ function enterNode(node, src) {
 function enterCircle(circles) {
   circles.append("circle")
     .attr("r", 1e-6)
-    .style("fill", function(d) { return d._children ? circle_col : empty_col; })
-    .on("mouseover", mouseover)
-    .on("mousemove", mousemove)
-    .on("mouseleave", mouseleave);
+    .style("fill", function(d) { return d._children ? circle_col : empty_col; });
 
   circles.append("text")
     .attr("dx", function(d) { return -scale(d.frequency) - 2; })
@@ -258,9 +259,7 @@ var tip = d3.select("body")
   .append("svg.rect")
   .attr("class", "tooltip")
   .attr("color", "gray")
-  .style("display", "none")
-  .on("mouseover", function() { tip.hover = true; })
-  .on("mouseleave", function() { tip.hover = false; });
+  .style("display", "none");
 
 /**
  * Makes the tooltip visible over current mouse position over node. Sets text.
@@ -271,53 +270,47 @@ function mouseover(d) {
   var b = "<b>", bb = "</b>",
       i = "<i>", ii = "</i>",
       br = "<br/>",
-      func = b + d.function + bb + br,
-      freq = d.frequency.toLocaleString() + br,
-      ex = i + "unavailable" + ii + br,
-      loc = i + "unavailable" + ii,
+      func = "func: " + b + d.function + bb + br,
+      freq = "count: " + d.frequency.toLocaleString() + br,
+      ex = "ex: " + i + "unavailable" + ii + br,
+      //loc = i + "unavailable" + ii,
       id = d.example;
 
-  /*var tt = d3.select("#n" + d.id)
-    .append("rect")
+  var hovered = d3.select("#n" + d.id);
+
+  /*var tt = hovered.append("svg:rect")
     .attr("class", "tooltip")
     .attr("color", "gray")
-    .attr("x", d.x)
-    .attr("y", d.y)
-    .style("display", "inline");
-  console.log(tt);*/
+    .attr("height", "200px")
+    .attr("width", "200px")
+    .style("left", (d.x+ tip_x) + "px")
+    .style("top", (d.y + tip_y) + "px")
+    .style("display", "inline")
+    .html(func + freq + ex + loc);*/
 
   d3.json("examples.php?id=" + id, function(error, data) {
     if (error) throw error;
 
     form = data["formula"].replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    ex = i + form + ii + br;
-    loc = data["file"] + br + data["sheetName"] + " " + data["col"]
+    ex = "ex: " + i + form + ii + br;
+    /*loc = data["file"] + br + data["sheetName"] + " " + data["col"]
       + data["row"];
     loc = "<a href=\"http://localhost:8000/sheets/" + data["src"] + "/"
-      + data["file"] + "\">" + loc + "</a>";
-    tip.attr("height", null).html(func + freq + ex + loc)
-
-    //TODO: Changing widths of the tooltip?
-    /*var width = $('.tooltip').width();
-    console.log(width);
-    if (width > 200) {
-      tip.style("width", null);
-    }*/
+      + data["file"] + "\">" + loc + "</a>";*/
+    tip.attr("height", null).html(func + freq + ex)
   })
 
-  tip.html(func + freq + ex + loc)
+  tip.html(func + freq + ex)
     .style("left", (d3.event.pageX + tip_x) + "px")
     .style("top", (d3.event.pageY + tip_y) + "px")
     .style("display", "inline");
 
-  var hovered = d3.select("#n" + d.id)
-    .select("circle");
-
-  hovered.style("fill", function(d) {
-    if (d._children) return circle_hover;     //Get darker color.
-    else if (d.children) return empty_hover;  //Get gray.
-    else return empty_col;                    //Don't change if no children.
-  });
+  hovered.select("circle")
+    .style("fill", function(d) {
+      if (d._children) return circle_hover;     //Get darker color.
+      else if (d.children) return empty_hover;  //Get gray.
+      else return empty_col;                    //Don't change if no children.
+    });
 }
 
 /**
@@ -332,16 +325,18 @@ function mousemove(d) {
  * Dismisses the tooltip once the mouse leaves the node.
  */
 function mouseleave(d) {
-  //if (!tip.hover)
-  tip.style("display", "none");
+  if (!tip.hover)
+    tip.style("display", "none");
 
-  var hovered = d3.select("#n" + d.id)
-    .select("circle");
+  var hovered = d3.select("#n" + d.id);
 
-  hovered.style("fill", function(d) {
-    if (d._children) return circle_col;
-    else return empty_col;
+  hovered.select("circle")
+    .style("fill", function(d) {
+      if (d._children) return circle_col;
+      else return empty_col;
   });
+
+  //console.log(hovered.select(".tooltip").remove());
 }
 
 /**
@@ -393,7 +388,7 @@ function updateNode(node) {
       return d._children ? circle_col : empty_col;
     });
 
-  nodeUpdate.select("rect")
+  nodeUpdate.select("rect:not(.tooltip)")
     .attr("width", square_side)
     .attr("height", square_side)
     .style("fill", function(d) { return d._children ? rect_col : empty_col; });
@@ -513,6 +508,12 @@ function expandclick(d) {
   }
 
   update(par);
+}
+
+function newWindow(d) {
+  var win = window.open("", "_blank");
+  win.document.write("Hey! You clicked: " + d.function)
+  win.focus;
 }
 
 //http://bl.ocks.org/robschmuecker/7880033
