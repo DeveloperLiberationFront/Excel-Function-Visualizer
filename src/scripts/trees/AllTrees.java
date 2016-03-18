@@ -25,7 +25,7 @@ public class AllTrees {
   public static void main(String[] args) throws SQLException, IOException {
     int limit = 100000, offset = 0, currentlyAt;
     Connection con = DBUtils.connectToDatabase();
-    PreparedStatement ps = con.prepareStatement("SELECT * FROM formulas_unique WHERE ID > ? LIMIT " + limit + ";");
+    PreparedStatement ps = con.prepareStatement("SELECT * FROM old_formulas_unique WHERE ID > ? LIMIT " + limit + ";");
     
     Map<String, FunctionNode> trees = new HashMap<String, FunctionNode>();
     do {
@@ -54,7 +54,9 @@ public class AllTrees {
           trees.put(toplevel, new FunctionNode(tree.toSimpleString()));
         trees.get(toplevel).add(id, tree);
         
-        System.out.println(currentlyAt + " : " + formula);        
+        //if (toplevel.equals("()"))
+        //    System.out.println();
+        //System.out.println(currentlyAt + " : " + formula);        
       }
       
       rs.previous();
@@ -76,10 +78,27 @@ public class AllTrees {
     builder.setPrettyPrinting().serializeNulls().excludeFieldsWithoutExposeAnnotation();
     Gson gson = builder.create();
     
-    BufferedWriter write = new BufferedWriter(new FileWriter("./src/viz/all.json"));
-    write.write(gson.toJson(allFuncs));
-    //System.out.println(gson.toJson(sum));
-    write.close();
-
+    ArrayList<String> list = new ArrayList<String>();
+    for (String func : allFuncs.keySet()) {
+      String fileFunc;
+      if (func.equals("/")) fileFunc="DIV";
+      else if (func.equals("*")) fileFunc="MUL";
+      else if (func.equals(" ")) fileFunc="SPACE";
+      else if (func.equals("()")) fileFunc="PAREN";
+      else if (func.equals("=")) fileFunc="EQUALS";
+      else if (func.equals("&")) fileFunc="AMP";
+      else fileFunc = func;
+      //else func = func.replace("()", "");
+      BufferedWriter write = new BufferedWriter(new FileWriter("./src/viz/json/j" + fileFunc + ".json"));
+      write.write(gson.toJson(allFuncs.get(func)));
+      write.close();
+      
+      list.add(fileFunc);
+    }
+    
+    Collections.sort(list);
+    BufferedWriter write = new BufferedWriter(new FileWriter("./src/viz/json/index.json"));
+    write.write(gson.toJson(list));
+    write.close();    
   }
 }

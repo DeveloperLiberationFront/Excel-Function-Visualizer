@@ -11,7 +11,7 @@ public class FunctionNode extends Node {
   @Expose
   private String function;  
   
-  @Expose
+  //@Expose
   private Map<Integer, QuantityOfArgumentsNode> specific_quantities = null;
   
   private Map<Integer, ArgumentNode> all_quantities = new LinkedHashMap<Integer, ArgumentNode>();

@@ -19,8 +19,6 @@ import org.apache.poi.ss.formula.ptg.RefPtgBase;
 import org.apache.poi.ss.formula.ptg.StringPtg;
 import org.apache.poi.ss.util.CellReference;
 
-import core.Parser.CellContext;
-
 public class FormulaToken {
   protected static Mode mode = Mode.REPLACE;
   protected String tokenStr;
@@ -63,10 +61,10 @@ public class FormulaToken {
    *              token and thus have no arguments.
    */
   public FormulaToken(Ptg tok) {
-    this(tok, new CellContext(0,0,0));
+    this(tok, new CellReference(0,0));
   }
 
-  public FormulaToken(Ptg tok, CellContext cell) {
+  public FormulaToken(Ptg tok, CellReference cellReference) {
     this.token = tok;
     
     switch (mode) {
@@ -75,7 +73,7 @@ public class FormulaToken {
       case REPLACE:
         this.tokenStr = getTypeString(tok);               break;
       case R1C1:
-        this.tokenStr = toR1C1String(tok.toFormulaString().trim(), cell);
+        this.tokenStr = toR1C1String(tok.toFormulaString().trim(), cellReference);
         break;      
     }
   }
@@ -125,8 +123,8 @@ public class FormulaToken {
   private static String refPattern = "(?!\\d)\\$?[A-Z]+\\$?\\d+(?![a-zA-Z!])",
                         followedByEvenNumOfQuotes = "(?=([^']*'[^']*')*[^']*$)";
   private static Matcher match = Pattern.compile(refPattern+followedByEvenNumOfQuotes).matcher("");
-  public static String toR1C1String(String formula, CellContext cell) {
-    int row = cell.getRow() + 1, col = cell.getCol() + 1; //When using POI, cell A1 is 0,0. We need to offset by one.
+  public static String toR1C1String(String formula, CellReference cell) {
+    int row = cell.getRow(), col = cell.getCol();
     StringBuffer newFormula = new StringBuffer();
     
     match.reset(formula);

@@ -17,6 +17,7 @@ import org.apache.poi.ss.formula.ptg.OperationPtg;
 import org.apache.poi.ss.formula.ptg.ParenthesisPtg;
 import org.apache.poi.ss.formula.ptg.Ptg;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFEvaluationWorkbook;
 
 import utils.POIUtils;
@@ -32,22 +33,22 @@ public class Parser {
    */
   public static FormulaToken parseFormula(String formula) 
       throws FormulaParseException, UnsupportedOperationException {
-    return parseFormula(formula, BLANK, new CellContext(0, 0, 0));
+    return parseFormula(formula, BLANK, 0, new CellReference(0, 0));
   }
   
   public static FormulaToken parseFormula(String formula, FormulaParsingWorkbook parse, int sheet)
       throws FormulaParseException, UnsupportedOperationException {
-    return parseFormula(formula, parse, new CellContext(sheet, 0, 0));
+    return parseFormula(formula, parse, sheet, new CellReference(0, 0));
   }
   
   public static FormulaToken parseFormula(String formula, int row, int col) 
       throws FormulaParseException, UnsupportedOperationException {
-    return parseFormula(formula, BLANK, new CellContext(0, row, col));
+    return parseFormula(formula, BLANK, 0, new CellReference(row, col));
   }
   
   public static FormulaToken parseFormula(Cell cell, FormulaParsingWorkbook parse, int sheet)
       throws FormulaParseException, UnsupportedOperationException {
-    return parseFormula(cell.getCellFormula(), parse, new CellContext(sheet, cell.getRowIndex(), cell.getColumnIndex()));    
+    return parseFormula(cell.getCellFormula(), parse, sheet, new CellReference(cell));    
   }
 
   /**
@@ -62,7 +63,7 @@ public class Parser {
    * @throws UnsupportedOperationException  If the formula is blank or has quotes after exclamation
    *                                          ( !' ), which I saw in a few and it couldn't parse.
    */
-  public static FormulaToken parseFormula(String formula, FormulaParsingWorkbook parse, CellContext cell) 
+  public static FormulaToken parseFormula(String formula, FormulaParsingWorkbook parse, int sheet, CellReference cell) 
       throws FormulaParseException, UnsupportedOperationException {
     Ptg[] tokens = null;
     
@@ -71,10 +72,10 @@ public class Parser {
     else if (formula.contains("!'"))
       throw new UnsupportedOperationException("Formula contains illegal single quotes.");
     
-    tokens = FormulaParser.parse(formula, parse, FormulaType.CELL, cell.getSheet());
+    tokens = FormulaParser.parse(formula, parse, FormulaType.CELL, sheet);
     
     FormulaRenderingWorkbook render = (FormulaRenderingWorkbook) parse;
-    FormulaToken tree = parseFormula(tokens, render, cell);
+    FormulaToken tree = parseFormula(tokens, render, sheet, cell);
     tree.setOrigLen(formula.length());
     return tree;
   }
@@ -85,10 +86,10 @@ public class Parser {
    * @param render  The rendering workbook which contained the formula.
    */
   public static FormulaToken parseFormula(Ptg[] tokens, FormulaRenderingWorkbook render, int sheet) {
-    return parseFormula(tokens, render, new CellContext(sheet, 0, 0));
+    return parseFormula(tokens, render, sheet, new CellReference(0, 0));
   }
   
-  public static FormulaToken parseFormula(Ptg[] tokens, FormulaRenderingWorkbook render, CellContext cell) {
+  public static FormulaToken parseFormula(Ptg[] tokens, FormulaRenderingWorkbook render, int sheet, CellReference cell) {
     Stack<FormulaToken> formula = new Stack<FormulaToken>();
     
     for (Ptg ptg : tokens) {
@@ -100,7 +101,7 @@ public class Parser {
       } else if (ptg instanceof OperationPtg) {        
         form = operationParse(ptg, formula);       
       } else if (ptg instanceof OperandPtg) {           
-        form = operandParse(ptg, render, cell);        
+        form = operandParse(ptg, render, sheet, cell);        
       } else if (ptg instanceof ParenthesisPtg) {
         form = parseParen(formula);
       } else if (ptg instanceof AttrPtg) {
@@ -161,14 +162,14 @@ public class Parser {
    * @param cell 
    * @return        The new formula token.
    */
-  private static FormulaToken operandParse(Ptg ptg, FormulaRenderingWorkbook render, CellContext cell) {
+  private static FormulaToken operandParse(Ptg ptg, FormulaRenderingWorkbook render, int sheet, CellReference cell) {
     FormulaToken form;
     
     //Name tokens need renderer, others don't.
     if (ptg instanceof NamePtg) {
       NamePtg name = (NamePtg) ptg;
-      Ptg[] nameTokens = POIUtils.resolveName(name, render, cell.getSheet());
-      form = parseFormula(nameTokens, render, cell);
+      Ptg[] nameTokens = POIUtils.resolveName(name, render, sheet);
+      form = parseFormula(nameTokens, render, sheet, cell);
     } else {
       OperandPtg operand = (OperandPtg) ptg;
       form = new FormulaToken(operand, cell);
@@ -208,29 +209,5 @@ public class Parser {
   
   public static void replace() {
     FormulaToken.replace();
-  }
-  
-  public static class CellContext {
-    private int sheet;
-    private int row;
-    private int col;
-
-    public CellContext(int sheet, int row, int col) {
-      this.sheet = sheet;
-      this.row = row;
-      this.col = col;
-    }
-
-    public int getSheet() {
-      return sheet;
-    }
-
-    public int getRow() {
-      return row;
-    }
-
-    public int getCol() {
-      return col;
-    }
   }
 }
