@@ -68,7 +68,7 @@ public class IFTree {
     
     BufferedWriter write = new BufferedWriter(new FileWriter("./src/viz/iftree.json"));
     write.write(gson.toJson(sum));
-    System.out.println(gson.toJson(sum));
+    //System.out.println(gson.toJson(sum));
     write.close();
 
   }

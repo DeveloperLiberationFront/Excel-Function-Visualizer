@@ -81,7 +81,11 @@ public class OperationToken extends FormulaToken {
   }
   private static final Matcher NULL = Pattern.compile("null,?").matcher("");
 
-
+  public String wrap() {
+    this.tokenStr = "(" + tokenStr + ")";
+    return tokenStr;
+  }
+  
   public FormulaToken[] getChildren() {
     return children;
   }

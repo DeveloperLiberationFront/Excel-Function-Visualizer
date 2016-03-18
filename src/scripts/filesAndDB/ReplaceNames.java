@@ -23,7 +23,7 @@ public class ReplaceNames {
   private static PreparedStatement update;
   
   public static void main(String[] args) throws Throwable {
-    FormulaToken.dontReplace();
+    Parser.dontReplace();
     Connection con = DBUtils.connectToDatabase();
     update = con.prepareStatement("UPDATE formulas SET formula = ?, usedNames = 1 WHERE id = ?;");
     Statement s1 = con.createStatement(), s2 = con.createStatement();

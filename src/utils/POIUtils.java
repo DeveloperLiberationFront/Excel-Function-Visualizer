@@ -88,39 +88,4 @@ public class POIUtils {
     EvaluationName eval = ((FormulaParsingWorkbook) render).getName(nameStr, sheet);
     return eval.getNameDefinition();
   }
-  
-  public static String toR1C1String(String formula, int row, int col) {
-    //TODO: This might match things in strings...but for my purposes, I don't think that
-    //      would change my results?
-    StringBuffer newFormula = new StringBuffer();
-    
-    Matcher match = Pattern.compile("\\$?[A-Z]+\\$?\\d+").matcher(formula);
-    while (match.find()) {
-      String orig = match.group();
-      String[] parts = orig.replaceAll("([A-Z])(\\$?\\d)", "$1 $2").split(" ");
-      
-      //if (!parts[0].startsWith("$")) {
-      String refCol = parts[0];
-      boolean absCol = refCol.startsWith("$");
-      if (absCol) 
-        refCol = refCol.replace("$", "");
-      int refColNum = CellReference.convertColStringToIndex(refCol);
-      refCol = absCol ? "C" + refColNum : "C[" + (refColNum - col) + "]";
-      
-      String refRow = parts[1];
-      boolean absRow = refRow.startsWith("$");
-      if (absRow) 
-        refRow = refRow.replace("$", "");
-      int refRowNum = Integer.parseInt(refRow);
-      refRow = absRow ? "R" + refRowNum : "R[" + (refRowNum - row) + "]";
-      
-      
-      String newRef = refRow + refCol;
-      //System.out.println(match.group() + " -> " + newRef + " (" + col + "," + row + ")");
-      match.appendReplacement(newFormula, newRef);      
-    }      
-    
-    match.appendTail(newFormula);
-    return newFormula.toString();
-  }
 }

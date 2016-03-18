@@ -11,6 +11,7 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import core.FormulaToken;
+import core.Parser;
 import utils.TestUtils;
 
 //http://stackoverflow.com/questions/358802/junit-test-with-dynamic-number-of-tests
@@ -41,7 +42,7 @@ public class AllTests {
   
   @Before
   public void setUp() {
-    FormulaToken.dontReplace();
+    Parser.dontReplace();
   }
   
   @Test

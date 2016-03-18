@@ -1,6 +1,6 @@
 package tests;
 
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import org.apache.poi.ss.formula.FormulaParseException;
 import org.apache.poi.xssf.usermodel.XSSFEvaluationWorkbook;
@@ -16,7 +16,7 @@ import utils.TestUtils;
 public class SingleTests {
   @Before
   public void setUp() {
-    FormulaToken.dontReplace();
+    Parser.dontReplace();
   }
   
 
@@ -283,6 +283,54 @@ public class SingleTests {
   public void test_21_coloninsheetname() {
     String formula = "SUM('111678 (0013):111706 (0238)'!E62:E62)";
     singleSuccessTest(formula);
+  }
+  
+  @Test
+  public void test_23_r1c1_1() {
+    Parser.goRelative();
+    assertEquals("R[25]C[2]", Parser.parseFormula("B25").toString());
+  }
+  
+  @Test
+  public void test_24_r1c1_2() {
+    Parser.goRelative();
+    assertEquals("A1xC5xE9!R[25]C[2]", Parser.parseFormula("A1xC5xE9!B25").toString());
+  }
+  
+  @Test
+  public void test_25_r1c1_3() {
+    Parser.goRelative();
+    assertEquals("A1xC5xE9!R[25]C[2]", Parser.parseFormula("'A1xC5xE9'!B25").toString());
+  }
+  
+  @Test
+  public void test_26_r1c1_4() {
+    Parser.goRelative();
+    assertEquals("R[25]C[2]:R[26]C[2]", Parser.parseFormula("B25:B26").toString());
+  }
+  
+  @Test
+  public void test_27_r1c1_5() {
+    Parser.goRelative();
+    assertEquals("A1xC5xE9!R[25]C[2]:Sheet!R[26]C[2]", Parser.parseFormula("A1xC5xE9!B25:Sheet!B26").toString());
+  }
+  
+  @Test
+  public void test_28_r1c1_6() {
+    Parser.goRelative();
+    assertEquals("Sheet!R[25]C[2]:A1xC5xE9!R[26]C[2]", Parser.parseFormula("'Sheet'!B25:'A1xC5xE9'!B26").toString());
+  }
+  
+  @Test
+  public void test_29_r1c1_7() {
+    Parser.goRelative();
+    assertEquals("Sheet!R[25]C2:'$A1xC$5x$E$9'!R26C[2]", Parser.parseFormula("'Sheet'!$B25:'$A1xC$5x$E$9'!B$26").toString());
+  }
+  
+  @Test
+  public void test_30_r1c1_8() {
+    Parser.goRelative();
+    assertEquals("SUM(Sheet!R[25]C2:'$A1xC$5x$E$9'!R26C[2])", Parser.parseFormula("SUM('Sheet'!$B25:'$A1xC$5x$E$9'!B$26)").toString());
   }
   
   private void singleSuccessTest(String filename, int sheetNum, int row, int col) {

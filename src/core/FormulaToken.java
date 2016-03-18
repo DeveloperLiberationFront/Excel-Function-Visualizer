@@ -1,22 +1,37 @@
 package core;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.apache.poi.ss.formula.EvaluationName;
 import org.apache.poi.ss.formula.FormulaParsingWorkbook;
 import org.apache.poi.ss.formula.FormulaRenderingWorkbook;
+import org.apache.poi.ss.formula.ptg.Area2DPtgBase;
+import org.apache.poi.ss.formula.ptg.Area3DPxg;
 import org.apache.poi.ss.formula.ptg.AreaPtgBase;
 import org.apache.poi.ss.formula.ptg.BoolPtg;
 import org.apache.poi.ss.formula.ptg.IntPtg;
 import org.apache.poi.ss.formula.ptg.NamePtg;
 import org.apache.poi.ss.formula.ptg.NumberPtg;
+import org.apache.poi.ss.formula.ptg.OperandPtg;
 import org.apache.poi.ss.formula.ptg.Ptg;
 import org.apache.poi.ss.formula.ptg.RefPtgBase;
 import org.apache.poi.ss.formula.ptg.StringPtg;
+import org.apache.poi.ss.util.CellReference;
+
+import core.Parser.CellContext;
 
 public class FormulaToken {
-  protected static boolean replace = true;
+  protected static Mode mode = Mode.REPLACE;
   protected String tokenStr;
   protected Ptg token;
   private int origLen = Integer.MAX_VALUE;
+  
+  public enum Mode {
+    NO_CHANGE,
+    REPLACE,
+    R1C1
+  }
   
   //TODO: Don't like this blank string possibility, but OperationToken needs a blank super...
   public FormulaToken() {
@@ -48,12 +63,33 @@ public class FormulaToken {
    *              token and thus have no arguments.
    */
   public FormulaToken(Ptg tok) {
+    this(tok, new CellContext(0,0,0));
+  }
+
+  public FormulaToken(Ptg tok, CellContext cell) {
     this.token = tok;
-    this.tokenStr = replace ? getTypeString(tok) : token.toFormulaString().trim();
+    
+    switch (mode) {
+      case NO_CHANGE:
+        this.tokenStr = tok.toFormulaString().trim();   break;
+      case REPLACE:
+        this.tokenStr = getTypeString(tok);               break;
+      case R1C1:
+        this.tokenStr = toR1C1String(tok.toFormulaString().trim(), cell);
+        break;      
+    }
+  }
+
+  public static void dontReplace() {
+    mode = Mode.NO_CHANGE;
   }
   
-  public static void dontReplace() {
-    replace = false;
+  public static void goRelative() {
+    mode = Mode.R1C1;
+  }
+  
+  public static void replace() {
+    mode = Mode.REPLACE;
   }
 
   /**
@@ -83,12 +119,53 @@ public class FormulaToken {
     return type;
   }
   
+  //(?!\\d)\\$?[A-Z]+\\$?\\d+(?![a-zA-Z]) -> Capture all instance of a set of letters 
+  //  followed by a set of numbers. Can't be immediately preceded by another number or 
+  //  followed by another letter or an exclamation, as might be indicative in sheet names or strings.
+  private static String refPattern = "(?!\\d)\\$?[A-Z]+\\$?\\d+(?![a-zA-Z!])",
+                        followedByEvenNumOfQuotes = "(?=([^']*'[^']*')*[^']*$)";
+  private static Matcher match = Pattern.compile(refPattern+followedByEvenNumOfQuotes).matcher("");
+  public static String toR1C1String(String formula, CellContext cell) {
+    int row = cell.getRow() + 1, col = cell.getCol() + 1; //When using POI, cell A1 is 0,0. We need to offset by one.
+    StringBuffer newFormula = new StringBuffer();
+    
+    match.reset(formula);
+    while (match.find()) {
+      String orig = match.group();
+      String[] parts = orig.replaceAll("([A-Z])(\\$?\\d)", "$1 $2").split(" ");
+      
+      //if (!parts[0].startsWith("$")) {
+      String refCol = parts[0];
+      boolean absCol = refCol.startsWith("$");
+      if (absCol) 
+        refCol = refCol.replace("$", "");
+      int refColNum = CellReference.convertColStringToIndex(refCol) + 1; //Plus 1 because POI offsets by one.
+      refCol = absCol ? "C" + refColNum : "C[" + (refColNum - col) + "]";
+      
+      String refRow = parts[1];
+      boolean absRow = refRow.startsWith("$");
+      if (absRow) 
+        refRow = refRow.replace("$", "");
+      int refRowNum = Integer.parseInt(refRow); 
+      refRow = absRow ? "R" + refRowNum : "R[" + (refRowNum - row) + "]";
+      
+      
+      String newRef = refRow + refCol;
+      //System.out.println(match.group() + " -> " + newRef + " (" + col + "," + row + ")");
+      match.appendReplacement(newFormula, newRef);      
+    }      
+    
+    match.appendTail(newFormula);
+    return newFormula.toString();
+  }
+  
   /**
    * Wrap this token in parenthesis.
    * @return
    */
   public String wrap() {
-    this.tokenStr = "(" + tokenStr + ")";
+    if (mode != Mode.REPLACE)
+      this.tokenStr = "(" + tokenStr + ")";   //Don't want to wrap a single leaf node for viz purposes.
     return tokenStr;
   }
   

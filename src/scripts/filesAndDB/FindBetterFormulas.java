@@ -21,7 +21,7 @@ public class FindBetterFormulas {
 
   public static void main(String[] args) throws Exception {
     File dir = new File(SSDIRECTORY);
-    FormulaToken.dontReplace();
+    Parser.dontReplace();
     
     if (!dir.isDirectory()) {
       System.err.println("SSDirectory is not a directory!");
@@ -70,7 +70,7 @@ public class FindBetterFormulas {
               
               System.out.println(formula);
               
-              System.out.println(POIUtils.toR1C1String(formula, cell.getRowIndex(), cell.getColumnIndex()));
+              //System.out.println(POIUtils.toR1C1String(formula, cell.getRowIndex(), cell.getColumnIndex()));
            
               System.out.println(">>> " + formula);
               System.out.println();

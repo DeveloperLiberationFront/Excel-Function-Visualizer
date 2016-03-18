@@ -4,12 +4,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import core.FormulaToken;
+import core.Parser;
 import utils.TestUtils;
 
 public class SheetTests {
   @Before
   public void setUp() {
-    FormulaToken.dontReplace();
+    Parser.dontReplace();
   }
 
   @Test

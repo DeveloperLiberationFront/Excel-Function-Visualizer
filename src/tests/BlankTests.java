@@ -48,7 +48,7 @@ public class BlankTests {
   
   @Before
   public void setUp() {
-    FormulaToken.dontReplace();
+    Parser.dontReplace();
   }
   
   @Test
