@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>
+      Spreadsheets, Visualized
+    </title>
+  </head>
+
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+
+  <script>
+  d3.json("./json/index.json", function(error, json) {
+    if (error) throw error;
+
+    var links = d3.select("a")
+      .data(json)
+      .enter()
+      .append("div")
+      .append("a")
+      .html(function(d) {
+        return d;
+      })
+      .attr("href", function(d) {
+        return "tree.html?file=" + d;
+      });
+  });
+  </script>
+
+  <body>
+  </body>
+</html>

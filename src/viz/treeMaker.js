@@ -95,21 +95,22 @@ gradient.append("stop")
   .attr("stop-color", "black")
   .attr("stop-opacity", "0");
 
-/*var background = svg.select("defs")
-  .append("pattern")
-  .attr("id", "stripes")
-  .attr("width", "150px")
-  .attr("height", "150px")
-  .attr("patternUnits", "userSpaceOnUse")
-  .append("rect")
-  .attr("width", "100px")
-  .attr("height", "100px")
-  .attr("fill", "black");*/
+/**TODO: FROM SOMEWHERE ELSE**/
+function getQueryVariable(variable)
+{
+       var query = window.location.search.substring(1);
+       var vars = query.split("&");
+       for (var i=0;i<vars.length;i++) {
+               var pair = vars[i].split("=");
+               if(pair[0] == variable){return pair[1];}
+       }
+       return(false);
+}
 
 /**
  * Initialize the tree with only one level down expanded.
  */
-var src ="iftree.json"; //If python server started in tree folder
+var src = "json/j" + getQueryVariable("file") + ".json"; //If python server started in tree folder
 var root;
 d3.json(src, function(error, json) {
   if (error) throw error;
@@ -123,7 +124,9 @@ d3.json(src, function(error, json) {
     .range([3, 20])
     .nice();
 
+  var nodes = 0;
   function collapse(d) {
+    ++nodes;
     if (d.children && d.children.length > 0) {
       d._children = d.children;
       d._children.forEach(collapse);
@@ -153,15 +156,17 @@ d3.select(self.frameElement)
  * Update the tree after a clicking event.
  */
 var i = 0;
+var interfunc_gap = 125, //times two, technically; must work with gradient regularity
+    func_arg_gap = 75;
 function update(src) {
   var nodes = tree.nodes(root),
     links = tree.links(nodes);
 
   nodes.forEach(function(d) {
     if (d.depth % 2 == 0) {
-      d.y = d.depth * 125;
+      d.y = d.depth * interfunc_gap;
     } else {
-      d.y = (d.depth - 1) * 125 + 100;
+      d.y = (d.depth - 1) * interfunc_gap + func_arg_gap;
     }
   })
 
@@ -212,10 +217,10 @@ function enterNode(node, src) {
 
   circles.on("mouseover", mouseover)
     .on("mousemove", mousemove)
-    .on("mouseleave", mouseleave);
-  circles.filter(function(d) { return d.children || d._children; }) //Only click those that have any children.
-    .on("click", click)
+    .on("mouseleave", mouseleave)
     .on("dblclick", newWindow);
+  circles.filter(function(d) { return d.children || d._children; }) //Only click those that have any children.
+    .on("click", click);
   rects.on("click", click)
     .on("mouseover", rect_mouseover)
     .on("mouseleave", rect_mouseout);
@@ -272,33 +277,23 @@ function mouseover(d) {
       br = "<br/>",
       func = "func: " + b + d.function + bb + br,
       freq = "count: " + d.frequency.toLocaleString() + br,
-      ex = "ex: " + i + "unavailable" + ii + br,
-      //loc = i + "unavailable" + ii,
       id = d.example;
 
   var hovered = d3.select("#n" + d.id);
 
-  /*var tt = hovered.append("svg:rect")
-    .attr("class", "tooltip")
-    .attr("color", "gray")
-    .attr("height", "200px")
-    .attr("width", "200px")
-    .style("left", (d.x+ tip_x) + "px")
-    .style("top", (d.y + tip_y) + "px")
-    .style("display", "inline")
-    .html(func + freq + ex + loc);*/
+  var ex;
+  if (d.fullExample) {
+    ex = "ex: " + i + d.fullExample + ii + br;
+  } else {
+    ex = "ex: " + i + "unavailable" + ii + br,
+    d3.json("examples.php?id=" + id, function(error, data) {
+      if (error) throw error;
 
-  d3.json("examples.php?id=" + id, function(error, data) {
-    if (error) throw error;
-
-    form = data["formula"].replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    ex = "ex: " + i + form + ii + br;
-    /*loc = data["file"] + br + data["sheetName"] + " " + data["col"]
-      + data["row"];
-    loc = "<a href=\"http://localhost:8000/sheets/" + data["src"] + "/"
-      + data["file"] + "\">" + loc + "</a>";*/
-    tip.attr("height", null).html(func + freq + ex)
-  })
+      d.fullExample = data["formula"].replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      var ex = "ex: " + i + d.fullExample + ii + br;
+      tip.attr("height", null).html(func + freq + ex)
+    });
+  }
 
   tip.html(func + freq + ex)
     .style("left", (d3.event.pageX + tip_x) + "px")
@@ -484,15 +479,23 @@ function exitLink(link, src) {
  */
 function click(d) {
   //Circles just have toggle functionality: click, and see all.
-  if (d.children) {
-    d._children = d.children;
-    d.children = null;
+  if (d3.event.shiftKey || d3.event.ctrlKey) {
+    changeQuantities(d);
   } else {
-    d.children = d._children;
-    d._children = null;
+    if (d.children) {
+      d._children = d.children;
+      d.children = null;
+    } else {
+      d.children = d._children;
+      d._children = null;
+    }
   }
 
   update(d);
+}
+
+function changeQuantities(d) {
+  //TODO: What if both are held down?
 }
 
 function expandclick(d) {
@@ -510,12 +513,6 @@ function expandclick(d) {
   update(par);
 }
 
-function newWindow(d) {
-  var win = window.open("", "_blank");
-  win.document.write("Hey! You clicked: " + d.function)
-  win.focus;
-}
-
 //http://bl.ocks.org/robschmuecker/7880033
 function center(d) {
   var scale = zoomer.scale(),
@@ -525,4 +522,62 @@ function center(d) {
     .attr("transform", "translate(" + x + "," + y + ")scale(" + scale + ")");
   zoomer.scale(scale);
   zoomer.translate([x, y]);
+}
+
+function newWindow(d) {
+  var win = window.open("", "_blank");
+  win.document.write("Hey! You clicked: " + d.function)
+  win.focus;
+
+  var childrenExamples = {};
+
+  function getAllExamples(node) {
+    if (node.allExamples) {
+      node.allExamples.forEach(function(d) { childrenExamples[d] = true; });
+    } else {
+      if (node.children) node.children.forEach(getAllExamples);
+      if (node._children) node._children.forEach(getAllExamples);
+      if (node._holding) node._holding.forEach(getAllExamples);
+    }
+  }
+
+  getAllExamples(d);
+
+  var table = d3.select(win.document.body)
+    .append("table")
+    .style("width", "75%");
+
+  var cols = table.append("colgroup");
+  cols.append("col").attr("span", "1").style("width", "60%");
+  cols.append("col").attr("span", "1").style("width", "30%");
+  cols.append("col").attr("span", "1").style("width", "10%");
+
+  var rows = table.selectAll("tr")
+    .data(Object.keys(childrenExamples))
+    .enter()
+    .append("tr");
+
+  rows.each(function(d, i) {
+    var row = d3.select(this);
+
+    if (i % 2 ==0)
+      row.attr("color" ,"#eee");
+
+    d3.json("examples.php?id=" + d, function(error, data) {
+      var formula, file, location;
+      if (error) {
+        formula = "unavailable";
+        file = "unavailable";
+        location = "unavailable";
+      } else {
+        formula = data["formula"].replace(/</g, "&lt;").replace(/>/g, "&gt;");;
+        file = data["file"];
+        location = "'" + data["sheetName"] + "'!" + data["col"] + (data["row"] + 1);
+      }
+
+      row.append("td").html(formula);
+      row.append("td").html(file);
+      row.append("td").html(location);
+    });
+  });
 }

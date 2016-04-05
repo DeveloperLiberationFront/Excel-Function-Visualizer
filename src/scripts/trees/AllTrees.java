@@ -88,6 +88,7 @@ public class AllTrees {
       else if (func.equals("=")) fileFunc="EQUALS";
       else if (func.equals("&")) fileFunc="AMP";
       else fileFunc = func;
+      
       //else func = func.replace("()", "");
       BufferedWriter write = new BufferedWriter(new FileWriter("./src/viz/json/j" + fileFunc + ".json"));
       write.write(gson.toJson(allFuncs.get(func)));
