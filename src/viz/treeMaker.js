@@ -124,30 +124,50 @@ d3.json(src, function(error, json) {
     .range([3, 20])
     .nice();
 
-  var nodes = 0;
-  function collapse(d) {
-    ++nodes;
-    if (d.children && d.children.length > 0) {
-      d._children = d.children;
-      d._children.forEach(collapse);
-      d.children = null;
-
-      if (d.position != null && d._children.length > 10) {
-        d._children.sort(function(a,b) { return b.frequency - a.frequency; });
-        d._holding = d._children.splice(10);
-        d._children.splice(d._children.length, 0,
-          {"function":"", "frequency":-1, "parent":this});
-      }
-    } else {
-      d.children = null;
-      d._children = null;
-    }
-  }
-
   root.children.forEach(collapse);
+  initQuantities(root);
   center(root);
   update(root);
 })
+
+function collapse(d) {
+  if (d.children && d.children.length > 0) {
+    //For when they have optional arguments.
+    initQuantities(d);
+
+    d._children = d.children;
+    d._children.forEach(collapse);
+    d.children = null;
+
+    if (d.position != null && d._children.length > 10) {
+      d._children.sort(function(a,b) { return b.frequency - a.frequency; });
+      d._holding = d._children.splice(10);
+      d._children.splice(d._children.length, 0,
+        {"function":"", "frequency":-1, "parent":this});
+    }
+  } else {
+    d.children = null;
+    //d._children = null;
+  }
+}
+
+//TODO: This conversion from string to int is kludgy; normalize.
+var inf = "100"; //ONLY USED FOR OPTIONAL ARGUMENT STUFF
+function initQuantities(d) {
+  d.quantities = [];
+
+  if (d.specific_quantities != null) {
+    for (q in d.specific_quantities)
+      d.quantities.push(d.specific_quantities[q]);
+  }
+
+  d.quantities.push({children: d.children,
+                            example: d.example, frequency: d.frequency,
+                            quantity: parseInt(inf, 10)});
+
+  d.specific_quantities = null;
+  d.quantity_index = d.quantities.length - 1;
+}
 
 d3.select(self.frameElement)
   .style("height", height + "px");
@@ -495,7 +515,20 @@ function click(d) {
 }
 
 function changeQuantities(d) {
-  //TODO: What if both are held down?
+  if (d3.event.shiftKey) {
+    d.quantity_index = (d.quantity_index + 1) % d.quantities.length;
+  } else if (d3.event.ctrlKey) {
+    d.quantity_index = (d.quantity_index == 0) ? d.quantities.length - 1
+                        : d.quantity_index - 1;
+  }
+
+  var replacement = d.quantities[d.quantity_index];
+  console.log(replacement);
+  d.children = replacement.children;
+  d.example = replacement.example;
+  d.fullExample = null; //TODO: Keep example?
+  d.frequency = replacement.frequency;
+  d.children.forEach(collapse);
 }
 
 function expandclick(d) {
@@ -525,6 +558,9 @@ function center(d) {
 }
 
 function newWindow(d) {
+  if (d3.event.shiftKey || d3.event.ctrlKey)
+    return; //TODO: A bigger problem is limiting the number of examples.
+
   var win = window.open("", "_blank");
   win.document.write("Hey! You clicked: " + d.function)
   win.focus;
