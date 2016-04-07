@@ -8,103 +8,105 @@
  */
 
 var margin = {
-    top: 100,
-    bottom: 100,
-    left: 100,
-    right: 100
-  },
-  height = window.innerHeight - margin.top - margin.bottom - 20,
-  width = window.innerWidth - margin.left - margin.right - 20,
-  duration = 500,
-  square_side = 20,
-  square_side_half = square_side / 2,
+        top: 100,
+        bottom: 100,
+        left: 100,
+        right: 100
+    },
+    height = window.innerHeight - margin.top - margin.bottom - 20,
+    width = window.innerWidth - margin.left - margin.right - 20,
+    duration = 500,
+    square_side = 20,
+    square_side_half = square_side / 2,
 
-  view_start_x = width / 2,
-  view_start_y = height / 2,
+    view_start_x = width / 2,
+    view_start_y = height / 2,
 
-  circle_col =    "#4C7B61",
-  circle_hover =  "#1D5134",
-  rect_col =      "#627884",
-  rect_hover =    "#35425B",
-  expand_col =    "#ADAD6B",
-  expand_hover =  "#898949"
-  empty_col =     "white",
-  empty_hover =   "lightgray";
+    circle_col = "#4C7B61",
+    circle_hover = "#1D5134",
+    rect_col = "#627884",
+    rect_hover = "#35425B",
+    expand_col = "#ADAD6B",
+    expand_hover = "#898949",
+    empty_col = "white",
+    empty_hover = "lightgray";
 
 var scale; //To be determined when when tree chosen.
 
 var diagonal = d3.svg.diagonal()
-  .projection(function(d) { return [d.y, d.x]; });
+    .projection(function(d) {
+        return [d.y, d.x];
+    });
 
 /**
  * Create the tree and define it's general behavior.
  */
 var tree = d3.layout.tree()
-  //.size([height, width])
-  .nodeSize([square_side, square_side])
-  .sort(function(a, b) {
-    var order = b.frequency - a.frequency;
-    if (order == 0)
-      if (a.function) order = a.function.localeCompare(b.function);
-      else order = a.position - b.position;
-    return order;
-  });
+    //.size([height, width])
+    .nodeSize([square_side, square_side])
+    .sort(function(a, b) {
+        var order = b.frequency - a.frequency;
+        if (order == 0)
+            if (a.function) order = a.function.localeCompare(b.function);
+            else order = a.position - b.position;
+        return order;
+    });
 
 /**
  * Define the zooming behavior for the svg element below this.
  */
 var zoomer = d3.behavior.zoom()
-  .scaleExtent([.5, 8])
-  .on("zoom", function() {
-    svg.attr("transform", "translate(" + d3.event.translate + ")scale("
-      + d3.event.scale + ")")
-  })
+    .scaleExtent([.5, 8])
+    .on("zoom", function() {
+        svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")")
+    })
 
 /**
  * Create the svg box in which you will see everything.
  */
 var svg = d3.select("body")
-  .append("svg")
-  .attr("width", width + margin.left + margin.right)
-  .attr("height", height + margin.top + margin.bottom)
-  .call(zoomer)
-  .on("dblclick.zoom", null)
-  .append("g")
-  .attr("transform", "translate(" + view_start_x + "," + view_start_y + ")");
+    .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .call(zoomer)
+    .on("dblclick.zoom", null)
+    .append("g")
+    .attr("transform", "translate(" + view_start_x + "," + view_start_y + ")");
 
 zoomer.translate([view_start_x, view_start_y]);
 
 //gist.github.com/pnavarrc/20950640812489f13246
 var gradient = svg.append("defs")
-  .append("linearGradient")
-  .attr("id", "gradient")
-  .attr("gradientUnits", "userSpaceOnUse")
-  .attr("spreadMethod", "repeat")
-  .attr("x1", "0px")
-  .attr("y1", "0px")
-  .attr("x2", "250px")
-  .attr("y2", "0px");
+    .append("linearGradient")
+    .attr("id", "gradient")
+    .attr("gradientUnits", "userSpaceOnUse")
+    .attr("spreadMethod", "repeat")
+    .attr("x1", "0px")
+    .attr("y1", "0px")
+    .attr("x2", "250px")
+    .attr("y2", "0px");
 
 gradient.append("stop")
-  .attr("offset", ".4")
-  .attr("stop-color", "black")
-  .attr("stop-opacity", "1");
+    .attr("offset", ".4")
+    .attr("stop-color", "black")
+    .attr("stop-opacity", "1");
 
 gradient.append("stop")
-  .attr("offset", ".9")
-  .attr("stop-color", "black")
-  .attr("stop-opacity", "0");
+    .attr("offset", ".9")
+    .attr("stop-color", "black")
+    .attr("stop-opacity", "0");
 
 /**TODO: FROM SOMEWHERE ELSE**/
-function getQueryVariable(variable)
-{
-       var query = window.location.search.substring(1);
-       var vars = query.split("&");
-       for (var i=0;i<vars.length;i++) {
-               var pair = vars[i].split("=");
-               if(pair[0] == variable){return pair[1];}
-       }
-       return(false);
+function getQueryVariable(variable) {
+    var query = window.location.search.substring(1);
+    var vars = query.split("&");
+    for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split("=");
+        if (pair[0] == variable) {
+            return pair[1];
+        }
+    }
+    return (false);
 }
 
 /**
@@ -113,64 +115,76 @@ function getQueryVariable(variable)
 var src = "json/j" + getQueryVariable("file") + ".json"; //If python server started in tree folder
 var root;
 d3.json(src, function(error, json) {
-  if (error) throw error;
+    if (error) throw error;
 
-  root = json;
-  root.x0 = 0;
-  root.y0 = 0;
+    root = json;
+    root.x0 = 0;
+    root.y0 = 0;
 
-  scale = d3.scale.log()
-    .domain([1, root.frequency])
-    .range([3, 20])
-    .nice();
+    scale = d3.scale.log()
+        .domain([1, root.frequency])
+        .range([3, 20])
+        .nice();
 
-  root.children.forEach(collapse);
-  initQuantities(root);
-  center(root);
-  update(root);
+    root.children.forEach(collapse);
+    initQuantities(root);
+    center(root);
+    update(root);
 })
 
 function collapse(d) {
-  if (d.children && d.children.length > 0) {
-    //For when they have optional arguments.
-    initQuantities(d);
+    if (d.children && d.children.length > 0) {
+        //For when they have optional arguments.
+        if (d.position == null) //If it is a function node and not an argument node...
+            initQuantities(d);
 
-    d._children = d.children;
-    d._children.forEach(collapse);
-    d.children = null;
+        d._children = d.children;
+        d._children.forEach(collapse);
+        d.children = null;
 
-    if (d.position != null && d._children.length > 10) {
-      d._children.sort(function(a,b) { return b.frequency - a.frequency; });
-      d._holding = d._children.splice(10);
-      d._children.splice(d._children.length, 0,
-        {"function":"", "frequency":-1, "parent":this});
+        //Sorts arguments by frequency, leaves only the first 10 and hides
+        //the rest.
+        if (d.position != null && d._children.length > 10) {
+            d._children.sort(function(a, b) {
+                return b.frequency - a.frequency;
+            });
+            d._holding = d._children.splice(10);
+            d._children.splice(d._children.length, 0, {
+                "function": "",
+                "frequency": -1,
+                "parent": this
+            });
+        }
+    } else {
+        d.children = null;
+        //d._children = null;
     }
-  } else {
-    d.children = null;
-    //d._children = null;
-  }
 }
 
 //TODO: This conversion from string to int is kludgy; normalize.
 var inf = "100"; //ONLY USED FOR OPTIONAL ARGUMENT STUFF
 function initQuantities(d) {
-  d.quantities = [];
+    d.quantities = [];
 
-  if (d.specific_quantities != null) {
-    for (q in d.specific_quantities)
-      d.quantities.push(d.specific_quantities[q]);
-  }
+    if (d.specific_quantities != null) {
+        for (q in d.specific_quantities)
+            d.quantities.push(d.specific_quantities[q]);
+    }
 
-  d.quantities.push({children: d.children,
-                            example: d.example, frequency: d.frequency,
-                            quantity: parseInt(inf, 10)});
+    d.quantities.push({
+        children: d.children,
+        example: d.example,
+        frequency: d.frequency,
+        quantity: parseInt(inf, 10)
+    });
 
-  d.specific_quantities = null;
-  d.quantity_index = d.quantities.length - 1;
+    d.specific_quantities = null;
+    d.quantity = inf;
+    d.quantity_index = d.quantities.length - 1;
 }
 
 d3.select(self.frameElement)
-  .style("height", height + "px");
+    .style("height", height + "px");
 
 /**
  * Update the tree after a clicking event.
@@ -178,102 +192,120 @@ d3.select(self.frameElement)
 var i = 0;
 var interfunc_gap = 125, //times two, technically; must work with gradient regularity
     func_arg_gap = 75;
+
 function update(src) {
-  var nodes = tree.nodes(root),
-    links = tree.links(nodes);
+    var nodes = tree.nodes(root),
+        links = tree.links(nodes);
 
-  nodes.forEach(function(d) {
-    if (d.depth % 2 == 0) {
-      d.y = d.depth * interfunc_gap;
-    } else {
-      d.y = (d.depth - 1) * interfunc_gap + func_arg_gap;
-    }
-  })
+    nodes.forEach(function(d) {
+        if (d.depth % 2 == 0) {
+            d.y = d.depth * interfunc_gap;
+        } else {
+            d.y = (d.depth - 1) * interfunc_gap + func_arg_gap;
+        }
+    })
 
-  var node = svg.selectAll("g")
-    .data(nodes, function(d) { return d.id || (d.id = ++i); });
+    var node = svg.selectAll("g")
+        .data(nodes, function(d) {
+            return d.id || (d.id = ++i);
+        });
 
-  enterNode(node, src);
-  updateNode(node, src);
-  exitNode(node, src);
+    enterNode(node, src);
+    updateNode(node, src);
+    exitNode(node, src);
 
-  var link = svg.selectAll("path.link")
-    .data(links, function(d) { return d.target.id; });
+    var link = svg.selectAll("path.link")
+        .data(links, function(d) {
+            return d.target.id;
+        });
 
-  enterLink(link, src);
-  updateLink(link, src);
-  exitLink(link, src);
+    enterLink(link, src);
+    updateLink(link, src);
+    exitLink(link, src);
 
-  nodes.forEach(function(d) {
-    d.x0 = d.x;
-    d.y0 = d.y;
-  });
+    nodes.forEach(function(d) {
+        d.x0 = d.x;
+        d.y0 = d.y;
+    });
 
-  center(src);
+    center(src);
 }
 
 /**
  * Creates both circular function nodes and rectangular function argument nodes.
  */
 function enterNode(node, src) {
-  var nodeEnter = node.enter()
-    .append("g")
-    .attr("class", "node")
-    .attr("id", function(d) { return "n" + d.id; })
-    .attr("transform", function(d) {
-      var functionNode = d.depth % 2 == 0,
-        y = src.y0 + (functionNode ? 0 : square_side_half),
-        x = src.x0 + (functionNode ? 0 : square_side_half);
-      return "translate(" + y + "," + x + ")";
-    });
+    var nodeEnter = node.enter()
+        .append("g")
+        .attr("class", "node")
+        .attr("id", function(d) {
+            return "n" + d.id;
+        })
+        .attr("transform", function(d) {
+            var functionNode = d.depth % 2 == 0,
+                y = src.y0 + (functionNode ? 0 : square_side_half),
+                x = src.x0 + (functionNode ? 0 : square_side_half);
+            return "translate(" + y + "," + x + ")";
+        });
 
-  var circles = nodeEnter.filter(function(d) {
-        return d.depth % 2 == 0 && d.frequency > 0;
-      }),
-      expand = nodeEnter.filter(function(d) {
-        return d.depth % 2 == 0 && d.frequency == -1;
-      }),
-      rects = nodeEnter.filter(function(d) { return d.depth % 2 != 0; })
+    var circles = nodeEnter.filter(function(d) {
+            return d.depth % 2 == 0 && d.frequency > 0;
+        }),
+        expand = nodeEnter.filter(function(d) {
+            return d.depth % 2 == 0 && d.frequency == -1;
+        }),
+        rects = nodeEnter.filter(function(d) {
+            return d.depth % 2 != 0;
+        })
 
-  circles.on("mouseover", mouseover)
-    .on("mousemove", mousemove)
-    .on("mouseleave", mouseleave)
-    .on("dblclick", newWindow);
-  circles.filter(function(d) { return d.children || d._children; }) //Only click those that have any children.
-    .on("click", click);
-  rects.on("click", click)
-    .on("mouseover", rect_mouseover)
-    .on("mouseleave", rect_mouseout);
-  expand.on("click", expandclick);
+    circles.on("mouseover", mouseover)
+        .on("mousemove", mousemove)
+        .on("mouseleave", mouseleave)
+        .on("dblclick", newWindow);
+    circles.filter(function(d) {
+            return d.children || d._children;
+        }) //Only click those that have any children.
+        .on("click", click);
+    rects.on("click", click)
+        .on("mouseover", rect_mouseover)
+        .on("mouseleave", rect_mouseout);
+    expand.on("click", expandclick);
 
-  enterCircle(circles);
-  enterRect(rects);
+    enterCircle(circles);
+    enterRect(rects);
 
-  expand.append("polygon")
-    .attr("height", "20")
-    .attr("width", "20")
-    .attr("points", "0,0 0,0 0,0")
-    //.attr("points", "-10,-5 0,15 10,-5")
-    .style("fill", expand_col)
-    .on("mouseover", function(d) { d3.select("#n" + d.id).select("polygon")
-      .style("fill", expand_hover); })
-    .on("mouseleave", function(d) { d3.select("#n" + d.id).select("polygon")
-      .style("fill", expand_col); })
+    expand.append("polygon")
+        .attr("height", "20")
+        .attr("width", "20")
+        .attr("points", "0,0 0,0 0,0")
+        //.attr("points", "-10,-5 0,15 10,-5")
+        .style("fill", expand_col)
+        .on("mouseover", function(d) {
+            d3.select("#n" + d.id).select("polygon")
+                .style("fill", expand_hover);
+        })
+        .on("mouseleave", function(d) {
+            d3.select("#n" + d.id).select("polygon")
+                .style("fill", expand_col);
+        })
 }
 
 /**
  * Creates the new function nodes.
  */
 function enterCircle(circles) {
-  circles.append("circle")
-    .attr("r", 1e-6)
-    .style("fill", function(d) { return d._children ? circle_col : empty_col; });
+    circles.append("circle")
+        .attr("r", 1e-6);
 
-  circles.append("text")
-    .attr("dx", function(d) { return -scale(d.frequency) - 2; })
-    .attr("dy", 3)
-    .attr("text-anchor", "end")
-    .text(function(d) { return d.function; })
+    circles.append("text")
+        .attr("dx", function(d) {
+            return -scale(d.frequency) - 2;
+        })
+        .attr("dy", 3)
+        .attr("text-anchor", "end")
+        .text(function(d) {
+            return d.function;
+        });
 }
 
 /**
@@ -281,77 +313,78 @@ function enterCircle(circles) {
  * Has function name, frequency, boilerplate, actual example.
  */
 var tip = d3.select("body")
-  .append("svg.rect")
-  .attr("class", "tooltip")
-  .attr("color", "gray")
-  .style("display", "none");
+    .append("svg.rect")
+    .attr("class", "tooltip")
+    .attr("color", "gray")
+    .style("display", "none");
 
 /**
  * Makes the tooltip visible over current mouse position over node. Sets text.
  */
 var tip_x = 3,
     tip_y = -53;
+
 function mouseover(d) {
-  var b = "<b>", bb = "</b>",
-      i = "<i>", ii = "</i>",
-      br = "<br/>",
-      func = "func: " + b + d.function + bb + br,
-      freq = "count: " + d.frequency.toLocaleString() + br,
-      id = d.example;
+    var b = "<b>",
+        bb = "</b>",
+        i = "<i>",
+        ii = "</i>",
+        br = "<br/>",
+        func = "func: " + b + d.function+bb + br,
+        freq = "count: " + d.frequency.toLocaleString() + br,
+        id = d.example;
 
-  var hovered = d3.select("#n" + d.id);
+    var hovered = d3.select("#n" + d.id);
 
-  var ex;
-  if (d.fullExample) {
-    ex = "ex: " + i + d.fullExample + ii + br;
-  } else {
-    ex = "ex: " + i + "unavailable" + ii + br,
-    d3.json("examples.php?id=" + id, function(error, data) {
-      if (error) throw error;
+    var ex;
+    if (d.fullExample) {
+        ex = "ex: " + i + d.fullExample + ii + br;
+    } else {
+        ex = "ex: " + i + "unavailable" + ii + br;
+        d3.json("examples.php?id=" + id, function(error, data) {
+            if (error) throw error;
 
-      d.fullExample = data["formula"].replace(/</g, "&lt;").replace(/>/g, "&gt;");
-      var ex = "ex: " + i + d.fullExample + ii + br;
-      tip.attr("height", null).html(func + freq + ex)
-    });
-  }
+            d.fullExample = data["formula"].replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            var ex = "ex: " + i + d.fullExample + ii + br;
+            tip.attr("height", null).html(func + freq + ex)
+        });
+    }
 
-  tip.html(func + freq + ex)
-    .style("left", (d3.event.pageX + tip_x) + "px")
-    .style("top", (d3.event.pageY + tip_y) + "px")
-    .style("display", "inline");
+    tip.html(func + freq + ex)
+        .style("left", (d3.event.pageX + tip_x) + "px")
+        .style("top", (d3.event.pageY + tip_y) + "px")
+        .style("display", "inline");
 
-  hovered.select("circle")
-    .style("fill", function(d) {
-      if (d._children) return circle_hover;     //Get darker color.
-      else if (d.children) return empty_hover;  //Get gray.
-      else return empty_col;                    //Don't change if no children.
-    });
+    hovered.select("circle")
+        .style("fill", function(d) {
+            if (d._children) return circle_hover; //Get darker color.
+            else if (d.children) return empty_hover; //Get gray.
+            else return empty_col; //Don't change if no children.
+        });
 }
 
 /**
  * Moves the tooltip in relation to mouse pointer.
  */
 function mousemove(d) {
-  return tip.style("left", (d3.event.pageX + tip_x) + "px")
-    .style("top", (d3.event.pageY + tip_y) + "px");
+    return tip.style("left", (d3.event.pageX + tip_x) + "px")
+        .style("top", (d3.event.pageY + tip_y) + "px");
 }
 
 /**
  * Dismisses the tooltip once the mouse leaves the node.
  */
 function mouseleave(d) {
-  if (!tip.hover)
-    tip.style("display", "none");
+    if (!tip.hover)
+        tip.style("display", "none");
 
-  var hovered = d3.select("#n" + d.id);
+    var hovered = d3.select("#n" + d.id);
 
-  hovered.select("circle")
-    .style("fill", function(d) {
-      if (d._children) return circle_col;
-      else return empty_col;
-  });
-
-  //console.log(hovered.select(".tooltip").remove());
+    hovered.select("circle")
+        .style("fill", function(d) {
+            if (d._children) return circle_col;
+            else return empty_col;
+        });
 }
 
 /**
@@ -359,261 +392,341 @@ function mouseleave(d) {
  * positions in a given function.
  */
 function enterRect(rects) {
-  //Starts rectangle infinitesimally small, so updateNode brings it to size.
-  rects.append("rect")
-    .attr("width", 1e-6)
-    .attr("height", 1e-6)
-    .attr("x", -square_side_half)
-    .attr("y", -square_side_half)
-    .style("fill", function(d) { return d._children ? rect_col : empty_col; });
+    //Starts rectangle infinitesimally small, so updateNode brings it to size.
+    rects.append("rect")
+        .attr("width", 1e-6)
+        .attr("height", 1e-6)
+        .attr("x", -square_side_half)
+        .attr("y", -square_side_half);
 
-  rects.append("text")
-    .text(function(d) { return d.position + 1; })
-    .attr("dx", function(d) { return d.position + 1 > 9 ? -7 : -3; })
-    .attr("dy", 5);
+    rects.append("text")
+        .text(function(d) {
+            return d.position + 1;
+        })
+        .attr("dx", function(d) {
+            return d.position + 1 > 9 ? -7 : -3;
+        })
+        .attr("dy", 5);
 }
 
 function rect_mouseover(d) {
-  d3.select("#n" + d.id).select("rect").style("fill", function(d) {
-    if (d._children) return rect_hover;
-    else return empty_hover;
-  });
+    d3.select("#n" + d.id).select("rect").style("fill", function(d) {
+        if (d._children) return rect_hover;
+        else return empty_hover;
+    });
 }
 
 function rect_mouseout(d) {
-  d3.select("#n" + d.id).select("rect").style("fill", function(d) {
-    if (d._children) return rect_col;
-    else return empty_col;
-  });
+    d3.select("#n" + d.id).select("rect").style("fill", function(d) {
+        return d._children ? (d.parent.quantity == inf ? rect_col : "#B1BEC4") : empty_col; //SKYBLUE
+    });
 }
 
 /**
  * Transitions the new nodes to their intended position and shape.
  */
 function updateNode(node) {
-  var nodeUpdate = node.transition()
-    .duration(duration)
-    .attr("transform", function(d) {
-      return "translate(" + d.y + "," + d.x + ")";
-    });
+    var nodeUpdate = node.transition()
+        .duration(duration)
+        .attr("transform", function(d) {
+            return "translate(" + d.y + "," + d.x + ")";
+        });
 
-  nodeUpdate.select("circle")
-    .attr("r", function(d) { return scale(d.frequency); })
-    .style("fill", function(d) {
-      return d._children ? circle_col : empty_col;
-    });
+    nodeUpdate.select("circle")
+        .attr("r", function(d) {
+            return scale(d.frequency);
+        })
+        .style("fill", function(d) {
+            return d._children ? circle_col : empty_col;
+        });
 
-  nodeUpdate.select("rect:not(.tooltip)")
-    .attr("width", square_side)
-    .attr("height", square_side)
-    .style("fill", function(d) { return d._children ? rect_col : empty_col; });
+    nodeUpdate.select("rect:not(.tooltip)")
+        .attr("width", square_side)
+        .attr("height", square_side)
+        .style("fill", function(d) {
+            return d._children ? (d.parent.quantity == inf ? rect_col : "#B1BEC4") : empty_col; //SKYBLUE
+        });
 
-  nodeUpdate.select("polygon")
-  .attr("height", "20")
-  .attr("width", "20")
-  .attr("points", function(d) {
-    if (d.parent._holding)
-      return "-10,-5 0,15 10,-5";
-    else
-      return "-10,15 0,-5 10,15";
-  })
-  .style("fill", expand_col);
+    nodeUpdate.select("polygon")
+        .attr("height", "20")
+        .attr("width", "20")
+        .attr("points", function(d) {
+            if (d.parent._holding)
+                return "-10,-5 0,15 10,-5";
+            else
+                return "-10,15 0,-5 10,15";
+        })
+        .style("fill", expand_col);
 
-  nodeUpdate.select("text")
-    .style("fill-opacity", 1);
+    nodeUpdate.select("text")
+        .style("fill-opacity", 1);
 
-  nodeUpdate.attr("stroke-width", function(d) {
-    if (!d._children && d.frequency > 0) {
-      return "1px";
-    } else
-      return "0px";
-  })
+    nodeUpdate.attr("stroke-width", function(d) {
+        if (!d._children && d.frequency > 0) {
+            return "1px";
+        } else
+            return "0px";
+    })
 }
 
 /**
  * Dismisses the nodes that will no longer be visible.
  */
 function exitNode(node, src) {
-  var nodeExit = node.exit().transition()
-    .duration(duration)
-    .attr("transform", function(d) {
-      var functionNode = d.depth % 2 == 0,
-        y = src.y + (functionNode ? 0 : square_side_half),
-        x = src.x + (functionNode ? 0 : square_side_half);
-      return "translate(" + y + "," + x + ")";    })
-    .remove()
+    var nodeExit = node.exit().transition()
+        .duration(duration)
+        .attr("transform", function(d) {
+            var functionNode = d.depth % 2 == 0,
+                y = src.y + (functionNode ? 0 : square_side_half),
+                x = src.x + (functionNode ? 0 : square_side_half);
+            return "translate(" + y + "," + x + ")";
+        })
+        .remove()
 
-  nodeExit.select("circle")
-    .attr("r", 1e-6);
+    nodeExit.select("circle")
+        .attr("r", 1e-6);
 
-  nodeExit.select("rect")
-    .attr("width", 1e-6)
-    .attr("height", 1e-6);
+    nodeExit.select("rect")
+        .attr("width", 1e-6)
+        .attr("height", 1e-6);
 
-  nodeExit.select("polygon")
-    .attr("width", 1e-6)
-    .attr("height", 1e-6)
-    .attr("points", "0,0 0,0 0,0");
+    nodeExit.select("polygon")
+        .attr("width", 1e-6)
+        .attr("height", 1e-6)
+        .attr("points", "0,0 0,0 0,0");
 
-  nodeExit.select("text")
-    .attr("fill-opacity", 1e-6);
+    nodeExit.select("text")
+        .attr("fill-opacity", 1e-6);
 }
 
 /**
  * Creates links to new nodes.
  */
 function enterLink(link, src) {
-  link.enter()
-    .insert("path", "g")
-    .attr("class", "link")
-    .attr("d", function(d) {
-      var o = { x: src.x0, y: src.y0 };
-      return diagonal({ source: o, target: o });
-    });
+    link.enter()
+        .insert("path", "g")
+        .attr("class", "link")
+        .attr("d", function(d) {
+            var o = {
+                x: src.x0,
+                y: src.y0
+            };
+            return diagonal({
+                source: o,
+                target: o
+            });
+        });
 }
 
 /**
  * Transitions the new lines to their intended position.
  */
 function updateLink(link, src) {
-  link.transition()
-    .duration(duration)
-    .attr("d", diagonal);
+    link.transition()
+        .duration(duration)
+        .attr("d", diagonal);
 }
 
 /**
  * Dismisses the links that are no longer necessary.
  */
 function exitLink(link, src) {
-  link.exit().transition()
-    .duration(duration)
-    .attr("d", function(d) {
-      var o = { x: src.x, y: src.y };
-      return diagonal({ source: o, target: o });
-    })
-    .remove();
+    link.exit().transition()
+        .duration(duration)
+        .attr("d", function(d) {
+            var o = {
+                x: src.x,
+                y: src.y
+            };
+            return diagonal({
+                source: o,
+                target: o
+            });
+        })
+        .remove();
 }
 
 /**
  * Expands or dismisses children nodes when a given node is clicked.
  */
 function click(d) {
-  //Circles just have toggle functionality: click, and see all.
-  if (d3.event.shiftKey || d3.event.ctrlKey) {
-    changeQuantities(d);
-  } else {
-    if (d.children) {
-      d._children = d.children;
-      d.children = null;
+    //Circles just have toggle functionality: click, and see all.
+    if (d3.event.shiftKey || d3.event.ctrlKey) {
+        changeQuantities(d);
+    } else if (d3.event.altKey) {
+        expandSubLevel(d);
     } else {
-      d.children = d._children;
-      d._children = null;
+        toggleChildren(d);
     }
-  }
 
-  update(d);
+    update(d);
 }
 
+/**
+ * If children are currently shown, they are hidden. And vice versa.
+ */
+function toggleChildren(d) {
+    if (d.children) {
+        d._children = d.children;
+        d.children = null;
+    } else {
+        d.children = d._children;
+        d._children = null;
+    }
+}
+
+/**
+ * Toggles all of the clicked node's children.
+ * If some are expanded and some not, it expands all the remaining and stops.
+ * If the click node's children aren't shown, it shows them and then toggles
+ *   children too.
+ */
+function expandSubLevel(d) {
+    if (!d.children && d._children)
+        toggleChildren(d);
+
+    var expandNotReduce = false;
+    var children = d.children ? d.children : d._children;
+    if (!children) return; //Nothing to see here.
+    if (d._holding) children.concat(d._holding);
+
+    children.forEach(function(cd) {
+        if (!cd.children && cd._children)
+            expandNotReduce = true;
+    });
+
+    if (!expandNotReduce) {
+        children.forEach(toggleChildren);
+    } else {
+        children.filter(function(cd) {
+                return cd.children == null;
+            })
+            .forEach(toggleChildren);
+    }
+}
+
+/**
+ * Iterates through the various numbers of arguments possible for this function.
+ * Begins at default (where are possibilities are shown at once).
+ * Shift click sends it to the lowest possible number of arguments, then goes up.
+ * Ctrl click goes to highest possible first, then goes down.
+ * When they reach they end, they revert to the default.
+ */
 function changeQuantities(d) {
-  if (d3.event.shiftKey) {
-    d.quantity_index = (d.quantity_index + 1) % d.quantities.length;
-  } else if (d3.event.ctrlKey) {
-    d.quantity_index = (d.quantity_index == 0) ? d.quantities.length - 1
-                        : d.quantity_index - 1;
-  }
+    if (d3.event.shiftKey) {
+        d.quantity_index = (d.quantity_index + 1) % d.quantities.length;
+    } else if (d3.event.ctrlKey) {
+        d.quantity_index = (d.quantity_index == 0) ? d.quantities.length - 1 : d.quantity_index - 1;
+    }
 
-  var replacement = d.quantities[d.quantity_index];
-  console.log(replacement);
-  d.children = replacement.children;
-  d.example = replacement.example;
-  d.fullExample = null; //TODO: Keep example?
-  d.frequency = replacement.frequency;
-  d.children.forEach(collapse);
+    var replacement = d.quantities[d.quantity_index];
+    d.children = replacement.children;
+    d.example = replacement.example;
+    d.fullExample = null; //TODO: Keep example?
+    d.frequency = replacement.frequency;
+    d.quantity = replacement.quantity;
+
+    d.children.forEach(collapse);
+
+    //Reset tooltip.
+    mouseleave(d);
+    mouseover(d);
 }
 
+/**
+ * When you click on the arrow that hides the possible functions beyond the
+ * tenth most commonly used, this shows the rest (or hides them if shown already)
+ */
 function expandclick(d) {
-  var par = d.parent;
+    var par = d.parent;
 
-  if (par._holding) {
-    par.children = par.children.concat(par._holding);
-    par._holding = null;
-  } else {
-    par._holding = par.children.splice(10)
-      .filter(function(i) { return i.frequency != -1; });
-    par.children.splice(par.children.length, 0, d);
-  }
+    if (par._holding) {
+        par.children = par.children.concat(par._holding);
+        par._holding = null;
+    } else {
+        par._holding = par.children.splice(10)
+            .filter(function(i) {
+                return i.frequency != -1;
+            });
+        par.children.splice(par.children.length, 0, d);
+    }
 
-  update(par);
+    update(par);
 }
 
 //http://bl.ocks.org/robschmuecker/7880033
 function center(d) {
-  var scale = zoomer.scale(),
-      x = -d.y0 * scale + (width/2),
-      y = -d.x0 * scale + (height/2);
-  d3.select("g").transition().duration(duration)
-    .attr("transform", "translate(" + x + "," + y + ")scale(" + scale + ")");
-  zoomer.scale(scale);
-  zoomer.translate([x, y]);
+    var scale = zoomer.scale(),
+        x = -d.y0 * scale + (width / 2),
+        y = -d.x0 * scale + (height / 2);
+    d3.select("g").transition().duration(duration)
+        .attr("transform", "translate(" + x + "," + y + ")scale(" + scale + ")");
+    zoomer.scale(scale);
+    zoomer.translate([x, y]);
 }
 
+/**
+ * Opens a new window and shows all of the examples available for it.
+ */
 function newWindow(d) {
-  if (d3.event.shiftKey || d3.event.ctrlKey)
-    return; //TODO: A bigger problem is limiting the number of examples.
+    if (d3.event.shiftKey || d3.event.ctrlKey)
+        return; //TODO: A bigger problem is limiting the number of examples.
 
-  var win = window.open("", "_blank");
-  win.document.write("Hey! You clicked: " + d.function)
-  win.focus;
+    var win = window.open("", "_blank");
+    win.document.write("Hey! You clicked: " + d.function)
+    win.focus;
 
-  var childrenExamples = {};
+    var childrenExamples = {};
 
-  function getAllExamples(node) {
-    if (node.allExamples) {
-      node.allExamples.forEach(function(d) { childrenExamples[d] = true; });
-    } else {
-      if (node.children) node.children.forEach(getAllExamples);
-      if (node._children) node._children.forEach(getAllExamples);
-      if (node._holding) node._holding.forEach(getAllExamples);
+    function getAllExamples(node) {
+        if (node.allExamples) {
+            node.allExamples.forEach(function(d) {
+                childrenExamples[d] = true;
+            });
+        } else {
+            if (node.children) node.children.forEach(getAllExamples);
+            if (node._children) node._children.forEach(getAllExamples);
+            if (node._holding) node._holding.forEach(getAllExamples);
+        }
     }
-  }
 
-  getAllExamples(d);
+    getAllExamples(d);
 
-  var table = d3.select(win.document.body)
-    .append("table")
-    .style("width", "75%");
+    var table = d3.select(win.document.body)
+        .append("table")
+        .style("width", "75%");
 
-  var cols = table.append("colgroup");
-  cols.append("col").attr("span", "1").style("width", "60%");
-  cols.append("col").attr("span", "1").style("width", "30%");
-  cols.append("col").attr("span", "1").style("width", "10%");
+    var cols = table.append("colgroup");
+    cols.append("col").attr("span", "1").style("width", "60%");
+    cols.append("col").attr("span", "1").style("width", "30%");
+    cols.append("col").attr("span", "1").style("width", "10%");
 
-  var rows = table.selectAll("tr")
-    .data(Object.keys(childrenExamples))
-    .enter()
-    .append("tr");
+    var rows = table.selectAll("tr")
+        .data(Object.keys(childrenExamples))
+        .enter()
+        .append("tr");
 
-  rows.each(function(d, i) {
-    var row = d3.select(this);
+    rows.each(function(d, i) {
+        var row = d3.select(this);
 
-    if (i % 2 ==0)
-      row.attr("color" ,"#eee");
+        if (i % 2 == 0)
+            row.attr("color", "#eee");
 
-    d3.json("examples.php?id=" + d, function(error, data) {
-      var formula, file, location;
-      if (error) {
-        formula = "unavailable";
-        file = "unavailable";
-        location = "unavailable";
-      } else {
-        formula = data["formula"].replace(/</g, "&lt;").replace(/>/g, "&gt;");;
-        file = data["file"];
-        location = "'" + data["sheetName"] + "'!" + data["col"] + (data["row"] + 1);
-      }
+        d3.json("examples.php?id=" + d, function(error, data) {
+            var formula, file, location;
+            if (error) {
+                formula = "unavailable";
+                file = "unavailable";
+                location = "unavailable";
+            } else {
+                formula = data["formula"].replace(/</g, "&lt;").replace(/>/g, "&gt;");;
+                file = data["file"];
+                location = "'" + data["sheetName"] + "'!" + data["col"] + (parseInt(data["row"], 10) + 1);
+            }
 
-      row.append("td").html(formula);
-      row.append("td").html(file);
-      row.append("td").html(location);
+            row.append("td").html(formula);
+            row.append("td").html(file);
+            row.append("td").html(location);
+        });
     });
-  });
 }
