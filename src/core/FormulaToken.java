@@ -73,7 +73,7 @@ public class FormulaToken {
       case REPLACE:
         this.tokenStr = getTypeString(tok);               break;
       case R1C1:
-        this.tokenStr = toR1C1String(tok.toFormulaString().trim(), cellReference);
+        this.tokenStr = toR1C1String(tok, cellReference);
         break;      
     }
   }
@@ -117,44 +117,63 @@ public class FormulaToken {
     return type;
   }
   
-  //(?!\\d)\\$?[A-Z]+\\$?\\d+(?![a-zA-Z]) -> Capture all instance of a set of letters 
-  //  followed by a set of numbers. Can't be immediately preceded by another number or 
-  //  followed by another letter or an exclamation, as might be indicative in sheet names or strings.
-  private static String refPattern = "(?!\\d)\\$?[A-Z]+\\$?\\d+(?![a-zA-Z!])",
-                        followedByEvenNumOfQuotes = "(?=([^']*'[^']*')*[^']*$)";
-  private static Matcher match = Pattern.compile(refPattern+followedByEvenNumOfQuotes).matcher("");
-  public static String toR1C1String(String formula, CellReference cell) {
-    int row = cell.getRow(), col = cell.getCol();
-    StringBuffer newFormula = new StringBuffer();
+  public String toR1C1String(Ptg tok, CellReference cell) {
+    String original = tok.toFormulaString(),
+           relative = "";
     
-    match.reset(formula);
-    while (match.find()) {
-      String orig = match.group();
-      String[] parts = orig.replaceAll("([A-Z])(\\$?\\d)", "$1 $2").split(" ");
+    if (tok instanceof AreaPtgBase) {
+      AreaPtgBase area = (AreaPtgBase) tok;
+      int firstRow = area.getFirstRow(),
+          firstCol = area.getFirstColumn(); //Plus 1 because POI offsets by one.
+      boolean firstRowRel = area.isFirstRowRelative(),
+              firstColRel = area.isFirstColRelative();
+      String firstRef = convertToR1C1(firstRow, firstRowRel, firstCol, firstColRel, cell),
+             originalFirst = (firstColRel?"":"$") + CellReference.convertNumToColString(firstCol)
+                            +(firstRowRel?"":"$") + (firstRow + 1);
       
-      //if (!parts[0].startsWith("$")) {
-      String refCol = parts[0];
-      boolean absCol = refCol.startsWith("$");
-      if (absCol) 
-        refCol = refCol.replace("$", "");
-      int refColNum = CellReference.convertColStringToIndex(refCol) + 1; //Plus 1 because POI offsets by one.
-      refCol = absCol ? "C" + refColNum : "C[" + (refColNum - col) + "]";
+      relative = replace(original, originalFirst, firstRef);
       
-      String refRow = parts[1];
-      boolean absRow = refRow.startsWith("$");
-      if (absRow) 
-        refRow = refRow.replace("$", "");
-      int refRowNum = Integer.parseInt(refRow); 
-      refRow = absRow ? "R" + refRowNum : "R[" + (refRowNum - row) + "]";
+      int lastRow = area.getLastRow(),
+          lastCol = area.getLastColumn(); //Plus 1 because POI offsets by one.
+      boolean lastRowRel = area.isLastRowRelative(),
+              lastColRel = area.isLastColRelative();
+      String lastRef = convertToR1C1(lastRow, lastRowRel, lastCol, lastColRel, cell),
+             originalLast = (lastColRel?"":"$") + CellReference.convertNumToColString(lastCol)
+                           +(lastRowRel?"":"$") + (lastRow + 1);
       
+      relative = replace(relative, originalLast, lastRef);      
+    } else if (tok instanceof RefPtgBase) {
+      RefPtgBase ref = (RefPtgBase) tok;
+      int refRow = ref.getRow(),
+          refCol = ref.getColumn(); //Plus 1 because POI offsets by one.
+      boolean rowRel = ref.isRowRelative(),
+              colRel = ref.isColRelative();
+      String newRef = convertToR1C1(refRow, rowRel, refCol, colRel, cell),
+             originalRef = (colRel?"":"$") + CellReference.convertNumToColString(refCol)
+                          +(rowRel?"":"$") + (refRow + 1);
       
-      String newRef = refRow + refCol;
-      //System.out.println(match.group() + " -> " + newRef + " (" + col + "," + row + ")");
-      match.appendReplacement(newFormula, newRef);      
-    }      
+      relative = replace(original, originalRef, newRef);
+    } else {
+      relative = tok.toFormulaString();
+    }        
     
-    match.appendTail(newFormula);
-    return newFormula.toString();
+    return relative;
+  }
+
+  private String replace(String original, String originalFirst, String firstRef) {
+    if (!original.contains(originalFirst))
+      throw new UnsupportedOperationException("Error in relatavizing formula: " + originalFirst + " in " + original);
+    
+    return original.replaceFirst(Pattern.quote(originalFirst), firstRef);
+  }
+
+  private String convertToR1C1(int row, boolean isRowRel, int col, boolean isColRel, CellReference cell) {
+    int cellRow = cell.getRow(), cellCol = cell.getCol();
+    row += 1;
+    col += 1;
+    String formulaCol = isColRel ? "C[" + (col - cellCol) + "]" : "C" + col;
+    String formulaRow = isRowRel ? "R[" + (row - cellRow) + "]" : "R" + row;
+    return formulaRow + formulaCol;
   }
   
   /**

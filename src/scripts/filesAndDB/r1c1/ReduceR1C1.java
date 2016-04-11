@@ -1,4 +1,4 @@
-package scripts.filesAndDB;
+package scripts.filesAndDB.r1c1;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,7 +21,7 @@ public class ReduceR1C1 {
     PreparedStatement insert = con.prepareStatement("INSERT INTO formulas_r1c1 "
         + "(id, formula) VALUES (?, ?);");
     PreparedStatement get = con.prepareStatement("SELECT * FROM formulas WHERE file = ? and sheet = ? ORDER BY row, col;");
-    ResultSet files = con.createStatement().executeQuery("SELECT DISTINCT file, sheet FROM formulas WHERE id > 10363645;");
+    ResultSet files = con.createStatement().executeQuery("SELECT DISTINCT file, sheet FROM formulas;");
     
     Parser.goRelative();
     while (files.next()) {
@@ -30,9 +30,7 @@ public class ReduceR1C1 {
 
       ResultSet formulas = get.executeQuery();
       while (formulas.next()) {
-        int id = formulas.getInt(1);
-        if (id <= 10363645) continue;
-        
+        int id = formulas.getInt(1);        
         String formula = formulas.getString(2);
         int row = formulas.getInt(7), col = CellReference.convertColStringToIndex(formulas.getString(8));
                 
@@ -40,6 +38,7 @@ public class ReduceR1C1 {
         try {          
           newFormula = Parser.parseFormula(formula, row, col).toString();
         } catch (UnsupportedOperationException e) {
+          System.err.println(e.getMessage());
           System.err.println(id + " : " + formula);
           newFormula = "error";
         }
