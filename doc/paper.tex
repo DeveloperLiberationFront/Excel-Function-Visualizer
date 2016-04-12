@@ -233,8 +233,51 @@ Many functions have an expected order of arguments, but some, like SUM and MATCH
 A larger and related problem is the loss of argument combination. In the example in section B, we saw how the tools conveys which arguments are used most often on each side of an equals sign, but it does not encode how these whether references were actually compared to strings and numbers the most or whether it corresponded more to all the arguments beneath those two 
 
 \section{Case Study}
+The obvious question to pose to any visualization is this: Why does it matter that we see this way? In other words, it is not enough to prove that something can be visualized; instead we must also demonstrate what we can be gained from any particular visualization. As such, we raised a few tasks in the introduction in which we thought the tool could help: identifying places for API improvement, detecting bad smells or common programmer misunderstanding, and guiding spreadsheet education. Thus, to demonstrate the tool's applicability, we sought out places in the tree which best exemplify these respective concerns.
 
-[to be filled in]
+\subsection{Bad Smells}
+Fowler's (?) seminal description of code smells underscored
+an important point of code quality: between perfect code and 
+bug-crippled spaghetti,  there is a spectrum of code designs 
+which, by themselves, are not faulty but nevertheless may
+point to problems and vulnerabilities in how code is written.
+Code smells, as we call them, soon commanded attention and earned wide-ranging 
+applicability, eventually making it to the art of spreadsheet design.
+Since then, Hermans and others catalog the odors of spreadsheets, 
+often built off Fowler's (?) original specifications to articulate
+the subtle problems in spreadsheet design. \par 
+Collected, some of the intra-spreadsheet smells fall well within the
+purview of this visualization tool. Some such smells can be found
+in a figure [FIGURE]. \par 
+The smells described above, then, entail a corresponding structure
+visible in the visualization: the deeper a branch runs, or the
+taller the range of arguments, the more it emits the stench of suboptimal
+design. \par 
+To be sure, these rank occurrences must be leveraged with their prevalence
+across the dataset. One person's anomaly, though perhaps still interesting,
+will not be as impactful as a smell of thousands. \par
+Some examples are meaningful not for the space they take up but for how
+they clash with the expectations around a function. For example, Excel
+offers a number of functions that accept any number arguments given to 
+them, up to a resource-defined limit. SUM and CONCATENATE are two such functions:
+adding more arguments simply adds or appends that element in the same way
+as every previous argument. Strange cases were found, then, in the cases where
+these functions were used with only one argument. \par
+Hermans, in her paper on the nuances of VLOOKUP and its common misuses, explore
+the problem of the final, optional argument. A tool there helped, but how might
+a visualization such as this illuminated the same?
+
+\subsection{Education}
+Learning by example has long been a cornerstone of effective teacher techniques:
+by showing the student a concrete example of something, rather than dwelling in
+the realm of abstract description, comprehension increases [I'm sure there's a cite
+out there somewhere.] This is no different in software, where every explanation of
+a tricky programming concept is much untangled by the illustrative stub. Even APIs,
+researchers have found, by the inclusion of an in-practice example of the function
+described. Spreadsheet programming, then, should not be essentially different: 
+examples of spreadsheet functions in use
+
+\section{Limitations}
 
 \section{Conclusion}
 

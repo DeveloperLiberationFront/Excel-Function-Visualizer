@@ -288,49 +288,63 @@ public class SingleTests {
   @Test
   public void test_23_r1c1_1() {
     Parser.goRelative();
-    assertEquals("R[25]C[2]", Parser.parseFormula("B25").toString());
+    assertEquals("R[24]C[1]", Parser.parseFormula("B25").toString());
   }
   
   @Test
   public void test_24_r1c1_2() {
     Parser.goRelative();
-    assertEquals("A1xC5xE9!R[25]C[2]", Parser.parseFormula("A1xC5xE9!B25").toString());
+    assertEquals("A1xC5xE9!R[24]C[1]", Parser.parseFormula("A1xC5xE9!B25").toString());
   }
   
   @Test
   public void test_25_r1c1_3() {
     Parser.goRelative();
-    assertEquals("A1xC5xE9!R[25]C[2]", Parser.parseFormula("'A1xC5xE9'!B25").toString());
+    assertEquals("A1xC5xE9!R[24]C[1]", Parser.parseFormula("'A1xC5xE9'!B25").toString());
   }
   
   @Test
   public void test_26_r1c1_4() {
     Parser.goRelative();
-    assertEquals("R[25]C[2]:R[26]C[2]", Parser.parseFormula("B25:B26").toString());
+    assertEquals("R[24]C[1]:R[25]C[1]", Parser.parseFormula("B25:B26").toString());
   }
   
   @Test
   public void test_27_r1c1_5() {
     Parser.goRelative();
-    assertEquals("A1xC5xE9!R[25]C[2]:Sheet!R[26]C[2]", Parser.parseFormula("A1xC5xE9!B25:Sheet!B26").toString());
+    assertEquals("A1xC5xE9!R[24]C[1]:Sheet!R[25]C[1]", Parser.parseFormula("A1xC5xE9!B25:Sheet!B26").toString());
   }
   
   @Test
   public void test_28_r1c1_6() {
     Parser.goRelative();
-    assertEquals("Sheet!R[25]C[2]:A1xC5xE9!R[26]C[2]", Parser.parseFormula("'Sheet'!B25:'A1xC5xE9'!B26").toString());
+    assertEquals("Sheet!R[24]C[1]:A1xC5xE9!R[25]C[1]", Parser.parseFormula("'Sheet'!B25:'A1xC5xE9'!B26").toString());
   }
   
   @Test
   public void test_29_r1c1_7() {
     Parser.goRelative();
-    assertEquals("Sheet!R[25]C2:'$A1xC$5x$E$9'!R26C[2]", Parser.parseFormula("'Sheet'!$B25:'$A1xC$5x$E$9'!B$26").toString());
+    assertEquals("Sheet!R[24]C2:'$A1xC$5x$E$9'!R26C[1]", Parser.parseFormula("'Sheet'!$B25:'$A1xC$5x$E$9'!B$26").toString());
   }
   
   @Test
   public void test_30_r1c1_8() {
     Parser.goRelative();
-    assertEquals("SUM(Sheet!R[25]C2:'$A1xC$5x$E$9'!R26C[2])", Parser.parseFormula("SUM('Sheet'!$B25:'$A1xC$5x$E$9'!B$26)").toString());
+    assertEquals("SUM(Sheet!R[24]C2:'$A1xC$5x$E$9'!R26C[1])", Parser.parseFormula("SUM('Sheet'!$B25:'$A1xC$5x$E$9'!B$26)").toString());
+  }
+  
+  @Test
+  public void test_31_r1c1_singleSum() {
+    Parser.goRelative();
+    assertEquals("SUM('111678 (0013):111706 (0238)'!R[80]C[22]:R[80]C[22])", Parser.parseFormula("SUM('111678 (0013):111706 (0238)'!W81:W81)").toString());
+  }
+  
+  @Test
+  public void test_32_r1c1_exclamation() {
+    Parser.goRelative();
+    String formula = "L314+'P&_FIN'!L6+PE_FIN!L6+PX_FIN!L4+'P! FIn'!L17+'NB FIN'!L9+'Ont Fin'!N33+'E# Fin'!L63+OMICRON_FIN!L109+'GN FIN'!L128+GG_FIN!L453+'GG_FIN tx'!L65+QN_FIN!L6+'GA FIN'!L13+'FX book'!H9",
+           result = "R[313]C[11]+'P&_FIN'!R[5]C[11]+PE_FIN!R[5]C[11]+PX_FIN!R[3]C[11]+'P! FIn'!R[16]C[11]+'NB FIN'!R[8]C[11]+'Ont Fin'!R[32]C[13]+'E# Fin'!R[62]C[11]+OMICRON_FIN!R[108]C[11]+'GN FIN'!R[127]C[11]+GG_FIN!R[452]C[11]+'GG_FIN tx'!R[64]C[11]+QN_FIN!R[5]C[11]+'GA FIN'!R[12]C[11]+'FX book'!R[8]C[7]";
+    assertEquals(result, Parser.parseFormula(formula).toString());
   }
   
   private void singleSuccessTest(String filename, int sheetNum, int row, int col) {

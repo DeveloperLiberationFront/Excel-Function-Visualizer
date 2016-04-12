@@ -1,19 +1,13 @@
 package core;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.apache.poi.ss.formula.EvaluationName;
 import org.apache.poi.ss.formula.FormulaParsingWorkbook;
 import org.apache.poi.ss.formula.FormulaRenderingWorkbook;
-import org.apache.poi.ss.formula.ptg.Area2DPtgBase;
-import org.apache.poi.ss.formula.ptg.Area3DPxg;
 import org.apache.poi.ss.formula.ptg.AreaPtgBase;
 import org.apache.poi.ss.formula.ptg.BoolPtg;
 import org.apache.poi.ss.formula.ptg.IntPtg;
 import org.apache.poi.ss.formula.ptg.NamePtg;
 import org.apache.poi.ss.formula.ptg.NumberPtg;
-import org.apache.poi.ss.formula.ptg.OperandPtg;
 import org.apache.poi.ss.formula.ptg.Ptg;
 import org.apache.poi.ss.formula.ptg.RefPtgBase;
 import org.apache.poi.ss.formula.ptg.StringPtg;
@@ -117,42 +111,50 @@ public class FormulaToken {
     return type;
   }
   
-  public String toR1C1String(Ptg tok, CellReference cell) {
+  private String toR1C1String(Ptg tok, CellReference cell) {
     String original = tok.toFormulaString(),
            relative = "";
     
     if (tok instanceof AreaPtgBase) {
+      String[] limits = original.split(":");
+      if (limits.length > 2) {
+        try { limits = findHalves(limits, ':'); } 
+        catch (UnsupportedOperationException e) {
+          throw new UnsupportedOperationException(e.getMessage() + ": " + original);
+        }
+      } else if (limits.length == 1) //TODO
+        throw new UnsupportedOperationException("Not a proper area (no colon): " + original);   
+      
+      String first = limits[0], last = limits[1];
+      
       AreaPtgBase area = (AreaPtgBase) tok;
       int firstRow = area.getFirstRow(),
-          firstCol = area.getFirstColumn(); //Plus 1 because POI offsets by one.
+          firstCol = area.getFirstColumn(); 
       boolean firstRowRel = area.isFirstRowRelative(),
               firstColRel = area.isFirstColRelative();
       String firstRef = convertToR1C1(firstRow, firstRowRel, firstCol, firstColRel, cell),
-             originalFirst = (firstColRel?"":"$") + CellReference.convertNumToColString(firstCol)
-                            +(firstRowRel?"":"$") + (firstRow + 1);
-      
-      relative = replace(original, originalFirst, firstRef);
+             newFirst = (first.contains("!") ? first.substring(0, first.lastIndexOf('!') + 1) : "")
+                         + firstRef;    
       
       int lastRow = area.getLastRow(),
-          lastCol = area.getLastColumn(); //Plus 1 because POI offsets by one.
+          lastCol = area.getLastColumn(); 
       boolean lastRowRel = area.isLastRowRelative(),
               lastColRel = area.isLastColRelative();
       String lastRef = convertToR1C1(lastRow, lastRowRel, lastCol, lastColRel, cell),
-             originalLast = (lastColRel?"":"$") + CellReference.convertNumToColString(lastCol)
-                           +(lastRowRel?"":"$") + (lastRow + 1);
+             newLast = (last.contains("!") ? last.substring(0, last.lastIndexOf('!') + 1) : "")
+                       + lastRef;
       
-      relative = replace(relative, originalLast, lastRef);      
-    } else if (tok instanceof RefPtgBase) {
+      relative = newFirst + ":" + newLast;      
+    } else if (tok instanceof RefPtgBase) {     
       RefPtgBase ref = (RefPtgBase) tok;
       int refRow = ref.getRow(),
-          refCol = ref.getColumn(); //Plus 1 because POI offsets by one.
+          refCol = ref.getColumn(); 
       boolean rowRel = ref.isRowRelative(),
               colRel = ref.isColRelative();
-      String newRef = convertToR1C1(refRow, rowRel, refCol, colRel, cell),
-             originalRef = (colRel?"":"$") + CellReference.convertNumToColString(refCol)
-                          +(rowRel?"":"$") + (refRow + 1);
+      String newRef = convertToR1C1(refRow, rowRel, refCol, colRel, cell);
       
-      relative = replace(original, originalRef, newRef);
+      relative = (original.contains("!") ? original.substring(0, original.lastIndexOf('!') + 1) : "")
+                  + newRef;
     } else {
       relative = tok.toFormulaString();
     }        
@@ -160,19 +162,65 @@ public class FormulaToken {
     return relative;
   }
 
-  private String replace(String original, String originalFirst, String firstRef) {
-    if (!original.contains(originalFirst))
-      throw new UnsupportedOperationException("Error in relatavizing formula: " + originalFirst + " in " + original);
-    
-    return original.replaceFirst(Pattern.quote(originalFirst), firstRef);
+  /**
+   * Counts the number of times that a character appears in a string.
+   * @param first
+   * @param c
+   * @return
+   */
+  private int countChar(String first, String c) {
+    return first.length() - first.replaceAll(c, "").length();
   }
 
+  /**
+   * More than one colon can happen with a 3D reference, when a sheet name has a colon in it.
+   * For now, just collapse any elements with only one quote into the next one until they have two.
+   * @param limits
+   * @param split 
+   * @return
+   */
+  private String[] findHalves(String[] limits, char split) throws UnsupportedOperationException {
+    //Expectations: always two halves, never more.
+    String[] halves = new String[2];
+    String currentHalf = "";
+    int currentHalfIndex = 0;
+    
+    int i;
+    for (i = 0; i < limits.length; ++i) {
+      currentHalf += limits[i];
+      //TODO: What if there are suddenly more than 2? What if it doesn't use quotes?
+      if (countChar(currentHalf, "'") % 2 == 0) {
+        halves[currentHalfIndex] = currentHalf;
+        ++currentHalfIndex;
+        currentHalf = "";
+      } else {
+        currentHalf += split;
+      }
+      
+      if (currentHalfIndex == 2 && i < limits.length - 1)
+        throw new UnsupportedOperationException("Unexpected formula construction");
+    }    
+    
+    //If there were unused segments...
+    if (currentHalfIndex < 2)
+      throw new UnsupportedOperationException("Unexpected formula construction");
+    
+    return halves;
+  }
+
+  /**
+   * Change A1 to R1C1
+   * @param row       Row number.
+   * @param isRowRel  Whether row is relative or absolute ($)
+   * @param col       Column number.
+   * @param isColRel  Whether column is relative or absolute ($)
+   * @param cell      Originating cell, used for current coordinates.
+   * @return          The R1C1 representation of the reference cell from the starting cell.
+   */
   private String convertToR1C1(int row, boolean isRowRel, int col, boolean isColRel, CellReference cell) {
     int cellRow = cell.getRow(), cellCol = cell.getCol();
-    row += 1;
-    col += 1;
-    String formulaCol = isColRel ? "C[" + (col - cellCol) + "]" : "C" + col;
-    String formulaRow = isRowRel ? "R[" + (row - cellRow) + "]" : "R" + row;
+    String formulaCol = isColRel ? "C[" + (col - cellCol) + "]" : "C" + (col+1);
+    String formulaRow = isRowRel ? "R[" + (row - cellRow) + "]" : "R" + (row+1);
     return formulaRow + formulaCol;
   }
   
