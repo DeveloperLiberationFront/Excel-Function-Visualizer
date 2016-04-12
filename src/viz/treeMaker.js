@@ -140,6 +140,7 @@ function collapse(d) {
 
         d._children = d.children;
         d._children.forEach(collapse);
+        d._children.forEach(function(c) { c.parent = d; });
         d.children = null;
 
         //Sorts arguments by frequency, leaves only the first 10 and hides
@@ -193,6 +194,9 @@ var i = 0;
 var interfunc_gap = 125, //times two, technically; must work with gradient regularity
     func_arg_gap = 75;
 
+/**
+ * Central function; updates what the graph looks like when the nodes change.
+ */
 function update(src) {
     var nodes = tree.nodes(root),
         links = tree.links(nodes);
@@ -271,9 +275,37 @@ function enterNode(node, src) {
         .on("mouseleave", rect_mouseout);
     expand.on("click", expandclick);
 
-    enterCircle(circles);
-    enterRect(rects);
+    //ENTER CIRCLES//////////////////////////////////////////
+    circles.append("circle")
+        .attr("r", 1e-6);
 
+    circles.append("text")
+        .attr("dx", function(d) {
+            return -scale(d.frequency) - 2;
+        })
+        .attr("dy", 3)
+        .attr("text-anchor", "end")
+        .text(function(d) {
+            return d.function;
+        });
+
+    //ENTER RECTANGLES////////////////////////////////////////
+    rects.append("rect")
+        .attr("width", 1e-6)
+        .attr("height", 1e-6)
+        .attr("x", -square_side_half)
+        .attr("y", -square_side_half);
+
+    rects.append("text")
+        .text(function(d) {
+            return d.position + 1;
+        })
+        .attr("dx", function(d) {
+            return d.position + 1 > 9 ? -7 : -3;
+        })
+        .attr("dy", 5);
+
+    //ENTER EXPAND NODES//////////////////////////////////////
     expand.append("polygon")
         .attr("height", "20")
         .attr("width", "20")
@@ -288,24 +320,6 @@ function enterNode(node, src) {
             d3.select("#n" + d.id).select("polygon")
                 .style("fill", expand_col);
         })
-}
-
-/**
- * Creates the new function nodes.
- */
-function enterCircle(circles) {
-    circles.append("circle")
-        .attr("r", 1e-6);
-
-    circles.append("text")
-        .attr("dx", function(d) {
-            return -scale(d.frequency) - 2;
-        })
-        .attr("dy", 3)
-        .attr("text-anchor", "end")
-        .text(function(d) {
-            return d.function;
-        });
 }
 
 /**
@@ -331,7 +345,8 @@ function mouseover(d) {
         ii = "</i>",
         br = "<br/>",
         func = "func: " + b + d.function+bb + br,
-        freq = "count: " + d.frequency.toLocaleString() + br,
+        freq = "count: " + d.frequency.toLocaleString() + " ("
+          + (100*d.frequency/(d.parent||d).frequency).toFixed(2) +"%)" + br,
         id = d.example;
 
     var hovered = d3.select("#n" + d.id);
@@ -387,28 +402,6 @@ function mouseleave(d) {
         });
 }
 
-/**
- * Create the rectangles which represent the argument
- * positions in a given function.
- */
-function enterRect(rects) {
-    //Starts rectangle infinitesimally small, so updateNode brings it to size.
-    rects.append("rect")
-        .attr("width", 1e-6)
-        .attr("height", 1e-6)
-        .attr("x", -square_side_half)
-        .attr("y", -square_side_half);
-
-    rects.append("text")
-        .text(function(d) {
-            return d.position + 1;
-        })
-        .attr("dx", function(d) {
-            return d.position + 1 > 9 ? -7 : -3;
-        })
-        .attr("dy", 5);
-}
-
 function rect_mouseover(d) {
     d3.select("#n" + d.id).select("rect").style("fill", function(d) {
         if (d._children) return rect_hover;
@@ -418,7 +411,8 @@ function rect_mouseover(d) {
 
 function rect_mouseout(d) {
     d3.select("#n" + d.id).select("rect").style("fill", function(d) {
-        return d._children ? (d.parent.quantity == inf ? rect_col : "#B1BEC4") : empty_col; //SKYBLUE
+        return d._children ? (d.parent.quantity == inf
+          ? rect_col : "#B1BEC4") : empty_col; //SKYBLUE
     });
 }
 
@@ -444,7 +438,8 @@ function updateNode(node) {
         .attr("width", square_side)
         .attr("height", square_side)
         .style("fill", function(d) {
-            return d._children ? (d.parent.quantity == inf ? rect_col : "#B1BEC4") : empty_col; //SKYBLUE
+            return d._children ? (d.parent.quantity == inf
+              ? rect_col : "#B1BEC4") : empty_col; //SKYBLUE
         });
 
     nodeUpdate.select("polygon")
