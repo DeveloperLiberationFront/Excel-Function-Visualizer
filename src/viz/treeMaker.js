@@ -120,13 +120,17 @@ d3.json(src, function(error, json) {
     root = json;
     root.x0 = 0;
     root.y0 = 0;
+    root.max_depth = 0;
 
     scale = d3.scale.log()
         .domain([1, root.frequency])
         .range([3, 20])
         .nice();
 
-    root.children.forEach(collapse);
+    root.children.forEach(function(c) {
+        var other_depth = collapse(c);
+        root.max_depth = Math.max(other_depth, root.max_depth);
+    });
     initQuantities(root);
     center(root);
     update(root);
@@ -135,17 +139,22 @@ d3.json(src, function(error, json) {
 function collapse(d) {
     if (d.children && d.children.length > 0) {
         //For when they have optional arguments.
-        if (d.position == null) //If it is a function node and not an argument node...
+        if (isFunction(d)) //If it is a function node and not an argument node...
             initQuantities(d);
 
         d._children = d.children;
-        d._children.forEach(collapse);
-        d._children.forEach(function(c) { c.parent = d; });
         d.children = null;
+
+        d.max_depth = 0;
+        d._children.forEach(function(c) {
+            c.parent = d;
+            var new_possible_max = collapse(c) + (isFunction(d) ? 0 : 1);
+            d.max_depth = Math.max(new_possible_max, d.max_depth);
+        });
 
         //Sorts arguments by frequency, leaves only the first 10 and hides
         //the rest.
-        if (d.position != null && d._children.length > 10) {
+        if (!isFunction(d) && d._children.length > 10) {
             d._children.sort(function(a, b) {
                 return b.frequency - a.frequency;
             });
@@ -158,8 +167,15 @@ function collapse(d) {
         }
     } else {
         d.children = null;
-        //d._children = null;
+        d.max_depth = 0;
     }
+
+    return d.max_depth; //Should have been set by parent.
+}
+
+//If the function does not have a position value set, then it is an argument node.
+function isFunction(d) {
+    return d.position == null;
 }
 
 //TODO: This conversion from string to int is kludgy; normalize.
@@ -345,8 +361,10 @@ function mouseover(d) {
         ii = "</i>",
         br = "<br/>",
         func = "func: " + b + d.function+bb + br,
-        freq = "count: " + d.frequency.toLocaleString() + " ("
-          + (100*d.frequency/(d.parent||d).frequency).toFixed(2) +"%)" + br,
+        freq = "count: " + d.frequency.toLocaleString()
+          + " (" + (100 * d.frequency / (d.parent || d).frequency).toFixed(2) + "%)"
+          + " [" + (100 * d.frequency / root.frequency).toFixed(3) + "%]"+ br,
+        depth = "depth: " + (d.depth/2) + " (" + d.max_depth + ")" + br,
         id = d.example;
 
     var hovered = d3.select("#n" + d.id);
@@ -361,11 +379,11 @@ function mouseover(d) {
 
             d.fullExample = data["formula"].replace(/</g, "&lt;").replace(/>/g, "&gt;");
             var ex = "ex: " + i + d.fullExample + ii + br;
-            tip.attr("height", null).html(func + freq + ex)
+            tip.attr("height", null).html(func + freq + depth + ex)
         });
     }
 
-    tip.html(func + freq + ex)
+    tip.html(func + freq + depth + ex)
         .style("left", (d3.event.pageX + tip_x) + "px")
         .style("top", (d3.event.pageY + tip_y) + "px")
         .style("display", "inline");
@@ -411,8 +429,7 @@ function rect_mouseover(d) {
 
 function rect_mouseout(d) {
     d3.select("#n" + d.id).select("rect").style("fill", function(d) {
-        return d._children ? (d.parent.quantity == inf
-          ? rect_col : "#B1BEC4") : empty_col; //SKYBLUE
+        return d._children ? (d.parent.quantity == inf ? rect_col : "#B1BEC4") : empty_col; //SKYBLUE
     });
 }
 
@@ -438,8 +455,7 @@ function updateNode(node) {
         .attr("width", square_side)
         .attr("height", square_side)
         .style("fill", function(d) {
-            return d._children ? (d.parent.quantity == inf
-              ? rect_col : "#B1BEC4") : empty_col; //SKYBLUE
+            return d._children ? (d.parent.quantity == inf ? rect_col : "#B1BEC4") : empty_col; //SKYBLUE
         });
 
     nodeUpdate.select("polygon")
