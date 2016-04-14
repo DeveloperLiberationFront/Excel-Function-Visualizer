@@ -10,7 +10,7 @@
     die;
   }
 
-  $query = "SELECT * FROM formulas_unique WHERE id = " . $_GET["id"] . ";";
+  $query = "SELECT * FROM old_formulas_unique WHERE id = " . $_GET["id"] . ";";
   $result = $con->query($query) or die(mysqli_error($con));
 
   $data = mysqli_fetch_assoc($result);

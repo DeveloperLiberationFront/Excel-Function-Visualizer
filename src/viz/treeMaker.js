@@ -22,12 +22,18 @@ var margin = {
     view_start_x = width / 2,
     view_start_y = height / 2,
 
-    circle_col = "#4C7B61",
-    circle_hover = "#1D5134",
-    rect_col = "#627884",
-    rect_hover = "#35425B",
-    expand_col = "#ADAD6B",
-    expand_hover = "#898949",
+    circle_empty = "#C0D6C2",
+    circle_col = "#6DBF7E",
+    circle_hover = "#5E966E",
+
+    rect_empty = "#ABBABA",
+    rect_col = "#519393",
+    rect_hover = "#284E5E",
+
+    alternate_rect = "#B1BEC4",
+
+    expand_col = "#CFE5A7",
+    expand_hover = "#BBCE96",
     empty_col = "white",
     empty_hover = "lightgray";
 
@@ -89,10 +95,10 @@ var gradient = svg.append("defs")
 gradient.append("stop")
     .attr("offset", ".4")
     .attr("stop-color", "black")
-    .attr("stop-opacity", "1");
+    .attr("stop-opacity", ".75");
 
 gradient.append("stop")
-    .attr("offset", ".9")
+    .attr("offset", ".8")
     .attr("stop-color", "black")
     .attr("stop-opacity", "0");
 
@@ -281,7 +287,7 @@ function enterNode(node, src) {
     circles.on("mouseover", mouseover)
         .on("mousemove", mousemove)
         .on("mouseleave", mouseleave)
-        .on("dblclick", newWindow);
+        .on("dblclick", WindowMaker.makeWindow);
     circles.filter(function(d) {
             return d.children || d._children;
         }) //Only click those that have any children.
@@ -377,7 +383,7 @@ function mouseover(d) {
         d3.json("examples.php?id=" + id, function(error, data) {
             if (error) throw error;
             else if (!data) return;
-            
+
             d.fullExample = data["formula"].replace(/</g, "&lt;").replace(/>/g, "&gt;");
             var ex = "ex: " + i + d.fullExample + ii + br;
             tip.attr("height", null).html(func + freq + depth + ex)
@@ -416,8 +422,7 @@ function mouseleave(d) {
 
     hovered.select("circle")
         .style("fill", function(d) {
-            if (d._children) return circle_col;
-            else return empty_col;
+            return d._children ? circle_col : (d.children ? circle_empty : empty_col);
         });
 }
 
@@ -430,7 +435,7 @@ function rect_mouseover(d) {
 
 function rect_mouseout(d) {
     d3.select("#n" + d.id).select("rect").style("fill", function(d) {
-        return d._children ? (d.parent.quantity == inf ? rect_col : "#B1BEC4") : empty_col; //SKYBLUE
+        return d._children ? (d.parent.quantity == inf ? rect_col : alternate_rect) : rect_empty; //SKYBLUE
     });
 }
 
@@ -449,14 +454,14 @@ function updateNode(node) {
             return scale(d.frequency);
         })
         .style("fill", function(d) {
-            return d._children ? circle_col : empty_col;
+            return d._children ? circle_col : (d.children ? circle_empty : empty_col);
         });
 
     nodeUpdate.select("rect:not(.tooltip)")
         .attr("width", square_side)
         .attr("height", square_side)
         .style("fill", function(d) {
-            return d._children ? (d.parent.quantity == inf ? rect_col : "#B1BEC4") : empty_col; //SKYBLUE
+            return d._children ? (d.parent.quantity == inf ? rect_col : alternate_rect) : rect_empty; //SKYBLUE
         });
 
     nodeUpdate.select("polygon")
@@ -474,7 +479,7 @@ function updateNode(node) {
         .style("fill-opacity", 1);
 
     nodeUpdate.attr("stroke-width", function(d) {
-        if (!d._children && d.frequency > 0) {
+        if (!d._children && !d.children && d.frequency > 0) {
             return "1px";
         } else
             return "0px";
@@ -675,70 +680,4 @@ function center(d) {
         .attr("transform", "translate(" + x + "," + y + ")scale(" + scale + ")");
     zoomer.scale(scale);
     zoomer.translate([x, y]);
-}
-
-/**
- * Opens a new window and shows all of the examples available for it.
- */
-function newWindow(d) {
-    if (d3.event.shiftKey || d3.event.ctrlKey)
-        return; //TODO: A bigger problem is limiting the number of examples.
-
-    var win = window.open("", "_blank");
-    win.document.write("Hey! You clicked: " + d.function)
-    win.focus;
-
-    var childrenExamples = {};
-
-    function getAllExamples(node) {
-        if (node.allExamples) {
-            node.allExamples.forEach(function(d) {
-                childrenExamples[d] = true;
-            });
-        } else {
-            if (node.children) node.children.forEach(getAllExamples);
-            if (node._children) node._children.forEach(getAllExamples);
-            if (node._holding) node._holding.forEach(getAllExamples);
-        }
-    }
-
-    getAllExamples(d);
-
-    var table = d3.select(win.document.body)
-        .append("table")
-        .style("width", "75%");
-
-    var cols = table.append("colgroup");
-    cols.append("col").attr("span", "1").style("width", "60%");
-    cols.append("col").attr("span", "1").style("width", "30%");
-    cols.append("col").attr("span", "1").style("width", "10%");
-
-    var rows = table.selectAll("tr")
-        .data(Object.keys(childrenExamples))
-        .enter()
-        .append("tr");
-
-    rows.each(function(d, i) {
-        var row = d3.select(this);
-
-        if (i % 2 == 0)
-            row.attr("color", "#eee");
-
-        d3.json("examples.php?id=" + d, function(error, data) {
-            var formula, file, location;
-            if (error) {
-                formula = "unavailable";
-                file = "unavailable";
-                location = "unavailable";
-            } else {
-                formula = data["formula"].replace(/</g, "&lt;").replace(/>/g, "&gt;");;
-                file = data["file"];
-                location = "'" + data["sheetName"] + "'!" + data["col"] + (parseInt(data["row"], 10) + 1);
-            }
-
-            row.append("td").html(formula);
-            row.append("td").html(file);
-            row.append("td").html(location);
-        });
-    });
 }
