@@ -28,6 +28,9 @@ function newWindow(d) {
 
     getAllExamples(d);
 
+    //For resource purposes, select only the first 1000.
+    childrenExamples = Object.keys(childrenExamples).slice(0, 1000);
+
     var table = d3.select(win.document.body)
         .append("table")
         .style("width", "75%");
@@ -38,7 +41,7 @@ function newWindow(d) {
     cols.append("col").attr("span", "1").style("width", "10%");
 
     var rows = table.selectAll("tr")
-        .data(Object.keys(childrenExamples))
+        .data(childrenExamples)
         .enter()
         .append("tr");
 
@@ -55,9 +58,10 @@ function newWindow(d) {
                 file = "unavailable";
                 location = "unavailable";
             } else {
-                formula = data["formula"].replace(/</g, "&lt;").replace(/>/g, "&gt;");;
-                file = data["file"];
+                formula = data["formula"].replace(/</g, "&lt;").replace(/>/g, "&gt;");
                 location = "'" + data["sheetName"] + "'!" + data["col"] + (parseInt(data["row"], 10) + 1);
+                file = data["file"];
+                file = "<a href=\"localhost:8000/sheets/ENRON/" + file + "#" + location + "\">" + file + "</a>";
             }
 
             row.append("td").html(formula);
