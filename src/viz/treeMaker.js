@@ -287,10 +287,7 @@ function enterNode(node, src) {
     circles.on("mouseover", mouseover)
         .on("mousemove", mousemove)
         .on("mouseleave", mouseleave)
-        .on("dblclick", WindowMaker.makeWindow);
-    circles.filter(function(d) {
-            return d.children || d._children;
-        }) //Only click those that have any children.
+        .on("dblclick", WindowMaker.makeWindow)
         .on("click", click);
     rects.on("click", click)
         .on("mouseover", rect_mouseover)
