@@ -376,7 +376,8 @@ function mouseover(d) {
         ex = "ex: " + i + "unavailable" + ii + br;
         d3.json("examples.php?id=" + id, function(error, data) {
             if (error) throw error;
-
+            else if (!data) return;
+            
             d.fullExample = data["formula"].replace(/</g, "&lt;").replace(/>/g, "&gt;");
             var ex = "ex: " + i + d.fullExample + ii + br;
             tip.attr("height", null).html(func + freq + depth + ex)
