@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/W32TeX) (preloaded format=pdflatex 2016.3.5)  11 APR 2016 14:31
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/W32TeX) (preloaded format=pdflatex 2016.3.5)  16 APR 2016 12:21
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -221,54 +221,75 @@ Package grfext Info: Graphics extension search list:
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 147.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 147.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 147.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 147.
 
-Underfull \hbox (badness 10000) in paragraph at lines 147--147
-[][][]\OT1/ptm/m/n/8 https://support.office.com/en-us/article/Excel-functions-a
-lphabetical-
- []
+LaTeX Warning: Citation `nardi1990spreadsheet' on page 1 undefined on input lin
+e 132.
+
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 139.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 139.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 139.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 139.
+
+LaTeX Warning: Citation `badame2012refactoring' on page 1 undefined on input li
+ne 161.
+
+
+LaTeX Warning: Citation `cunha2012towards' on page 1 undefined on input line 16
+1.
+
+
+LaTeX Warning: Citation `abreu2014smelling' on page 1 undefined on input line 1
+61.
 
 [1{c:/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
 
 ]
-<pic/start.png, id=10, 179.92218pt x 78.2925pt>
+
+LaTeX Warning: Citation `murphy2006java' on page 2 undefined on input line 162.
+
+
+
+LaTeX Warning: Citation `robillard2011field' on page 2 undefined on input line 
+162.
+
+
+LaTeX Warning: Reference `fig:startpic' on page 2 undefined on input line 170.
+
+<pic/start.png, id=9, 179.92218pt x 78.2925pt>
 File: pic/start.png Graphic file (type png)
  <use pic/start.png>
-Package pdftex.def Info: pic/start.png used on input line 182.
+Package pdftex.def Info: pic/start.png used on input line 172.
 (pdftex.def)             Requested size: 179.92174pt x 78.2923pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 184--184
+Underfull \hbox (badness 10000) in paragraph at lines 174--174
 [][][]\OT1/ptm/m/n/8 https://support.office.com/en-us/article/IF-function-69aed
 7c9-4e8a-4755-
  []
 
-<pic/IFexpand.png, id=12, 289.83281pt x 308.65312pt>
+<pic/IFexpand.png, id=11, 289.83281pt x 308.65312pt>
 File: pic/IFexpand.png Graphic file (type png)
  <use pic/IFexpand.png>
-Package pdftex.def Info: pic/IFexpand.png used on input line 187.
+Package pdftex.def Info: pic/IFexpand.png used on input line 177.
 (pdftex.def)             Requested size: 221.87622pt x 236.28369pt.
 
-<pic/IFargslabel.png, id=13, 663.22781pt x 376.40625pt>
+<pic/IFargslabel.png, id=12, 663.22781pt x 376.40625pt>
 File: pic/IFargslabel.png Graphic file (type png)
 
 <use pic/IFargslabel.png>
-Package pdftex.def Info: pic/IFargslabel.png used on input line 192.
-(pdftex.def)             Requested size: 221.87622pt x 125.92026pt.
- [2 <./pic/start.png> <./pic/IFexpand.png> <./pic/IFargslabel.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 203--203
+Package pdftex.def Info: pic/IFargslabel.png used on input line 184.
+(pdftex.def)             Requested size: 516.0pt x 292.86052pt.
+ [2 <./pic/start.png> <./pic/IFexpand.png>] [3 <./pic/IFargslabel.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 213--213
 [][][]\OT1/ptm/m/n/8 https://support.office.com/en-us/article/Excel-functions-b
 y-category-
  []
 
-[3] (./paper.bbl)
+[4] (./paper.bbl [5])
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -280,24 +301,30 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[4] (./paper.aux) ) 
+[6
+
+] (./paper.aux)
+
+LaTeX Warning: There were undefined references.
+
+ ) 
 Here is how much of TeX's memory you used:
- 2356 strings out of 493033
- 38568 string characters out of 6137755
- 107944 words of memory out of 5000000
- 5880 multiletter control sequences out of 15000+600000
+ 2364 strings out of 493033
+ 38698 string characters out of 6137755
+ 107948 words of memory out of 5000000
+ 5888 multiletter control sequences out of 15000+600000
  39736 words of font info for 73 fonts, out of 8000000 for 9000
  1144 hyphenation exceptions out of 8191
  37i,8n,23p,941b,234s stack positions out of 5000i,500n,10000p,200000b,80000s
-{c:/texlive/2015/texmf-dist/fonts/enc/dvips/base/8r.enc}<c:/
-texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb><c:/texlive/20
-15/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><c:/texlive/2015/texmf-dist/font
-s/type1/urw/times/utmbi8a.pfb><c:/texlive/2015/texmf-dist/fonts/type1/urw/times
-/utmr8a.pfb><c:/texlive/2015/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on paper.pdf (4 pages, 156889 bytes).
+{c:/texlive/2015/texmf-dist/fonts/enc/dvips/base/8r.enc}<c:/texlive/2015/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb><c:/texlive/2015/texmf-dist/fon
+ts/type1/urw/times/utmb8a.pfb><c:/texlive/2015/texmf-dist/fonts/type1/urw/times
+/utmbi8a.pfb><c:/texlive/2015/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><c:/t
+exlive/2015/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on paper.pdf (6 pages, 164027 bytes).
 PDF statistics:
- 45 PDF objects out of 1000 (max. 8388607)
- 27 compressed objects within 1 object stream
+ 51 PDF objects out of 1000 (max. 8388607)
+ 31 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  16 words of extra memory for PDF output out of 10000 (max. 10000000)
 

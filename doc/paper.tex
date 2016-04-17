@@ -122,45 +122,72 @@ Raleigh, North Carolina}}
 % As a general rule, do not put math, special symbols or citations
 % in the abstract
 \begin{abstract}
-Spreadsheet environments often come equipped with a plethora of functions to manipulate and calculate data, but it can be difficult to understand how end-users employ these functions in practice. Without this knowledge, both researchers and practitioners lack information about how end users construct sophisticated programs from these basic elements. We developed a tool that visualizes patterns of how functions are combined into formulae within Excel spreadsheets. Using the Enron spreadsheet dataset as an example, this paper shows how the tool can display both common and anomalous formulas and their respective contexts in an actual workbook.
+	Spreadsheet environments often come equipped with an abundance of functions and operations to manipulate data, but it can be difficult to understand how programmers actually use these in practice. Furthermore, users can combine several functions into a complex formula, complicating matters for both researchers and practitioners who want to study formulae to improve spreadsheet practices. Therefore, we developed a tool that visualizes patterns of function combination in spreadsheets as an interactive tree of possibilities. Using spreadsheets from the public spreadsheet corpora, we then apply to the tool to real datasets and demonstrate its ability to capture the most common and most anomalous patterns of function combination and their contexts in actual workbooks.
 \end{abstract}
 
-% no keywords
-
-
-
-
-% For peer review papers, you can put extra information on the cover
-% page as needed:
-% \ifCLASSOPTIONpeerreview
-% \begin{center} \bfseries EDICS Category: 3-BBND \end{center}
-% \fi
-%
-% For peerreview papers, this IEEEtran command inserts a page break and
-% creates the second title. It will be ignored for other modes.
-\IEEEpeerreviewmaketitle
-
-
-
 \section{Introduction}
-% no \IEEEPARstart
-Business and research alike owe their debts to spreadsheets, the table-based interface which empowers users to organize and manipulate huge bodies of data [citation for definition]. Their allure is in their versatility: while the novice end user can work without a deep knowledge of programming, the expert can expedite their work with a variety of built-in operations, or functions.\footnote{https://support.office.com/en-us/article/Excel-functions-alphabetical-b3944572-255d-4efb-bb96-c6d90033e188} As such, it should be of little surprise when Scaffidi and colleagues estimated that by 2012, over 50 million U.S. workers could be using them, including the 25 million who would be writing programs out of the functions included \cite{scaffidi2005estimating}.\par
-
-Considering this ubiquity, it's crucial to get spreadsheets right. Our failures in their use can be ruinous, as in 2012 when the influential findings on economic growth were reversed by a selection error, among other horror stories.\footnote{http://www.eusprig.org/horror-stories.htm}
-
-Fortunately, the vanguards of spreadsheet research have assembled, organized, and released a number of spreadsheet corpora to inform work on how people actually use these tools in different contexts. Collections like EUSES \cite{fisher2005euses}, FUSE \cite{barik2015fuse}, and the Enron corpus \cite{hermans2015enron} have already enabled fruitful work across the field, such as detecting code smells in spreadsheets \cite{hermans2012detecting} \cite{cunha2012smellsheet}.  \par
-
-A tool, then, which empowers users of many intentions to explore these datasets would be rife with potential. On a simple level, the tool could provide concrete statistics on which functions are used in practice most (or least) often, and what other functions that work in conjunction with them. These numbers, then, could inform future work done on intelligently recommending functions to users or generating new formulas from these patterns of function use. Spreadsheet APIs, likewise, could be augmented or pruned through the discovery of frequent combinations or anomalous use of functions. Furthermore, if the tool maintains the connection between patterns and the actual, it could serve as a boon to educators as well, guiding lesson plans to the most commonly employed functions and offering a bounty of instructive (and real) examples.\par
-This paper presents such a tool, informed by such varied sources, that visualizes not how people employ individual Excel functions but how they combine to make more sophisticated spreadsheet formulas. 
-
+Business and research alike a lot to spreadsheets, the tabular interface that offers users a structured way to store
+and manipulate potentially huge bodies of data. Their allure is in their versatility: while the novice can still work 
+without a deep knowledge of programming, they can learn to expedite their work by building programs out of several available functions
+\cite{nardi1990spreadsheet}. As such, it should not be surprising that when Scaffidi and colleagues estimated that 
+over 50 million U.S. workers could be using them by 2012, with 25 million of them writing programs  \cite{scaffidi2005estimating}. \par
+Considering this ubiquity, it's crucial to understand how people are actually using spreadsheets. After all, failures
+in their practice can be ruinous, as demonstrated in EuSpRIG's many horror stories of spreadsheets gone wrong. In 
+2013, for example, they detail the influence of an economics paper on debt and national growth which shaped many 
+political initiates around it, only to discover that the spreadsheets used in the data analysis contained an error that
+reversed the findings. The other stories, likewise, do not augur well if shoddy spreadsheet practices persist
+\footnote{http://www.eusprig.org/horror-stories.htm}. \par 
+Fortunately, many spreadsheet researchers have assembled and released a number of spreadsheet corpora to inform work
+of how people actually use these tools. Collections like EUSES \cite{fisher2005euses}, FUSE \cite{barik2015fuse}, and
+the Enron corpus \cite{hermans2015enron} have already enabled fruitful work across the field. Hermans and colleagues,
+for example, used the EUSES corpus in 2011 to inform and evaluate their work on exploring code smells, or inelegant
+places in code that suggest the need for refactoring, between worksheets \cite{hermans2012detecting}. \par 
+A tool, then, that empowers users of any intention to explore these datasets would be rife with potential. On a simple
+level, the tool could provide concrete statistics on which functions are used in practice most (or least) often for a
+given dataset. Beyond this, though, it could also inform future work on recommending functions through an understanding
+of this patterns, or it could guide API improvement by suggesting functions to add or prune based how people actually
+use them. Furthermore, if the tool maintains the connection between its broad patterns and the actual instances of
+formulae in workbooks, it could serve as a boon to educators not only by showing which functions and combinations are
+most practical to learn but also by offering a bounty of instructive, and real, examples \par 
+This paper contributes a tool, informed by some of the aforementioned spreadsheet corpora, that seeks to accomplish these 
+tasks by offering an interactive interface for exploring how people combine functions. It seeks to balance several needs,
+such as capturing these patterns in a broad enough overview while still be specific enough lead back to the precise 
+places in spreadsheets where these patterns are realized. Along with the tool, then, is also a discussion of the various
+goals which the tool seeks to fulfill and the trade-offs that we negotiated at each point. All of this culminates in an
+evaluation of the tool through a study of possible cases to which the tool might apply.
 
 \section{Related Work}
 This tool comes from a line of spreadsheet visualization tools before it, each with a different focus. Some tools, such as Igarashi and colleague's fluid visualizations \cite{igarashi1998fluid}, seek to visualize the hidden formulas within a spreadsheet by imposing the dataflow graphs over the cells. Likewise, Clermont \cite{clermont2003scalable} (and Hipfl \cite{hipfl2008using}, who extended his work) explored various ways of visualizing groups of related cells through similar functions, neighbors, or references. Others focus on creating visualizations outside of the sheets: Hermans and colleagues address a spreadsheet programmer's information needs through their work on the tools GyroSAT \cite{hermans2011supporting} and Breviz \cite{hermans2011breviz} to make dataflow diagrams of individual spreadsheets. These, however, tend to focus on individual spreadsheets and not bodies of them. \par
-Nevertheless, other studies and tools focus more on evaluating the content of the cells therein. (Hermans, Smellsheet) \par
-Other studies focus on API and built-in function use outside the domain of spreadsheets. [RESEARCH ON API STUDIES]  
+Nevertheless, other studies and tools focus more on evaluating the content of the cells therein. Badame, for example, implements a number of Excel formula refactorings and uses Euses in part to evaluate it \cite{badame2012refactoring}. Hermans, leveraging her work with the aforementioned dataflow diagrams, approached the same dataset to assess the prevalence of common inter-worksheet smells, such as feature envy and inappropriate intimacy \cite{hermans2012detecting}. Cunha and colleagues, likewise, constructed and refined a catalogue of smells and implemented the SmellSheet Detective tool to detect bad smells in chosen spreadsheets \cite{cunha2012towards}, which Abreu and colleagues later extended to detect faults. \cite{abreu2014smelling}.\par
+Implicit in this study is an exploration of how users interact with the Excel API. Previous research, such as the first study on the Enron spreadsheet corpus \cite{hermans2015enron}, on how users employ certain functions or commands. Researchers have applied such questions to other contexts as well, such as Murphy and colleague's study into how Java developers use Eclipse and what commands they use most often \cite{murphy2006java}.  Others focus on the documentation of the API itself: Robillard and DeLine, for example conducted a series of surveys and interviews to diagnose common problems with learning APIs, and they found that code examples, one of the focuses of this tool, is one of the most important aids to have in learning a new system \cite{robillard2011field}.
 
-\section{Approach}
-\subsection{Goals}
+\section{Approach/Methodology}
+\subsection{Walkthrough of Tool}
+Before discussing the minutiae of how the tool was developed, it will help first to give a basic example of how the
+tool can be used and how to interpret its symbols. One such example might be to find the answer to this question: \textit{
+	What kinds of functions do people use to define the condition in an IF function?} The final visualization is available
+in figure \ref{fig:fullpic}; however, to understand the interaction, we will start rather from the beginning. \par
+When the user first approaches the tree for a given top-level function -- that is, a function nested within none other -- only a few nodes are visible, as shown in figure \ref{fig:startpic}. \par 
+
+\centerline{\includegraphics{start}}
+
+The visualization so far comprises two types of node: the circle, which represents a discrete function in the formula and is size according to its relative frequency (the top-level node, by definition, will be the largest); and the numbered squares, which represent the positions of arguments within its parent function. From this, we can infer that, of the times it was observed, IF can have at most three arguments passed into it, which corresponds with its specifications in the API.\footnote{https://support.office.com/en-us/article/IF-function-69aed7c9-4e8a-4755-a9bc-aa8bbff73be2} \par
+Knowing that it is the first argument which contains the conditionals, we click on the square labeled "1" to explore. To save space, when more than 10 unique arguments have been observed in any position, the tool displays only the first ten, with an option to display the rest. The results are shown below:
+
+\centerline{\includegraphics[width=.43\textwidth]{IFexpand}}
+
+As expected, we see that IF contains as its first argument a number of comparison operators, such as = and <=, and boolean-returning functions, like ISNA and AND, with simple equality being the most common and some use as ABS being the least seen of everything actually used. \par 
+From here, we can further explore the common options among these functions. Clicking on the "=" node will yield two arguments, it being a binary operator, and expanding each of them will peer into the range of common values of equality comparison, which Figure \ref{fig:fullpic} shows. \par 
+For both sides of the equal sign, the operator has certain types of arguments which predominate over the others: on the left side is most often a reference to another cell; on the right, a string or number literal, which makes sense for the case of confirming a value in another cell before assigning this one. Furthermore, if the concept is difficult to imagine is practice, a tooltip accompanies each function node in the tree, providing a concrete example of a function that uses this structure and where it can be found. If this single instance is not enough, then the user also has the option to double-click the individual function node, which will open up a new tab with a table of many more examples from dataset.
+
+\begin{figure*}[t]
+	\includegraphics[width = \textwidth]{IFargslabel}
+	\caption{A picture of the tool.}
+	\centering
+	\label{fig:fullpic}
+\end{figure*}
+
+\subsection{Design Goals}
 In visualizing the spreadsheet data, I outlined a few core goals for what the tool should accomplish:
 \begin{itemize}
 	\item [1] \textbf{Draw an interactive interface to explore observed function combinations.} The combination space for all Excel functions is massive, let alone the space for observed formulas. Working from data with actual referents in practice, the tool must aid the user in navigating this space.
@@ -171,67 +198,62 @@ Likewise, to bound our scope, we outlined a few goals to specifically avoid acco
 \begin{itemize}
 	\item [!1] \textbf{Do not try to directly explain what a function does.} Though the tool tries to foster tries understanding by linking pattern to example, it won't provide a precise description of what a function accomplishes. The tool's user must infer this.
 	\item [!2] \textbf{Do not create new formulas.} This is essentially an exploratory tool, not a generative one. It should not produce any information other than new views of the original data. 
-	%TODO: I do have an idea which could actually do the below, but, eh, it would take
-	%TODO: a fair amount of time to implement.
 	\item [!3] \textbf{Do not visualize individual formulas.} Though there is room to explore the place of a single function in the group, the tool must design the core visualization around the entire body of data, not the other way around.
 \end{itemize}
 
-\subsection{Description}
-To show how this all came together and demonstrate the interface, we will use an example of a quick task: discovering what kind of conditions people use in IF statements. Considering only formulas in which the IF function itself is the top-level function (that is, not nested within another function), we will approach a tree that begins like this:
- 
-\includegraphics{start}
-
-The visualization so far comprises two types of node: the circle, which represents a discrete function in the formula and is size according to its relative frequency (the top-level node, by definition, will be the largest); and the numbered squares, which represent the positions of arguments within its parent function. From this, we can infer that, of the times it was observed, IF can have at most three arguments passed into it, which corresponds with its specifications in the API.\footnote{https://support.office.com/en-us/article/IF-function-69aed7c9-4e8a-4755-a9bc-aa8bbff73be2} \par
-Knowing that it is the first argument which contains the conditionals, we click on the square labeled "1" to explore. To save space, when more than 10 unique arguments have been observed in any position, the tool displays only the first ten, with an option to display the rest. The results are shown below:
-
-\includegraphics[width=.43\textwidth]{IFexpand}
-
-As expected, we see that IF contains as its first argument a number of comparison operators, such as = and <=, and boolean-returning functions, like ISNA and AND, with simple equality being the most common and some use as ABS being the least seen of everything actually used.
-From here, we can further explore the common options among these functions. Clicking on the "=" node will yield two arguments, it being a binary operator, and expanding each of them will peer into the range of common values of equality comparison:
-
-\includegraphics[width = .43\textwidth]{IFargslabel}
-
-For both sides of the equal sign, the operator has certain types of arguments which predominate over the others: on the left side is most often a reference to another cell; on the right, a string or number literal, which makes sense for the case of confirming a value in another cell before assigning this one. Furthermore, if the concept is difficult to imagine is practice, a tooltip accompanies each function node in the tree, providing a concrete example of a function that uses this structure and where it can be found.
-
-\subsection{Design}
+\subsection{Design Decisions}
 Early in the process, we decided that the tree form would be a suitable fit to represent the parent-child or caller-callee relationships inherent in the data, given the composition of formulas as functions and their arguments (which could be yet more functions). By adapting this structure to accommodate a broad range of possibilities for nested functions, the branching factor depends on both the number of arguments in a function and the number of possible functions observed as an argument in a function. \par
-Guided by the goals in section A, we faced a number of decision points, which we describe below, before we arrived at the design shown above.
-
-
+Guided by the goals in section A, we faced a number of decision points, a sample of which we describe below, before we arrived at the design shown above.
 \begin{itemize}
-	\item [1a] \textit{Copied formulas}: Excel allows users to spread a formula over an area, repeating the same task in each cell with minor adjustments. Without checking for this, the analysis may not reveal the functions most commonly used together but rather the formulas most often applied to large areas. To combat this, we converted formulas from their native A1 format to the relative R1C1, in which copied formulas should be identical, and reduced the records to unique R1C1 formulas per sheet.
-	\item [1b] \textit{Optional arguments}: How should the tool handle functions which accept a variable number of arguments? SUM, for example, can have anywhere from 1 to 255, and IF can accept either 2 or 3. \footnote{https://support.office.com/en-us/article/Excel-functions-by-category-5f91f4e9-7b42-46d2-9bd1-63f26a86c0eb} Without prior evidence, it's possible that spreadsheet programmers use different techniques for different numbers arguments. To account for this, we separate and analyze the different quantities of arguments observed for each function; the tool, however, uses as default all of the options collapsed into a single representation.
+	\item \textit{Copied formulas}: Excel allows users to spread a formula over an area, repeating the same task in each cell with minor adjustments. Without checking for this, the analysis may not reveal the functions most commonly used together but rather the formulas most often applied to large areas. To combat this, we converted formulas from their native A1 format to the relative R1C1, in which copied formulas should be identical, and reduced the records to unique R1C1 formulas per sheet.
+	\item \textit{Importance of depth}: When a function appears within another, should it be analyzed only as a nested function or would it also be valid to analyze the nested function on its own?  \par
+	For example, in the pictured IF function, we found that people often use another IF statement as the second or third arguments of the top-level IF. If we only consider functions exactly where they're found embedded in the formula, then information about the same function -- IF, in this case -- will be scattered across different trees with no way to aggregate them. If we record every instance of a function by ignoring their context -- that is, including an IF embedded within a SUM function in the same node as the top-level IF -- then the tool will represent some functions in multiple nodes to capture every possible level of nesting. Both approaches have benefits and drawbacks, and so we included both.
+	\item \textit{Pattern density}: How should the tool quantitatively order its elements: by a function's raw frequency or by the unity of patterns it leads to? For example, if SUM has for its first argument two possibilities, one which itself contains 1000 unique argument possibilities with 1 occurrence each (high frequency, low pattern density) and another seen with 2 argument possibilities of 100 occurrences each (low frequency, high pattern density), which would be more interesting to emphasize? The answer depends on the nuances of the questions, but for simplicity, I've shown the former.
+	\item \textit{Non-functions}: How should the tool represent everything in the formula that isn't a function: numbers, string literals, errors, references, etc? Since these don't accept arguments, they will adorn the tree as leaves, and their precise content won't affect the functions around them as long as their types are known. As such, in the visualization, all of these nodes are replaced and aggregated under their types and represented as empty white nodes.
+	\item \textit{Optional arguments}: How should the tool handle functions which accept a variable number of arguments? SUM, for example, can have anywhere from 1 to 255, and IF can accept either 2 or 3. \footnote{https://support.office.com/en-us/article/Excel-functions-by-category-5f91f4e9-7b42-46d2-9bd1-63f26a86c0eb} Without prior evidence, it's possible that, when people use optional arguments, they use different kinds of types and functions for arguments versus the cases when they ignore optional arguments. To account for this, we separate and analyze the different quantities of arguments observed for each function; the tool, however, uses as default all of the options collapsed into a single representation.
 \end{itemize}
 
-\begin{itemize}
-	%TODO: A picture would go well here.
-	\item [2a] \textit{Importance of depth}: When a function appears within another, should it be analyzed only as a nested function or would it also be valid to analyze the nested function on its own? If the former, then information about the same function will be scattered across different trees with no way to aggregate them. If the latter, then the tool will analyze some functions multiple times to capture every possible level of nesting. Both approaches have benefits and drawbacks, and so we included both.
-	\item [2b] \textit{Pattern density}: How should the tool quantitatively order its elements: by a function's raw frequency or by the unity of patterns it leads to? For example, if SUM has for its first argument two possibilities, one which itself contains 1000 unique argument possibilities with 1 occurrence each (high frequency, low pattern density) and another seen with 2 argument possibilities of 100 occurrences each (low frequency, high pattern density), which would be more interesting to emphasize? The answer depends on the nuances of the questions, but for simplicity, I've shown the former.
-	\item [2c] \textit{Non-functions}: How should the tool represent everything in the formula that isn't a function: numbers, string literals, errors, references, etc? Since these don't accept arguments, they will adorn the tree as leaves, and their precise content won't affect the functions around them as long as their types are known. As such, in the visualization, all of these nodes are replaced and aggregated under their types.
-\end{itemize}
-
-\begin{itemize}
-	\item [3a] \textit{Suitable examples}: Goal 3 supports the inclusion of examples in the visualization as a way of tying pattern to example, but how should examples be chosen? For this, the simpler is the better, and we made the broad working assumption that shorter (by character length) functions are simpler, and thus chose the shortest available.
-	\item [3b] \textit{Spreadsheet connections}: Is it possible to contextualize these examples even better? Yes, by leading the user directly back to the originating spreadsheet. The tool hyperlinks each example, then, back to the file that contains it, providing sheet, row, and column numbers if it doesn't open directly there.
-\end{itemize}
-
-
-
-\subsection{Implementation}
+\subsection{Implementation Details}
 We can view the final visualization as the product of two discrete processes:
 \begin{itemize}
 	\item \textit{Collection}: Given a set of Excel sheets, the tool, written mostly in Java, uses Apache POI\footnote{https://poi.apache.org/} to identify and iterate over every cell containing a valid formula. Afterward, it calls POI's formula parser to break the formula text into an ordered set of individual tokens, which the tool then parses into the tree-like form by which it is recorded. When all formulas have been analyzed like this, it produces JSON files for each top-level function in the set.
-	\item \textit{Presentation}: The JSON files, meanwhile, feed into the presentation code, implemented in Javascript with much help from the visualization library D3\footnote{https://d3js.org/}. 
+	\item \textit{Presentation}: The JSON files, meanwhile, feed into the presentation code, implemented in Javascript with much help from the visualization library D3\footnote{https://d3js.org/}. We chose D3 primarily for its accessibility: given the JSON, the visualization can be rather simply embedded into a webpage accessible through a browser. 
 \end{itemize}
-When the presentation code displays the tree, it shows two types of nodes with different meanings: the circles represent a function that has been observed at that structural place, and hovering over these yields a tooltip with supplementary information and examples; and squares, which represent the argument positions for the function which is their parent. For example, if the IF function has been observed with three arguments, 3 squares will extend from it as children. Clicking on the square labeled '1' will yield more circles, all of which are functions or values that the tool observed as the first argument in an IF function; clicking on '2' will yield those possibilities in the second position; and so on.
+A demonstration of the tool can be found at [LINK HERE].
 
-
-
-\subsection{Limitations}
-Because the data collection depends on POI's formula parser, it affords no leeway or partial information from a formula; it either processes it perfectly or throws it out. As such, the visualization inhibits insight into anything with syntactical errors or third-party functions that can't be evaluated without additional tools. Note, however, that this does not include standard Excel errors like \#REF! and \#DIV/0, which the parser handles well. \par
-Many functions have an expected order of arguments, but some, like SUM and MATCH, can be reordered in various ways and maintain their value. However, the representation that this tool uses reinforces for all functions that the order is important, even in these exceptions. \par
-A larger and related problem is the loss of argument combination. In the example in section B, we saw how the tools conveys which arguments are used most often on each side of an equals sign, but it does not encode how these whether references were actually compared to strings and numbers the most or whether it corresponded more to all the arguments beneath those two 
-
+\section{User Study}
+Midway through production, we conducted a brief, four-participant user study in order to gauge how well we were capturing the initial
+design goals. The study was, in general, a flexible and exploratory
+affair: rather than giving the users any specific tasks or pointed
+questions, we asked instead that they choose for themselves which trees to explore and report anything that they deemed interesting. 
+Specifically, given trees rooted in the Enron dataset and at least 20 to thirty minutes, the participants situated themselves within the persona 
+of a consultant asked to evaluate a company's spreadsheet practice, which could be arranged around questions like which functions on which the
+employees most depended, which sheets presented the most anomalous or dangerous designs, and so on. Interpretation of "spreadsheet practice" can certainly vary from participant to participant, but since we wanted a range of views and backgrounds despite the persona, we readily accepted
+this interpretive wiggle room. \par
+We clarified, furthermore, that these notes could be directed either at the quality of the data conveyed by the tool or at the tool's conveyance
+itself. Since the tool's philosophy was based in exploration, we
+decided that it would not have been appropriate to restrict what people
+were to look for, letting them find interesting stories of formula 
+construction for themselves. Additionally, either kind of comment -- on data or on tool -- would direct us back to the central evaluation; a user's
+silence, or lack of any interesting findings, would tacitly indicate that
+perhaps the tool does not convey information well enough. \par 
+Still, several limitations cropped up during the study that complicate
+the evaluation. For one thing, though the source of the data was not 
+explicitly stated at the outset of the session, several users studied the file names (unchanged as they were) to deduce its roots in finance, if not
+Enron itself. Because of these notorious connotations, then, some were
+inclined from this moment of discovery to orient their exploration around finance-related functions, potentially limiting their findings or perceived
+users for the tool -- though some also said that, without this essential 
+context, they could not have properly explored a dataset in the first place. Comments like these point out the trade-offs of unguided exploration, too: though it might not restrict them to a single purpose, it
+might, at the same time, not afford them any mindset at all with which to 
+interpret the data. Another potential problem is that the data which users
+explored was processed and created before we had fully completed the tool,
+meaning some of the counts and patterns in the trees were inaccurate. 
+However, we decided that this was not a pressing concern, being that we 
+were primarily with whether any interesting reports could be made at all, 
+not with whether these reports were 100\% accurate assessments of reality. \par
+Nevertheless, these user studies were a formative moment in evaluating
+the tool's performance, generating a number of directions or corrections
+in the process.
 \section{Case Study}
 The obvious question to pose to any visualization is this: Why does it matter that we see this way? In other words, it is not enough to prove that something can be visualized; instead we must also demonstrate what we can be gained from any particular visualization. As such, we raised a few tasks in the introduction in which we thought the tool could help: identifying places for API improvement, detecting bad smells or common programmer misunderstanding, and guiding spreadsheet education. Thus, to demonstrate the tool's applicability, we sought out places in the tree which best exemplify these respective concerns.
 
@@ -277,7 +299,11 @@ researchers have found, by the inclusion of an in-practice example of the functi
 described. Spreadsheet programming, then, should not be essentially different: 
 examples of spreadsheet functions in use
 
-\section{Limitations}
+
+\subsection{Limitations}
+Because the data collection depends on POI's formula parser, it affords no leeway or partial information from a formula; it either processes it perfectly or throws it out. As such, the visualization inhibits insight into anything with syntactical errors or third-party functions that can't be evaluated without additional tools. Note, however, that this does not include standard Excel errors like \#REF! and \#DIV/0, which the parser handles well. \par
+Many functions have an expected order of arguments, but some, like SUM and MATCH, can be reordered in various ways and maintain their value. However, the representation that this tool uses reinforces for all functions that the order is important, even in these exceptions. \par
+A larger and related problem is the loss of argument combination. In the example in section B, we saw how the tools conveys which arguments are used most often on each side of an equals sign, but it does not encode how these whether references were actually compared to strings and numbers the most or whether it corresponded more to all the arguments beneath those two 
 
 \section{Conclusion}
 
