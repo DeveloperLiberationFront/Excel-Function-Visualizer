@@ -21,6 +21,10 @@
 \providecommand{\BIBdecl}{\relax}
 \BIBdecl
 
+\bibitem{nardi1990spreadsheet}
+B.~A. Nardi and J.~R. Miller, \emph{The spreadsheet interface: A basis for end
+  user programming}.
+
 \bibitem{scaffidi2005estimating}
 C.~Scaffidi, M.~Shaw, and B.~Myers, ``Estimating the numbers of end users and
   end user programmers,'' in \emph{Visual Languages and Human-Centric
@@ -74,5 +78,31 @@ F.~Hermans, M.~Pinzger, and A.~Van~Deursen, ``Supporting professional
 \bibitem{hermans2011breviz}
 F.~Hermans, M.~Pinzger, and A.~van Deursen, ``Breviz: Visualizing spreadsheets
   using dataflow diagrams,'' \emph{arXiv preprint arXiv:1111.6895}, 2011.
+
+\bibitem{badame2012refactoring}
+S.~Badame and D.~Dig, ``Refactoring meets spreadsheet formulas,'' in
+  \emph{Software Maintenance (ICSM), 2012 28th IEEE International Conference
+  on}.\hskip 1em plus 0.5em minus 0.4em\relax IEEE, 2012, pp. 399--409.
+
+\bibitem{cunha2012towards}
+J.~Cunha, J.~P. Fernandes, H.~Ribeiro, and J.~Saraiva, ``Towards a catalog of
+  spreadsheet smells,'' in \emph{Computational Science and Its
+  Applications--ICCSA 2012}.\hskip 1em plus 0.5em minus 0.4em\relax Springer,
+  2012, pp. 202--216.
+
+\bibitem{abreu2014smelling}
+R.~Abreu, J.~Cunha, J.~P. Fernandes, P.~Martins, A.~Perez, and J.~Saraiva,
+  ``Smelling faults in spreadsheets,'' in \emph{2014 IEEE International
+  Conference on Software Maintenance and Evolution (ICSME)}.\hskip 1em plus
+  0.5em minus 0.4em\relax IEEE, 2014, pp. 111--120.
+
+\bibitem{murphy2006java}
+G.~C. Murphy, M.~Kersten, and L.~Findlater, ``How are java software developers
+  using the elipse ide?'' \emph{Software, IEEE}, vol.~23, no.~4, pp. 76--83,
+  2006.
+
+\bibitem{robillard2011field}
+M.~P. Robillard and R.~Deline, ``A field study of api learning obstacles,''
+  \emph{Empirical Software Engineering}, vol.~16, no.~6, pp. 703--732, 2011.
 
 \end{thebibliography}
