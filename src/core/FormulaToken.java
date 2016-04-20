@@ -5,6 +5,7 @@ import org.apache.poi.ss.formula.FormulaParsingWorkbook;
 import org.apache.poi.ss.formula.FormulaRenderingWorkbook;
 import org.apache.poi.ss.formula.ptg.AreaPtgBase;
 import org.apache.poi.ss.formula.ptg.BoolPtg;
+import org.apache.poi.ss.formula.ptg.ErrPtg;
 import org.apache.poi.ss.formula.ptg.IntPtg;
 import org.apache.poi.ss.formula.ptg.NamePtg;
 import org.apache.poi.ss.formula.ptg.NumberPtg;
@@ -105,8 +106,12 @@ public class FormulaToken {
       type = "~STR~";
     else if (tok instanceof BoolPtg)                              //TRUE
       type = "~BOOL~";
-    else                                                          //errors, for example
-      type = "~OTHER~";
+    else if (tok instanceof ErrPtg)
+      type = "~ERROR~";
+    else {                                                        
+      type = "~OTHER~"; //TODO
+      System.out.println(tok.toFormulaString() + " " + tok.getClass());
+    }
     
     return type;
   }

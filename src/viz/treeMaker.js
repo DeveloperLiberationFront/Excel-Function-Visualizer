@@ -130,7 +130,7 @@ d3.json(src, function(error, json) {
 
     scale = d3.scale.log()
         .domain([1, root.frequency])
-        .range([3, 20])
+        .range([3, 30])
         .nice();
 
     root.children.forEach(function(c) {
@@ -254,7 +254,7 @@ function update(src) {
         d.y0 = d.y;
     });
 
-    center(src);
+    //center(src);
 }
 
 /**
@@ -398,6 +398,12 @@ function mouseover(d) {
             else if (d.children) return empty_hover; //Get gray.
             else return empty_col; //Don't change if no children.
         });
+
+    /*d3.selectAll("svg g").style("fill-opacity", ".25");
+    (function opaqueTree(c) {
+      d3.select("#n" + c.id).style("fill-opacity", 1);
+      if (c.parent) opaqueTree(c.parent);
+    })(d);*/
 }
 
 /**
@@ -421,6 +427,8 @@ function mouseleave(d) {
         .style("fill", function(d) {
             return d._children ? circle_col : (d.children ? circle_empty : empty_col);
         });
+
+    //d3.selectAll("svg g").style("fill-opacity", "1");
 }
 
 function rect_mouseover(d) {

@@ -14,47 +14,48 @@ Database file #1: paper.bib
 Warning--missing publisher in nardi1990spreadsheet
 Warning--empty year in nardi1990spreadsheet
 Warning--missing publisher in clermont2003scalable
+Warning--empty journal in asavametha2012detecting
 
 Done.
-You've used 16 entries,
+You've used 22 entries,
             4087 wiz_defined-function locations,
-            909 strings with 10259 characters,
-and the built_in function-call counts, 12389 in all, are:
-= -- 948
-> -- 285
-< -- 105
-+ -- 155
-- -- 46
-* -- 588
-:= -- 1782
-add.period$ -- 40
-call.type$ -- 16
-change.case$ -- 14
-chr.to.int$ -- 261
-cite$ -- 19
-duplicate$ -- 874
-empty$ -- 1099
-format.name$ -- 60
-if$ -- 2923
+            936 strings with 11241 characters,
+and the built_in function-call counts, 16105 in all, are:
+= -- 1231
+> -- 356
+< -- 132
++ -- 195
+- -- 57
+* -- 746
+:= -- 2335
+add.period$ -- 55
+call.type$ -- 22
+change.case$ -- 19
+chr.to.int$ -- 333
+cite$ -- 26
+duplicate$ -- 1151
+empty$ -- 1458
+format.name$ -- 74
+if$ -- 3805
 int.to.chr$ -- 0
-int.to.str$ -- 16
-missing$ -- 145
-newline$ -- 71
-num.names$ -- 16
-pop$ -- 367
+int.to.str$ -- 22
+missing$ -- 189
+newline$ -- 89
+num.names$ -- 22
+pop$ -- 486
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 2
-skip$ -- 953
+skip$ -- 1244
 stack$ -- 0
-substring$ -- 622
-swap$ -- 692
-text.length$ -- 18
+substring$ -- 795
+swap$ -- 888
+text.length$ -- 21
 text.prefix$ -- 0
 top$ -- 5
-type$ -- 16
-warning$ -- 3
-while$ -- 64
-width$ -- 18
-write$ -- 165
-(There were 3 warnings)
+type$ -- 22
+warning$ -- 4
+while$ -- 82
+width$ -- 24
+write$ -- 214
+(There were 4 warnings)

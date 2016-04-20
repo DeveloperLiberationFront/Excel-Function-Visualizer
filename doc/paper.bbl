@@ -56,6 +56,16 @@ F.~Hermans, M.~Pinzger, and A.~v. Deursen, ``Detecting and visualizing
   International Conference on Software Engineering}.\hskip 1em plus 0.5em minus
   0.4em\relax IEEE Press, 2012, pp. 441--451.
 
+\bibitem{jansen2015enron}
+B.~Jansen, ``Enron versus euses: a comparison of two spreadsheet corpora,''
+  \emph{arXiv preprint arXiv:1503.04055}, 2015.
+
+\bibitem{aivaloglou2015grammar}
+E.~Aivaloglou, D.~Hoepelman, and F.~Hermans, ``A grammar for spreadsheet
+  formulas evaluated on two large datasets,'' in \emph{Source Code Analysis and
+  Manipulation (SCAM), 2015 IEEE 15th International Working Conference
+  on}.\hskip 1em plus 0.5em minus 0.4em\relax IEEE, 2015, pp. 121--130.
+
 \bibitem{igarashi1998fluid}
 T.~Igarashi, J.~D. Mackinlay, B.-W. Chang, and P.~T. Zellweger, ``Fluid
   visualization of spreadsheet structures,'' in \emph{Visual Languages, 1998.
@@ -104,5 +114,24 @@ G.~C. Murphy, M.~Kersten, and L.~Findlater, ``How are java software developers
 \bibitem{robillard2011field}
 M.~P. Robillard and R.~Deline, ``A field study of api learning obstacles,''
   \emph{Empirical Software Engineering}, vol.~16, no.~6, pp. 703--732, 2011.
+
+\bibitem{fowler2009refactoring}
+M.~Fowler, \emph{Refactoring: improving the design of existing code}.\hskip 1em
+  plus 0.5em minus 0.4em\relax Pearson Education India, 2009.
+
+\bibitem{jansen2015code}
+B.~Jansen and F.~Hermans, ``Code smells in spreadsheet formulas revisited on an
+  industrial dataset,'' in \emph{Software Maintenance and Evolution (ICSME),
+  2015 IEEE International Conference on}.\hskip 1em plus 0.5em minus
+  0.4em\relax IEEE, 2015, pp. 372--380.
+
+\bibitem{asavametha2012detecting}
+A.~Asavametha, ``Detecting bad smells in spreadsheets,'' 2012.
+
+\bibitem{hermans2015detecting}
+F.~Hermans, E.~Aivaloglou, and B.~Jansen, ``Detecting problematic lookup
+  functions in spreadsheets,'' in \emph{Visual Languages and Human-Centric
+  Computing (VL/HCC), 2015 IEEE Symposium on}.\hskip 1em plus 0.5em minus
+  0.4em\relax IEEE, 2015, pp. 153--157.
 
 \end{thebibliography}
