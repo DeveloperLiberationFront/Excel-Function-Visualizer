@@ -259,7 +259,38 @@
 	Enron corpus specifically, the tool itself is not limited to this; it can be 
 	readily applied to any collection of Excel spreadsheets a user gives it.
 	
-	\section{Approach/Methodology} \subsection{Walkthrough of Tool} Before
+	\section{Approach/Methodology} 
+	
+	\subsection{Design Goals} In visualizing the spreadsheet data, I outlined a few
+	core goals for what the tool should accomplish: \begin{itemize} \item [1]
+		\textbf{Draw an interactive interface to explore observed function
+			combinations.} The combination space for all Excel functions is massive, let
+		alone the space for observed formulas. Working from data with actual referents
+		in practice, the tool must aid the user in navigating this space. \item [2]
+		\textbf{Emphasize the quantitative patterns in formula construction.} The tool,
+		accommodating datasets of a few spreadsheets to millions, should address the
+		questions of how often the end users employed a certain function and where they
+		used it. In this way, it must show precise metrics, such as frequency of  use
+		and depth of function nesting, of the dataset it conveys. \item [3]
+		\textbf{Promote a qualitative understanding of the patterns.} Lest these
+		patterns remain abstract, the tool should supplement its observations with
+		concrete instances of relevant formulas from the corpus. Ideally, it should
+		even direct users to the exact cell in the spreadsheets where the formula was
+		used, contextualizing the functions. \end{itemize} \par
+	
+	Likewise, to bound our scope, we outlined a few goals to specifically avoid
+	accomplishing with this: \begin{itemize} \item [!1] \textbf{Do not try to
+			directly explain what a function does.} Though the tool tries to foster tries
+		understanding by linking pattern to example, it won't provide a precise
+		description of what a function accomplishes. The tool's user must infer this.
+		\item [!2] \textbf{Do not create new formulas.} This is essentially an
+		exploratory tool, not a generative one. It should not produce any information
+		other than new views of the original data. \item [!3] \textbf{Do not visualize
+			individual formulas.} Though there is room to explore the place of a single
+		function in the group, the tool must design the core visualization around the
+		entire body of data, not the other way around. \end{itemize}
+	
+	\subsection{Walkthrough of Tool} Before
 	discussing the minutiae of how the tool was developed, it will help first to
 	give a basic example of how the tool can be used and how to interpret its
 	symbols. One such example might be to find the answer to this question:
@@ -315,35 +346,6 @@
 	instance is not enough, then the user also has the option to double-click the
 	individual function node, which will open up a new tab with a table of many
 	more examples from dataset.
-	
-	\subsection{Design Goals} In visualizing the spreadsheet data, I outlined a few
-	core goals for what the tool should accomplish: \begin{itemize} \item [1]
-		\textbf{Draw an interactive interface to explore observed function
-			combinations.} The combination space for all Excel functions is massive, let
-		alone the space for observed formulas. Working from data with actual referents
-		in practice, the tool must aid the user in navigating this space. \item [2]
-		\textbf{Emphasize the quantitative patterns in formula construction.} The tool,
-		accommodating datasets of a few spreadsheets to millions, should address the
-		questions of how often the end users employed a certain function and where they
-		used it. In this way, it must show precise metrics, such as frequency of  use
-		and depth of function nesting, of the dataset it conveys. \item [3]
-		\textbf{Promote a qualitative understanding of the patterns.} Lest these
-		patterns remain abstract, the tool should supplement its observations with
-		concrete instances of relevant formulas from the corpus. Ideally, it should
-		even direct users to the exact cell in the spreadsheets where the formula was
-		used, contextualizing the functions. \end{itemize} \par
-	
-	Likewise, to bound our scope, we outlined a few goals to specifically avoid
-	accomplishing with this: \begin{itemize} \item [!1] \textbf{Do not try to
-			directly explain what a function does.} Though the tool tries to foster tries
-		understanding by linking pattern to example, it won't provide a precise
-		description of what a function accomplishes. The tool's user must infer this.
-		\item [!2] \textbf{Do not create new formulas.} This is essentially an
-		exploratory tool, not a generative one. It should not produce any information
-		other than new views of the original data. \item [!3] \textbf{Do not visualize
-			individual formulas.} Though there is room to explore the place of a single
-		function in the group, the tool must design the core visualization around the
-		entire body of data, not the other way around. \end{itemize}
 	
 	\subsection{Design Decisions} Early in the process, we decided that the tree
 	form would be a suitable fit to represent the parent-child or caller-callee
