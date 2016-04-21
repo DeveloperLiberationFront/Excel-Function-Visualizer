@@ -263,56 +263,53 @@
 	
 	\subsection{Design Goals} In visualizing the spreadsheet data, we outlined the
 	core goals for what the tool should accomplish. Furthermore, with these goals,
-	we also considered the likely challenges of achieving those goals and 
-	particular outcomes which we considered beyond the scope of the research. We present
-	both sides of these goals below:
+	we also considered the likely challenges of achieving those goals and
+	particular outcomes which we considered beyond the scope of the research. We
+	present both sides of these goals below:
 	
 	\begin{itemize}
 		
-		\item [1] \textbf{Provide an interactive environment for unguided exploration.} 
+		\item [1] \textbf{Provide an interactive environment for free exploration.}
+		There are a lot of data in some of these collections, and the user should be
+		able to pick for themselves which to explore while ignoring the rest. Furthermore,
+		this exploration should not be designed around answering one specific question
+		but rather be open-ended.
 		
-		%The combination space for all Excel functions is massive, let
-		%alone the space for observed formulas. Working from data with actual referents
-		%in practice, the tool must aid the user in navigating this space.
+		\item [!1] \textbf{Do not make judgments about good and bad design.} Though
+		users may certainly approach the tool with the intention of finding particular
+		formulae, \toolname will not prioritize any on metrics of good or bad
+		practice. Rather, it will present them agnostically, referring only to
+		frequency.
 		
-		\item [!1] \textbf{Do not make judgments about good and bad design.} 
-	
-		%Though
-		%the tool tries to foster tries understanding by linking pattern to example, it
-		%won't provide a precise description of what a function accomplishes. The tool's
-		%user must infer this.
+		\item [2] \textbf{Emphasize the quantitative patterns in formula
+			construction.} \toolname should address the questions of how often the
+		spreadsheet programmers used a certain function and where they used it. In
+		this way, it must show precise metrics, such as frequency of use and depth of
+		function nesting, of the dataset it conveys.
 		
-		\item [2] \textbf{Emphasize the quantitative patterns in formula construction.}
+		\item [!2] \textbf{Do not overwhelm with numbers.} For popular functions
+		especially, we anticipated some particularly dense trees. Though
+		everything should be accessible in accordance with Goal 1, we should design in
+		a way that reduces noise.
 		
-		%The tool, accommodating datasets of a few spreadsheets to millions, should
-		%address the questions of how often the end users employed a certain function
-		%and where they used it. In this way, it must show precise metrics, such as
-		%frequency of  use and depth of function nesting, of the dataset it conveys.
+		\item [3] \textbf{Promote a qualitative understanding of the patterns.}
+		\toolname should supplement its observations with concrete instances of
+		relevant formulas from the corpus. Ideally, it should even direct users to the
+		exact cell in the spreadsheets where the formula was used, contextualizing the
+		functions.
 		
-		\item [!2] \textbf{Do not overwhelm with numbers.} 
-		
-		%This is essentially an
-		%exploratory tool, not a generative one. It should not produce any information
-		%other than new views of the original data.
-		
-		\item [3] \textbf{Promote a qualitative understanding of the patterns.} 
-		
-		%Lest
-		%these patterns remain abstract, the tool should supplement its observations
-		%with concrete instances of relevant formulas from the corpus. Ideally, it
-		%should even direct users to the exact cell in the spreadsheets where the
-		%formula was used, contextualizing the functions.
-		
-		\item [!3] \textbf{Do not attempt to explain formulae.} 
-		
-		%Though there is room
-		%to explore the place of a single function in the group, the tool must design
-		%the core visualization around the entire body of data, not the other way
-		%around.
+		\item [!3] \textbf{Do not attempt to explain formulae.} Though \toolname tries
+		to foster understanding by linking pattern to example, it should not provide
+		a precise description of what a complex formula accomplishes. The tool's user
+		must infer this on their own.
 		
 	\end{itemize}
 	
-	\subsection{Walkthrough of Tool} Before discussing the minutiae of how the tool
+	Though we kept these guidelines in mind through the development of \toolname, we
+	nevertheless reached a number of points in which these principles conflicted. For
+	a discussion of these decisions, see section \ref{ssec:decisions}.
+	
+	\subsection{Walkthrough of the Tool} Before discussing the minutiae of how the tool
 	was developed, it will help first to give a basic example of how the tool can
 	be used and how to interpret its symbols. One such example might be to find the
 	answer to this question: \textit{ What kinds of functions do people use to
@@ -341,7 +338,12 @@
 	arguments have been observed in any position, the tool displays only the first
 	ten, with an option to display the rest. The results are shown below:
 	
-	\centerline{\includegraphics[width=.43\textwidth]{IFexpand}}
+	\begin{figure}
+		\centering
+		\includegraphics[width=.43\textwidth]{IFexpand}
+		\label{fig:expandif}
+		\caption{First argument of the IF tree}
+	\end{figure}
 	
 	As expected, we see that IF contains as its first argument a number of
 	comparison operators, such as = and <=, and boolean-returning functions, like
@@ -364,7 +366,8 @@
 	individual function node, which will open up a new tab with a table of many
 	more examples from dataset.
 	
-	\subsection{Design Decisions} Early in the process, we decided that the tree
+	\subsection{Design Decisions} \label{ssec:decisions}
+	Early in the process, we decided that the tree
 	form would be a suitable fit to represent the parent-child or caller-callee
 	relationships inherent in the data, given the composition of formulas as
 	functions and their arguments (which could be yet more functions). By adapting
