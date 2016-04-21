@@ -8,6 +8,7 @@ Reallocated singl_function (elt_size=4) to 100 items from 50.
 Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
 Reallocated singl_function (elt_size=4) to 100 items from 50.
 Database file #1: paper.bib
+Warning--I didn't find a database entry for "hermans2015detecting"
 -- IEEEtran.bst version 1.14 (2015/08/26) by Michael Shell.
 -- http://www.michaelshell.org/tex/ieeetran/bibtex/
 -- See the "IEEEtran_bst_HOWTO.pdf" manual for usage information.
@@ -17,45 +18,45 @@ Warning--missing publisher in clermont2003scalable
 Warning--empty journal in asavametha2012detecting
 
 Done.
-You've used 22 entries,
+You've used 26 entries,
             4087 wiz_defined-function locations,
-            936 strings with 11241 characters,
-and the built_in function-call counts, 16105 in all, are:
-= -- 1231
-> -- 356
-< -- 132
-+ -- 195
-- -- 57
-* -- 746
-:= -- 2335
-add.period$ -- 55
-call.type$ -- 22
-change.case$ -- 19
-chr.to.int$ -- 333
-cite$ -- 26
-duplicate$ -- 1151
-empty$ -- 1458
-format.name$ -- 74
-if$ -- 3805
+            959 strings with 11893 characters,
+and the built_in function-call counts, 18776 in all, are:
+= -- 1442
+> -- 442
+< -- 147
++ -- 239
+- -- 76
+* -- 873
+:= -- 2750
+add.period$ -- 63
+call.type$ -- 26
+change.case$ -- 22
+chr.to.int$ -- 357
+cite$ -- 30
+duplicate$ -- 1356
+empty$ -- 1671
+format.name$ -- 97
+if$ -- 4424
 int.to.chr$ -- 0
-int.to.str$ -- 22
-missing$ -- 189
-newline$ -- 89
-num.names$ -- 22
-pop$ -- 486
+int.to.str$ -- 26
+missing$ -- 231
+newline$ -- 101
+num.names$ -- 26
+pop$ -- 584
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 2
-skip$ -- 1244
+skip$ -- 1452
 stack$ -- 0
-substring$ -- 795
-swap$ -- 888
-text.length$ -- 21
+substring$ -- 858
+swap$ -- 1046
+text.length$ -- 28
 text.prefix$ -- 0
 top$ -- 5
-type$ -- 22
+type$ -- 26
 warning$ -- 4
-while$ -- 82
-width$ -- 24
-write$ -- 214
-(There were 4 warnings)
+while$ -- 91
+width$ -- 28
+write$ -- 252
+(There were 5 warnings)

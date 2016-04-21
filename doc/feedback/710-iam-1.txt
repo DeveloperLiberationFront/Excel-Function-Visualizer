@@ -1,0 +1,29 @@
+Abstract
+1. Missing why the problem is a problem (why are improved spreadsheet practices needed?)
+2. Length is appropriate
+3. Yes, want to keep reading.
+4. I think the abstract is accessible to non-experts.
+
+Introduction
+1. Convinced it's a real problem. Like the spreadsheet use projections but do you have the actual numbers for 2012? Evidence written like it's for the future but now it's from the past.
+2. Convinced it's an important problem with good example.
+3. Yes, contribution is a tool to explore the combination of spreadsheet functions.
+4. So far paper delivers on promises in intro. Probably will be sold correctly when tool evaluation is complete.
+5. Can somewhat predict the structure, could probably outline paper in more detail in the intro.
+6. Yes, want to keep reading to see how tool will help.
+
+* First sentence doesn't make sense. Maybe a typo?
+
+Methodology
+1. Not necessarily research questions but clearly describes design goals and decisions very well.
+2. All described in Design Decisions and Implementation Details.
+3. Why this methodology was chosen is not obvious to me.
+4. I think the case study should also be a part of the methodology, at least describing what the evaluation is.
+5. Methodology mostly describes the design of the tool rather than methodology of the evaluation.
+6. Technical terms used accurately.
+7. Technical terms are appropriate.
+8. Unusual to have approach and methodology. I think they could be separate sections with the methodology including the case study details and approach only being design.
+9. How did you come up with the design goals to implement and avoid?
+10. Nothing seems too dubious, but not really enough details to tell in the case study experiment.
+
+* Mention a reference to Section A in 3.3 but there's not one in the paper.
