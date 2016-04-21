@@ -225,7 +225,7 @@
 	complex formula, rather than exploring the data structures of any particular
 	spreadsheet.  \par
 	
-	Many other tools inspect the structure of formulas but often from the
+	Many other tools inspect the structure of formulae but often from the
 	perspective of finding bad design.  Following Fowler's initial description of
 	code smells in object-oriented design \cite{fowler2009refactoring}, many
 	researchers have applied similar observations to spreadsheets and have
@@ -294,7 +294,7 @@
 		
 		\item [3] \textbf{Promote a qualitative understanding of the patterns.}
 		\toolname should supplement its observations with concrete instances of
-		relevant formulas from the corpus. Ideally, it should even direct users to the
+		relevant formulae from the corpus. Ideally, it should even direct users to the
 		exact cell in the spreadsheets where the formula was used, contextualizing the
 		functions.
 		
@@ -369,7 +369,7 @@
 	\subsection{Design Decisions} \label{ssec:decisions}
 	Early in the process, we decided that the tree
 	form would be a suitable fit to represent the parent-child or caller-callee
-	relationships inherent in the data, given the composition of formulas as
+	relationships inherent in the data, given the composition of formulae as
 	functions and their arguments (which could be yet more functions). By adapting
 	this structure to accommodate a broad range of possibilities for nested
 	functions, the branching factor depends on both the number of arguments in a
@@ -378,13 +378,13 @@
 	
 	Guided by the goals in section A, we faced a number of decision points, a
 	sample of which we describe below, before we arrived at the design shown above.
-	\begin{itemize} \item \textit{Copied formulas}: Excel allows users to spread a
+	\begin{itemize} \item \textit{Copied formulae}: Excel allows users to spread a
 		formula over an area, repeating the same task in each cell with minor
 		adjustments. Without checking for this, the analysis may not reveal the
-		functions most commonly used together but rather the formulas most often
-		applied to large areas. To combat this, we converted formulas from their native
-		A1 format to the relative R1C1, in which copied formulas should be identical,
-		and reduced the records to unique R1C1 formulas per sheet. \item
+		functions most commonly used together but rather the formulae most often
+		applied to large areas. To combat this, we converted formulae from their native
+		A1 format to the relative R1C1, in which copied formulae should be identical,
+		and reduced the records to unique R1C1 formulae per sheet. \item
 		\textit{Importance of depth}: When a function appears within another, should it
 		be analyzed only as a nested function or would it also be valid to analyze the
 		nested function on its own?
@@ -424,7 +424,7 @@
 		POI\footnote{https://poi.apache.org/} to identify and iterate over every cell
 		containing a valid formula. Afterward, it calls POI's formula parser to break
 		the formula text into an ordered set of individual tokens, which the tool then
-		parses into the tree-like form by which it is recorded. When all formulas have
+		parses into the tree-like form by which it is recorded. When all formulae have
 		been analyzed like this, it produces JSON files for each top-level function in
 		the set. \item \textit{Presentation}: The JSON files, meanwhile, feed into the
 		presentation code, implemented in Javascript with much help from the
@@ -591,9 +591,9 @@
 	experts with Excel, their self-reported proficiencies ranging from "fairly
 	familiar" (P2) to "not extremely familiar" (P4); even if they were experts, it
 	would likely be unreasonable to expect an evenly distributed familiarity with
-	the 100+ function trees available. Nevertheless, the list of actual formulas
+	the 100+ function trees available. Nevertheless, the list of actual formulae
 	accessible through a node's double-click allowed the users a way to find
-	examples of formulas with exactly the configuration they wanted. For example,
+	examples of formulae with exactly the configuration they wanted. For example,
 	as P1 explored the VLOOKUP function, even though they knew the official API
 	more verbosely explained its signature, they said they could use the tool to
 	collect more examples than the documentation offers. \par
@@ -622,7 +622,7 @@
 	also nodes which refer to formula errors, prefixed with \#s, which P4 said
 	could be useful if marked well. Furthermore, once these errors are found, the
 	participants could then open the offending spreadsheets, discovering that, even
-	in context, some of these formulas remained incomprehensible, posing problems
+	in context, some of these formulae remained incomprehensible, posing problems
 	for the spreadsheet transfer scenarios as outlined by Hermans
 	\cite{hermans2011supporting}. The tool, then, aggregates these issues in a
 	single place, accessible to either the unguided user and the ones who know
