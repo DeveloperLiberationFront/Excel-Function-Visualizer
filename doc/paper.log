@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/W32TeX) (preloaded format=pdflatex 2016.1.30)  21 APR 2016 13:33
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/W32TeX) (preloaded format=pdflatex 2016.1.30)  21 APR 2016 14:53
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -237,26 +237,25 @@ Package textcomp Info: Setting ptmj sub-encoding to TS1/4 on input line 409.
 ) (./paper.aux)
 \openout1 = `paper.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 101.
-LaTeX Font Info:    ... okay on input line 101.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 101.
-LaTeX Font Info:    ... okay on input line 101.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 101.
-LaTeX Font Info:    ... okay on input line 101.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 101.
-LaTeX Font Info:    ... okay on input line 101.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 101.
-LaTeX Font Info:    ... okay on input line 101.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 101.
-LaTeX Font Info:    ... okay on input line 101.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 101.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 101.
-
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 99.
+LaTeX Font Info:    ... okay on input line 99.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 99.
+LaTeX Font Info:    ... okay on input line 99.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 99.
+LaTeX Font Info:    ... okay on input line 99.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 99.
+LaTeX Font Info:    ... okay on input line 99.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 99.
+LaTeX Font Info:    ... okay on input line 99.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 99.
+LaTeX Font Info:    ... okay on input line 99.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 99.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 99.
 
 (c:/texlive/2015/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 101.
+LaTeX Font Info:    ... okay on input line 99.
 
 -- Lines per column: 56 (exact).
 (c:/texlive/2015/texmf-dist/tex/context/base/supp-pdf.mkii
@@ -323,16 +322,16 @@ e
 File: pic/IFargslabel.png Graphic file (type png)
 
 <use pic/IFargslabel.png>
-Package pdftex.def Info: pic/IFargslabel.png used on input line 120.
+Package pdftex.def Info: pic/IFargslabel.png used on input line 116.
 (pdftex.def)             Requested size: 516.0pt x 292.86052pt.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 153.
+(Font)              <7> on input line 149.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 153.
+(Font)              <5> on input line 149.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 153.
+(Font)              <8> on input line 149.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 153.
+(Font)              <6> on input line 149.
  [1{c:/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
 
@@ -340,10 +339,10 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 <pic/start.png, id=16, 179.92218pt x 78.2925pt>
 File: pic/start.png Graphic file (type png)
  <use pic/start.png>
-Package pdftex.def Info: pic/start.png used on input line 308.
+Package pdftex.def Info: pic/start.png used on input line 327.
 (pdftex.def)             Requested size: 179.92174pt x 78.2923pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 320--320
+Underfull \hbox (badness 10000) in paragraph at lines 337--337
 [][][]\OT1/ptm/m/n/8 https://support.office.com/en-us/article/IF-function-69aed
 7c9-4e8a-4755-
  []
@@ -351,133 +350,136 @@ Underfull \hbox (badness 10000) in paragraph at lines 320--320
 <pic/IFexpand.png, id=17, 289.83281pt x 308.65312pt>
 File: pic/IFexpand.png Graphic file (type png)
  <use pic/IFexpand.png>
-Package pdftex.def Info: pic/IFexpand.png used on input line 327.
+Package pdftex.def Info: pic/IFexpand.png used on input line 344.
 (pdftex.def)             Requested size: 221.87622pt x 236.28369pt.
 
 [3 <./pic/start.png> <./pic/IFexpand.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 399--399
+Underfull \hbox (badness 10000) in paragraph at lines 416--416
 [][][]\OT1/ptm/m/n/8 https://support.office.com/en-us/article/Excel-functions-b
 y-category-
  []
 
-[4] <pic/longsum.png, id=27, 1078.78032pt x 235.63031pt>
+
+Underfull \vbox (badness 4543) has occurred while \output is active []
+
+ [4]
+<pic/longsum.png, id=27, 1078.78032pt x 235.63031pt>
 File: pic/longsum.png Graphic file (type png)
  <use pic/longsum.png>
-Package pdftex.def Info: pic/longsum.png used on input line 455.
+Package pdftex.def Info: pic/longsum.png used on input line 470.
 (pdftex.def)             Requested size: 516.0pt x 112.70576pt.
 
 
 LaTeX Warning: Citation `hermans2015detecting' on page 5 undefined on input lin
-e 477.
+e 492.
 
 <pic/vlookup.png, id=28, 309.40594pt x 108.405pt>
 File: pic/vlookup.png Graphic file (type png)
  <use pic/vlookup.png>
-Package pdftex.def Info: pic/vlookup.png used on input line 492.
+Package pdftex.def Info: pic/vlookup.png used on input line 506.
 (pdftex.def)             Requested size: 258.0pt x 90.40288pt.
 
 <pic/vlookupbox.png, id=29, 137.7647pt x 40.65187pt>
 File: pic/vlookupbox.png Graphic file (type png)
  <use pic/vlookupbox.png>
-Package pdftex.def Info: pic/vlookupbox.png used on input line 493.
+Package pdftex.def Info: pic/vlookupbox.png used on input line 507.
 (pdftex.def)             Requested size: 116.10315pt x 34.26146pt.
 
 <pic/hlookupbox.png, id=30, 145.29282pt x 40.65187pt>
 File: pic/hlookupbox.png Graphic file (type png)
  <use pic/hlookupbox.png>
-Package pdftex.def Info: pic/hlookupbox.png used on input line 494.
+Package pdftex.def Info: pic/hlookupbox.png used on input line 508.
 (pdftex.def)             Requested size: 116.10315pt x 32.48555pt.
 
 <pic/hlookup.png, id=31, 307.1475pt x 93.34875pt>
 File: pic/hlookup.png Graphic file (type png)
  <use pic/hlookup.png>
-Package pdftex.def Info: pic/hlookup.png used on input line 495.
+Package pdftex.def Info: pic/hlookup.png used on input line 509.
 (pdftex.def)             Requested size: 258.0pt x 78.41667pt.
 
-Overfull \hbox (6.0pt too wide) in paragraph at lines 492--498
+Overfull \hbox (6.0pt too wide) in paragraph at lines 506--511
  [][] 
  []
 
 
-Overfull \hbox (6.0pt too wide) in paragraph at lines 492--498
+Overfull \hbox (6.0pt too wide) in paragraph at lines 506--511
  [] 
  []
 
 
 LaTeX Warning: Citation `hermans2015detecting' on page 5 undefined on input lin
-e 498.
+e 511.
 
 
 LaTeX Warning: Citation `hermans2015detecting' on page 5 undefined on input lin
-e 498.
+e 511.
 
 <pic/lookup-2.png, id=32, 285.31593pt x 67.0003pt>
 File: pic/lookup-2.png Graphic file (type png)
  <use pic/lookup-2.png>
-Package pdftex.def Info: pic/lookup-2.png used on input line 512.
+Package pdftex.def Info: pic/lookup-2.png used on input line 521.
 (pdftex.def)             Requested size: 258.0pt x 60.58595pt.
 
 <pic/lookup-3.png, id=33, 308.65312pt x 206.27063pt>
 File: pic/lookup-3.png Graphic file (type png)
  <use pic/lookup-3.png>
-Package pdftex.def Info: pic/lookup-3.png used on input line 513.
+Package pdftex.def Info: pic/lookup-3.png used on input line 522.
 (pdftex.def)             Requested size: 258.0pt x 172.43207pt.
 
-Overfull \hbox (6.0pt too wide) in paragraph at lines 512--515
+Overfull \hbox (6.0pt too wide) in paragraph at lines 521--523
  [][] 
  []
 
 
-Overfull \hbox (6.0pt too wide) in paragraph at lines 512--515
+Overfull \hbox (6.0pt too wide) in paragraph at lines 521--523
  [] 
  []
 
-[5] [6 <./pic/longsum.png> <./pic/vlookup.png> <./pic/vlookupbox.png> <./pic/hl
-ookupbox.png> <./pic/hlookup.png> <./pic/lookup-2.png> <./pic/lookup-3.png>]
+[5]
+Underfull \vbox (badness 4060) has occurred while \output is active []
+
+ [6 <./pic/longsum.png> <./pic/vlookup.png> <./pic/vlookupbox.png> <./pic/hlook
+upbox.png> <./pic/hlookup.png> <./pic/lookup-2.png> <./pic/lookup-3.png>]
 <pic/SUM.png, id=47, 76.03406pt x 207.02344pt>
 File: pic/SUM.png Graphic file (type png)
  <use pic/SUM.png>
-Package pdftex.def Info: pic/SUM.png used on input line 597.
+Package pdftex.def Info: pic/SUM.png used on input line 605.
 (pdftex.def)             Requested size: 76.03386pt x 207.02292pt.
 
-Overfull \hbox (14.11638pt too wide) in paragraph at lines 597--598
+Overfull \hbox (14.11638pt too wide) in paragraph at lines 605--606
  [][] 
  []
 
 <pic/arrow.png, id=48, 21.07875pt x 18.82031pt>
 File: pic/arrow.png Graphic file (type png)
  <use pic/arrow.png>
-Package pdftex.def Info: pic/arrow.png used on input line 658.
+Package pdftex.def Info: pic/arrow.png used on input line 666.
 (pdftex.def)             Requested size: 7.37766pt x 6.58719pt.
- [7 <./pic/SUM.png> <./pic/arrow.png>] <pic/longIF.png, id=55, 192.72pt x 526.9
-6875pt>
+
+<pic/longIF.png, id=49, 192.72pt x 526.96875pt>
 File: pic/longIF.png Graphic file (type png)
-
-<use pic/longIF.png>
-Package pdftex.def Info: pic/longIF.png used on input line 671.
+ <use pic/longIF.png>
+Package pdftex.def Info: pic/longIF.png used on input line 677.
 (pdftex.def)             Requested size: 192.71951pt x 526.96745pt.
- <pic/comparison.png, id=56, 268.75406pt x 79.04532pt>
-File: pic/comparison.png Graphic file (type png)
 
-<use pic/comparison.png>
-Package pdftex.def Info: pic/comparison.png used on input line 681.
+<pic/comparison.png, id=50, 268.75406pt x 79.04532pt>
+File: pic/comparison.png Graphic file (type png)
+ <use pic/comparison.png>
+Package pdftex.def Info: pic/comparison.png used on input line 685.
 (pdftex.def)             Requested size: 237.36346pt x 69.81335pt.
 
-Underfull \vbox (badness 2865) has occurred while \output is active []
-
-
-<pic/index.png, id=57, 292.09125pt x 180.675pt>
+[7 <./pic/SUM.png> <./pic/arrow.png> <./pic/comparison.png>]
+<pic/index.png, id=58, 292.09125pt x 180.675pt>
 File: pic/index.png Graphic file (type png)
  <use pic/index.png>
-Package pdftex.def Info: pic/index.png used on input line 731.
+Package pdftex.def Info: pic/index.png used on input line 734.
 (pdftex.def)             Requested size: 258.0pt x 159.60098pt.
 
-Overfull \hbox (6.0pt too wide) in paragraph at lines 731--734
+Overfull \hbox (6.0pt too wide) in paragraph at lines 734--736
  [][] 
  []
 
-[8 <./pic/longIF.png> <./pic/comparison.png>] (./paper.bbl [9 <./pic/index.png>
-])
+[8 <./pic/longIF.png>] (./paper.bbl [9 <./pic/index.png>])
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -499,7 +501,7 @@ LaTeX Warning: There were undefined references.
 Here is how much of TeX's memory you used:
  2967 strings out of 493054
  47957 string characters out of 6138327
- 112619 words of memory out of 5000000
+ 113619 words of memory out of 5000000
  6453 multiletter control sequences out of 15000+600000
  40843 words of font info for 74 fonts, out of 8000000 for 9000
  1144 hyphenation exceptions out of 8191
@@ -509,7 +511,7 @@ f-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb><c:/texlive/2015/texmf-dist/fon
 ts/type1/urw/times/utmb8a.pfb><c:/texlive/2015/texmf-dist/fonts/type1/urw/times
 /utmbi8a.pfb><c:/texlive/2015/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><c:/t
 exlive/2015/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on paper.pdf (10 pages, 338018 bytes).
+Output written on paper.pdf (10 pages, 348067 bytes).
 PDF statistics:
  89 PDF objects out of 1000 (max. 8388607)
  41 compressed objects within 1 object stream
