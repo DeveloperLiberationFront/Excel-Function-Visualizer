@@ -203,7 +203,7 @@
 	potential uses while also underscoring some of its inherent limitations and
 	setting the way for future extensions and improvements upon the concept.
 	
-	\section{Related Work} Given humanity's affinity for visual information,
+	\section{Related Work} \label{related-work} Given humanity's affinity for visual information,
 	visualizations have long been prized for their ability to communicate
 	information quickly and efficient \cite{baeza1999modern}; the visualization of
 	spreadsheets, therefore, has offered much room for research. Several previous
@@ -368,12 +368,11 @@
 	which predominate over the others: on the left side is most often a reference
 	to another cell; on the right, a string or number literal, which makes sense
 	for the case of confirming a value in another cell before assigning this one.
-	Furthermore, if the concept is difficult to imagine is practice, a tooltip
-	accompanies each function node in the tree, providing a concrete example of a
-	function that uses this structure and where it can be found. If this single
-	instance is not enough, then the user also has the option to double-click the
-	individual function node, which will open up a new tab with a table of many
-	more examples from dataset.
+	Furthermore, a tooltip accompanies each function node in the tree, providing a
+	concrete example of a function that uses this structure and where it can be
+	found. If this single instance is not enough, then the user also has the option
+	to double-click the individual function node, which will open up a new tab with
+	a table of many more examples from dataset.
 	
 	\subsection{Icon Glossary}
 	
@@ -455,6 +454,7 @@
 	sample of which we describe below, before we arrived at the design shown above.
 	\begin{itemize}
 		
+		%Can I incorporate these again?
 		%			\begin{itemize}
 		%
 		%				\item [1] \textbf{Provide an interactive environment for free
@@ -537,40 +537,38 @@
 	\end{itemize}
 	
 	\section{Case Study} The obvious question to pose to any visualization is this:
-	Why does it matter that we see this way? In other words, it is not enough to
-	prove that something can be visualized; instead we must also demonstrate what
+	What do the images tell us that the text could not? It is not enough to
+	prove that something can be visualized; we must also demonstrate what
 	we can be gained from any particular visualization. As such, we raised a few
 	tasks in the introduction in which we thought the tool could help: identifying
-	places for API improvement, detecting bad smells or common programmer
-	misunderstanding, and guiding spreadsheet education. To demonstrate the tool's
-	applicability, then, we sought out places in the tree which best exemplify
-	these respective concerns.
+	places for API improvement, detecting bad smells, and guiding spreadsheet education. To demonstrate the tool's
+	applicability, we sought out places in the tree which best exemplify
+	these tasks.
 	
 	\subsection{Bad Smells} Fowler's description of code smells
 	\cite{fowler2009refactoring} underscored an important point of code quality:
 	between perfect code and bug-crippled spaghetti,  there is a spectrum of code
-	designs which, by themselves, are not faulty but nevertheless suggest problems
-	and vulnerabilities in code design. Code smells, as we call them, soon
-	commanded attention and earned wide-ranging applicability, eventually making it
-	to the art of spreadsheet design.
-	
-	Since then, spreadsheet researchers have taken the concept, if not the specific
-	smells themselves, and applied them to spreadsheet programming
-	\cite{hermans2012detecting} \cite{cunha2012towards} \cite{jansen2015code}
-	\cite{asavametha2012detecting} . While some of the smells lie beyond the scope
-	of the tool, such as those characterizing inter-worksheet connections, some
+	designs which, by themselves, are not faulty but nevertheless suggest vulnerabilities in code design. 	
+	Since then, researchers have applied these concepts to spreadsheet programming, as 
+	discussed in section \ref{related-work}. While some of the smells lie beyond the scope
+	of the tool, such as those characterizing inter-worksheet connections, others
 	have structures which create distinctive features within the tree, leading to
-	easy detection through visualization: \par
+	easy detection through our visualization: \par
 	
-	\begin{itemize} \item \textit{Long Method}: Also called "Multiple Operations"
+	\begin{itemize} 
+		
+		\item \textit{Long Method}: Also called "Multiple Operations"
 		in \cite{hermans2012detecting}, this refers to situations where numerous
-		functions and operators are used all within the same cell, creating a formula
-		that tends to extend beyond a compact viewing space and makes it difficult to
-		understand. In the visualization, since each nested and combined function
+		functions and operators are used within a single formula. As a result, the formula
+		tends to be prohibitively complex. In the visualization, since each nested and combined function
 		creates yet another level of depth within the tree, these constructions can
 		result in long, horizontal chains of nodes, as seen in figure
-		\ref{"fig:longsum"}. \item \textit{Long Parameter List}: [tall, vertical towers
-		of blue nodes] \item \textit{Conditional Complexity}: [IF nodes within IF
+		\ref{"fig:longsum"}. 
+		
+		\item \textit{Long Parameter List}: [tall, vertical towers
+		of blue nodes] 
+		
+		\item \textit{Conditional Complexity}: [IF nodes within IF
 		nodes] \end{itemize}
 	
 	\begin{figure*}[h] \centering \includegraphics[width=\textwidth]{longsum}
