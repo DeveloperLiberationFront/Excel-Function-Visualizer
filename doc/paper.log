@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/W32TeX) (preloaded format=pdflatex 2016.1.30)  22 APR 2016 20:44
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/W32TeX) (preloaded format=pdflatex 2016.1.30)  23 APR 2016 08:38
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -557,78 +557,335 @@ File: pic/SUM.png Graphic file (type png)
 Package pdftex.def Info: pic/SUM.png used on input line 673.
 (pdftex.def)             Requested size: 76.03386pt x 207.02292pt.
 
-Underfull \hbox (badness 3895) in paragraph at lines 696--701
-\OT1/ptm/m/n/10 printed a list of er-rors
+Underfull \hbox (badness 2111) in paragraph at lines 688--701
+\OT1/ptm/m/n/10 they could use the tool
+ []
+
+
+Underfull \hbox (badness 1728) in paragraph at lines 688--701
+\OT1/ptm/m/n/10 af-ter open-ing the source
+ []
+
+
+Underfull \hbox (badness 2293) in paragraph at lines 688--701
+\OT1/ptm/m/n/10 popped up again as P2
+ []
+
+
+Underfull \hbox (badness 2486) in paragraph at lines 688--701
+\OT1/ptm/m/n/10 re-ly-ing on sev-eral hard-
  []
 
 [7 <./pic/lookup-2.png> <./pic/lookup-3.png> <./pic/SUM.png>]
 <pic/longIF.png, id=76, 192.72pt x 526.96875pt>
 File: pic/longIF.png Graphic file (type png)
  <use pic/longIF.png>
-Package pdftex.def Info: pic/longIF.png used on input line 813.
+Package pdftex.def Info: pic/longIF.png used on input line 818.
 (pdftex.def)             Requested size: 129.0pt x 352.7295pt.
 
 <pic/arrow.png, id=77, 21.07875pt x 18.82031pt>
 File: pic/arrow.png Graphic file (type png)
  <use pic/arrow.png>
-Package pdftex.def Info: pic/arrow.png used on input line 823.
+Package pdftex.def Info: pic/arrow.png used on input line 828.
 (pdftex.def)             Requested size: 7.37766pt x 6.58719pt.
- [8 <./pic/arrow.png>] <pic/index.png, id=82, 292.09125pt x 180.675pt>
+ [8]
+<pic/index.png, id=81, 292.09125pt x 180.675pt>
 File: pic/index.png Graphic file (type png)
  <use pic/index.png>
-Package pdftex.def Info: pic/index.png used on input line 834.
+Package pdftex.def Info: pic/index.png used on input line 839.
 (pdftex.def)             Requested size: 258.0pt x 159.60098pt.
 
-Overfull \hbox (6.0pt too wide) in paragraph at lines 834--836
+Overfull \hbox (6.0pt too wide) in paragraph at lines 839--841
  [][] 
  []
 
 
-Underfull \hbox (badness 3078) in paragraph at lines 872--880
+Underfull \hbox (badness 10000) in paragraph at lines 868--875
+[]\OT1/ptm/m/n/10 This pa-per presents
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 868--875
+\OT1/ptm/m/n/10 a tool to sup-port the
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 868--875
+\OT1/ptm/m/n/10 ex-plo-ration of func-tion
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 868--875
+\OT1/ptm/m/n/10 By tak-ing a ag-nos-tic
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 868--875
+\OT1/ptm/m/n/10 it at-tempts to con-vey
+ []
+
+
+Underfull \hbox (badness 4518) in paragraph at lines 868--875
+\OT1/ptm/m/n/10 the dataset's spread-sheet
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 868--875
+\OT1/ptm/m/n/10 and the well-designed
+ []
+
+
+Underfull \hbox (badness 1466) in paragraph at lines 868--875
+\OT1/ptm/m/n/10 take on sev-eral po-ten-tial
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 868--875
+\OT1/ptm/m/n/10 en-vi-ron-ment for search
+ []
+
+
+Underfull \hbox (badness 2277) in paragraph at lines 868--875
+\OT1/ptm/m/n/10 out bad code smells as
+ []
+
+
+Underfull \hbox (badness 1496) in paragraph at lines 868--875
+\OT1/ptm/m/n/10 well as a repos-i-tory for
+ []
+
+
+Underfull \hbox (badness 3078) in paragraph at lines 877--885
 \OT1/ptm/m/n/10 a lot of room for im-
  []
 
 
-Underfull \hbox (badness 1490) in paragraph at lines 872--880
+Underfull \hbox (badness 1490) in paragraph at lines 877--885
 \OT1/ptm/m/n/10 ploratory phi-los-o-phy fos-
  []
 
 
-Underfull \hbox (badness 2126) in paragraph at lines 872--880
+Underfull \hbox (badness 2126) in paragraph at lines 877--885
 \OT1/ptm/m/n/10 tered cer-tain goals well,
  []
 
 
-Underfull \hbox (badness 7030) in paragraph at lines 872--880
+Underfull \hbox (badness 7030) in paragraph at lines 877--885
 \OT1/ptm/m/n/10 such as the abil-ity to
  []
 
 
-Underfull \hbox (badness 1371) in paragraph at lines 872--880
+Underfull \hbox (badness 1371) in paragraph at lines 877--885
 \OT1/ptm/m/n/10 use the tool to ex-am-ine
  []
 
 
-Underfull \hbox (badness 4024) in paragraph at lines 882--887
+Underfull \hbox (badness 4024) in paragraph at lines 887--892
 []\OT1/ptm/m/n/10 Either way, the vi-su-
  []
 
 
-Underfull \hbox (badness 5741) in paragraph at lines 882--887
+Underfull \hbox (badness 5741) in paragraph at lines 887--892
 \OT1/ptm/m/n/10 al-iza-tion of these large
  []
 
 
-Underfull \hbox (badness 2884) in paragraph at lines 882--887
+Underfull \hbox (badness 2884) in paragraph at lines 887--892
 \OT1/ptm/m/n/10 these vo-lu-mi-nous oceans
  []
 
 
-Underfull \hbox (badness 1824) in paragraph at lines 882--887
+Underfull \hbox (badness 1824) in paragraph at lines 887--892
 \OT1/ptm/m/n/10 ing them com-pre-hen-si-ble
  []
 
-(./paper.bbl [9 <./pic/index.png> <./pic/longIF.png>])
+[9 <./pic/index.png> <./pic/arrow.png> <./pic/longIF.png>]
+Underfull \hbox (badness 2310) in paragraph at lines 894--899
+\OT1/ptm/m/n/10 upon work sup-ported in
+ []
+
+
+Underfull \hbox (badness 5711) in paragraph at lines 894--899
+\OT1/ptm/m/n/10 whole or in part with
+ []
+
+
+Underfull \hbox (badness 2913) in paragraph at lines 894--899
+\OT1/ptm/m/n/10 fund-ing from the Lab-o-
+ []
+
+
+Underfull \hbox (badness 3281) in paragraph at lines 894--899
+\OT1/ptm/m/n/10 ra-tory for An-a-lytic Sci-
+ []
+
+
+Underfull \hbox (badness 1924) in paragraph at lines 894--899
+\OT1/ptm/m/n/10 ences (LAS). Any opin-
+ []
+
+
+Underfull \hbox (badness 6316) in paragraph at lines 894--899
+\OT1/ptm/m/n/10 or rec-om-men-da-tions ex-
+ []
+
+
+Underfull \hbox (badness 4084) in paragraph at lines 894--899
+\OT1/ptm/m/n/10 pressed in this ma-te-rial
+ []
+
+(./paper.bbl
+Underfull \hbox (badness 1902) in paragraph at lines 25--27
+[]\OT1/ptm/m/n/8 R. R. Panko and N. Or-d-way,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 29--33
+[]\OT1/ptm/m/n/8 A. J. Ko, R. Abra-ham,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 29--33
+\OT1/ptm/m/n/8 L. Beck-with, A. Black-well,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 29--33
+\OT1/ptm/m/n/8 J. Lawrance, H. Lieber-man,
+ []
+
+
+Underfull \hbox (badness 7613) in paragraph at lines 29--33
+\OT1/ptm/m/n/8 the art in end-user soft-ware
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 29--33
+\OT1/ptm/m/n/8 en-gi-neer-ing,'' \OT1/ptm/m/it/8 ACM Com-put-ing
+ []
+
+
+Underfull \hbox (badness 1735) in paragraph at lines 45--48
+\OT1/ptm/m/n/8 op-er-a-tional spread-sheets,'' \OT1/ptm/m/it/8 De-ci-
+ []
+
+
+Underfull \hbox (badness 1460) in paragraph at lines 45--48
+\OT1/ptm/m/it/8 sion Sup-port Sys-tems\OT1/ptm/m/n/8 , vol. 47,
+ []
+
+
+Underfull \hbox (badness 1783) in paragraph at lines 50--54
+\OT1/ptm/m/n/8 re-source for sup-port-ing ex-per-i-
+ []
+
+
+Underfull \hbox (badness 1478) in paragraph at lines 50--54
+\OT1/ptm/m/n/8 men-ta-tion with spread-sheet de-
+ []
+
+
+Underfull \hbox (badness 1675) in paragraph at lines 50--54
+\OT1/ptm/m/it/8 SIG-SOFT Soft-ware En-gi-neer-ing
+ []
+
+
+Underfull \hbox (badness 1460) in paragraph at lines 56--61
+\OT1/ptm/m/it/8 Soft-ware Repos-i-to-ries\OT1/ptm/m/n/8 . IEEE
+ []
+
+
+Underfull \hbox (badness 3930) in paragraph at lines 69--73
+[]\OT1/ptm/m/n/8 F. Her-mans, M. Pinzger, and
+ []
+
+
+Underfull \hbox (badness 4518) in paragraph at lines 69--73
+\OT1/ptm/m/it/8 2012 28th IEEE In-ter-na-tional
+ []
+
+
+Underfull \hbox (badness 3219) in paragraph at lines 81--85
+[]\OT1/ptm/m/n/8 E. Aival-oglou, D. Hoe-pel-man,
+ []
+
+
+Underfull \hbox (badness 2253) in paragraph at lines 81--85
+\OT1/ptm/m/n/8 two large datasets,'' in \OT1/ptm/m/it/8 Source
+ []
+
+
+Underfull \hbox (badness 3354) in paragraph at lines 87--89
+[]\OT1/ptm/m/n/8 B. Jansen, ``En-ron ver-sus eu-
+ []
+
+
+Underfull \hbox (badness 4739) in paragraph at lines 87--89
+\OT1/ptm/m/n/8 sheet cor-pora,'' \OT1/ptm/m/it/8 arXiv preprint
+ []
+
+
+Underfull \hbox (badness 1430) in paragraph at lines 91--94
+\OT1/ptm/m/it/8 et al.\OT1/ptm/m/n/8 , \OT1/ptm/m/it/8 Mod-ern in-for-ma-tion r
+e-
+ []
+
+
+Underfull \hbox (badness 3930) in paragraph at lines 109--113
+[]\OT1/ptm/m/n/8 F. Her-mans, M. Pinzger, and
+ []
+
+
+Underfull \hbox (badness 4084) in paragraph at lines 109--113
+\OT1/ptm/m/n/8 fes-sional spread-sheet users by
+ []
+
+
+Underfull \hbox (badness 3930) in paragraph at lines 115--117
+[]\OT1/ptm/m/n/8 F. Her-mans, M. Pinzger, and
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 115--117
+\OT1/ptm/m/n/8 A. van Deursen, ``Bre-viz:
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 115--117
+\OT1/ptm/m/n/8 Vi-su-al-iz-ing spread-sheets us-ing
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 123--127
+[]\OT1/ptm/m/n/8 J. Cunha, J. P. Fer-nan-des,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 123--127
+\OT1/ptm/m/n/8 H. Ribeiro, and J. Saraiva,
+ []
+
+[10]
+Underfull \hbox (badness 1859) in paragraph at lines 132--136
+\OT1/ptm/m/n/8 J. Saraiva, ``Smelling faults in
+ []
+
+
+Underfull \hbox (badness 2111) in paragraph at lines 138--142
+\OT1/ptm/m/n/8 iz-ing inter-worksheet smells in
+ []
+
+
+Underfull \hbox (badness 4254) in paragraph at lines 144--147
+\OT1/ptm/m/n/8 las,'' in \OT1/ptm/m/it/8 Soft-ware Main-te-nance
+ []
+
+
+Underfull \hbox (badness 1354) in paragraph at lines 149--152
+\OT1/ptm/m/n/8 ide?'' \OT1/ptm/m/it/8 Soft-ware, IEEE\OT1/ptm/m/n/8 , vol. 23,
+ []
+
+)
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -640,7 +897,7 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[10
+[11
 
 ] (./paper.aux)
 
@@ -648,10 +905,10 @@ LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 3023 strings out of 493054
- 49322 string characters out of 6138327
- 114707 words of memory out of 5000000
- 6499 multiletter control sequences out of 15000+600000
+ 3024 strings out of 493054
+ 49333 string characters out of 6138327
+ 114723 words of memory out of 5000000
+ 6500 multiletter control sequences out of 15000+600000
  40843 words of font info for 74 fonts, out of 8000000 for 9000
  1144 hyphenation exceptions out of 8191
  37i,8n,30p,359b,234s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -661,10 +918,10 @@ nts/type1/public/amsfonts/cm/cmsy7.pfb><c:/texlive/2015/texmf-dist/fonts/type1/
 urw/times/utmb8a.pfb><c:/texlive/2015/texmf-dist/fonts/type1/urw/times/utmbi8a.
 pfb><c:/texlive/2015/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><c:/texlive/20
 15/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on paper.pdf (10 pages, 373180 bytes).
+Output written on paper.pdf (11 pages, 365045 bytes).
 PDF statistics:
- 113 PDF objects out of 1000 (max. 8388607)
- 44 compressed objects within 1 object stream
+ 116 PDF objects out of 1000 (max. 8388607)
+ 46 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  126 words of extra memory for PDF output out of 10000 (max. 10000000)
 

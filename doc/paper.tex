@@ -547,7 +547,7 @@
 	
 	\subsection{API Improvement}
 	
-	\subsection{Bad Smells} Fowler's description of code smells
+	\subsection{Bad Smells} \label{badsmells} Fowler's description of code smells
 	\cite{fowler2009refactoring} underscored an important point of code quality:
 	between elegant, efficient code and bug-crippled spaghetti, there is a spectrum of code
 	designs which, by themselves, are not faulty but nevertheless suggest vulnerabilities in code design. 	
@@ -671,39 +671,44 @@
 	
 	\subsection{Use in Smell Tracking}
 	\begin{wrapfigure}{O}{.25\textwidth} \centering \includegraphics{SUM}
-		\label{fig:sum} \caption{An abundance of parameters in SUM} \end{wrapfigure}
+		\label{fig:sum} \caption{An abundance of parameters in SUM. Encountering this, P4
+			remarked, "Woah."} \end{wrapfigure}
 	
-	The discovery of errors and bad design, whether by purpose or accident,
-	produced the more jarring events of the study, and as such, most users
-	commented on the tool's ability to locate these problems in spreadsheet design.
-	This was often supported by the distinctive visual signatures of certain bad
-	practices: multiple arguments produce towers of nodes, deep function nesting
-	stretches the tree horizontally, and so on. As such, the participants remarked
-	on the problems quickly after opening: P3, exploring the example for a
-	27-argument SUM (with SUM's initial appearance pictured left), diagnosed the
-	situation with either incompetency or just plain weirdness; P2, meanwhile,
-	decided that the spreadsheet's author "was having a bad day" when writing an
-	AVERAGE with 18 distinct arguments. Aside from these implicit cues, there are
-	also nodes which refer to formula errors, prefixed with \#s, which P4 said
-	could be useful if marked well. Furthermore, once these errors are found, the
-	participants could then open the offending spreadsheets, discovering that, even
-	in context, some of these formulae remained incomprehensible, posing problems
-	for the spreadsheet transfer scenarios as outlined by Hermans
-	\cite{hermans2011supporting}. The tool, then, aggregates these issues in a
-	single place, accessible to either the unguided user and the ones who know
-	exactly where to find these issues. \par
+	The participants were most vocal about their findings when they discovered, by
+	purpose or accident, instances of heinous design in the dataset. Many times,
+	they noted these examples shortly after opening a new tree, suggesting that the
+	distinctive visual signatures as discussed in section \ref{badsmells} was a
+	salient force in their exploration. For example, when P3 encountered the
+	initial design of the SUM tree, as seen in figure \ref{fig:sum}, they readily
+	diagnosed that either a spreadsheet author was "totally incompetent, or [the
+	formula was] just some that's weird." Other than these visual cues, value
+	errors, prefixed with \#s, also appear in the tree where they are found, 
+	which P4 said could be useful for tracking these problems if marked well.
+	
+	Additionally, because the files in the Enron set had name with the author
+	as a prefix, P2 commented that they could use the tool in a company
+	setting to follow up with repeat offenders. For instance, they first
+	encountered a particular author's name when investigating an AVERAGE function
+	with 18 distinct arguments for which our participant could not discern any
+	logical order, even after opening the source spreadsheet; the same name
+	popped up again as P2 looked at a RATE function relying on several hard-coded
+	values. P2 said that, if they were a manager or project leader, this recurrence
+	was a sign to talk to the author personally and figure out why
+	these problems were there, as to prevent more in the future. They also added
+	that these problems would grow worse if this particular author left the company
+	and no one remained who understood these formulae, a concern that aligns with
+	Hermans' transfer scenarios \cite{hermans2011supporting}.
 	
 	The detection of bad design, however, is certainly not limited to a
 	visualization tool, and some users remarked that a tool which printed a list of
 	errors could suffice just as well for that purpose. However, they also remarked
 	that this visual interface better supports the case when searching for new and
-	unknown brands of bad smell.
-		
-	Because the exploratory design makes no qualitative judgment and visualizes
-	benign designs with the problematic, it therefore allows for flexible
-	interpretation of what is an issue; that is, a user might not realize a certain
-	design is suboptimal until they see it in the tree and, at the point, find
-	every instance of it.
+	unknown brands of bad smell. Because the exploratory design makes no
+	qualitative judgment and visualizes benign designs with the problematic, it
+	therefore allows for flexible interpretation of what is a smell; that is, a
+	user might not realize a certain design is suboptimal until they see it in the
+	tree and, at the point, find specific examples of where it occurs in the
+	spreadsheets.
 	
 	\subsection{Use in Education}
 	The inclusion of formula examples, grounded in
