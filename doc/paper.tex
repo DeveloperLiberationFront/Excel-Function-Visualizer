@@ -664,51 +664,13 @@
 	persona. We clarified, furthermore, that their observations could be directed either at the
 	quality of the data conveyed by the tool or at the tool's design itself. \par
 	
-	Still, several limitations cropped up during the study that complicate the
-	evaluation. For one thing, though the source of the data was not explicitly
-	stated at the outset of the session, several users studied the file names
-	(unchanged as they were) to deduce its roots in finance, if not Enron itself.
-	Because of these notorious connotations, then, some were inclined from this
-	moment of discovery to orient their exploration around finance-related
-	functions, potentially limiting their findings or perceived users for the tool
-	-- though some also said that, without this essential context, they could not
-	have properly explored a dataset in the first place. Comments like these point
-	out the trade-offs of unguided exploration, too: though it might not restrict
-	them to a single purpose, it might, at the same time, not afford them any
-	mindset at all with which to interpret the data. Another potential problem is
-	that the data which users explored was processed and created before we had
-	fully completed the tool, meaning some of the counts and patterns in the trees
-	were inaccurate. However, we decided that this was not a pressing concern,
-	being that we were primarily with whether any interesting reports could be made
-	at all, not with whether these reports were 100\% accurate assessments of
-	reality. \par
-	
 	Nevertheless, these user studies were a formative moment in evaluating the
 	tool's performance, generating a number of directions or corrections in the
 	process. We present an overview of responses below, with the four participants
 	recorded simply as P1 through P4. \par
 	
-	\subsection{Positive Responses} The inclusion of formula examples, grounded in
-	and linking back to the originating spreadsheets, proved to be an especial draw
-	to the tool. After all, none of the participants professed themselves to be
-	experts with Excel, their self-reported proficiencies ranging from "fairly
-	familiar" (P2) to "not extremely familiar" (P4); even if they were experts, it
-	would likely be unreasonable to expect an evenly distributed familiarity with
-	the 100+ function trees available. Nevertheless, the list of actual formulae
-	accessible through a node's double-click allowed the users a way to find
-	examples of formulae with exactly the configuration they wanted. For example,
-	as P1 explored the VLOOKUP function, even though they knew the official API
-	more verbosely explained its signature, they said they could use the tool to
-	collect more examples than the documentation offers. \par
-	
-	Furthermore, it offers a simple way of finding examples where certain functions
-	were used together. though a standard text-search tool might yield the same
-	results for a function alone, combinations can require more complex text
-	queries, whereas here, the information is already captured in nodes. [This
-	paragraph contrasts it with previous approaches, but lacks compelling evidence
-	-- a lot of "mights"] \par
-	
-	\begin{wrapfigure}{L}{.25\textwidth} \centering \includegraphics{SUM}
+	\subsection{Use in Smell Tracking}
+	\begin{wrapfigure}{O}{.25\textwidth} \centering \includegraphics{SUM}
 		\label{fig:sum} \caption{An abundance of parameters in SUM} \end{wrapfigure}
 	
 	The discovery of errors and bad design, whether by purpose or accident,
@@ -736,22 +698,33 @@
 	errors could suffice just as well for that purpose. However, they also remarked
 	that this visual interface better supports the case when searching for new and
 	unknown brands of bad smell.
-	
+		
 	Because the exploratory design makes no qualitative judgment and visualizes
 	benign designs with the problematic, it therefore allows for flexible
 	interpretation of what is an issue; that is, a user might not realize a certain
 	design is suboptimal until they see it in the tree and, at the point, find
 	every instance of it.
 	
-	\subsection{Negative Responses} Some interaction with the tool underlined how a
-	lack of contextual information may limit the tool. For example, the benefits
-	described in the previous sections imply a hidden complication: if the tool
-	educates through example but doesn't explicitly distinguish between good design
-	and bad design, how can we be sure that people won't inadvertently learn bad
-	design from it. Right now, we can't be sure; the tool would have to be
-	supplemented with a distinguishing eye, informed on bad design already, and
-	supplying the tool with this would take it beyond a design-agnostic view. [More
-	on this in the conclusion.] \par
+	\subsection{Use in Education}
+	The inclusion of formula examples, grounded in
+	and linking back to the originating spreadsheets, proved to be an especial draw
+	to the tool. After all, none of the participants professed themselves to be
+	experts with Excel, their self-reported proficiencies ranging from "fairly
+	familiar" (P2) to "not extremely familiar" (P4); even if they were experts, it
+	would likely be unreasonable to expect an evenly distributed familiarity with
+	the 100+ function trees available. Nevertheless, the list of actual formulae
+	accessible through a node's double-click allowed the users a way to find
+	examples of formulae with exactly the configuration they wanted. For example,
+	as P1 explored the VLOOKUP function, even though they knew the official API
+	more verbosely explained its signature, they said they could use the tool to
+	collect more examples than the documentation offers. \par
+	
+	Furthermore, it offers a simple way of finding examples where certain functions
+	were used together. though a standard text-search tool might yield the same
+	results for a function alone, combinations can require more complex text
+	queries, whereas here, the information is already captured in nodes. [This
+	paragraph contrasts it with previous approaches, but lacks compelling evidence
+	-- a lot of "mights"] \par
 	
 	Furthermore, just because a user can exhaustively explore every variation of
 	how a function was used doesn't mean they will learn exactly what it does. P1,
@@ -763,33 +736,32 @@
 	functions themselves, the exploratory environment is not enough for independent
 	education. However, unlike the previous problem, this can be addressed,
 	perhaps, by guiding the user directly to such documentation from within the
-	tool without violating any design concerns. \par
+	tool without violating any design concerns. \par	
+
+	\subsection{Study Limitations}
 	
-	A threat to the exploratory philosophy may also mount from the problem of too
-	much data, particularly in the popular functions, like SUM and IF. We had added
-	some precautions before the study: for any position in the tree, for example,
-	only the ten most common functions were displayed without clicking on the
-	expansion arrow \includegraphics[scale=.35]{arrow}. Nevertheless, P3 remarked
-	that they specifically avoided the most popular functions, anticipating a flood
-	of nodes from which they could salvage nothing interesting -- which might not
-	have been a bad prediction, considering that the SUM is built from 910 nodes
-	and IF, at least 18000 [double-check these with refined data]. P2 corroborated
-	this by explaining how they gravitated toward specific examples over the plane
-	of nodes but complicates it further by also deeming the tool at its best when
-	it shows either every possibility of an side-by-side (for comparison) or
-	nothing on that branch at all, a balance that is hard to strike with node-dense
-	trees. \par
-	
-	\begin{wrapfigure}{R}{.25\textwidth} \centering \includegraphics[scale=.5]{longIF} \label{fig:longif}
-		\caption{The many possibilities of IF, argument 3, demonstrate the problem of
-			having too many options.} \end{wrapfigure}
+	Still, several limitations cropped up during the study that complicate the
+	evaluation. For one thing, though the source of the data was not explicitly
+	stated at the outset of the session, several users studied the file names
+	(unchanged as they were) to deduce its roots in finance, if not Enron itself.
+	Because of these notorious connotations, then, some were inclined from this
+	moment of discovery to orient their exploration around finance-related
+	functions, potentially limiting their findings or perceived users for the tool
+	-- though some also said that, without this essential context, they could not
+	have properly explored a dataset in the first place. Comments like these point
+	out the trade-offs of unguided exploration, too: though it might not restrict
+	them to a single purpose, it might, at the same time, not afford them any
+	mindset at all with which to interpret the data. Another potential problem is
+	that the data which users explored was processed and created before we had
+	fully completed the tool, meaning some of the counts and patterns in the trees
+	were inaccurate. However, we decided that this was not a pressing concern,
+	being that we were primarily with whether any interesting reports could be made
+	at all, not with whether these reports were 100\% accurate assessments of
+	reality. \par
 	
 	Throughout the study, it became apparent that some of the concepts,
 	particularly optional arguments, were easily lost in the representation. To
-	illustrate this, consider the following two trees: \par
-	
-	[MOVED]
-	
+	illustrate this, consider the following two trees.	
 	The difference is, perhaps, too subtle: on the left, the tree contains
 	instances of AND functions with any number of arguments, up to four; on the
 	right, the tree contains only instances with exactly four arguments. In other
@@ -801,8 +773,7 @@
 	specific parameter. Though we clarified the meanings when these
 	misunderstandings became apparent, these events point to a failure in the tool
 	to properly indicate every function with clarity.   \par
-	
-	
+		
 	
 	\section{Limitations} Beyond the negative responses in the user study, a few
 	more inherent limitations beset the tool. These largely resulted from
@@ -836,6 +807,29 @@
 	these argument combinations could be pieced together by manually inspecting the
 	lists of examples, it is nevertheless inconvenient, though not outside the
 	realm of future improvement.
+	
+	\begin{wrapfigure}{O}{.25\textwidth} 
+		\centering 
+		\includegraphics[width=.25\textwidth]{longIF} 
+		\label{fig:longif}
+		\caption{The many possibilities of IF, argument 3, demonstrate the problem of
+			having too many options.} 
+	\end{wrapfigure}
+	
+	A threat to the exploratory philosophy may also mount from the problem of too
+	much data, particularly in the popular functions, like SUM and IF. We had added
+	some precautions before the study: for any position in the tree, for example,
+	only the ten most common functions were displayed without clicking on the
+	expansion arrow \includegraphics[scale=.35]{arrow}. Nevertheless, P3 remarked
+	that they specifically avoided the most popular functions, anticipating a flood
+	of nodes from which they could salvage nothing interesting -- which might not
+	have been a bad prediction, considering that the SUM is built from 910 nodes
+	and IF, at least 18000 [double-check these with refined data]. P2 corroborated
+	this by explaining how they gravitated toward specific examples over the plane
+	of nodes but complicates it further by also deeming the tool at its best when
+	it shows either every possibility of an side-by-side (for comparison) or
+	nothing on that branch at all, a balance that is hard to strike with node-dense
+	trees. \par
 	
 	\begin{figure} \centering \includegraphics[width=.5\textwidth]{index}
 		\label{fig:index} \caption{A difficult question: how often is MATCH used in
