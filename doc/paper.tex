@@ -195,7 +195,7 @@
 	helped and hindered this process. We then apply the tool to a number of case
 	studies to evaluate how much it could contribute to several different contexts:
 	
-	\begin{itemize} \item API improvement \item Detection of code smells \item
+	\begin{itemize} \item Detection of code smells \item
 		Spreadsheet education \end{itemize}
 	
 	To round out that discussion, we also conducted a user study to judge how
@@ -203,27 +203,27 @@
 	potential uses while also underscoring some of its inherent limitations and
 	setting the way for future extensions and improvements upon the concept.
 	
-	\section{Related Work} \label{related-work} Given humanity's affinity for visual information,
-	visualizations have long been prized for their ability to communicate
-	information quickly and efficient \cite{baeza1999modern}; the visualization of
-	spreadsheets, therefore, has offered much room for research. Several previous
-	tools work within a spreadsheet, seeking to clarify the connections between the
-	visible values in cells, the formulae that produce them, and the dependencies
-	between cells that inform them. Igarashi and colleague's fluid visualizations
-	\cite{igarashi1998fluid}, for example, do this by imposing lines, color, and
-	animation over the spreadsheet to visually explain these tangled connections.
-	Likewise, Clermont explored ways of grouping cells by color and border that
-	were related through similar functions, neighbors, or references
-	\cite{clermont2003scalable}, and Hipfl extended this work by incorporating the
-	layouts and labels of spreadsheets \cite{hipfl2008using}. Other tools focus on
-	creating visualizations external to the sheets. Hermans and colleagues address
-	a spreadsheet programmer's information by making dataflow diagrams from
-	individual sheets through the tools GyroSAT \cite{hermans2011supporting} and
-	Breviz \cite{hermans2011breviz}. \toolname is among the latter class, creating
-	standalone visualizations about spreadsheets. In contrast to Hermans' work,
-	though, our work focuses on representing functions and how they comprise
-	complex formula, rather than exploring the data structures of any particular
-	spreadsheet.  \par
+	\section{Related Work} \label{related-work} Given humanity's affinity for
+	visual information, visualizations have long been prized for their ability to
+	communicate information quickly and efficient \cite{baeza1999modern}; the
+	visualization of spreadsheets, therefore, has offered much room for research.
+	Several previous tools work within a spreadsheet, seeking to clarify the
+	connections between the visible values in cells, the formulae that produce
+	them, and the dependencies between cells that inform them. Igarashi and
+	colleague's fluid visualizations \cite{igarashi1998fluid}, for example, do this
+	by imposing lines, color, and animation over the spreadsheet to visually
+	explain these tangled connections. Likewise, Clermont explored ways of grouping
+	cells by color and border that were related through similar functions,
+	neighbors, or references \cite{clermont2003scalable}, and Hipfl extended this
+	work by incorporating the layouts and labels of spreadsheets
+	\cite{hipfl2008using}. Other tools focus on creating visualizations external to
+	the sheets. Hermans and colleagues address a spreadsheet programmer's
+	information by making dataflow diagrams from individual sheets through the
+	tools GyroSAT \cite{hermans2011supporting} and Breviz \cite{hermans2011breviz}.
+	\toolname is among the latter class, creating standalone visualizations about
+	spreadsheets. In contrast to Hermans' work, though, our work focuses on
+	representing functions and how they comprise complex formula, rather than
+	exploring the data structures of any particular spreadsheet.  \par
 	
 	Many other tools inspect the structure of formulae but often from the
 	perspective of finding bad design.  Following Fowler's initial description of
@@ -537,27 +537,26 @@
 	\end{itemize}
 	
 	\section{Case Study} The obvious question to pose to any visualization is this:
-	What do the images tell us that the text could not? It is not enough to
-	prove that something can be visualized; we must also demonstrate what
-	we can be gained from any particular visualization. As such, we raised a few
-	tasks in the introduction in which we thought the tool could help: identifying
-	places for API improvement, detecting bad smells, and guiding spreadsheet education. To demonstrate the tool's
-	applicability, we sought out places in the tree which best exemplify
-	these tasks.
-	
-	\subsection{API Improvement}
+	What do the images tell us that the text could not? It is not enough to prove
+	that something can be visualized; we must also demonstrate what we can be
+	gained from any particular visualization. As such, we raised a few tasks in the
+	introduction in which we thought the tool could help: identifying places for
+	API improvement, detecting bad smells, and guiding spreadsheet education. To
+	demonstrate the tool's applicability, we sought out places in the tree which
+	best exemplify these tasks.
 	
 	\subsection{Bad Smells} \label{badsmells} Fowler's description of code smells
 	\cite{fowler2009refactoring} underscored an important point of code quality:
-	between elegant, efficient code and bug-crippled spaghetti, there is a spectrum of code
-	designs which, by themselves, are not faulty but nevertheless suggest vulnerabilities in code design. 	
-	Since then, researchers have applied these concepts to spreadsheet programming, as 
-	discussed in section \ref{related-work}. While some of the smells lie beyond the scope
-	of the tool, such as those characterizing inter-worksheet connections, others
-	have structures which create distinctive features within the tree, leading to
-	easy detection through our visualization: \par
+	between elegant, efficient code and bug-crippled spaghetti, there is a spectrum
+	of code designs which, by themselves, are not faulty but nevertheless suggest
+	vulnerabilities in code design. Since then, researchers have applied these
+	concepts to spreadsheet programming, as discussed in section
+	\ref{related-work}. While some of the smells lie beyond the scope of the tool,
+	such as those characterizing inter-worksheet connections, others have
+	structures which create distinctive features within the tree, leading to easy
+	detection through our visualization: \par
 	
-	\begin{itemize} 
+	\begin{itemize}
 		
 		\item \textit{Multiple Operations}: A single formula comprises numerous
 		functions and operators. \cite{hermans2012detecting}. As a result, the formula
@@ -568,15 +567,17 @@
 		
 		\item \textit{Long Parameter List}: A function uses numerous arguments, making
 		it harder to understand \cite{asavametha2012detecting}. This is not a problem
-		for many functions which have a limited number of arguments that it accepts. However,
-		for functions that accept arguments indefinitely, such as SUM and CONCATENATE, it creates
-		tall towers of argument nodes from a single function node.
+		for many functions which have a limited number of arguments that it accepts.
+		However, for functions that accept arguments indefinitely, such as SUM and
+		CONCATENATE, it creates tall towers of argument nodes from a single function
+		node.
 		
-		\item \textit{Conditional Complexity}: A logical function, particularly IF, nests
-		several other logical functions inside of it, reducing code readability \cite{hermans2012detecting}. 
-		These can be traced manually in the trees for the logical functions. IF, for example,
-		will have several more IF function nodes within its second or third arguments, which
-		in turn might have more of the same nested within them.
+		\item \textit{Conditional Complexity}: A logical function, particularly IF,
+		nests several other logical functions inside of it, reducing code readability
+		\cite{hermans2012detecting}. These can be traced manually in the trees for the
+		logical functions. IF, for example, will have several more IF function nodes
+		within its second or third arguments, which in turn might have more of the
+		same nested within them.
 		
 	\end{itemize}
 	
@@ -585,15 +586,15 @@
 			complex or redundant design.} \end{figure*}
 	
 	Some code issues are meaningful not for the space they occupy but for how they
-	clash with a function's expectations. For example, Excel offers a
-	number of functions that accept any number arguments given to them, up to a
-	resource-defined limit. SUM, for example, simply adds every argument given to it.
-	This also means that it can accept only one argument, and when the user does so,
-	they pass in a range of cells over 90\% of the time. However, using the tool,
-	we isolated an instance where the programmer used a single-argument SUM where the 
-	argument was a series of 32 contiguous cells added with the + operation -- 
-	``SUM(C6+C7+C8+C9+C10+C11+C12+C13+...+C37)" -- representing a technically
-	valid but unusual and problematic design.\par
+	clash with a function's expectations. For example, Excel offers a number of
+	functions that accept any number arguments given to them, up to a
+	resource-defined limit. SUM, for example, simply adds every argument given to
+	it. This also means that it can accept only one argument, and when the user
+	does so, they pass in a range of cells over 90\% of the time. However, using
+	the tool, we isolated an instance where the programmer used a single-argument
+	SUM where the argument was a series of 32 contiguous cells added with the +
+	operation -- ``SUM(C6+C7+C8+C9+C10+C11+C12+C13+...+C37)" -- representing a
+	technically valid but unusual and problematic design.\par
 	
 	%Lookup example
 	Otherwise, the LOOKUP functions are particularly notorious for their confusing
@@ -652,27 +653,26 @@
 	user study in order to detect conflicts between our design and the goals in
 	section \ref{goals}. We designed the study to be exploratory; given trees based
 	in the Enron dataset and at least twenty minutes, we asked the participants to
-	adopt the persona of a consultant evaluating a company's spreadsheet
-	practice, allowing for questions like which functions on which the employees
-	most depended or which sheets or employees presented the most anomalous or
-	dangerous designs. Though we instructed them on how to use the tool and
-	suggested that they visit one of the most populous trees in the set, we put
-	aside any specific tasks or questions and let them choose their own paths.
-	Though interpretation of the phrase ``spreadsheet practice" can certainly vary
-	from participant to participant, we readily accepted this interpretive
-	flexibility since we wanted a range of views and backgrounds despite the
-	persona. We clarified, furthermore, that their observations could be directed either at the
-	quality of the data conveyed by the tool or at the tool's design itself. \par
+	adopt the persona of a consultant evaluating a company's spreadsheet practice,
+	allowing for questions like which functions on which the employees most
+	depended or which sheets or employees presented the most anomalous or dangerous
+	designs. Though we instructed them on how to use the tool and suggested that
+	they visit one of the most populous trees in the set, we put aside any specific
+	tasks or questions and let them choose their own paths. Though interpretation
+	of the phrase ``spreadsheet practice" can certainly vary from participant to
+	participant, we readily accepted this interpretive flexibility since we wanted
+	a range of views and backgrounds despite the persona. We clarified,
+	furthermore, that their observations could be directed either at the quality of
+	the data conveyed by the tool or at the tool's design itself. \par
 	
 	Nevertheless, these user studies were a formative moment in evaluating the
 	tool's performance, generating a number of directions or corrections in the
 	process. We present an overview of responses below, with the four participants
 	recorded simply as P1 through P4. \par
 	
-	\subsection{Use in Smell Tracking}
-	\begin{wrapfigure}{O}{.25\textwidth} \centering \includegraphics{SUM}
-		\label{fig:sum} \caption{An abundance of parameters in SUM. Encountering this, P4
-			remarked, "Woah."} \end{wrapfigure}
+	\subsection{Use in Smell Tracking} \begin{wrapfigure}{O}{.25\textwidth}
+		\centering \includegraphics{SUM} \label{fig:sum} \caption{An abundance of
+			parameters in SUM. Encountering this, P4 remarked, "Woah."} \end{wrapfigure}
 	
 	The participants were most vocal about their findings when they discovered, by
 	purpose or accident, instances of heinous design in the dataset. Many times,
@@ -682,22 +682,22 @@
 	initial design of the SUM tree, as seen in figure \ref{fig:sum}, they readily
 	diagnosed that either a spreadsheet author was "totally incompetent, or [the
 	formula was] just some that's weird." Other than these visual cues, value
-	errors, prefixed with \#s, also appear in the tree, 
-	which P4 said could be useful for tracking these problems if marked well.
+	errors, prefixed with \#s, also appear in the tree, which P4 said could be
+	useful for tracking these problems if marked well.
 	
-	Additionally, because the files in the Enron set had name with the author
-	as a prefix, P2 commented that they could use the tool in a company
-	setting to follow up with repeat offenders. For instance, they first
-	encountered a particular author's name when investigating an AVERAGE function
-	with 18 distinct arguments for which our participant could not discern any
-	logical order, even after opening the source spreadsheet; the same name
-	popped up again as P2 looked at a RATE function relying on several hard-coded
-	values. P2 said that, if they were a manager or project leader, this recurrence
-	was a sign to talk to the author personally and figure out why
-	these problems were there, as to prevent more in the future. They also added
-	that these problems would grow worse if this particular author left the company
-	and no one remained who understood these formulae, a concern that aligns with
-	Hermans' transfer scenarios \cite{hermans2011supporting}.
+	Additionally, because the files in the Enron set had name with the author as a
+	prefix, P2 commented that they could use the tool in a company setting to
+	follow up with repeat offenders. For instance, they first encountered a
+	particular author's name when investigating an AVERAGE function with 18
+	distinct arguments for which our participant could not discern any logical
+	order, even after opening the source spreadsheet; the same name popped up again
+	as P2 looked at a RATE function relying on several hard-coded values. P2 said
+	that, if they were a manager or project leader, this recurrence was a sign to
+	talk to the author personally and figure out why these problems were there, as
+	to prevent more in the future. They also added that these problems would grow
+	worse if this particular author left the company and no one remained who
+	understood these formulae, a concern that aligns with Hermans' transfer
+	scenarios \cite{hermans2011supporting}.
 	
 	The detection of bad design, however, is certainly not limited to a
 	visualization tool, and some users remarked that a tool which printed a list of
@@ -710,135 +710,128 @@
 	tree and, at the point, find specific examples of where it occurs in the
 	spreadsheets.
 	
-	\subsection{Use in Education} Users found \toolname's inclusion of examples
-	to be especially useful since none of the them considered themselves to be
-	experts of Excel, their self-reported proficiencies ranging from "fairly
-	familiar" (P2) to "not extremely familiar" (P4). For example, as P1 explored
-	the VLOOKUP function, they said they could use the tool to collect more
-	examples than the documentation offers even though they knew the documentation more verbosely
-	explained its function signature. Furthermore, in the process of exploring trees,
-	P1 and P3 also gravitated towards some functions they had not used before, such as
-	PV and IPMT, looking for new features in Excel to explore and learn. \par
+	\subsection{Use in Education} Users found \toolname's inclusion of examples to
+	be especially useful since none of the them considered themselves to be experts
+	of Excel, their self-reported proficiencies ranging from "fairly familiar" (P2)
+	to "not extremely familiar" (P4). For example, as P1 explored the VLOOKUP
+	function, they said they could use the tool to collect more examples than the
+	documentation offers even though they knew the documentation more verbosely
+	explained its function signature. Furthermore, in the process of exploring
+	trees, P1 and P3 also gravitated towards some functions they had not used
+	before, such as PV and IPMT, looking for new features in Excel to explore and
+	learn. \par
 	
-	Additionally, \toolname offers a simple way of finding examples where certain functions
-	were used together. Though a standard text-search tool might yield the same
-	results for a function alone, combinations can require more complex text
-	queries, whereas here, the information is already captured in nodes.  \par
+	Additionally, \toolname offers a simple way of finding examples where certain
+	functions were used together. Though a standard text-search tool might yield
+	the same results for a function alone, combinations can require more complex
+	text queries, whereas here, the information is already captured in nodes.  \par
 	
-	However, we found that even though a user can explore all of a function's configurations, this
-	does not mean that they will learn exactly what it does. P1,
-	examining unfamiliar functions like
-	KURT and PV, could describe precisely what types of arguments it accepted and
-	how many. But even after exploring the spreadsheets for context, they could not
-	accurately describe what the functions produced without consulting the official
-	documentation. Whether through reticence of the tool or obscurity of the
-	functions themselves, the exploratory environment is not enough to teach users
-	\textit{when} to use a function. However, we could address this in future designs,
-	perhaps, by linking directly to such documentation from within the
-	tool without violating any design concerns in \ref{goals}. \par	
-
+	However, we found that even though a user can explore all of a function's
+	configurations, this does not mean that they will learn exactly what it does.
+	P1, examining unfamiliar functions like KURT and PV, could describe precisely
+	what types of arguments it accepted and how many. But even after exploring the
+	spreadsheets for context, they could not accurately describe what the functions
+	produced without consulting the official documentation. Whether through
+	reticence of the tool or obscurity of the functions themselves, the exploratory
+	environment is not enough to teach users \textit{when} to use a function.
+	However, we could address this in future designs, perhaps, by linking directly
+	to such documentation from within the tool without violating any design
+	concerns in \ref{goals}. \par
+	
 	\subsection{Study Limitations}
-	
-	Still, several limitations cropped up during the study that complicate the
-	evaluation. For one thing, though the source of the data was not explicitly
-	stated at the outset of the session, several users studied the file names
-	(unchanged as they were) to deduce its roots in finance, if not Enron itself.
-	Because of these notorious connotations, then, some were inclined from this
-	moment of discovery to orient their exploration around finance-related
-	functions, potentially limiting their findings or perceived users for the tool
-	-- though some also said that, without this essential context, they could not
+	Though we did not start the study by telling that the data source came from Enron, 
+	two users studied the file names
+	to deduce its roots in finance, if not Enron itself.
+	Because of these notorious connotations, then, they might have been inclined from this
+	information to orient their exploration around finance-related
+	functions, potentially limiting their findings or perceived users for the tool. Though,
+	one also said that, without this essential context, they could not
 	have properly explored a dataset in the first place. Comments like these point
 	out the trade-offs of unguided exploration, too: though it might not restrict
 	them to a single purpose, it might, at the same time, not afford them any
-	mindset at all with which to interpret the data. Another potential problem is
-	that the data which users explored was processed and created before we had
+	mindset at all with which to interpret the data. \par 
+	
+	Furthermore, the data which users explored was processed and created before we had
 	fully completed the tool, meaning some of the counts and patterns in the trees
 	were inaccurate. However, we decided that this was not a pressing concern,
-	being that we were primarily with whether any interesting reports could be made
+	being that we were primarily concerned with whether any interesting reports could be made
 	at all, not with whether these reports were 100\% accurate assessments of
 	reality. \par
 	
-	Throughout the study, it became apparent that some of the concepts,
-	particularly optional arguments, were easily lost in the representation. To
-	illustrate this, consider the following two trees.	
-	The difference is, perhaps, too subtle: on the left, the tree contains
-	instances of AND functions with any number of arguments, up to four; on the
-	right, the tree contains only instances with exactly four arguments. In other
-	words, an instance of "=AND(A1, B2, C3, D4)" would be found in both trees,
-	while "=AND(A1, B2)" would be found in only the left. Though the users
-	naturally did not explicitly report misinterpreting the icons, it became clear
-	in their out-loud thoughts that they viewed each box as a fundamentally
-	different set of possibilities in formula construction rather than just a
-	specific parameter. Though we clarified the meanings when these
-	misunderstandings became apparent, these events point to a failure in the tool
-	to properly indicate every function with clarity.   \par
-		
+	Throughout the study, we noticed that users misunderstood some of the icons
+	and, as such, their early discoveries were inaccurate. For example, P1 interpreted
+	the numbers on the argument boxes to mean that all of the box's children had exactly
+	that many arguments -- that is, clicking on the dark blue ``1" would return all the single-argument functions
+	instead of the first argument of a function -- and P2 initially took the solid lines to mean
+	different paths in formula construction rather than different arguments of the same function. 
+	Though the users naturally did not explicitly report misinterpreting
+	the icons, these misunderstandings became clear in their early evaluations of the
+	spreadsheet practice. Though we clarified the meanings when
+	these misunderstandings became apparent, these events point to a failure in the
+	tool to properly indicate every function with clarity.   \par
 	
-	\section{Limitations} Beyond the negative responses in the user study, a few
-	more inherent limitations beset the tool. These largely resulted from
-	trade-offs in which we found no acceptable way to win the best of both worlds,
-	and necessary compromises were made. \par
 	
-	Because the data collection depends on POI's formula parser, it affords no
-	leeway or partial information from a formula; it either processes it perfectly
-	or throws it out. As such, the visualization inhibits insight into anything
-	with syntactical errors or third-party functions that can't be evaluated
-	without additional tools. Note, however, that this does not include standard
-	Excel errors like \#REF! and \#DIV/0, which the parser handles well. This poses
-	more egregious problems, however, when POI does not support the parsing of
-	certain functions, such as EOMONTH (as obscure as it may be), preventing the
+	\section{Discussion} 	
+	We began these studies with the intention of evaluating our progress towards the
+	goals in section \ref{goals}. Working from these results, we noted many places
+	where the tool aligned well or fell short.
+	
+	\subsection{Unbiased Exploration}	
+	The first goal -- that of full exploration -- is threatened by the presence of certain
+	formulae that the tool does not display, such as those with nonstandard functions. 
+	Because the data collection depends on POI's formula parser, it does not
+	allow for any partial parsing of a formula; it either processes a formula perfectly
+	or throws it out. As such, the visualization does not display anything
+	with syntactical errors or third-party functions that POI cannot parse. This poses
+	larger problems, however, when POI does not support the parsing of
+	certain functions, such as EOMONTH, preventing the
 	healthy growth of those trees. \par
 	
-	Many functions have an expected order of arguments, but some, like SUM and
-	MATCH, can be reordered in various ways and maintain their value. However, the
-	representation that this tool uses reinforces for all functions that the order
-	is important, even in these exceptions. Future work could design a new family
-	of tree to accommodate these loose cases, however, by bucketing
-	order-insignificant arguments together; this, of course, would still have to
-	address the profusion of co-presented data. \par
+	Participants also asked for more options to quickly navigate the tree. For example,
+	P2 asked for the ability to expand the entire tree at once and icons that better
+	communicated the presence of optional arguments and their quantities. The more 
+	familiar participants grew with the tool, the faster they wanted to explore, yet
+	it supported expert navigation up to the point of expanding all of a node's children
+	up to one level. \par
 	
-	A larger and related problem is the loss of argument combination. For example,
-	figure \ref{fig:index} shows the situation of the INDEX tree, wherein each
-	argument position has a few distinct possibilities. While it is easy to break
-	down, for each position, which argument types are most common (ranges, MATCH,
-	and numbers, respectively), the tree is silent on whether MATCH functions are
-	used together in the second and third arguments, among other concerns. Though
-	these argument combinations could be pieced together by manually inspecting the
-	lists of examples, it is nevertheless inconvenient, though not outside the
-	realm of future improvement.
+	Other than that, we did avoid designing anything that intentionally evaluated
+	formula designs. Nevertheless, \toolname inadvertently emphasizes bad design of
+	certain types, such as all of those in section \ref{badsmells} marked by their
+	visual signatures. Even so, our participants found the discovery of bad smell
+	to be the most interesting aspect about it, to the point where they could
+	imagine business scenarios in which micromanagers use it to ensure
+	precise design parameters across a department's spreadsheets! To design in that
+	direction, however, would mean a reevaluation of this design goal, since
+	intentionally guiding users toward known smells may guide them away from
+	new, unmarked ones. 
 	
-	\begin{wrapfigure}{O}{.25\textwidth} 
-		\centering 
-		\includegraphics[width=.25\textwidth]{longIF} 
-		\label{fig:longif}
-		\caption{The many possibilities of IF, argument 3, demonstrate the problem of
-			having too many options.} 
-	\end{wrapfigure}
+	\subsection{Uncluttered Quantification}
 	
-	A threat to the exploratory philosophy may also mount from the problem of too
-	much data, particularly in the popular functions, like SUM and IF. We had added
-	some precautions before the study: for any position in the tree, for example,
-	only the ten most common functions were displayed without clicking on the
-	expansion arrow \includegraphics[scale=.35]{arrow}. Nevertheless, P3 remarked
-	that they specifically avoided the most popular functions, anticipating a flood
-	of nodes from which they could salvage nothing interesting -- which might not
-	have been a bad prediction, considering that the SUM is built from 910 nodes
-	and IF, at least 18000 [double-check these with refined data]. P2 corroborated
-	this by explaining how they gravitated toward specific examples over the plane
-	of nodes but complicates it further by also deeming the tool at its best when
-	it shows either every possibility of an side-by-side (for comparison) or
-	nothing on that branch at all, a balance that is hard to strike with node-dense
-	trees. \par
+	We realized early that some of the popular functions would present a problem: 
+	some would have thousands of variations in large datasets, and showing all of
+	these variations at once would hopelessly overwhelm the user. We therefore
+	made a number of choices, such as the expansion arrows and the use of generic
+	types in place of specific primitive values, that would reduce the variation
+	to something more manageable.
 	
-	\begin{figure} \centering \includegraphics[width=.5\textwidth]{index}
-		\label{fig:index} \caption{A difficult question: how often is MATCH used in
-			both the second and third arguments?} \end{figure}
+	Nevertheless, during the user study, P3 remarked that they specifically avoided
+	the most popular functions, anticipating a flood of nodes from which they could
+	salvage nothing interesting -- which might not have been a bad prediction,
+	considering that the SUM is built from 910 function and argument nodes stemming
+	the root and IF, at least 18000. P2 corroborated this by explaining how they
+	gravitated toward exploring specific examples in particular value nodes over
+	navigating the full crowd of the tree, but they complicate it further by also
+	saying that the tool at its best when it shows either every possibility of an
+	argument side-by-side (for comparison) or nothing on that branch at all, a
+	balance that is hard to strike with node-dense trees.
 	
-	%To be sure, though, there is still plenty of work to improve this tool. One
-	% activity
-	%it does not support well now is that of comparison: for all of it's ability to
-	% spit
-	%out numbers and quantify patterns,
+	A threat to our goals, then, arises from the problem of too much data,
+	particularly in the popular functions, like SUM and IF. Despite our
+	precautions, balancing the desire to show every single possibility of design
+	with the desire not to overwhelm remains a challenge. \par
+	
+	\subsection{Informative Qualification}
+	
 	
 	\section{Future Work} For these user and case studies, we relied solely on
 	Enron's spreadsheets to find our results. However, Enron's focus on finances
@@ -858,6 +851,29 @@
 	guarantee that practices and functions will hold across these varied offerings.
 	This, then, warrants further analysis, in which good visualization might serve
 	well. \par
+	
+	A larger and related problem is the loss of argument combination. For example,
+	figure \ref{fig:index} shows the situation of the INDEX tree, wherein each
+	argument position has a few distinct possibilities. While it is easy to break
+	down, for each position, which argument types are most common (ranges, MATCH,
+	and numbers, respectively), the tree is silent on whether MATCH functions are
+	used together in the second and third arguments, among other concerns. Though
+	these argument combinations could be pieced together by manually inspecting the
+	lists of examples, it is nevertheless inconvenient, though not outside the
+	realm of future improvement. \par
+	
+	\begin{wrapfigure}{O}{.25\textwidth} \centering
+		\includegraphics[width=.25\textwidth]{longIF} \label{fig:longif} \caption{The
+			many possibilities of IF, argument 3, demonstrate the problem of having too
+			many options.} \end{wrapfigure}
+	
+	Further contextual information.
+	
+	\begin{figure} \centering \includegraphics[width=.5\textwidth]{index}
+		\label{fig:index} \caption{A difficult question: how often is MATCH used in
+			both the second and third arguments?} \end{figure}
+	
+	Redesign.
 	
 	\section{Conclusion} This paper presents a tool to support the exploration of
 	function combinations throughout a given spreadsheet dataset. By taking a
