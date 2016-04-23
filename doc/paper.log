@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/W32TeX) (preloaded format=pdflatex 2016.1.30)  22 APR 2016 10:35
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/W32TeX) (preloaded format=pdflatex 2016.1.30)  22 APR 2016 20:07
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -467,56 +467,57 @@ Underfull \hbox (badness 10000) in paragraph at lines 441--444
 <pic/longsum.png, id=50, 1078.78032pt x 235.63031pt>
 File: pic/longsum.png Graphic file (type png)
  <use pic/longsum.png>
-Package pdftex.def Info: pic/longsum.png used on input line 569.
+Package pdftex.def Info: pic/longsum.png used on input line 583.
 (pdftex.def)             Requested size: 516.0pt x 112.70576pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
+[5]
 
-LaTeX Warning: Citation `hermans2015detecting' on page 5 undefined on input lin
-e 591.
+LaTeX Warning: Citation `hermans2015detecting' on page 6 undefined on input lin
+e 608.
 
-[5] <pic/vlookup.png, id=54, 309.40594pt x 108.405pt>
+<pic/vlookup.png, id=54, 309.40594pt x 108.405pt>
 File: pic/vlookup.png Graphic file (type png)
  <use pic/vlookup.png>
-Package pdftex.def Info: pic/vlookup.png used on input line 604.
+Package pdftex.def Info: pic/vlookup.png used on input line 621.
 (pdftex.def)             Requested size: 258.0pt x 90.40288pt.
 
 <pic/vlookupbox.png, id=55, 137.7647pt x 40.65187pt>
 File: pic/vlookupbox.png Graphic file (type png)
  <use pic/vlookupbox.png>
-Package pdftex.def Info: pic/vlookupbox.png used on input line 605.
+Package pdftex.def Info: pic/vlookupbox.png used on input line 622.
 (pdftex.def)             Requested size: 116.10315pt x 34.26146pt.
 
 <pic/hlookupbox.png, id=56, 145.29282pt x 40.65187pt>
 File: pic/hlookupbox.png Graphic file (type png)
  <use pic/hlookupbox.png>
-Package pdftex.def Info: pic/hlookupbox.png used on input line 606.
+Package pdftex.def Info: pic/hlookupbox.png used on input line 623.
 (pdftex.def)             Requested size: 116.10315pt x 32.48555pt.
 
 <pic/hlookup.png, id=57, 307.1475pt x 93.34875pt>
 File: pic/hlookup.png Graphic file (type png)
  <use pic/hlookup.png>
-Package pdftex.def Info: pic/hlookup.png used on input line 607.
+Package pdftex.def Info: pic/hlookup.png used on input line 624.
 (pdftex.def)             Requested size: 258.0pt x 78.41667pt.
 
-Overfull \hbox (6.0pt too wide) in paragraph at lines 604--609
+Overfull \hbox (6.0pt too wide) in paragraph at lines 621--626
  [][] 
  []
 
 
-Overfull \hbox (6.0pt too wide) in paragraph at lines 604--609
+Overfull \hbox (6.0pt too wide) in paragraph at lines 621--626
  [] 
  []
 
 
 LaTeX Warning: Citation `hermans2015detecting' on page 6 undefined on input lin
-e 609.
+e 626.
 
 
 LaTeX Warning: Citation `hermans2015detecting' on page 6 undefined on input lin
-e 609.
+e 626.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
@@ -524,68 +525,96 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 <pic/lookup-2.png, id=58, 285.31593pt x 67.0003pt>
 File: pic/lookup-2.png Graphic file (type png)
  <use pic/lookup-2.png>
-Package pdftex.def Info: pic/lookup-2.png used on input line 619.
+Package pdftex.def Info: pic/lookup-2.png used on input line 636.
 (pdftex.def)             Requested size: 258.0pt x 60.58595pt.
 
 <pic/lookup-3.png, id=59, 308.65312pt x 206.27063pt>
 File: pic/lookup-3.png Graphic file (type png)
  <use pic/lookup-3.png>
-Package pdftex.def Info: pic/lookup-3.png used on input line 620.
+Package pdftex.def Info: pic/lookup-3.png used on input line 637.
 (pdftex.def)             Requested size: 258.0pt x 172.43207pt.
 
-Overfull \hbox (6.0pt too wide) in paragraph at lines 619--621
+Overfull \hbox (6.0pt too wide) in paragraph at lines 636--638
  [][] 
  []
 
 
-Overfull \hbox (6.0pt too wide) in paragraph at lines 619--621
+Overfull \hbox (6.0pt too wide) in paragraph at lines 636--638
  [] 
  []
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[6 <./pic/longsum.png> <./pic/vlookup.png> <./pic/vlookupbox.png> <./pic/hlooku
-pbox.png> <./pic/hlookup.png>] <pic/SUM.png, id=68, 76.03406pt x 207.02344pt>
+
+Underfull \vbox (badness 2277) has occurred while \output is active []
+
+ [6 <./pic/longsum.png> <./pic/vlookup.png> <./pic/vlookupbox.png> <./pic/hlook
+upbox.png> <./pic/hlookup.png>] <pic/SUM.png, id=68, 76.03406pt x 207.02344pt>
 File: pic/SUM.png Graphic file (type png)
 
 <use pic/SUM.png>
-Package pdftex.def Info: pic/SUM.png used on input line 703.
+Package pdftex.def Info: pic/SUM.png used on input line 720.
 (pdftex.def)             Requested size: 76.03386pt x 207.02292pt.
-
-Overfull \hbox (14.11638pt too wide) in paragraph at lines 703--704
- [][] 
+ [7 <./pic/lookup-2.png> <./pic/lookup-3.png>]
+Underfull \hbox (badness 3895) in paragraph at lines 743--748
+\OT1/ptm/m/n/10 printed a list of er-rors
  []
 
-[7 <./pic/lookup-2.png> <./pic/lookup-3.png> <./pic/SUM.png>]
-<pic/arrow.png, id=76, 21.07875pt x 18.82031pt>
+<pic/arrow.png, id=75, 21.07875pt x 18.82031pt>
 File: pic/arrow.png Graphic file (type png)
  <use pic/arrow.png>
-Package pdftex.def Info: pic/arrow.png used on input line 764.
+Package pdftex.def Info: pic/arrow.png used on input line 781.
 (pdftex.def)             Requested size: 7.37766pt x 6.58719pt.
 
-<pic/longIF.png, id=77, 192.72pt x 526.96875pt>
+<pic/longIF.png, id=76, 192.72pt x 526.96875pt>
 File: pic/longIF.png Graphic file (type png)
  <use pic/longIF.png>
-Package pdftex.def Info: pic/longIF.png used on input line 775.
+Package pdftex.def Info: pic/longIF.png used on input line 792.
 (pdftex.def)             Requested size: 96.35976pt x 263.48372pt.
-File: pic/comparison.png Graphic file (type png)
 
-<use pic/comparison.png>
-Package pdftex.def Info: pic/comparison.png used on input line 783.
-(pdftex.def)             Requested size: 237.36346pt x 69.81335pt.
+Underfull \hbox (badness 1603) in paragraph at lines 796--798
+\OT1/ptm/m/n/10 of the con-cepts, par-tic-u-
+ []
 
-Underfull \vbox (badness 1184) has occurred while \output is active []
 
- [8 <./pic/arrow.png> <./pic/longIF.png>] <pic/index.png, id=83, 292.09125pt x 
-180.675pt>
+Underfull \hbox (badness 2617) in paragraph at lines 796--798
+\OT1/ptm/m/n/10 larly op-tional ar-gu-ments,
+ []
+
+
+Underfull \hbox (badness 3579) in paragraph at lines 796--798
+\OT1/ptm/m/n/10 were eas-ily lost in the
+ []
+
+
+Underfull \hbox (badness 1406) in paragraph at lines 802--812
+\OT1/ptm/m/n/10 haps, too sub-tle: on the
+ []
+
+
+Underfull \hbox (badness 1360) in paragraph at lines 802--812
+\OT1/ptm/m/n/10 B2, C3, D4)" would be
+ []
+
+
+Underfull \hbox (badness 3557) in paragraph at lines 802--812
+\OT1/ptm/m/n/10 "=AND(A1, B2)" would
+ []
+
+
+Underfull \hbox (badness 2653) in paragraph at lines 802--812
+\OT1/ptm/m/n/10 did not ex-plic-itly re-port
+ []
+
+[8 <./pic/SUM.png> <./pic/arrow.png> <./pic/longIF.png>]
+<pic/index.png, id=83, 292.09125pt x 180.675pt>
 File: pic/index.png Graphic file (type png)
-
-<use pic/index.png>
-Package pdftex.def Info: pic/index.png used on input line 832.
+ <use pic/index.png>
+Package pdftex.def Info: pic/index.png used on input line 849.
 (pdftex.def)             Requested size: 258.0pt x 159.60098pt.
 
-Overfull \hbox (6.0pt too wide) in paragraph at lines 832--834
+Overfull \hbox (6.0pt too wide) in paragraph at lines 849--851
  [][] 
  []
 
@@ -620,7 +649,7 @@ nts/type1/public/amsfonts/cm/cmsy7.pfb><c:/texlive/2015/texmf-dist/fonts/type1/
 urw/times/utmb8a.pfb><c:/texlive/2015/texmf-dist/fonts/type1/urw/times/utmbi8a.
 pfb><c:/texlive/2015/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><c:/texlive/20
 15/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on paper.pdf (10 pages, 363722 bytes).
+Output written on paper.pdf (10 pages, 365019 bytes).
 PDF statistics:
  113 PDF objects out of 1000 (max. 8388607)
  44 compressed objects within 1 object stream

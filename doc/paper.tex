@@ -545,9 +545,11 @@
 	applicability, we sought out places in the tree which best exemplify
 	these tasks.
 	
+	\subsection{API Improvement}
+	
 	\subsection{Bad Smells} Fowler's description of code smells
 	\cite{fowler2009refactoring} underscored an important point of code quality:
-	between perfect code and bug-crippled spaghetti,  there is a spectrum of code
+	between elegant, efficient code and bug-crippled spaghetti, there is a spectrum of code
 	designs which, by themselves, are not faulty but nevertheless suggest vulnerabilities in code design. 	
 	Since then, researchers have applied these concepts to spreadsheet programming, as 
 	discussed in section \ref{related-work}. While some of the smells lie beyond the scope
@@ -557,31 +559,41 @@
 	
 	\begin{itemize} 
 		
-		\item \textit{Long Method}: Also called "Multiple Operations"
-		in \cite{hermans2012detecting}, this refers to situations where numerous
-		functions and operators are used within a single formula. As a result, the formula
-		tends to be prohibitively complex. In the visualization, since each nested and combined function
-		creates yet another level of depth within the tree, these constructions can
-		result in long, horizontal chains of nodes, as seen in figure
-		\ref{"fig:longsum"}. 
+		\item \textit{Multiple Operations}: A single formula comprises numerous
+		functions and operators. \cite{hermans2012detecting}. As a result, the formula
+		tends to be prohibitively complex. In the visualization, since each nested and
+		combined function creates yet another level of depth within the tree, these
+		constructions can result in long, horizontal chains of nodes, as seen in
+		figure \ref{"fig:longsum"}.
 		
-		\item \textit{Long Parameter List}: [tall, vertical towers
-		of blue nodes] 
+		\item \textit{Long Parameter List}: A function uses numerous arguments, making
+		it harder to understand \cite{asavametha2012detecting}. This is not a problem
+		for many functions which have a limited number of arguments that it accepts. However,
+		for functions that accept arguments indefinitely, such as SUM and CONCATENATE, it creates
+		tall towers of argument nodes from a single function node.
 		
-		\item \textit{Conditional Complexity}: [IF nodes within IF
-		nodes] \end{itemize}
+		\item \textit{Conditional Complexity}: A logical function, particularly IF, nests
+		several other logical functions inside of it, reducing code readability \cite{hermans2012detecting}. 
+		These can be traced manually in the trees for the logical functions. IF, for example,
+		will have several more IF function nodes within its second or third arguments, which
+		in turn might have more of the same nested within them.
+		
+	\end{itemize}
 	
 	\begin{figure*}[h] \centering \includegraphics[width=\textwidth]{longsum}
 		\label{"fig:longsum"} \caption{The horizontal length of a tree may indicate
 			complex or redundant design.} \end{figure*}
 	
-	Some examples are meaningful not for the space they take up but for how they
-	clash with the expectations around a function. For example, Excel offers a
+	Some code issues are meaningful not for the space they occupy but for how they
+	clash with a function's expectations. For example, Excel offers a
 	number of functions that accept any number arguments given to them, up to a
-	resource-defined limit. SUM and CONCATENATE are two such functions: adding more
-	arguments simply adds or appends that element in the same way as every previous
-	argument. Strange cases were found, then, in the cases where these functions
-	were used with only one argument. \par
+	resource-defined limit. SUM, for example, simply adds every argument given to it.
+	This also means that it can accept only one argument, and when the user does so,
+	they pass in a range of cells over 90\% of the time. However, using the tool,
+	we isolated an instance where the programmer used a single-argument SUM where the 
+	argument was a series of 32 contiguous cells added with the + operation -- 
+	``SUM(C6+C7+C8+C9+C10+C11+C12+C13+...+C37)" -- representing a technically
+	valid but unusual and problematic design.\par
 	
 	%Lookup example
 	Otherwise, the LOOKUP functions are particularly notorious for their confusing
@@ -636,20 +648,20 @@
 	Spreadsheet programming, then, should not be essentially different: examples of
 	spreadsheet functions in use
 	
-	\section{User Study} Midway through production, we conducted a brief,
-	four-participant user study in order to gauge how well we were capturing the
-	initial design goals. The study was, in general, a flexible and exploratory
-	affair: rather than giving the users any specific tasks or pointed questions,
-	we asked instead that they choose for themselves which trees to explore and
-	report anything that they deemed interesting. Specifically, given trees rooted
-	in the Enron dataset and at least 20 to thirty minutes, the participants
-	situated themselves within the persona of a consultant asked to evaluate a
-	company's spreadsheet practice, which could be arranged around questions like
-	which functions on which the employees most depended, which sheets presented
-	the most anomalous or dangerous designs, and so on. Interpretation of
-	"spreadsheet practice" can certainly vary from participant to participant, but
-	since we wanted a range of views and backgrounds despite the persona, we
-	readily accepted this interpretive wiggle room. \par
+	\section{User Study} During development, we conducted a brief, four-participant
+	user study in order to detect conflicts between our design and the goals in
+	section \ref{goals}. We designed the study to be exploratory; given trees based
+	in the Enron dataset and at least twenty minutes, we asked the participants to
+	adopt the persona of a consultant evaluating a company's spreadsheet
+	practice, allowing for questions like which functions on which the employees
+	most depended or which sheets or employees presented the most anomalous or
+	dangerous designs. Though we instructed them on how to use the tool and
+	suggested that they visit one of the most populous trees in the set, we put
+	aside any specific tasks or questions and let them choose their own paths.
+	Though interpretation of the phrase ``spreadsheet practice" can certainly vary
+	from participant to participant, we readily accepted this interpretive
+	flexibility since we wanted a range of views and backgrounds despite the
+	persona. \par
 	
 	We clarified, furthermore, that these notes could be directed either at the
 	quality of the data conveyed by the tool or at the tool's conveyance itself.
@@ -705,8 +717,8 @@
 	paragraph contrasts it with previous approaches, but lacks compelling evidence
 	-- a lot of "mights"] \par
 	
-	\begin{wrapfigure}{l}{.12\textwidth} \centering \includegraphics{SUM}
-		\label{fig:sum} \end{wrapfigure}
+	\begin{wrapfigure}{L}{.25\textwidth} \centering \includegraphics{SUM}
+		\label{fig:sum} \caption{An abundance of parameters in SUM} \end{wrapfigure}
 	
 	The discovery of errors and bad design, whether by purpose or accident,
 	produced the more jarring events of the study, and as such, most users
@@ -777,15 +789,15 @@
 	nothing on that branch at all, a balance that is hard to strike with node-dense
 	trees. \par
 	
-	\begin{figure} \centering \includegraphics[scale=.5]{longIF} \label{fig:longif}
+	\begin{wrapfigure}{R}{.25\textwidth} \centering \includegraphics[scale=.5]{longIF} \label{fig:longif}
 		\caption{The many possibilities of IF, argument 3, demonstrate the problem of
-			having too many options.} \end{figure}
+			having too many options.} \end{wrapfigure}
 	
 	Throughout the study, it became apparent that some of the concepts,
 	particularly optional arguments, were easily lost in the representation. To
 	illustrate this, consider the following two trees: \par
 	
-	\includegraphics[width = .46\textwidth]{comparison}
+	[MOVED]
 	
 	The difference is, perhaps, too subtle: on the left, the tree contains
 	instances of AND functions with any number of arguments, up to four; on the
