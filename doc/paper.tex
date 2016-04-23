@@ -682,7 +682,7 @@
 	initial design of the SUM tree, as seen in figure \ref{fig:sum}, they readily
 	diagnosed that either a spreadsheet author was "totally incompetent, or [the
 	formula was] just some that's weird." Other than these visual cues, value
-	errors, prefixed with \#s, also appear in the tree where they are found, 
+	errors, prefixed with \#s, also appear in the tree, 
 	which P4 said could be useful for tracking these problems if marked well.
 	
 	Additionally, because the files in the Enron set had name with the author
@@ -710,38 +710,32 @@
 	tree and, at the point, find specific examples of where it occurs in the
 	spreadsheets.
 	
-	\subsection{Use in Education}
-	The inclusion of formula examples, grounded in
-	and linking back to the originating spreadsheets, proved to be an especial draw
-	to the tool. After all, none of the participants professed themselves to be
-	experts with Excel, their self-reported proficiencies ranging from "fairly
-	familiar" (P2) to "not extremely familiar" (P4); even if they were experts, it
-	would likely be unreasonable to expect an evenly distributed familiarity with
-	the 100+ function trees available. Nevertheless, the list of actual formulae
-	accessible through a node's double-click allowed the users a way to find
-	examples of formulae with exactly the configuration they wanted. For example,
-	as P1 explored the VLOOKUP function, even though they knew the official API
-	more verbosely explained its signature, they said they could use the tool to
-	collect more examples than the documentation offers. \par
+	\subsection{Use in Education} Users found \toolname's inclusion of examples
+	to be especially useful since none of the them considered themselves to be
+	experts of Excel, their self-reported proficiencies ranging from "fairly
+	familiar" (P2) to "not extremely familiar" (P4). For example, as P1 explored
+	the VLOOKUP function, they said they could use the tool to collect more
+	examples than the documentation offers even though they knew the documentation more verbosely
+	explained its function signature. Furthermore, in the process of exploring trees,
+	P1 and P3 also gravitated towards some functions they had not used before, such as
+	PV and IPMT, looking for new features in Excel to explore and learn. \par
 	
-	Furthermore, it offers a simple way of finding examples where certain functions
-	were used together. though a standard text-search tool might yield the same
+	Additionally, \toolname offers a simple way of finding examples where certain functions
+	were used together. Though a standard text-search tool might yield the same
 	results for a function alone, combinations can require more complex text
-	queries, whereas here, the information is already captured in nodes. [This
-	paragraph contrasts it with previous approaches, but lacks compelling evidence
-	-- a lot of "mights"] \par
+	queries, whereas here, the information is already captured in nodes.  \par
 	
-	Furthermore, just because a user can exhaustively explore every variation of
-	how a function was used doesn't mean they will learn exactly what it does. P1,
-	in their exploration, examined functions that they hadn't used before, such as
-	KURT and PV, and described precisely what types of arguments it accepted and
-	how many. However, even after exploring the spreadsheets, they could not
+	However, we found that even though a user can explore all of a function's configurations, this
+	does not mean that they will learn exactly what it does. P1,
+	examining unfamiliar functions like
+	KURT and PV, could describe precisely what types of arguments it accepted and
+	how many. But even after exploring the spreadsheets for context, they could not
 	accurately describe what the functions produced without consulting the official
 	documentation. Whether through reticence of the tool or obscurity of the
-	functions themselves, the exploratory environment is not enough for independent
-	education. However, unlike the previous problem, this can be addressed,
-	perhaps, by guiding the user directly to such documentation from within the
-	tool without violating any design concerns. \par	
+	functions themselves, the exploratory environment is not enough to teach users
+	\textit{when} to use a function. However, we could address this in future designs,
+	perhaps, by linking directly to such documentation from within the
+	tool without violating any design concerns in \ref{goals}. \par	
 
 	\subsection{Study Limitations}
 	
