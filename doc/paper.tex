@@ -310,7 +310,7 @@
 	conflicted. For a discussion of these decisions, see section
 	\ref{ssec:decisions}.
 	
-	\subsection{Walkthrough of the Tool} Before discussing the minutiae of tool's
+	\subsection{Walkthrough of the Tool} \label{sec:walkthrough}Before discussing the minutiae of tool's
 	development, though, we will give a basic example of how to use the tool. For
 	this, we will answer this question: \textit{ What kinds of functions do people
 		use to define the condition in an IF function?} Thefull  visualization that
@@ -639,15 +639,28 @@
 		\caption{LOOKUP with two (6 occurrences) and three (1648) arguments.}
 	\end{figure}
 	
-	\subsection{Education} Learning by example has long been a cornerstone of
-	effective teacher techniques: by showing the student a concrete example of
-	something, rather than dwelling in the realm of abstract description,
-	comprehension increases [I'm sure there's a cite out there somewhere.] This is
-	no different in software, where every explanation of a tricky programming
-	concept is much untangled by the illustrative stub. Even APIs, researchers have
-	found, by the inclusion of an in-practice example of the function described.
-	Spreadsheet programming, then, should not be essentially different: examples of
-	spreadsheet functions in use
+	\subsection{Education} When Robillard and Deline researched common obstacles
+	for programmers learning new APIs, they concluded that one of the most important
+	elements of a good API was the use of code examples to demonstrate function use.
+	These examples, furthermore, come in a variety of forms: small snippets
+	or tutorials that show only the intended function, sample applications that
+	incorporate the function in a broader context, or even production code that
+	employs the function but was not initially intended to be an illustrative 
+	example \cite{robillard2011field}. Of these categories, \toolname aligns
+	entirely with the last; when a user chooses to explore a particular function
+	node, they will see examples of that formula as it was used in a working 
+	environment, with the specifics depending on the dataset the tool is using. \par 
+	
+	Furthermore, Robillard and Deline's study makes the case for examples that show
+	"API usage patterns involving more than one method call" \cite{robillard2011field}.
+	Examples that show only a single function, they find, are too simple, whereas those
+	demonstrating the interaction of functions will equip users for more complex tasks. 
+	\toolname is especially suited for this focus on combination; consider again
+	the question in the walkthrough (Section \ref{sec:walkthrough}), asking
+	which functions and operations are used as conditions in IF. The design of this
+	tool emphasizes the connection, then, between what functions like ISNA and AND
+	return and what IF accepts, and specific examples for any of these combinations
+	are only a click away.
 	
 	\section{User Study} During development, we conducted a brief, four-participant
 	user study in order to detect conflicts between our design and the goals in

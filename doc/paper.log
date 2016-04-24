@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/W32TeX) (preloaded format=pdflatex 2016.1.30)  23 APR 2016 18:48
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/W32TeX) (preloaded format=pdflatex 2016.1.30)  24 APR 2016 16:35
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -551,50 +551,125 @@ pbox.png> <./pic/hlookup.png>] <pic/SUM.png, id=68, 76.03406pt x 207.02344pt>
 File: pic/SUM.png Graphic file (type png)
 
 <use pic/SUM.png>
-Package pdftex.def Info: pic/SUM.png used on input line 674.
+Package pdftex.def Info: pic/SUM.png used on input line 687.
 (pdftex.def)             Requested size: 76.03386pt x 207.02292pt.
 
-Underfull \hbox (badness 2111) in paragraph at lines 688--701
-\OT1/ptm/m/n/10 they could use the tool
+Underfull \hbox (badness 6978) in paragraph at lines 690--700
+[][]\OT1/ptm/m/n/10 The par-tic-i-pants were
  []
 
 
-Underfull \hbox (badness 1728) in paragraph at lines 688--701
-\OT1/ptm/m/n/10 af-ter open-ing the source
+Underfull \hbox (badness 3471) in paragraph at lines 690--700
+\OT1/ptm/m/n/10 by pur-pose or ac-ci-dent,
  []
 
 
-Underfull \hbox (badness 2293) in paragraph at lines 688--701
-\OT1/ptm/m/n/10 popped up again as P2
+Underfull \hbox (badness 1721) in paragraph at lines 690--700
+\OT1/ptm/m/n/10 in-stances of heinous de-
  []
 
 
-Underfull \hbox (badness 2486) in paragraph at lines 688--701
-\OT1/ptm/m/n/10 re-ly-ing on sev-eral hard-
+Underfull \hbox (badness 3343) in paragraph at lines 690--700
+\OT1/ptm/m/n/10 for-mula was] just some
  []
 
 [7 <./pic/lookup-2.png> <./pic/lookup-3.png> <./pic/SUM.png>]
-Underfull \hbox (badness 5519) in paragraph at lines 797--807
+Underfull \hbox (badness 5519) in paragraph at lines 810--820
 []\OT1/ptm/m/n/10 Other than that, we did avoid de-sign-ing any-thing
  []
 
 [8] <pic/longIF.png, id=79, 192.72pt x 526.96875pt>
 File: pic/longIF.png Graphic file (type png)
  <use pic/longIF.png>
-Package pdftex.def Info: pic/longIF.png used on input line 873.
+Package pdftex.def Info: pic/longIF.png used on input line 879.
 (pdftex.def)             Requested size: 129.0pt x 352.7295pt.
 
 <pic/index.png, id=80, 292.09125pt x 180.675pt>
 File: pic/index.png Graphic file (type png)
  <use pic/index.png>
-Package pdftex.def Info: pic/index.png used on input line 879.
+Package pdftex.def Info: pic/index.png used on input line 885.
 (pdftex.def)             Requested size: 258.0pt x 159.60098pt.
 
-Overfull \hbox (6.0pt too wide) in paragraph at lines 879--881
+Overfull \hbox (6.0pt too wide) in paragraph at lines 885--887
  [][] 
  []
 
-(./paper.bbl [9 <./pic/index.png>])
+
+Underfull \hbox (badness 10000) in paragraph at lines 891--898
+[]\OT1/ptm/m/n/10 This pa-per presents
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 891--898
+\OT1/ptm/m/n/10 a tool to sup-port the
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 891--898
+\OT1/ptm/m/n/10 ex-plo-ration of func-tion
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 891--898
+\OT1/ptm/m/n/10 By tak-ing a ag-nos-tic
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 891--898
+\OT1/ptm/m/n/10 it at-tempts to con-vey
+ []
+
+
+Underfull \hbox (badness 4518) in paragraph at lines 891--898
+\OT1/ptm/m/n/10 the dataset's spread-sheet
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 891--898
+\OT1/ptm/m/n/10 and the well-designed
+ []
+
+
+Underfull \hbox (badness 1466) in paragraph at lines 891--898
+\OT1/ptm/m/n/10 take on sev-eral po-ten-tial
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 891--898
+\OT1/ptm/m/n/10 en-vi-ron-ment for search
+ []
+
+
+Underfull \hbox (badness 2277) in paragraph at lines 891--898
+\OT1/ptm/m/n/10 out bad code smells as
+ []
+
+
+Underfull \hbox (badness 1496) in paragraph at lines 891--898
+\OT1/ptm/m/n/10 well as a repos-i-tory for
+ []
+
+
+Underfull \hbox (badness 3078) in paragraph at lines 900--908
+\OT1/ptm/m/n/10 a lot of room for im-
+ []
+
+
+Underfull \hbox (badness 1490) in paragraph at lines 900--908
+\OT1/ptm/m/n/10 ploratory phi-los-o-phy fos-
+ []
+
+
+Underfull \hbox (badness 2126) in paragraph at lines 900--908
+\OT1/ptm/m/n/10 tered cer-tain goals well,
+ []
+
+
+Underfull \hbox (badness 7030) in paragraph at lines 900--908
+\OT1/ptm/m/n/10 such as the abil-ity to
+ []
+
+[9 <./pic/index.png> <./pic/longIF.png>] (./paper.bbl)
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -606,19 +681,16 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-
-Underfull \vbox (badness 1769) has occurred while \output is active []
-
- [10 <./pic/longIF.png>] (./paper.aux)
+[10] (./paper.aux)
 
 LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 3019 strings out of 493054
- 49253 string characters out of 6138327
- 115726 words of memory out of 5000000
- 6496 multiletter control sequences out of 15000+600000
+ 3020 strings out of 493054
+ 49270 string characters out of 6138327
+ 115742 words of memory out of 5000000
+ 6497 multiletter control sequences out of 15000+600000
  40843 words of font info for 74 fonts, out of 8000000 for 9000
  1144 hyphenation exceptions out of 8191
  37i,8n,30p,359b,234s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -628,7 +700,7 @@ nts/type1/public/amsfonts/cm/cmsy7.pfb><c:/texlive/2015/texmf-dist/fonts/type1/
 urw/times/utmb8a.pfb><c:/texlive/2015/texmf-dist/fonts/type1/urw/times/utmbi8a.
 pfb><c:/texlive/2015/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><c:/texlive/20
 15/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on paper.pdf (10 pages, 363800 bytes).
+Output written on paper.pdf (10 pages, 389783 bytes).
 PDF statistics:
  111 PDF objects out of 1000 (max. 8388607)
  44 compressed objects within 1 object stream
