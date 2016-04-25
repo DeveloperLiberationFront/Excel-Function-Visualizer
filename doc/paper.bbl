@@ -154,4 +154,10 @@ G.~C. Murphy, M.~Kersten, and L.~Findlater, ``How are java software developers
 M.~P. Robillard and R.~Deline, ``A field study of api learning obstacles,''
   \emph{Empirical Software Engineering}, vol.~16, no.~6, pp. 703--732, 2011.
 
+\bibitem{hermans2015detecting}
+F.~Hermans, E.~Aivaloglou, and B.~Jansen, ``Detecting problematic lookup
+  functions in spreadsheets,'' in \emph{Visual Languages and Human-Centric
+  Computing (VL/HCC), 2015 IEEE Symposium on}.\hskip 1em plus 0.5em minus
+  0.4em\relax IEEE, 2015, pp. 153--157.
+
 \end{thebibliography}
