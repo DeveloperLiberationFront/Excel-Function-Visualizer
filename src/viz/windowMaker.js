@@ -9,7 +9,7 @@ function newWindow(d) {
         return; //TODO: A bigger problem is limiting the number of examples.
 
     var win = window.open("", "_blank");
-    win.document.write("Hey! You clicked: " + d.function)
+    win.document.write("You clicked: " + d.function + "<br/><br/>")
     win.focus;
 
     var childrenExamples = {};

@@ -30,7 +30,7 @@ var margin = {
     rect_col = "#519393",
     rect_hover = "#284E5E",
 
-    alternate_rect = "#B1BEC4",
+    alternate_rect = "#69787F",
 
     expand_col = "#CFE5A7",
     expand_hover = "#BBCE96",
@@ -130,7 +130,7 @@ d3.json(src, function(error, json) {
 
     scale = d3.scale.log()
         .domain([1, root.frequency])
-        .range([3, 30])
+        .range([5, 25])
         .nice();
 
     root.children.forEach(function(c) {
@@ -364,10 +364,10 @@ function mouseover(d) {
         ii = "</i>",
         br = "<br/>",
         func = "func: " + b + d.function+bb + br,
-        freq = "count: " + d.frequency.toLocaleString()
-          + " (" + (100 * d.frequency / (d.parent || d).frequency).toFixed(2) + "%)"
-          + " [" + (100 * d.frequency / root.frequency).toFixed(3) + "%]"+ br,
-        depth = "depth: " + (d.depth/2) + " (" + d.max_depth + ")" + br,
+        freq = "count: " + d.frequency.toLocaleString() + br;
+          //+ " (" + (100 * d.frequency / (d.parent || d).frequency).toFixed(2) + "%)"
+          //+ " [" + (100 * d.frequency / root.frequency).toFixed(3) + "%]"+ br,
+        depth = "depth: " + (d.depth/2) + br; //+ " of max " + d.max_depth + br,
         id = d.example;
 
     var hovered = d3.select("#n" + d.id);
