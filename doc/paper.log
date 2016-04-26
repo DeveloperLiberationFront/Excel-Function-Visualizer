@@ -1,11 +1,11 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/W32TeX) (preloaded format=pdflatex 2016.3.5)  25 APR 2016 23:59
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/W32TeX) (preloaded format=pdflatex 2016.1.30)  26 APR 2016 01:24
 entering extended mode
- \write18 enabled.
+ restricted \write18 enabled.
  %&-line parsing enabled.
 **./paper.tex
 (./paper.tex
-LaTeX2e <2016/02/01>
-Babel <3.9q> and hyphenation patterns for 81 language(s) loaded.
+LaTeX2e <2015/10/01> patch level 2
+Babel <3.9n> and hyphenation patterns for 79 languages loaded.
 (c:/texlive/2015/texmf-dist/tex/latex/ieeetran/IEEEtran.cls
 Document Class: IEEEtran 2015/08/26 V1.8b by Michael Shell
 -- See the "IEEEtran_HOWTO" manual for usage information.
@@ -126,15 +126,15 @@ Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
 \KV@toks@=\toks15
 )
 (c:/texlive/2015/texmf-dist/tex/latex/graphics/graphics.sty
-Package: graphics 2016/01/03 v1.0q Standard LaTeX Graphics (DPC,SPQR)
+Package: graphics 2014/10/28 v1.0p Standard LaTeX Graphics (DPC,SPQR)
 
 (c:/texlive/2015/texmf-dist/tex/latex/graphics/trig.sty
-Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
 )
 (c:/texlive/2015/texmf-dist/tex/latex/latexconfig/graphics.cfg
 File: graphics.cfg 2010/04/23 v1.9 graphics configuration of TeX Live
 )
-Package graphics Info: Driver file: pdftex.def on input line 95.
+Package graphics Info: Driver file: pdftex.def on input line 94.
 
 (c:/texlive/2015/texmf-dist/tex/latex/pdftex-def/pdftex.def
 File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
@@ -339,30 +339,27 @@ File: pic/IFargslabel.png Graphic file (type png)
 Package pdftex.def Info: pic/IFargslabel.png used on input line 111.
 (pdftex.def)             Requested size: 399.29483pt x 298.11604pt.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 146.
+(Font)              <7> on input line 144.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 146.
+(Font)              <5> on input line 144.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 146.
+(Font)              <8> on input line 144.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 146.
+(Font)              <6> on input line 144.
  [1{c:/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
 
 ]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
  [2 <./pic/IFargslabel.png>]
-Underfull \hbox (badness 5302) in paragraph at lines 293--297
+Underfull \hbox (badness 5302) in paragraph at lines 289--293
 []\OT1/ptm/b/n/10 Do not at-tempt to ex-plain for-mu-lae. \OT1/ptm/m/n/10 Thoug
 h
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 317--317
+Underfull \hbox (badness 10000) in paragraph at lines 313--313
 [][][]\OT1/ptm/m/n/8 https://support.office.com/en-us/article/IF-function-69aed
 7c9-4e8a-4755-
  []
@@ -370,34 +367,34 @@ Underfull \hbox (badness 10000) in paragraph at lines 317--317
 <pic/ifExample.png, id=16, 295.85532pt x 90.3375pt>
 File: pic/ifExample.png Graphic file (type png)
  <use pic/ifExample.png>
-Package pdftex.def Info: pic/ifExample.png used on input line 320.
+Package pdftex.def Info: pic/ifExample.png used on input line 316.
 (pdftex.def)             Requested size: 258.0pt x 78.78044pt.
 
-Overfull \hbox (6.0pt too wide) in paragraph at lines 320--321
+Overfull \hbox (6.0pt too wide) in paragraph at lines 316--317
  [][] 
  []
 
 <pic/start.png, id=17, 251.43938pt x 129.48375pt>
 File: pic/start.png Graphic file (type png)
  <use pic/start.png>
-Package pdftex.def Info: pic/start.png used on input line 327.
+Package pdftex.def Info: pic/start.png used on input line 323.
 (pdftex.def)             Requested size: 125.71938pt x 64.7417pt.
 
 <pic/glossary-greenonly.png, id=18, 7.52812pt x 7.52812pt>
 File: pic/glossary-greenonly.png Graphic file (type png)
 
 <use pic/glossary-greenonly.png>
-Package pdftex.def Info: pic/glossary-greenonly.png used on input line 331.
+Package pdftex.def Info: pic/glossary-greenonly.png used on input line 327.
 (pdftex.def)             Requested size: 7.52809pt x 7.52809pt.
 
 <pic/glossary-blue.png, id=19, 10.53937pt x 10.53937pt>
 File: pic/glossary-blue.png Graphic file (type png)
 
 <use pic/glossary-blue.png>
-Package pdftex.def Info: pic/glossary-blue.png used on input line 335.
+Package pdftex.def Info: pic/glossary-blue.png used on input line 331.
 (pdftex.def)             Requested size: 10.53932pt x 10.53932pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 339--339
+Underfull \hbox (badness 10000) in paragraph at lines 335--335
 [][][]\OT1/ptm/m/n/8 https://support.office.com/en-us/article/IF-function-69aed
 7c9-4e8a-4755-
  []
@@ -406,101 +403,95 @@ Underfull \hbox (badness 10000) in paragraph at lines 339--339
 File: pic/glossary-arrow.png Graphic file (type png)
 
 <use pic/glossary-arrow.png>
-Package pdftex.def Info: pic/glossary-arrow.png used on input line 345.
+Package pdftex.def Info: pic/glossary-arrow.png used on input line 341.
 (pdftex.def)             Requested size: 9.0337pt x 10.53932pt.
-
-<pic/IFexpand.png, id=21, 395.22656pt x 468.24937pt>
+ [3 <./pic/ifExample.png> <./pic/start.png> <./pic/glossary-greenonly.png> <./p
+ic/glossary-blue.png>]
+<pic/IFexpand.png, id=29, 395.22656pt x 468.24937pt>
 File: pic/IFexpand.png Graphic file (type png)
  <use pic/IFexpand.png>
-Package pdftex.def Info: pic/IFexpand.png used on input line 347.
+Package pdftex.def Info: pic/IFexpand.png used on input line 343.
 (pdftex.def)             Requested size: 158.08781pt x 187.29642pt.
 
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[3 <./pic/ifExample.png> <./pic/start.png> <./pic/glossary-greenonly.png> <./pi
-c/glossary-blue.png> <./pic/glossary-arrow.png>]
-<pic/glossary-green.png, id=31, 28.60687pt x 9.03375pt>
+<pic/glossary-green.png, id=30, 28.60687pt x 9.03375pt>
 File: pic/glossary-green.png Graphic file (type png)
 
 <use pic/glossary-green.png>
-Package pdftex.def Info: pic/glossary-green.png used on input line 374.
+Package pdftex.def Info: pic/glossary-green.png used on input line 370.
 (pdftex.def)             Requested size: 28.6068pt x 9.0337pt.
 
-<pic/glossary-leaf.png, id=32, 36.135pt x 9.78656pt>
+<pic/glossary-leaf.png, id=31, 36.135pt x 9.78656pt>
 File: pic/glossary-leaf.png Graphic file (type png)
 
 <use pic/glossary-leaf.png>
-Package pdftex.def Info: pic/glossary-leaf.png used on input line 380.
+Package pdftex.def Info: pic/glossary-leaf.png used on input line 376.
 (pdftex.def)             Requested size: 36.13489pt x 9.78653pt.
 File: pic/glossary-blue.png Graphic file (type png)
  <use pic/glossary-blue.png>
-Package pdftex.def Info: pic/glossary-blue.png used on input line 389.
+Package pdftex.def Info: pic/glossary-blue.png used on input line 385.
 (pdftex.def)             Requested size: 10.53932pt x 10.53932pt.
 
-<pic/glossary-solidline.png, id=33, 14.30344pt x 9.78656pt>
+<pic/glossary-solidline.png, id=32, 14.30344pt x 9.78656pt>
 File: pic/glossary-solidline.png Graphic file (type png)
 
 <use pic/glossary-solidline.png>
-Package pdftex.def Info: pic/glossary-solidline.png used on input line 395.
+Package pdftex.def Info: pic/glossary-solidline.png used on input line 391.
 (pdftex.def)             Requested size: 14.30339pt x 9.78653pt.
 
-<pic/glossary-fadingline.png, id=34, 13.55063pt x 6.77531pt>
+<pic/glossary-fadingline.png, id=33, 13.55063pt x 6.77531pt>
 File: pic/glossary-fadingline.png Graphic file (type png)
 
 <use pic/glossary-fadingline.png>
-Package pdftex.def Info: pic/glossary-fadingline.png used on input line 399.
+Package pdftex.def Info: pic/glossary-fadingline.png used on input line 395.
 (pdftex.def)             Requested size: 13.55058pt x 6.77528pt.
 File: pic/glossary-arrow.png Graphic file (type png)
  <use pic/glossary-arrow.png>
-Package pdftex.def Info: pic/glossary-arrow.png used on input line 404.
+Package pdftex.def Info: pic/glossary-arrow.png used on input line 400.
 (pdftex.def)             Requested size: 9.0337pt x 10.53932pt.
 
-<pic/glossary-lightblue.png, id=35, 15.05624pt x 30.86531pt>
+<pic/glossary-lightblue.png, id=34, 15.05624pt x 30.86531pt>
 File: pic/glossary-lightblue.png Graphic file (type png)
 
 <use pic/glossary-lightblue.png>
-Package pdftex.def Info: pic/glossary-lightblue.png used on input line 409.
+Package pdftex.def Info: pic/glossary-lightblue.png used on input line 405.
 (pdftex.def)             Requested size: 11.29214pt x 23.14891pt.
 
-<pic/comparison.png, id=36, 268.75406pt x 79.04532pt>
+<pic/comparison.png, id=35, 268.75406pt x 79.04532pt>
 File: pic/comparison.png Graphic file (type png)
  <use pic/comparison.png>
-Package pdftex.def Info: pic/comparison.png used on input line 418.
+Package pdftex.def Info: pic/comparison.png used on input line 414.
 (pdftex.def)             Requested size: 237.36346pt x 69.81335pt.
 
-<pic/comparison-ss.png, id=37, 227.34938pt x 76.03406pt>
+<pic/comparison-ss.png, id=36, 227.34938pt x 76.03406pt>
 File: pic/comparison-ss.png Graphic file (type png)
 
 <use pic/comparison-ss.png>
-Package pdftex.def Info: pic/comparison-ss.png used on input line 418.
+Package pdftex.def Info: pic/comparison-ss.png used on input line 414.
 (pdftex.def)             Requested size: 227.34882pt x 76.03386pt.
- [4 <./pic/IFexpand.png> <./pic/glossary-green.png> <./pic/glossary-leaf.png> <
-./pic/glossary-solidline.png> <./pic/glossary-fadingline.png> <./pic/glossary-l
-ightblue.png> <./pic/comparison.png> <./pic/comparison-ss.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 434--437
+ [4 <./pic/glossary-arrow.png> <./pic/IFexpand.png> <./pic/glossary-green.png> 
+<./pic/glossary-leaf.png> <./pic/glossary-solidline.png> <./pic/glossary-fading
+line.png> <./pic/glossary-lightblue.png> <./pic/comparison.png> <./pic/comparis
+on-ss.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 430--433
 \OT1/ptm/m/n/10 A demon-stra-tion of the tool can be found at
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 434--437
+Underfull \hbox (badness 10000) in paragraph at lines 430--433
 \OT1/ptm/m/n/10 https://github.com/DeveloperLiberationFront/Excel-Function-
  []
 
 <pic/longsum.png, id=50, 1078.78032pt x 235.63031pt>
 File: pic/longsum.png Graphic file (type png)
  <use pic/longsum.png>
-Package pdftex.def Info: pic/longsum.png used on input line 576.
+Package pdftex.def Info: pic/longsum.png used on input line 572.
 (pdftex.def)             Requested size: 516.0pt x 112.70576pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-
-Underfull \vbox (badness 1270) has occurred while \output is active []
-
- [5]
-Underfull \hbox (badness 10000) in paragraph at lines 621--621
+[5]
+Underfull \hbox (badness 10000) in paragraph at lines 617--617
 [][][]\OT1/ptm/m/n/8 https://support.office.com/en-us/article/LOOKUP-function-4
 46d94af-
  []
@@ -509,96 +500,93 @@ Underfull \hbox (badness 10000) in paragraph at lines 621--621
 File: pic/lookupexample.png Graphic file (type png)
 
 <use pic/lookupexample.png>
-Package pdftex.def Info: pic/lookupexample.png used on input line 623.
+Package pdftex.def Info: pic/lookupexample.png used on input line 619.
 (pdftex.def)             Requested size: 258.0pt x 88.20496pt.
 
-Overfull \hbox (6.0pt too wide) in paragraph at lines 623--624
+Overfull \hbox (6.0pt too wide) in paragraph at lines 619--620
  [][] 
  []
 
-<pic/lookup-2.png, id=55, 285.31593pt x 67.0003pt>
+[6 <./pic/longsum.png> <./pic/lookupexample.png>]
+<pic/lookup-2.png, id=60, 285.31593pt x 67.0003pt>
 File: pic/lookup-2.png Graphic file (type png)
  <use pic/lookup-2.png>
-Package pdftex.def Info: pic/lookup-2.png used on input line 658.
+Package pdftex.def Info: pic/lookup-2.png used on input line 654.
 (pdftex.def)             Requested size: 258.0pt x 60.58595pt.
 
-<pic/lookup-3.png, id=56, 308.65312pt x 206.27063pt>
+<pic/lookup-3.png, id=61, 308.65312pt x 206.27063pt>
 File: pic/lookup-3.png Graphic file (type png)
  <use pic/lookup-3.png>
-Package pdftex.def Info: pic/lookup-3.png used on input line 659.
+Package pdftex.def Info: pic/lookup-3.png used on input line 655.
 (pdftex.def)             Requested size: 258.0pt x 172.43207pt.
 
-Overfull \hbox (6.0pt too wide) in paragraph at lines 658--660
+Overfull \hbox (6.0pt too wide) in paragraph at lines 654--656
  [][] 
  []
 
 
-Overfull \hbox (6.0pt too wide) in paragraph at lines 658--660
+Overfull \hbox (6.0pt too wide) in paragraph at lines 654--656
+ [] 
+ []
+
+<pic/vlookup.png, id=62, 309.40594pt x 108.405pt>
+File: pic/vlookup.png Graphic file (type png)
+ <use pic/vlookup.png>
+Package pdftex.def Info: pic/vlookup.png used on input line 670.
+(pdftex.def)             Requested size: 258.0pt x 90.40288pt.
+
+<pic/hlookup.png, id=63, 307.1475pt x 93.34875pt>
+File: pic/hlookup.png Graphic file (type png)
+ <use pic/hlookup.png>
+Package pdftex.def Info: pic/hlookup.png used on input line 671.
+(pdftex.def)             Requested size: 258.0pt x 78.41667pt.
+
+Overfull \hbox (6.0pt too wide) in paragraph at lines 670--672
+ [][] 
+ []
+
+
+Overfull \hbox (6.0pt too wide) in paragraph at lines 670--672
  [] 
  []
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[6 <./pic/longsum.png> <./pic/lookupexample.png>]
-<pic/vlookup.png, id=62, 309.40594pt x 108.405pt>
-File: pic/vlookup.png Graphic file (type png)
- <use pic/vlookup.png>
-Package pdftex.def Info: pic/vlookup.png used on input line 674.
-(pdftex.def)             Requested size: 258.0pt x 90.40288pt.
-
-<pic/hlookup.png, id=63, 307.1475pt x 93.34875pt>
-File: pic/hlookup.png Graphic file (type png)
- <use pic/hlookup.png>
-Package pdftex.def Info: pic/hlookup.png used on input line 675.
-(pdftex.def)             Requested size: 258.0pt x 78.41667pt.
-
-Overfull \hbox (6.0pt too wide) in paragraph at lines 674--676
- [][] 
- []
-
-
-Overfull \hbox (6.0pt too wide) in paragraph at lines 674--676
- [] 
- []
-
 <pic/SUM.png, id=64, 76.03406pt x 207.02344pt>
 File: pic/SUM.png Graphic file (type png)
  <use pic/SUM.png>
-Package pdftex.def Info: pic/SUM.png used on input line 701.
+Package pdftex.def Info: pic/SUM.png used on input line 697.
 (pdftex.def)             Requested size: 76.03386pt x 207.02292pt.
 
-Underfull \hbox (badness 6978) in paragraph at lines 704--714
+Underfull \hbox (badness 6978) in paragraph at lines 700--710
 [][]\OT1/ptm/m/n/10 The par-tic-i-pants were
  []
 
 
-Underfull \hbox (badness 3471) in paragraph at lines 704--714
+Underfull \hbox (badness 3471) in paragraph at lines 700--710
 \OT1/ptm/m/n/10 by pur-pose or ac-ci-dent,
  []
 
 
-Underfull \hbox (badness 1721) in paragraph at lines 704--714
+Underfull \hbox (badness 1721) in paragraph at lines 700--710
 \OT1/ptm/m/n/10 in-stances of heinous de-
  []
 
 
-Underfull \hbox (badness 3343) in paragraph at lines 704--714
+Underfull \hbox (badness 3343) in paragraph at lines 700--710
 \OT1/ptm/m/n/10 for-mula was] just some
  []
 
 [7 <./pic/lookup-2.png> <./pic/lookup-3.png> <./pic/vlookup.png> <./pic/hlookup
-.png> <./pic/SUM.png>]
-Underfull \vbox (badness 2245) has occurred while \output is active []
-
- [8]
-<pic/index.png, id=77, 292.09125pt x 180.675pt>
+.png> <./pic/SUM.png>] [8] <pic/index.png, id=77, 292.09125pt x 180.675pt>
 File: pic/index.png Graphic file (type png)
- <use pic/index.png>
-Package pdftex.def Info: pic/index.png used on input line 901.
+
+<use pic/index.png>
+Package pdftex.def Info: pic/index.png used on input line 897.
 (pdftex.def)             Requested size: 258.0pt x 159.60098pt.
 
-Overfull \hbox (6.0pt too wide) in paragraph at lines 901--903
+Overfull \hbox (6.0pt too wide) in paragraph at lines 897--899
  [][] 
  []
 
@@ -618,10 +606,10 @@ Before submitting the final camera ready copy, remember to:
 
 ] (./paper.aux) ) 
 Here is how much of TeX's memory you used:
- 3115 strings out of 493033
- 50543 string characters out of 6137755
- 113637 words of memory out of 5000000
- 6605 multiletter control sequences out of 15000+600000
+ 3114 strings out of 493054
+ 50534 string characters out of 6138327
+ 112501 words of memory out of 5000000
+ 6591 multiletter control sequences out of 15000+600000
  39736 words of font info for 73 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  37i,8n,23p,299b,282s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -631,7 +619,7 @@ xlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/201
 st/fonts/type1/urw/times/utmb8a.pfb><c:/texlive/2015/texmf-dist/fonts/type1/urw
 /times/utmbi8a.pfb><c:/texlive/2015/texmf-dist/fonts/type1/urw/times/utmr8a.pfb
 ><c:/texlive/2015/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on paper.pdf (11 pages, 367063 bytes).
+Output written on paper.pdf (11 pages, 368647 bytes).
 PDF statistics:
  110 PDF objects out of 1000 (max. 8388607)
  46 compressed objects within 1 object stream
