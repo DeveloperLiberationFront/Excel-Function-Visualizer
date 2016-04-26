@@ -57,18 +57,8 @@
 
 % *** CITATION PACKAGES ***
 %
-%\usepackage{cite}
+\usepackage{cite}
 % cite.sty was written by Donald Arseneau
-% V1.6 and later of IEEEtran pre-defines the format of the cite.sty package
-% \cite{} output to follow that of the IEEE. Loading the cite package will
-% result in citation numbers being automatically sorted and properly
-% "compressed/ranged". e.g., [1], [9], [2], [7], [5], [6] without using
-% cite.sty will become [1], [2], [5]--[7], [9] using cite.sty. cite.sty's
-% \cite will automatically add leading space, if needed. Use cite.sty's
-% noadjust option (cite.sty V3.8 and later) if you want to turn this off
-% such as if a citation ever needs to be enclosed in parenthesis.
-% cite.sty is already installed on most LaTeX systems. Be sure and use
-% version 5.0 (2009-03-20) and later if using hyperref.sty.
 % The latest version can be obtained at:
 % http://www.ctan.org/pkg/cite
 % The documentation is contained in the cite.sty file itself.
@@ -77,10 +67,7 @@
 % *** GRAPHICS RELATED PACKAGES ***
 %
 \ifCLASSINFOpdf \usepackage[pdftex]{graphicx} \usepackage{wrapfig} % declare the
-% path(s) where your graphic files are
 \graphicspath{{pic/}} % and their extensions so you won't have to specify these
-% with
-% every instance of \includegraphics
 \DeclareGraphicsExtensions{.png} \else % or other class option (dvipsone,
 % dvipdf, if not using dvips). graphicx
 % will default to the driver specified in the system graphics.cfg if no
@@ -94,18 +81,24 @@
 \fi
 
 % correct bad hyphenation here
-\hyphenation{op-tical net-works semi-conduc-tor}
+% \hyphenation{op-tical net-works semi-conduc-tor}
 
-\usepackage{textcomp} \newcommand{\toolname}{Perquimans?!} \begin{document}
-	\title{\toolname: A Tool for Visualizing Patterns of Spreadsheet Function Combinations}
+\usepackage{textcomp} 
+
+\newcommand{\toolname}{Perquimans }
+\newcommand{\toolnameend}{Perquimans}
+\newcommand{\toolnameposs}{Perquimans' }
+
+\begin{document}
+	\title{\toolnameend: A Tool for Visualizing Patterns of Spreadsheet Function Combinations}
 	
 	
 	% author names and affiliations
 	% use a multiple column layout for up to three different
 	% affiliations
 	\author{ \IEEEauthorblockN{Justin A. Middleton, Emerson Murphy-Hill}
-		\IEEEauthorblockA{North Carolina State University\\ Raleigh, North Carolina,
-			USA} }
+		\IEEEauthorblockA{North Carolina State University, Raleigh, USA\\ 
+			\{jamiddl2, ermurph3\}@ncsu.edu }}
 	
 	% use for special paper notices
 	%\IEEEspecialpapernotice{(Invited Paper)}
@@ -118,19 +111,21 @@
 	
 	% As a general rule, do not put math, special symbols or citations
 	% in the abstract
-	\begin{abstract} Spreadsheet environments often come equipped with an abundance
-		of functions and operations to manipulate data, but it can be difficult to
-		understand how programmers actually use these functions in practice.
-		Furthermore, users can combine several functions into a complex formula,
-		complicating matters for both researchers and practitioners who want to study
-		formulae to improve spreadsheet practices. Therefore, we developed \toolname, a
-		tool that visualizes patterns of function combination in spreadsheets as an
-		interactive tree of possibilities, capable of capturing both the most common
-		and most anomalous patterns of function combination and their contexts in
-		actual workbooks. Using spreadsheets from the Enron corpus, we conduct both a
-		case study and several user studies to explore \toolname's various
-		applications, particularly those in flexible smell detection and spreadsheet
-		education. \end{abstract}
+	\begin{abstract} 
+		Spreadsheet environments often come equipped with an abundance of functions
+		and operations to manipulate data, which users can combine into a complex
+		formulae for more sophisticated programs. However, anticipating these
+		combinations is difficult, complicating matters for both researchers and
+		practitioners who want to study formulae to improve spreadsheet practices.
+		Therefore, we developed \toolnameend, a tool that analyzes spreadsheet corpora to
+		visualize patterns of function
+		combination as an interactive tree, capable
+		of representing both the most common and most anomalous patterns of formula construction and their contexts in actual workbooks. Using spreadsheets from
+		the Enron corpus, we conduct both a case study and a user study to
+		explore \toolnameposs various applications, particularly those in flexible smell
+		detection and spreadsheet education.
+		
+	\end{abstract}
 	
 	\section{Introduction} Spreadsheets surround us, ordering the ever-growing
 	flood of data that we produce. They serve key roles in industry, where as much
