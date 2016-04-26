@@ -188,9 +188,7 @@
 	represent optional arguments, and we describe how our overall design goals both
 	helped and hindered this process. We then apply the tool to a number of case
 	studies to evaluate how much it could contribute to several different contexts,
-	most notably code smell detection and spreadsheet education.
-	
-	To better understand how people might use \toolnameend, we also conducted a
+	most notably code smell detection and spreadsheet education. To better understand how people might use \toolnameend, we also conducted a
 	user study to judge how usable and intuitive the tool actually is. This grounds
 	the discussion of its potential uses while also underscoring some of its
 	inherent limitations and setting the way for future extensions and improvements
@@ -312,7 +310,7 @@
 	is, a function nested within none other -- only a few nodes are visible, as
 	shown in Figure \ref{fig:startpic}. \par
 	
-	\begin{figure}[h] \centering \includegraphics[scale=.5]{start} \caption{How the
+	\begin{figure}[h] \centering \includegraphics[scale=.4]{start} \caption{How the
 			IF tree looks at the start} \label{fig:startpic} \end{figure}
 	
 	The visualization so far comprises two types of nodes: the circle
@@ -327,7 +325,7 @@
 	
 	Knowing that it is the first argument which contains the conditionals, we click
 	on the square labeled ``1" to explore. To save space, when more than 10 unique
-	arguments have been observed in any position, the tool displays only the first
+	arguments were found in a position, the tool displays only the first
 	ten, with an option to display the rest by clicking the arrow
 	\includegraphics{glossary-arrow}.
 	
@@ -337,9 +335,7 @@
 	We see that IF contains a number of comparison operators as its first argument,
 	such as = and $\le$, and boolean-returning functions, like ISNA and AND, with
 	simple equality being the most common and some use as ABS being the least seen
-	of everything actually used. \par
-	
-	From here, we can further explore the common options among these functions.
+	of everything actually used. From here, we can further explore the common options among these functions.
 	Clicking on the ``=" node will yield two arguments and expanding each of them
 	will peer into the range of common values of equality comparison, which Figure
 	\ref{fig:fullpic} shows. \par
@@ -366,13 +362,15 @@
 		labeled with the function name. Their size is determined by their relative
 		frequency, scaled logarithmically, to the frequency of the root node in the
 		tree. They may have any number of arguments, including zero, as determined by
-		the API.
+		the API. Users can select any of these nodes to view the examples from the 
+		provided dataset that use this function in the node's position in the tree.
 		
 		\item \vspace{.25cm}\includegraphics{glossary-leaf} - \textbf{Value nodes} are
 		white circles with a generic label. They represent elements of a formula which
 		accept no arguments, like references (A1), ranges (A1:A10), numbers, boolean
 		values, strings, and errors. However, \toolname treats still functions with
-		zero arguments, like NOW, as function nodes.
+		zero arguments, like NOW, as function nodes. Like function nodes, these also 
+		contain examples.
 		
 		\item  \vspace{.25cm} \includegraphics{glossary-blue} - \textbf{Argument
 			nodes} are dark blue squares labeled with a number. The number is the position
@@ -424,8 +422,8 @@
 		presentation code, implemented in Javascript with much help from the
 		visualization library D3\footnote{https://d3js.org/}. We chose D3 primarily
 		for its accessibility: given the JSON, the visualization can be simply
-		embedded into a webpage accessible through a browser. \end{itemize} A
-	demonstration of the tool can be found at
+		embedded into a webpage accessible through a browser. \end{itemize} The code and a
+	demonstration of \toolname can be found at
 	https://github.com/DeveloperLiberationFront/Excel-Function-Visualizer.
 	
 	\subsection{Design Decisions} \label{ssec:decisions} Early in the design, we
@@ -437,7 +435,7 @@
 	observed as an argument in a function. \par
 	
 	Guided by the goals in Section \ref{goals}, we faced a number of decisions in
-	how to represent the data in the visualization. Below, I've outlined those that
+	how to visualize the data. Below, we've outlined those that
 	had the largest impact in the values that appear in the tree. \begin{itemize}
 		
 		\item \textit{Copied formulae}: Excel allows users to spread a formula over an
@@ -604,8 +602,8 @@
 	retrieve examples of every configuration in the dataset. The same goes for the
 	V/HLOOKUP functions, as shown partially in Figure~\ref{fig:vhlookups}.
 	
-	\begin{figure}[h] \centering \includegraphics[width=.5\textwidth]{lookup-2}
-		\includegraphics[width=.5\textwidth]{lookup-3} \caption{LOOKUP with two and
+	\begin{figure}[h] \centering \includegraphics[scale=.75]{lookup-2}
+		\includegraphics[scale=.75]{lookup-3} \caption{LOOKUP with two and
 			three arguments}  \label{fig:lookups} \end{figure}
 	
 	Furthermore, these examples are good as well for exploring how it might bridge
@@ -620,8 +618,8 @@
 	sorted, it can nevertheless guide the educator to several examples in
 	production where this problem surfaces. \par
 	
-	\begin{figure}[h] \centering \includegraphics[width=.5\textwidth]{vlookup}
-		\includegraphics[width=.5\textwidth]{hlookup} \caption{VLOOKUP and HLOOKUP with
+	\begin{figure}[h] \centering \includegraphics[scale=.75]{vlookup}
+		\includegraphics[scale=.75]{hlookup} \caption{VLOOKUP and HLOOKUP with
 			four arguments} \label{fig:vhlookups}\end{figure}
 	
 	\section{User Study} \label{sec:userstudy} During development, we conducted a
@@ -696,7 +694,9 @@
 	learn. \par
 	
 	Additionally, \toolname offers a simple way of finding examples where certain
-	functions were used together. Though a standard text-search tool might yield
+	functions were used together, demonstrated when P4 took special interest in how people
+	frequently used MATCH as the second argument of INDEX or how they used date functions
+	like DATE and MONTH as lookup values in VLOOKUP. Though a standard text-search tool might yield
 	the same results for a function alone, combinations can require more complex
 	text queries, whereas here, the information is already captured in nodes.  \par
 	
@@ -710,22 +710,23 @@
 	environment is not enough to teach users \textit{when} to use a function.
 	However, we could address this in future designs, perhaps, by linking directly
 	to such documentation from within the tool without violating any design
-	concerns in Section \ref{goals}. \par
+	concerns in Section~\ref{goals}. \par
 	
 	\subsection{Study Limitations} Though we did not start the study by telling
 	that the data source came from Enron, two users studied the file names to
 	deduce its roots in finance, if not Enron itself. Because of these notorious
 	connotations, then, they might have been inclined from this information to
 	orient their exploration around finance-related functions, potentially limiting
-	their findings or perceived users for the tool. Though, one also said that,
-	without this essential context, they could not have properly explored a dataset
+	their findings or perceived users for the tool. However, one participant also said that,
+	without this essential context, they could not have intelligently explored a dataset
 	in the first place. Comments like these point out the trade-offs of unguided
 	exploration, too: though it might not restrict them to a single purpose, it
 	might, at the same time, not afford them any mindset at all with which to
 	interpret the data. \par
 	
 	Furthermore, the data which users explored was processed and created before we
-	had fully completed the tool, meaning some of the counts and patterns in the
+	had fully ensured that the tool could extract all of the useful data from the 
+	spreadsheets, meaning some of the counts and patterns in the
 	trees were inaccurate. However, we decided that this was not a pressing
 	concern, being that we were primarily concerned with whether any interesting
 	reports could be made at all, not with whether these reports were 100\%
@@ -742,10 +743,10 @@
 	misinterpreting the icons, these misunderstandings became clear in their early
 	evaluations of the spreadsheet practice. Though we clarified the meanings when
 	these misunderstandings became apparent, these events point to a failure in the
-	tool to properly indicate every function with clarity.   \par
+	tool to indicate every function clearly.   \par
 	
 	
-	\section{Discussion} We began these studies with the intention of evaluating
+	\section{Limitations} We began these studies with the intention of evaluating
 	our progress towards the goals in Section \ref{goals}. Working from these
 	results, we noted many places where the tool aligned well or fell short.
 	
@@ -759,16 +760,9 @@
 	does not support the parsing of certain functions, such as EOMONTH, preventing
 	the healthy growth of those trees. \par
 	
-	Participants also asked for more options to quickly navigate the tree. For
-	example, P2 asked for the ability to expand the entire tree at once and icons
-	that better communicated the presence of optional arguments and their
-	quantities. The more familiar participants grew with the tool, the faster they
-	wanted to explore, yet it supported expert navigation up to the point of
-	expanding all of a node's children up to one level. \par
-	
 	Other than that, we did avoid designing anything that intentionally evaluated
 	formula designs. Nevertheless, \toolname inadvertently emphasizes bad design of
-	certain types, such as all of those in Section \ref{badsmells} marked by their
+	certain types, such as all of those in Section~\ref{badsmells} marked by their
 	visual signatures. Even so, our participants found the discovery of bad smell
 	to be the most interesting aspect about it, to the point where they could
 	imagine business scenarios in which micromanagers use it to ensure precise
@@ -779,8 +773,7 @@
 	
 	\subsection{Uncluttered Quantification}
 	
-	We realized early that some of the popular functions would present a problem:
-	some would have thousands of variations in large datasets, and showing all of
+	We realized early that some of the popular functions would have thousands of variations in large datasets, and showing all of
 	these variations at once would hopelessly overwhelm the user. We therefore made
 	a number of choices, such as the expansion arrows and the use of generic types
 	in place of specific primitive values, that would reduce the variation to
@@ -788,11 +781,9 @@
 	
 	Nevertheless, during the user study, P3 remarked that they specifically avoided
 	the most popular functions, anticipating a flood of nodes from which they could
-	salvage nothing interesting -- which might not have been a bad prediction,
-	considering that the SUM is built from 910 function and argument nodes stemming
-	the root and IF, at least 18000. P2 corroborated this by explaining how they
+	salvage nothing interesting. P2 corroborated this by explaining how they
 	gravitated toward exploring specific examples in particular value nodes over
-	navigating the full crowd of the tree, but they complicate it further by also
+	navigating the full, crowded tree, but they complicate it further by also
 	saying that the tool at its best when it shows either every possibility of an
 	argument side-by-side (for comparison) or nothing on that branch at all, a
 	balance that is hard to strike with node-dense trees.
@@ -803,16 +794,7 @@
 	with the desire not to overwhelm remains a challenge. \par
 	
 	\subsection{Informative Qualification} As we found in the case study, the tool
-	excels at making formula examples available throughout a tree. Though the tool
-	cannot outright explain what a formula does function-by-function, users
-	nevertheless found it valuable for the way it offers them with numerous
-	practical examples of functions previously unknown or confusing to them,
-	especially within the LOOKUP family. In the user study (Section
-	\ref{sec:userstudy}), furthermore, we also observed how a participant used the
-	repeated instance of a spreadsheet author's name to identify a potential
-	problem with a particular designer rather than a design itself, demonstrating
-	its use on several levels. \par
-	
+	excels at making formula examples available throughout a tree. 	
 	However, the benefits described in the previous sections imply a hidden
 	complication: if the tool educates through example but does not explicitly
 	distinguish between good design and bad design, how can we be sure that people
@@ -820,7 +802,7 @@
 	discussed its use in education and smell detection by bringing up the issues
 	surrounding the LOOKUP functions; this discussion, though, presupposes a
 	distinguishing eye that knew which examples practiced good design and which
-	exhibited the common errors. But a beginner might not know the difference.
+	exhibited the common errors. A beginner might not know the difference.
 	Robillard and Deline, in their study, remarked that good API examples should
 	demonstrate best practices, but, right now, we have no way to assure this with
 	\toolname. As with the problems in achieving unbiased exploration, correcting
@@ -845,7 +827,7 @@
 	This, then, warrants further analysis, in which good visualization might serve
 	well. \par
 	
-	\begin{figure} \centering \includegraphics[width=.5\textwidth]{index}
+	\begin{figure} \centering \includegraphics[scale=.75]{index}
 		\caption{A difficult question: how often is MATCH used in both the second and
 			third arguments?} \label{fig:index} \end{figure}
 	
