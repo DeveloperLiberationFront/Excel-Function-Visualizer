@@ -108,10 +108,6 @@
 	% make the title area
 	\maketitle
 	
-	\begin{figure*}[t] \centering \includegraphics[scale=.6]{IFargslabel} \caption{A
-			picture of \toolname displaying the common arguments to the IF function's first 
-			parameter} \centering \label{fig:fullpic} \end{figure*}
-	
 	% As a general rule, do not put math, special symbols or citations
 	% in the abstract
 	\begin{abstract} 
@@ -299,9 +295,7 @@
 	\subsection{Walkthrough of the Tool} \label{sec:walkthrough}Before discussing
 	the minutiae of tool's development, we will give a basic example of how
 	to use the tool. For this, we will answer this question: \textit{ What kinds of
-		functions do people use to define the condition in an IF function?} The full
-	visualization that answers this is available in Figure~\ref{fig:fullpic};
-	however, to understand the interaction, we will start from the beginning. \par
+		functions do people use to define the condition in an IF function?} \par
 	
 	First, a word on the IF function. In Excel, it serves as one of the logical
 	functions: given a condition as the first argument that evaluates to either
@@ -324,8 +318,7 @@
 	The visualization so far comprises two types of nodes: the circle
 	\includegraphics{glossary-greenonly}, which represents a discrete function in
 	the formula and is size according to its frequency relative to the number of
-	times to root function appeared\footnote{The root node, by definition, will
-		always be the largest node in a tree.}; and the numbered squares
+	times to root function appeared; and the numbered squares
 	\includegraphics{glossary-blue}, which represent the positions of arguments
 	within its parent function. From this, we can confirm that, of the times it was
 	observed, IF can have at most three arguments passed into it, which corresponds
@@ -351,34 +344,34 @@
 	will peer into the range of common values of equality comparison, which Figure
 	\ref{fig:fullpic} shows. \par
 	
+	\begin{figure*}[t] \centering \includegraphics[scale=.5]{IFargslabel} \caption{A
+			picture of \toolname displaying the common arguments to the IF function's first 
+			parameter} \centering \label{fig:fullpic} \end{figure*}
+	
 	For both sides of the equal sign, the operator has certain types of arguments
 	which predominate over the others: on the left side is most often a reference
 	to another cell; on the right, a string or number literal, which makes sense
 	for the case of confirming a value in another cell before assigning this one.
 	Furthermore, a tooltip accompanies each function node in the tree, providing a
-	concrete example of a function that uses this structure and where it can be
-	found. If this single instance is not enough, then the user also has the option
+	concrete example of a function that uses this structure. If this single instance is not enough, then the user also has the option
 	to double-click the individual function node, which will open up a new tab with
 	a table of many more examples from dataset.
 	
-	\subsection{Icon Glossary}
+	\subsection{Glyph Glossary}
 	
-	From these images, we can provide a quick glossary of images within the
+	From these images, we can provide a quick glossary of glyphs within the
 	visualization to aid interpretation. \begin{itemize} \item
 		\includegraphics{glossary-green} - \textbf{Function nodes} are green circles
 		labeled with the function name. Their size is determined by their relative
 		frequency, scaled logarithmically, to the frequency of the root node in the
 		tree. They may have any number of arguments, including zero, as determined by
-		the API.
+		the API. 
 		
 		\item \vspace{.25cm}\includegraphics{glossary-leaf} - \textbf{Value nodes} are
 		white circles with a generic label. They represent elements of a formula which
-		are which accept no arguments, like references (A1), ranges
-		(A1:A10)\footnote{That is, only if both sides of a references are cell
-			references. If either side is a function that returns a cell reference, like
-			INDIRECT, then the colon should be a function node.}, numbers, boolean values,
-		strings, and errors. Functions with zero arguments, like NOW, however, should
-		still be considered function nodes.
+		accept no arguments, like references (A1), ranges (A1:A10), numbers, boolean
+		values, strings, and errors. However, \toolname treats still functions with
+		zero arguments, like NOW, as function nodes.
 		
 		\item  \vspace{.25cm} \includegraphics{glossary-blue} - \textbf{Argument
 			nodes} are dark blue squares labeled with a number. The number is the position
@@ -387,13 +380,13 @@
 		the first argument.
 		
 		\item  \vspace{.25cm} \includegraphics{glossary-solidline} - \textbf{Solid
-			lines} represent a function's ownership of its various arguments. As such,
+			lines} represent a function's acceptance of its parameters. As such,
 		they connect the function nodes to argument nodes.
 		
 		\item  \vspace{.25cm} \includegraphics{glossary-fadingline} - \textbf{Fading
-			lines} represent the possibility of an argument position to have several
-		different possible functions or values. As such, they connect argument nodes
-		to function or value nodes.
+			lines} represents how a formula author can use several different possible
+		functions or values within a single argument position. As such, they connect
+		argument nodes to function or value nodes.
 		
 		\item  \vspace{.25cm} \includegraphics{glossary-arrow} - \textbf{Expansion
 			arrows} appear within an argument node when there are over 10 possible
@@ -402,17 +395,20 @@
 		
 		\item  \vspace{.25cm} \includegraphics[scale=.75]{glossary-lightblue} -
 		\textbf{Optional argument trees} are variations of trees that show only
-		formulae with a specific number of arguments, allowing the user to control for
-		the presence of optional arguments. By default, trees with dark blue nodes
-		contain every type of formula without regard how many arguments they have --
-		for example, single-argument ANDs could appear alongside 4-argument ANDs. See
-		Figure \ref{fig:optional} to see it visualized. \end{itemize}
+		formulae with a specific number of arguments. For example, the function AND can
+		take any number of arguments, up to 255. By default, the tree shows data from
+		AND functions with any number of argument, but these trees, marked with a darker
+		blue color, can show how AND was used when \textit{only} two arguments were passed into 
+		it, or \textit{only} four, and so on. See
+		Figure \ref{fig:optional} for how the data between tree types differs. \end{itemize}
 	
 	\begin{figure}[h] \centering \includegraphics[width =
 		.46\textwidth]{comparison} \includegraphics[]{comparison-ss}
-		\caption{The contents of each type of tree.} \label{fig:optional} \end{figure}
+		\caption{The contents of the default tree (left) and the optional argument trees (right)} \label{fig:optional} \end{figure}
 	
-	\subsection{Implementation Details} The final visualization is the product of
+	
+	
+	\subsection{Implementation Details} The visualization is the product of
 	two discrete processes: \begin{itemize} \item \textit{Collection}: Given a set
 		of Excel sheets, the tool, written in Java, uses Apache
 		POI\footnote{https://poi.apache.org/} to identify and iterate over every cell
@@ -430,73 +426,17 @@
 	https://github.com/DeveloperLiberationFront/Excel-Function-Visualizer.
 	
 	\subsection{Design Decisions} \label{ssec:decisions} Early in the design, we
-	chose the tree form for its inherent ability to represent the loose
+	chose the tree form for its inherent ability to represent the
 	parent-children relationship of formulae as functions and their arguments,
 	which could be yet more functions. By adapting this structure to accommodate a
 	broad range of possibilities for nested functions, the branching factor depends
 	alternatively on the number of arguments in a function and the number of
 	possible functions observed as an argument in a function. \par
 	
-	Guided by the goals in Section \ref{goals}, we faced a number of decision points, a
-	sample of which we describe below, before we arrived at the design shown above.
+	Guided by the goals in Section \ref{goals}, we faced a number of decisions in how
+	to represent the data in the visualization. Below, I've outlined those that had
+	the largest impact in the values that appear in the tree.
 	\begin{itemize}
-		
-		%Can I incorporate these again?
-		%			\begin{itemize}
-		%
-		%				\item [1] \textbf{Provide an interactive environment for free
-		% exploration.}
-		%				There are a lot of data in some of these collections, and the user should
-		% be
-		%				able to pick for themselves which to explore while ignoring the rest.
-		% Furthermore,
-		%				this exploration should not be designed around answering one specific
-		% question
-		%				but rather be open-ended.
-		%
-		%				\item [!1] \textbf{Do not make judgments about good and bad design.}
-		% Though
-		%				users may certainly approach the tool with the intention of finding
-		% particular
-		%				formulae, \toolname will not prioritize any on metrics of good or bad
-		%				practice. Rather, it will present them agnostically, referring only to
-		%				frequency.
-		%
-		%				\item [2] \textbf{Emphasize the quantitative patterns in formula
-		%					construction.} \toolname should address the questions of how often the
-		%				spreadsheet programmers used a certain function and where they used it.
-		% In
-		%				this way, it must show precise metrics, such as frequency of use and
-		% depth
-		% of
-		%				function nesting, of the dataset it conveys.
-		%
-		%				\item [!2] \textbf{Do not overwhelm with numbers.} For popular functions
-		%				especially, we anticipated some particularly dense trees. Though
-		%				everything should be accessible in accordance with Goal 1, we should
-		% design
-		% in
-		%				a way that reduces noise.
-		%
-		%				\item [3] \textbf{Promote a qualitative understanding of the patterns.}
-		%				\toolname should supplement its observations with concrete instances of
-		%				relevant formulae from the corpus. Ideally, it should even direct users
-		% to
-		% the
-		%				exact cell in the spreadsheets where the formula was used,
-		% contextualizing
-		% the
-		%				functions.
-		%
-		%				\item [!3] \textbf{Do not attempt to explain formulae.} Though \toolname
-		% tries
-		%				to foster understanding by linking pattern to example, it should not
-		% provide
-		%				a precise description of what a complex formula accomplishes. The tool's
-		% user
-		%				must infer this on their own.
-		%
-		%			\end{itemize}
 		
 		\item \textit{Copied formulae}: Excel allows users to spread a formula over an
 		area, repeating the same task in each cell with minor adjustments. Without
