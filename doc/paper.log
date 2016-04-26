@@ -1,11 +1,11 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/W32TeX) (preloaded format=pdflatex 2016.1.30)  26 APR 2016 05:13
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/W32TeX) (preloaded format=pdflatex 2016.3.5)  26 APR 2016 06:15
 entering extended mode
- restricted \write18 enabled.
+ \write18 enabled.
  %&-line parsing enabled.
 **./paper.tex
 (./paper.tex
-LaTeX2e <2015/10/01> patch level 2
-Babel <3.9n> and hyphenation patterns for 79 languages loaded.
+LaTeX2e <2016/02/01>
+Babel <3.9q> and hyphenation patterns for 81 language(s) loaded.
 (c:/texlive/2015/texmf-dist/tex/latex/ieeetran/IEEEtran.cls
 Document Class: IEEEtran 2015/08/26 V1.8b by Michael Shell
 -- See the "IEEEtran_HOWTO" manual for usage information.
@@ -126,15 +126,15 @@ Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
 \KV@toks@=\toks15
 )
 (c:/texlive/2015/texmf-dist/tex/latex/graphics/graphics.sty
-Package: graphics 2014/10/28 v1.0p Standard LaTeX Graphics (DPC,SPQR)
+Package: graphics 2016/01/03 v1.0q Standard LaTeX Graphics (DPC,SPQR)
 
 (c:/texlive/2015/texmf-dist/tex/latex/graphics/trig.sty
-Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
 )
 (c:/texlive/2015/texmf-dist/tex/latex/latexconfig/graphics.cfg
 File: graphics.cfg 2010/04/23 v1.9 graphics configuration of TeX Live
 )
-Package graphics Info: Driver file: pdftex.def on input line 94.
+Package graphics Info: Driver file: pdftex.def on input line 95.
 
 (c:/texlive/2015/texmf-dist/tex/latex/pdftex-def/pdftex.def
 File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
@@ -348,15 +348,11 @@ Underfull \hbox (badness 10000) in paragraph at lines 304--304
 7c9-4e8a-4755-
  []
 
-<pic/ifExample.png, id=14, 295.85532pt x 90.3375pt>
+<pic/ifExample.png, id=14, 252.19218pt x 89.58469pt>
 File: pic/ifExample.png Graphic file (type png)
  <use pic/ifExample.png>
 Package pdftex.def Info: pic/ifExample.png used on input line 306.
-(pdftex.def)             Requested size: 258.0pt x 78.78044pt.
-
-Overfull \hbox (6.0pt too wide) in paragraph at lines 306--307
- [][] 
- []
+(pdftex.def)             Requested size: 226.97086pt x 80.62546pt.
 
 <pic/start.png, id=16, 251.43938pt x 129.48375pt>
 File: pic/start.png Graphic file (type png)
@@ -475,11 +471,11 @@ Underfull \hbox (badness 2393) in paragraph at lines 425--428
 \OT1/ptm/m/n/10 The code and a demon-stra-tion of Perquimans can be
  []
 
-<pic/longsum.png, id=50, 1078.78032pt x 235.63031pt>
+<pic/longsum.png, id=50, 1056.19594pt x 217.5628pt>
 File: pic/longsum.png Graphic file (type png)
  <use pic/longsum.png>
 Package pdftex.def Info: pic/longsum.png used on input line 510.
-(pdftex.def)             Requested size: 516.0pt x 112.70576pt.
+(pdftex.def)             Requested size: 516.0pt x 106.28801pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
@@ -502,38 +498,56 @@ Overfull \hbox (6.0pt too wide) in paragraph at lines 570--571
  []
 
 [6 <./pic/longsum.png> <./pic/lookupexample.png>]
-<pic/lookup-2.png, id=60, 285.31593pt x 67.0003pt>
+<pic/lookup-2.png, id=60, 706.89093pt x 135.50626pt>
 File: pic/lookup-2.png Graphic file (type png)
  <use pic/lookup-2.png>
 Package pdftex.def Info: pic/lookup-2.png used on input line 605.
-(pdftex.def)             Requested size: 213.98642pt x 50.25009pt.
+(pdftex.def)             Requested size: 258.0pt x 49.45625pt.
 
-<pic/lookup-3.png, id=61, 308.65312pt x 206.27063pt>
+<pic/lookup-3.png, id=61, 744.53156pt x 484.05844pt>
 File: pic/lookup-3.png Graphic file (type png)
  <use pic/lookup-3.png>
 Package pdftex.def Info: pic/lookup-3.png used on input line 606.
-(pdftex.def)             Requested size: 231.48926pt x 154.70258pt.
+(pdftex.def)             Requested size: 258.0pt x 167.73895pt.
 
-<pic/vlookup.png, id=62, 309.40594pt x 108.405pt>
+Overfull \hbox (6.0pt too wide) in paragraph at lines 605--607
+ [][] 
+ []
+
+
+Overfull \hbox (6.0pt too wide) in paragraph at lines 605--607
+ [] 
+ []
+
+<pic/vlookup.png, id=62, 874.01532pt x 271.76532pt>
 File: pic/vlookup.png Graphic file (type png)
  <use pic/vlookup.png>
 Package pdftex.def Info: pic/vlookup.png used on input line 621.
-(pdftex.def)             Requested size: 232.05388pt x 81.30354pt.
+(pdftex.def)             Requested size: 258.0pt x 80.21983pt.
 
-<pic/hlookup.png, id=63, 307.1475pt x 93.34875pt>
+<pic/hlookup.png, id=63, 756.57657pt x 230.36063pt>
 File: pic/hlookup.png Graphic file (type png)
  <use pic/hlookup.png>
 Package pdftex.def Info: pic/hlookup.png used on input line 622.
-(pdftex.def)             Requested size: 230.36005pt x 70.01138pt.
+(pdftex.def)             Requested size: 258.0pt x 78.55356pt.
+
+Overfull \hbox (6.0pt too wide) in paragraph at lines 621--623
+ [][] 
+ []
+
+
+Overfull \hbox (6.0pt too wide) in paragraph at lines 621--623
+ [] 
+ []
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<pic/SUM.png, id=64, 76.03406pt x 207.02344pt>
+<pic/SUM.png, id=64, 181.42781pt x 630.10406pt>
 File: pic/SUM.png Graphic file (type png)
  <use pic/SUM.png>
 Package pdftex.def Info: pic/SUM.png used on input line 657.
-(pdftex.def)             Requested size: 76.03386pt x 207.02292pt.
+(pdftex.def)             Requested size: 103.19843pt x 358.4131pt.
  [7 <./pic/lookup-2.png> <./pic/lookup-3.png> <./pic/vlookup.png> <./pic/hlooku
 p.png>]
 Underfull \hbox (badness 3895) in paragraph at lines 674--684
@@ -550,12 +564,12 @@ Underfull \hbox (badness 6204) in paragraph at lines 674--684
 \OT1/ptm/m/n/10 sign makes no qual-i-ta-
  []
 
-[8 <./pic/SUM.png>] <pic/index.png, id=77, 292.09125pt x 180.675pt>
+[8 <./pic/SUM.png>] <pic/index.png, id=77, 481.04718pt x 295.1025pt>
 File: pic/index.png Graphic file (type png)
 
 <use pic/index.png>
 Package pdftex.def Info: pic/index.png used on input line 830.
-(pdftex.def)             Requested size: 219.06789pt x 135.5059pt.
+(pdftex.def)             Requested size: 206.39685pt x 126.61691pt.
  [9 <./pic/index.png>] (./paper.bbl)
 
 ** Conference Paper **
@@ -570,10 +584,10 @@ Before submitting the final camera ready copy, remember to:
 
 [10] (./paper.aux) ) 
 Here is how much of TeX's memory you used:
- 3114 strings out of 493054
- 50534 string characters out of 6138327
- 113500 words of memory out of 5000000
- 6591 multiletter control sequences out of 15000+600000
+ 3115 strings out of 493033
+ 50543 string characters out of 6137755
+ 113636 words of memory out of 5000000
+ 6605 multiletter control sequences out of 15000+600000
  39736 words of font info for 73 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  37i,8n,23p,1020b,282s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -583,7 +597,7 @@ Here is how much of TeX's memory you used:
 -dist/fonts/type1/urw/times/utmb8a.pfb><c:/texlive/2015/texmf-dist/fonts/type1/
 urw/times/utmbi8a.pfb><c:/texlive/2015/texmf-dist/fonts/type1/urw/times/utmr8a.
 pfb><c:/texlive/2015/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on paper.pdf (10 pages, 373944 bytes).
+Output written on paper.pdf (10 pages, 482444 bytes).
 PDF statistics:
  107 PDF objects out of 1000 (max. 8388607)
  44 compressed objects within 1 object stream

@@ -108,8 +108,8 @@
 	% As a general rule, do not put math, special symbols or citations
 	% in the abstract
 	\begin{abstract} Spreadsheet environments often come equipped with an abundance
-		of functions and operations to manipulate data, which users can combine into a
-		complex formulae for more sophisticated programs. However, anticipating these
+		of functions and operations to manipulate data, which users can combine into
+		complex formulae. However, anticipating these
 		combinations is difficult, complicating matters for both researchers and
 		practitioners who want to study formulae to improve spreadsheet practices.
 		Therefore, we developed \toolnameend, a tool that analyzes spreadsheet corpora
@@ -166,7 +166,7 @@
 	exploration of these datasets and simplify the complex concepts that occur in
 	spreadsheet design. One such concept is that of formula construction; functions
 	are an important part of using spreadsheets efficiently, yet the number of
-	their potential combinations quickly becomes massive when you consider that
+	potential combinations between them quickly becomes massive when you consider that
 	there are hundreds of them. Tools, then, that empower people to explore
 	questions about which functions are used together in practice have the
 	potential to improve the current design of spreadsheets themselves and educate
@@ -279,9 +279,9 @@
 		functions.
 		
 		\item [!3] \textbf{Do not attempt to explain formulae.} Though the tool will
-		to foster understanding by linking pattern to example, it should not provide a
-		precise description of what a complex formula accomplishes. The tool's user
-		must infer this on their own.
+		to foster understanding by linking pattern to example, it will not try to be
+		an explanatory tool that articulates what a complex formula accomplishes. Rather,
+		we will provide the structure and context, and the user	must infer this on their own.
 		
 	\end{itemize}
 	
@@ -303,7 +303,7 @@
 	do something, otherwise do something
 	else)"\footnote{https://support.office.com/en-us/article/IF-function-69aed7c9-4e8a-4755-a9bc-aa8bbff73be2?ui=en-US\&rs=en-US\&ad=US}. Furthermore, the third argument is optional; if left out, the function will return a default "FALSE" value if necessary. Examples of this function in practice can be seen in Figure~\ref{fig:ifexample}.
 	
-	\begin{figure}[h] \centering \includegraphics[width=.5\textwidth]{ifExample}
+	\begin{figure}[h] \centering \includegraphics[scale=.9]{ifExample}
 		\caption{Configurations of the IF function} \label{fig:ifexample} \end{figure}
 	
 	When the user first approaches the tree for a given top-level function -- that
@@ -602,8 +602,8 @@
 	retrieve examples of every configuration in the dataset. The same goes for the
 	V/HLOOKUP functions, as shown partially in Figure~\ref{fig:vhlookups}.
 	
-	\begin{figure}[h] \centering \includegraphics[scale=.75]{lookup-2}
-		\includegraphics[scale=.75]{lookup-3} \caption{LOOKUP with two and
+	\begin{figure}[h] \centering \includegraphics[width=.5\textwidth]{lookup-2}
+		\includegraphics[width=.5\textwidth]{lookup-3} \caption{LOOKUP with two and
 			three arguments}  \label{fig:lookups} \end{figure}
 	
 	Furthermore, these examples are good as well for exploring how it might bridge
@@ -618,8 +618,8 @@
 	sorted, it can nevertheless guide the educator to several examples in
 	production where this problem surfaces. \par
 	
-	\begin{figure}[h] \centering \includegraphics[scale=.75]{vlookup}
-		\includegraphics[scale=.75]{hlookup} \caption{VLOOKUP and HLOOKUP with
+	\begin{figure}[h] \centering \includegraphics[width=.5\textwidth]{vlookup}
+		\includegraphics[width=.5\textwidth]{hlookup} \caption{VLOOKUP and HLOOKUP with
 			four arguments} \label{fig:vhlookups}\end{figure}
 	
 	\section{User Study} \label{sec:userstudy} During development, we conducted a
@@ -654,7 +654,7 @@
 	useful for tracking these problems if marked well.
 	
 	\begin{wrapfigure}{O}{.25\textwidth}
-		\centering \includegraphics{SUM}  \caption{An abundance of parameters in SUM.
+		\centering \includegraphics[width=.20\textwidth]{SUM}  \caption{An abundance of parameters in SUM.
 			Encountering this, P4 remarked, "Woah."} \label{fig:sum} \end{wrapfigure}
 	
 	Additionally, because the files in the Enron set had name with the author as a
@@ -827,7 +827,7 @@
 	This, then, warrants further analysis, in which good visualization might serve
 	well. \par
 	
-	\begin{figure} \centering \includegraphics[scale=.75]{index}
+	\begin{figure} \centering \includegraphics[width=.4\textwidth]{index}
 		\caption{A difficult question: how often is MATCH used in both the second and
 			third arguments?} \label{fig:index} \end{figure}
 	
@@ -911,5 +911,4 @@
 	
 	% that's all folks
 \end{document}
-
 
