@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/W32TeX) (preloaded format=pdflatex 2016.1.30)  25 APR 2016 21:24
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/W32TeX) (preloaded format=pdflatex 2016.1.30)  25 APR 2016 22:55
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -239,43 +239,143 @@ Package textcomp Info: Setting pplx sub-encoding to TS1/3 on input line 406.
 Package textcomp Info: Setting pplj sub-encoding to TS1/3 on input line 407.
 Package textcomp Info: Setting ptmx sub-encoding to TS1/4 on input line 408.
 Package textcomp Info: Setting ptmj sub-encoding to TS1/4 on input line 409.
+)
+(c:/texlive/2015/texmf-dist/tex/latex/svg/svg.sty
+Package: svg 2012/09/05 v1.0 SVG inclusion and extraction
+
+(c:/texlive/2015/texmf-dist/tex/latex/xkeyval/xkeyval.sty
+Package: xkeyval 2014/12/03 v2.7a package option processing (HA)
+
+(c:/texlive/2015/texmf-dist/tex/generic/xkeyval/xkeyval.tex
+(c:/texlive/2015/texmf-dist/tex/generic/xkeyval/xkvutils.tex
+\XKV@toks=\toks17
+\XKV@tempa@toks=\toks18
+)
+\XKV@depth=\count96
+File: xkeyval.tex 2014/12/03 v2.7a key=value parser (HA)
+))
+(c:/texlive/2015/texmf-dist/tex/latex/subfig/subfig.sty
+Package: subfig 2005/06/28 ver: 1.3 subfig package
+
+(c:/texlive/2015/texmf-dist/tex/latex/caption/caption.sty
+Package: caption 2015/09/17 v3.3-111 Customizing captions (AR)
+
+(c:/texlive/2015/texmf-dist/tex/latex/caption/caption3.sty
+Package: caption3 2015/09/20 v1.7-115 caption3 kernel (AR)
+Package caption3 Info: TeX engine: e-TeX on input line 57.
+\captionmargin=\dimen130
+\captionmargin@=\dimen131
+\captionwidth=\dimen132
+\caption@tempdima=\dimen133
+\caption@indent=\dimen134
+\caption@parindent=\dimen135
+\caption@hangindent=\dimen136
+Package caption Info: Unknown document class (or package),
+(caption)             standard defaults will be used.
+)
+
+Package caption Warning: Unsupported document class (or package) detected,
+(caption)                usage of the caption package is not recommended.
+See the caption package documentation for explanation.
+
+Package caption Info: \@makecaption = \long macro:#1#2->\ifx \@captype \@IEEEta
+blestring \footnotesize \bgroup \par \centering \@IEEEtabletopskipstrut {\norma
+lfont \footnotesize #1}\\{\normalfont \footnotesize \scshape #2}\par \addvspace
+ {0.5\baselineskip }\egroup \@IEEEtablecaptionsepspace \else \@IEEEfigurecaptio
+nsepspace \setbox \@tempboxa \hbox {\normalfont \footnotesize {#1.}\nobreakspac
+e \nobreakspace #2}\ifdim \wd \@tempboxa >\hsize \setbox \@tempboxa \hbox {\nor
+malfont \footnotesize {#1.}\nobreakspace \nobreakspace }\parbox [t]{\hsize }{\n
+ormalfont \footnotesize \noindent \unhbox \@tempboxa #2}\else \ifCLASSOPTIONcon
+ference \hbox to\hsize {\normalfont \footnotesize \hfil \box \@tempboxa \hfil }
+\else \hbox to\hsize {\normalfont \footnotesize \box \@tempboxa \hfil }\fi \fi 
+\fi .
+\c@ContinuedFloat=\count97
+Package caption Info: wrapfig package is loaded.
+)
+\c@KVtest=\count98
+\sf@farskip=\skip44
+\sf@captopadj=\dimen137
+\sf@capskip=\skip45
+\sf@nearskip=\skip46
+\c@subfigure=\count99
+\c@subfigure@save=\count100
+\c@lofdepth=\count101
+\c@subtable=\count102
+\c@subtable@save=\count103
+\c@lotdepth=\count104
+\sf@top=\skip47
+\sf@bottom=\skip48
+) (c:/texlive/2015/texmf-dist/tex/latex/import/import.sty
+Package: import 2009/03/23  v 5.1
+)
+(c:/texlive/2015/texmf-dist/tex/latex/oberdiek/transparent.sty
+Package: transparent 2007/01/08 v1.0 Transparency via pdfTeX's color stack (HO)
+
+
+(c:/texlive/2015/texmf-dist/tex/generic/oberdiek/ifpdf.sty
+Package: ifpdf 2011/01/30 v2.3 Provides the ifpdf switch (HO)
+Package ifpdf Info: pdfTeX in PDF mode is detected.
+)
+(c:/texlive/2015/texmf-dist/tex/latex/oberdiek/auxhook.sty
+Package: auxhook 2011/03/04 v1.3 Hooks for auxiliary files (HO)
+))
+(c:/texlive/2015/texmf-dist/tex/latex/xcolor/xcolor.sty
+Package: xcolor 2007/01/21 v2.11 LaTeX color extensions (UK)
+
+(c:/texlive/2015/texmf-dist/tex/latex/latexconfig/color.cfg
+File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
+)
+Package xcolor Info: Driver file: pdftex.def on input line 225.
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1337.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1341.
+Package xcolor Info: Model `RGB' extended on input line 1353.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1355.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1356.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1357.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1358.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1359.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1360.
+)
+\SVG@out@width=\skip49
+\SVG@out@height=\skip50
+\c@svgfigure=\count105
 ) (./paper.aux)
 \openout1 = `paper.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 92.
-LaTeX Font Info:    ... okay on input line 92.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 92.
-LaTeX Font Info:    ... okay on input line 92.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 92.
-LaTeX Font Info:    ... okay on input line 92.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 92.
-LaTeX Font Info:    ... okay on input line 92.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 92.
-LaTeX Font Info:    ... okay on input line 92.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 92.
-LaTeX Font Info:    ... okay on input line 92.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 92.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 92.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 93.
+LaTeX Font Info:    ... okay on input line 93.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 93.
+LaTeX Font Info:    ... okay on input line 93.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 93.
+LaTeX Font Info:    ... okay on input line 93.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 93.
+LaTeX Font Info:    ... okay on input line 93.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 93.
+LaTeX Font Info:    ... okay on input line 93.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 93.
+LaTeX Font Info:    ... okay on input line 93.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 93.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 93.
 
 (c:/texlive/2015/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 92.
+LaTeX Font Info:    ... okay on input line 93.
 
 -- Lines per column: 56 (exact).
 (c:/texlive/2015/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count96
-\scratchdimen=\dimen130
+\scratchcounter=\count106
+\scratchdimen=\dimen138
 \scratchbox=\box29
-\nofMPsegments=\count97
-\nofMParguments=\count98
-\everyMPshowfont=\toks17
-\MPscratchCnt=\count99
-\MPscratchDim=\dimen131
-\MPnumerator=\count100
-\makeMPintoPDFobject=\count101
-\everyMPtoPDFconversion=\toks18
+\nofMPsegments=\count107
+\nofMParguments=\count108
+\everyMPshowfont=\toks19
+\MPscratchCnt=\count109
+\MPscratchDim=\dimen139
+\MPnumerator=\count110
+\makeMPintoPDFobject=\count111
+\everyMPtoPDFconversion=\toks20
 ) (c:/texlive/2015/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
 Package: pdftexcmds 2011/11/29 v0.20 Utility functions of pdfTeX for LuaTeX (HO
 )
@@ -283,10 +383,6 @@ Package: pdftexcmds 2011/11/29 v0.20 Utility functions of pdfTeX for LuaTeX (HO
 (c:/texlive/2015/texmf-dist/tex/generic/oberdiek/ifluatex.sty
 Package: ifluatex 2010/03/01 v1.3 Provides the ifluatex switch (HO)
 Package ifluatex Info: LuaTeX not detected.
-)
-(c:/texlive/2015/texmf-dist/tex/generic/oberdiek/ifpdf.sty
-Package: ifpdf 2011/01/30 v2.3 Provides the ifpdf switch (HO)
-Package ifpdf Info: pdfTeX in PDF mode is detected.
 )
 Package pdftexcmds Info: LuaTeX not detected.
 Package pdftexcmds Info: \pdf@primitive is available.
@@ -323,75 +419,99 @@ Package grfext Info: Graphics extension search list:
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-LaTeX Font Info:    Try loading font information for OMS+ptm on input line 107.
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: subfig package v1.3 is loaded.
+Package caption Info: End \AtBeginDocument code.
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 108.
 
 
 (c:/texlive/2015/texmf-dist/tex/latex/psnfss/omsptm.fd
 File: omsptm.fd 
 )
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 107.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 108.
 
 <pic/IFargslabel.png, id=1, 663.22781pt x 376.40625pt>
 File: pic/IFargslabel.png Graphic file (type png)
 
 <use pic/IFargslabel.png>
-Package pdftex.def Info: pic/IFargslabel.png used on input line 109.
+Package pdftex.def Info: pic/IFargslabel.png used on input line 110.
 (pdftex.def)             Requested size: 516.0pt x 292.86052pt.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 145.
+(Font)              <7> on input line 144.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 145.
+(Font)              <5> on input line 144.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 145.
+(Font)              <8> on input line 144.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 145.
+(Font)              <6> on input line 144.
  [1{c:/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
 
-] [2 <./pic/IFargslabel.png>]
-Underfull \hbox (badness 5302) in paragraph at lines 295--299
+]
+Underfull \vbox (badness 3482) has occurred while \output is active []
+
+
+Underfull \vbox (badness 3482) has occurred while \output is active []
+
+ [2 <./pic/IFargslabel.png>]
+Underfull \hbox (badness 5302) in paragraph at lines 293--297
 []\OT1/ptm/b/n/10 Do not at-tempt to ex-plain for-mu-lae. \OT1/ptm/m/n/10 Thoug
 h
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 319--319
+Underfull \hbox (badness 10000) in paragraph at lines 317--317
 [][][]\OT1/ptm/m/n/8 https://support.office.com/en-us/article/IF-function-69aed
 7c9-4e8a-4755-
  []
 
+
+Package caption Warning: \label without proper \caption on input line 320.
+See the caption package documentation for explanation.
+
+
+LaTeX Warning: Reference `fig:ifexample' on page 3 undefined on input line 317.
+
+
 <pic/ifExample.png, id=16, 295.85532pt x 90.3375pt>
 File: pic/ifExample.png Graphic file (type png)
  <use pic/ifExample.png>
-Package pdftex.def Info: pic/ifExample.png used on input line 321.
+Package pdftex.def Info: pic/ifExample.png used on input line 319.
 (pdftex.def)             Requested size: 258.0pt x 78.78044pt.
 
-Overfull \hbox (6.0pt too wide) in paragraph at lines 321--322
+Overfull \hbox (6.0pt too wide) in paragraph at lines 319--320
  [][] 
  []
+
+
+Package caption Warning: \label without proper \caption on input line 326.
+See the caption package documentation for explanation.
+
+
+LaTeX Warning: Reference `fig:startpic' on page 3 undefined on input line 324.
 
 <pic/start.png, id=17, 179.92218pt x 78.2925pt>
 File: pic/start.png Graphic file (type png)
  <use pic/start.png>
-Package pdftex.def Info: pic/start.png used on input line 328.
+Package pdftex.def Info: pic/start.png used on input line 326.
 (pdftex.def)             Requested size: 179.92174pt x 78.2923pt.
 
 <pic/glossary-greenonly.png, id=18, 7.52812pt x 7.52812pt>
 File: pic/glossary-greenonly.png Graphic file (type png)
 
 <use pic/glossary-greenonly.png>
-Package pdftex.def Info: pic/glossary-greenonly.png used on input line 332.
+Package pdftex.def Info: pic/glossary-greenonly.png used on input line 330.
 (pdftex.def)             Requested size: 7.52809pt x 7.52809pt.
 
 <pic/glossary-blue.png, id=19, 10.53937pt x 10.53937pt>
 File: pic/glossary-blue.png Graphic file (type png)
 
 <use pic/glossary-blue.png>
-Package pdftex.def Info: pic/glossary-blue.png used on input line 336.
+Package pdftex.def Info: pic/glossary-blue.png used on input line 334.
 (pdftex.def)             Requested size: 10.53932pt x 10.53932pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 340--340
+Underfull \hbox (badness 10000) in paragraph at lines 338--338
 [][][]\OT1/ptm/m/n/8 https://support.office.com/en-us/article/IF-function-69aed
 7c9-4e8a-4755-
  []
@@ -400,13 +520,13 @@ Underfull \hbox (badness 10000) in paragraph at lines 340--340
 File: pic/glossary-arrow.png Graphic file (type png)
 
 <use pic/glossary-arrow.png>
-Package pdftex.def Info: pic/glossary-arrow.png used on input line 346.
+Package pdftex.def Info: pic/glossary-arrow.png used on input line 344.
 (pdftex.def)             Requested size: 9.0337pt x 10.53932pt.
 
 <pic/IFexpand.png, id=21, 289.83281pt x 308.65312pt>
 File: pic/IFexpand.png Graphic file (type png)
  <use pic/IFexpand.png>
-Package pdftex.def Info: pic/IFexpand.png used on input line 348.
+Package pdftex.def Info: pic/IFexpand.png used on input line 346.
 (pdftex.def)             Requested size: 221.87622pt x 236.28369pt.
 
 
@@ -418,135 +538,196 @@ c/glossary-blue.png> <./pic/glossary-arrow.png>]
 File: pic/glossary-green.png Graphic file (type png)
 
 <use pic/glossary-green.png>
-Package pdftex.def Info: pic/glossary-green.png used on input line 375.
+Package pdftex.def Info: pic/glossary-green.png used on input line 373.
 (pdftex.def)             Requested size: 28.6068pt x 9.0337pt.
 
 <pic/glossary-leaf.png, id=32, 36.135pt x 9.78656pt>
 File: pic/glossary-leaf.png Graphic file (type png)
 
 <use pic/glossary-leaf.png>
-Package pdftex.def Info: pic/glossary-leaf.png used on input line 381.
+Package pdftex.def Info: pic/glossary-leaf.png used on input line 379.
 (pdftex.def)             Requested size: 36.13489pt x 9.78653pt.
 File: pic/glossary-blue.png Graphic file (type png)
  <use pic/glossary-blue.png>
-Package pdftex.def Info: pic/glossary-blue.png used on input line 390.
+Package pdftex.def Info: pic/glossary-blue.png used on input line 388.
 (pdftex.def)             Requested size: 10.53932pt x 10.53932pt.
+
+
+Package caption Warning: \label without proper \caption on input line 347.
+See the caption package documentation for explanation.
+
+
+LaTeX Warning: Reference `fig:expandif' on page 4 undefined on input line 390.
 
 <pic/glossary-solidline.png, id=33, 14.30344pt x 9.78656pt>
 File: pic/glossary-solidline.png Graphic file (type png)
 
 <use pic/glossary-solidline.png>
-Package pdftex.def Info: pic/glossary-solidline.png used on input line 396.
+Package pdftex.def Info: pic/glossary-solidline.png used on input line 394.
 (pdftex.def)             Requested size: 14.30339pt x 9.78653pt.
 
 <pic/glossary-fadingline.png, id=34, 13.55063pt x 6.77531pt>
 File: pic/glossary-fadingline.png Graphic file (type png)
 
 <use pic/glossary-fadingline.png>
-Package pdftex.def Info: pic/glossary-fadingline.png used on input line 400.
+Package pdftex.def Info: pic/glossary-fadingline.png used on input line 398.
 (pdftex.def)             Requested size: 13.55058pt x 6.77528pt.
 File: pic/glossary-arrow.png Graphic file (type png)
  <use pic/glossary-arrow.png>
-Package pdftex.def Info: pic/glossary-arrow.png used on input line 405.
+Package pdftex.def Info: pic/glossary-arrow.png used on input line 403.
 (pdftex.def)             Requested size: 9.0337pt x 10.53932pt.
 
 <pic/glossary-lightblue.png, id=35, 15.05624pt x 30.86531pt>
 File: pic/glossary-lightblue.png Graphic file (type png)
 
 <use pic/glossary-lightblue.png>
-Package pdftex.def Info: pic/glossary-lightblue.png used on input line 410.
+Package pdftex.def Info: pic/glossary-lightblue.png used on input line 408.
 (pdftex.def)             Requested size: 11.29214pt x 23.14891pt.
+
+
+Package caption Warning: \label without proper \caption on input line 418.
+See the caption package documentation for explanation.
+
+
+LaTeX Warning: Reference `fig:optional' on page 4 undefined on input line 414.
 
 <pic/comparison.png, id=36, 268.75406pt x 79.04532pt>
 File: pic/comparison.png Graphic file (type png)
  <use pic/comparison.png>
-Package pdftex.def Info: pic/comparison.png used on input line 419.
+Package pdftex.def Info: pic/comparison.png used on input line 417.
 (pdftex.def)             Requested size: 237.36346pt x 69.81335pt.
 
 <pic/comparison-ss.png, id=37, 227.34938pt x 76.03406pt>
 File: pic/comparison-ss.png Graphic file (type png)
 
 <use pic/comparison-ss.png>
-Package pdftex.def Info: pic/comparison-ss.png used on input line 419.
+Package pdftex.def Info: pic/comparison-ss.png used on input line 417.
 (pdftex.def)             Requested size: 227.34882pt x 76.03386pt.
  [4 <./pic/IFexpand.png> <./pic/glossary-green.png> <./pic/glossary-leaf.png> <
 ./pic/glossary-solidline.png> <./pic/glossary-fadingline.png> <./pic/glossary-l
 ightblue.png> <./pic/comparison.png> <./pic/comparison-ss.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 435--438
+Underfull \hbox (badness 10000) in paragraph at lines 433--436
 \OT1/ptm/m/n/10 A demon-stra-tion of the tool can be found at
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 435--438
+Underfull \hbox (badness 10000) in paragraph at lines 433--436
 \OT1/ptm/m/n/10 https://github.com/DeveloperLiberationFront/Excel-Function-
  []
+
+
+Package caption Warning: \label without proper \caption on input line 576.
+See the caption package documentation for explanation.
+
+
+LaTeX Warning: Reference `"fig:longsum"' on page 5 undefined on input line 557.
+
 
 <pic/longsum.png, id=50, 1078.78032pt x 235.63031pt>
 File: pic/longsum.png Graphic file (type png)
  <use pic/longsum.png>
-Package pdftex.def Info: pic/longsum.png used on input line 577.
+Package pdftex.def Info: pic/longsum.png used on input line 575.
 (pdftex.def)             Requested size: 516.0pt x 112.70576pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 [5]
-Underfull \hbox (badness 10000) in paragraph at lines 622--622
+Underfull \hbox (badness 10000) in paragraph at lines 620--620
 [][][]\OT1/ptm/m/n/8 https://support.office.com/en-us/article/LOOKUP-function-4
 46d94af-
  []
+
+
+Package caption Warning: \label without proper \caption on input line 623.
+See the caption package documentation for explanation.
+
+
+LaTeX Warning: Reference `fig:lookupexample' on page 6 undefined on input line 
+620.
 
 <pic/lookupexample.png, id=54, 323.70938pt x 110.66344pt>
 File: pic/lookupexample.png Graphic file (type png)
 
 <use pic/lookupexample.png>
-Package pdftex.def Info: pic/lookupexample.png used on input line 624.
+Package pdftex.def Info: pic/lookupexample.png used on input line 622.
 (pdftex.def)             Requested size: 258.0pt x 88.20496pt.
 
-Overfull \hbox (6.0pt too wide) in paragraph at lines 624--625
+Overfull \hbox (6.0pt too wide) in paragraph at lines 622--623
  [][] 
  []
+
+
+Package caption Warning: \label without proper \caption on input line 623.
+See the caption package documentation for explanation.
+
+
+LaTeX Warning: Reference `fig:lookupexample' on page 6 undefined on input line 
+629.
+
+
+Package caption Warning: \label without proper \caption on input line 623.
+See the caption package documentation for explanation.
+
+
+LaTeX Warning: Reference `fig:lookupexample' on page 6 undefined on input line 
+645.
+
+
+Package caption Warning: \label without proper \caption on input line 658.
+See the caption package documentation for explanation.
+
+
+LaTeX Warning: Reference `fig:lookups' on page 6 undefined on input line 651.
+
+
+Package caption Warning: \label without proper \caption on input line 674.
+See the caption package documentation for explanation.
+
+
+LaTeX Warning: Reference `fig:vhlookups' on page 6 undefined on input line 655.
+
 
 [6 <./pic/longsum.png> <./pic/lookupexample.png>]
 <pic/lookup-2.png, id=60, 285.31593pt x 67.0003pt>
 File: pic/lookup-2.png Graphic file (type png)
  <use pic/lookup-2.png>
-Package pdftex.def Info: pic/lookup-2.png used on input line 659.
+Package pdftex.def Info: pic/lookup-2.png used on input line 657.
 (pdftex.def)             Requested size: 258.0pt x 60.58595pt.
 
 <pic/lookup-3.png, id=61, 308.65312pt x 206.27063pt>
 File: pic/lookup-3.png Graphic file (type png)
  <use pic/lookup-3.png>
-Package pdftex.def Info: pic/lookup-3.png used on input line 660.
+Package pdftex.def Info: pic/lookup-3.png used on input line 658.
 (pdftex.def)             Requested size: 258.0pt x 172.43207pt.
 
-Overfull \hbox (6.0pt too wide) in paragraph at lines 659--661
+Overfull \hbox (6.0pt too wide) in paragraph at lines 657--659
  [][] 
  []
 
 
-Overfull \hbox (6.0pt too wide) in paragraph at lines 659--661
+Overfull \hbox (6.0pt too wide) in paragraph at lines 657--659
  [] 
  []
 
 <pic/vlookup.png, id=62, 309.40594pt x 108.405pt>
 File: pic/vlookup.png Graphic file (type png)
  <use pic/vlookup.png>
-Package pdftex.def Info: pic/vlookup.png used on input line 675.
+Package pdftex.def Info: pic/vlookup.png used on input line 673.
 (pdftex.def)             Requested size: 258.0pt x 90.40288pt.
 
 <pic/hlookup.png, id=63, 307.1475pt x 93.34875pt>
 File: pic/hlookup.png Graphic file (type png)
  <use pic/hlookup.png>
-Package pdftex.def Info: pic/hlookup.png used on input line 676.
+Package pdftex.def Info: pic/hlookup.png used on input line 674.
 (pdftex.def)             Requested size: 258.0pt x 78.41667pt.
 
-Overfull \hbox (6.0pt too wide) in paragraph at lines 675--677
+Overfull \hbox (6.0pt too wide) in paragraph at lines 673--675
  [][] 
  []
 
 
-Overfull \hbox (6.0pt too wide) in paragraph at lines 675--677
+Overfull \hbox (6.0pt too wide) in paragraph at lines 673--675
  [] 
  []
 
@@ -556,16 +737,24 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 <pic/SUM.png, id=64, 76.03406pt x 207.02344pt>
 File: pic/SUM.png Graphic file (type png)
  <use pic/SUM.png>
-Package pdftex.def Info: pic/SUM.png used on input line 702.
+Package pdftex.def Info: pic/SUM.png used on input line 700.
 (pdftex.def)             Requested size: 76.03386pt x 207.02292pt.
- [7 <./pic/lookup-2.png> <./pic/lookup-3.png> <./pic/vlookup.png> <./pic/hlooku
-p.png>]
-Underfull \hbox (badness 3895) in paragraph at lines 730--740
+
+
+Package caption Warning: \label without proper \caption on input line 700.
+See the caption package documentation for explanation.
+
+
+LaTeX Warning: Reference `fig:sum' on page 7 undefined on input line 708.
+
+[7 <./pic/lookup-2.png> <./pic/lookup-3.png> <./pic/vlookup.png> <./pic/hlookup
+.png>]
+Underfull \hbox (badness 3895) in paragraph at lines 728--738
 \OT1/ptm/m/n/10 printed a list of er-rors
  []
 
 
-Underfull \hbox (badness 6204) in paragraph at lines 730--740
+Underfull \hbox (badness 6204) in paragraph at lines 728--738
 \OT1/ptm/m/n/10 sign makes no qual-i-ta-
  []
 
@@ -577,12 +766,26 @@ Missing character: There is no ™ in font ptmr7t!
 File: pic/index.png Graphic file (type png)
 
 <use pic/index.png>
-Package pdftex.def Info: pic/index.png used on input line 902.
+Package pdftex.def Info: pic/index.png used on input line 900.
 (pdftex.def)             Requested size: 258.0pt x 159.60098pt.
 
-Overfull \hbox (6.0pt too wide) in paragraph at lines 902--904
+Overfull \hbox (6.0pt too wide) in paragraph at lines 900--902
  [][] 
  []
+
+
+Package caption Warning: \label without proper \caption on input line 901.
+See the caption package documentation for explanation.
+
+
+LaTeX Warning: Reference `fig:index' on page 9 undefined on input line 907.
+
+
+Package caption Warning: \label without proper \caption on input line 901.
+See the caption package documentation for explanation.
+
+
+LaTeX Warning: Reference `fig:index' on page 9 undefined on input line 912.
 
 [9] (./paper.bbl [10 <./pic/index.png>])
 
@@ -598,22 +801,26 @@ Before submitting the final camera ready copy, remember to:
 
 [11
 
-] (./paper.aux) ) 
+] (./paper.aux)
+
+LaTeX Warning: There were undefined references.
+
+ ) 
 Here is how much of TeX's memory you used:
- 3114 strings out of 493054
- 50536 string characters out of 6138327
- 112576 words of memory out of 5000000
- 6591 multiletter control sequences out of 15000+600000
+ 5118 strings out of 493054
+ 82558 string characters out of 6138327
+ 154033 words of memory out of 5000000
+ 8557 multiletter control sequences out of 15000+600000
  39736 words of font info for 73 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 37i,8n,23p,359b,282s stack positions out of 5000i,500n,10000p,200000b,80000s
-{c:/texlive/2015/texmf-dist/fonts/enc/dvips/base/8r.enc}<c:/te
-xlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/201
-5/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb><c:/texlive/2015/texmf-di
-st/fonts/type1/urw/times/utmb8a.pfb><c:/texlive/2015/texmf-dist/fonts/type1/urw
-/times/utmbi8a.pfb><c:/texlive/2015/texmf-dist/fonts/type1/urw/times/utmr8a.pfb
-><c:/texlive/2015/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on paper.pdf (11 pages, 323409 bytes).
+ 68i,8n,98p,359b,340s stack positions out of 5000i,500n,10000p,200000b,80000s
+{c:/texlive/2015/texmf-dist/fonts/enc/dvips/base/8r.enc}<c:/texlive/2015/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/2015/texmf-dist/fo
+nts/type1/public/amsfonts/cm/cmsy7.pfb><c:/texlive/2015/texmf-dist/fonts/type1/
+urw/times/utmb8a.pfb><c:/texlive/2015/texmf-dist/fonts/type1/urw/times/utmbi8a.
+pfb><c:/texlive/2015/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><c:/texlive/20
+15/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on paper.pdf (11 pages, 332847 bytes).
 PDF statistics:
  110 PDF objects out of 1000 (max. 8388607)
  46 compressed objects within 1 object stream
