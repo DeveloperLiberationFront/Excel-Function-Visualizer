@@ -1,3 +1,5 @@
 # Excel-Function-Visualizer
 
-Repository for the ongoing project to visualize how people use and combine Excel functions. Hopefully with an online interactive demo soon.
+Repository for Perquimans, the ongoing project to visualize function combinations in Excel spreadsheets!
+
+[Video demonstration forthcoming on 26 April, 2016]
