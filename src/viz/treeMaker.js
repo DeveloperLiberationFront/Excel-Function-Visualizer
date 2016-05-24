@@ -30,7 +30,7 @@ var margin = {
     rect_col = "#519393",
     rect_hover = "#284E5E",
 
-    alternate_rect = "#69787F",
+    alternate_rect = "#B1BEC4",
 
     expand_col = "#CFE5A7",
     expand_hover = "#BBCE96",

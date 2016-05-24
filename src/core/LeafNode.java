@@ -41,6 +41,11 @@ public class LeafNode extends Node {
   public void setChildren() {
     // Nothing    
   }
+  
+  public static final Node[] NO_CHILDREN = {};
+  public Node[] getChildren() {
+    return NO_CHILDREN;
+  }
 
   @Override
   public String toString() {

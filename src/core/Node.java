@@ -9,6 +9,8 @@ public abstract class Node implements Comparable<Node> {
   public abstract void add(int ex, FormulaToken token);
 
   public abstract void setChildren();
+  
+  public abstract Node[] getChildren();
 
   /**
    * Record this type of function as being used one more time.

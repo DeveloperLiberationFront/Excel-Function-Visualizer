@@ -55,6 +55,14 @@ public class ArgumentNode extends Node {
   }
   
   @Override
+  public Node[] getChildren() {
+    if (children == null)
+      setChildren();
+    
+    return children;
+  }
+  
+  @Override
   public String toString() {
     return position + "";
   }

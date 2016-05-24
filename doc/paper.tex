@@ -172,11 +172,11 @@
 	potential to improve the current design of spreadsheets themselves and educate
 	new generations of spreadsheets users on how to work best.
 	
-	This paper contributes such a tool, \toolname, that attempts to fulfill this
+	This paper contributes such a tool, \toolnameend, that attempts to fulfill this
 	need for better exploration by building on the aforementioned spreadsheet
 	corpora. Working with spreadsheets in Excel, \toolname focuses primarily on the
 	functions, like SUM and IF and hundreds more, which are the building blocks of
-	formula and programs that determine values across a spreadsheet. The tool
+	formulae that determine values across a spreadsheet. The tool
 	creates an interactive, exploratory visualization which captures how people
 	combine these functions in a selected collection of spreadsheets, quantifying
 	the broad patterns of function nesting while also being specific enough to find
@@ -213,8 +213,8 @@
 	GyroSAT~\cite{hermans2011supporting} and Breviz~\cite{hermans2011breviz}.
 	\toolname is among the latter class, creating standalone visualizations about
 	spreadsheets instead of drawing connections inside the spreadsheet itself. In
-	contrast to Hermans' work, our work focuses on representing functions and how
-	they comprise complex formula, rather than exploring the data structures of any
+	contrast to the other visualization work, our work focuses on representing functions and how
+	they combine into complex formula, rather than exploring the data structures of any
 	particular spreadsheet.  \par
 	
 	Many other tools inspect the structure of formulae but often from the
@@ -222,12 +222,12 @@
 	code smells in object-oriented design~\cite{fowler2009refactoring}, many
 	researchers have applied similar observations to spreadsheets and have
 	cataloged classes of problematic
-	formulae~\cite{hermans2012detecting}~\cite{cunha2012towards}~\cite{asavametha2012detecting}, often accompanying them with detection tools~\cite{abreu2014smelling} and investigations into real datasets~\cite{jansen2015code}. For example, Hermans, leveraging her work with the aforementioned dataflow diagrams, has worked with assessing common inter-worksheet smells, such as feature envy and inappropriate intimacy, wherein references between worksheets (rather than cells) in a file suggest a problem~\cite{hermans2012detectinginter}. Other tools, like Badam's Excel refactoring~\cite{badame2012refactoring}, are concerned more with understanding the formula in service of changing them. However, these studies define standards of poor design and orient their searches around them. Though \toolname supports the search for bad design, as we will see, the tool itself takes a much more agnostic approach in presentation, offering examples without regard for design quality. \par
+	formulae~\cite{hermans2012detecting}~\cite{cunha2012towards}~\cite{asavametha2012detecting}, often accompanying them with detection tools~\cite{abreu2014smelling} and investigations into real datasets~\cite{jansen2015code}. For example, Hermans, leveraging her work with the aforementioned dataflow diagrams, has worked with assessing common inter-worksheet smells, such as feature envy and inappropriate intimacy, wherein references between worksheets (rather than cells) in a file suggest a problem~\cite{hermans2012detectinginter}. Other tools, like Badame's Excel refactoring~\cite{badame2012refactoring}, are concerned more with understanding the formula in service of changing them. However, these studies define standards of poor design and orient their searches around them. Though \toolname supports the search for bad design, as we will see, the tool itself takes a much more agnostic approach in presentation, offering examples without regard for design quality. \par
 	
 	Implicit in this study is an exploration of the Excel API and how people use
 	it. Previous research, such as the first study on the Enron
 	spreadsheets~\cite{hermans2015enron} or in its comparison with the EUSUS
-	corpus~\cite{jansen2015enron}, quantify how ofter users employ certain
+	corpus~\cite{jansen2015enron}, quantifies how ofter users employ certain
 	functions but not how they combine them. Researchers have applied such
 	questions to other contexts as well, such as Murphy and colleague's study into
 	how Java developers use Eclipse and what commands they use most
@@ -243,7 +243,7 @@
 	\section{Approach}
 	
 	\subsection{Design Goals} \label{goals} In visualizing the spreadsheet data, we
-	follow a few core goals for what the tool should accomplish. Furthermore, with
+	set out a few core goals for what the tool should accomplish. Furthermore, with
 	these goals, we also considered the likely challenges of achieving those goals
 	and particular outcomes which we considered beyond the scope of the research.
 	We present both sides of these goals below:
@@ -268,7 +268,7 @@
 		nesting, of the dataset it conveys.
 		
 		\item [!2] \textbf{Do not overwhelm with numbers.} For popular functions
-		especially, we anticipated that we'd have to show a lot of related data at
+		especially, we anticipate that we'll have to show a lot of related data at
 		once. Though everything should be accessible in accordance with Goal 1, we
 		should design in a way that reduces noise.
 		
@@ -321,11 +321,11 @@
 	within its parent function. From this, we can confirm that, of the times it was
 	observed, IF can have at most three arguments passed into it, which corresponds
 	with its specifications in the
-	API\footnote{https://support.office.com/en-us/article/IF-function-69aed7c9-4e8a-4755-a9bc-aa8bbff73be2}. \par
+	API. \par
 	
 	Knowing that it is the first argument which contains the conditionals, we click
-	on the square labeled ``1" to explore. To save space, when more than 10 unique
-	arguments were found in a position, the tool displays only the first
+	on the square labeled ``1" to explore. To save space, when the tool finds more than 10 unique
+	arguments in a position, it displays only the first
 	ten, with an option to display the rest by clicking the arrow
 	\includegraphics{glossary-arrow}.
 	
@@ -379,7 +379,7 @@
 		that was seen in the first argument.
 		
 		\item  \vspace{.25cm} \includegraphics{glossary-solidline} - \textbf{Solid
-			lines} represent a function's acceptance of its parameters. As such, they
+			lines} represent a function's list of parameters. As such, they
 		connect the function nodes to argument nodes.
 		
 		\item  \vspace{.25cm} \includegraphics{glossary-fadingline} - \textbf{Fading
@@ -396,8 +396,7 @@
 		\textbf{Optional argument trees} are variations of trees that show only
 		formulae with a specific number of arguments. For example, the function AND
 		can take any number of arguments, up to 255. By default, the tree shows data
-		from AND functions with any number of argument, but these trees, marked with a
-		darker blue color, can show how AND was used when \textit{only} two arguments
+		from AND functions with any number of arguments, but these trees, which have argument nodes of a lighter blue color, can show how AND was used when \textit{only} two arguments
 		were passed into it, or \textit{only} four, and so on. See
 		Figure~\ref{fig:optional} for how the data between tree types differs.
 	\end{itemize}
@@ -422,7 +421,7 @@
 		presentation code, implemented in Javascript with much help from the
 		visualization library D3\footnote{https://d3js.org/}. We chose D3 primarily
 		for its accessibility: given the JSON, the visualization can be simply
-		embedded into a webpage accessible through a browser. \end{itemize} The code and a
+		embedded into a webpage accessible through a browser. \end{itemize} A
 	demonstration of \toolname can be found at
 	https://github.com/DeveloperLiberationFront/Excel-Function-Visualizer.
 	
@@ -524,7 +523,7 @@
 	
 	However, because \toolname makes no judgments beforehand about which designs to
 	emphasize as good or bad, the tool can be used to find strange or suboptimal
-	designs that exist outside these obvious categories. Consider the second
+	designs that exist outside these readily visible categories. Consider the second
 	argument of the ``='' operator, already shown expanded in
 	Figure~\ref{fig:fullpic}: among the top five argument types for the position in
 	an IF function were boolean values. This corresponds to designs in which
@@ -653,16 +652,15 @@
 	errors, prefixed with \#s, also appear in the tree, which P4 said could be
 	useful for tracking these problems if marked well.
 	
-	\begin{wrapfigure}{O}{.25\textwidth}
-		\centering \includegraphics[width=.20\textwidth]{SUM}  \caption{An abundance of parameters in SUM.
-			Encountering this, P4 remarked, "Woah."} \label{fig:sum} \end{wrapfigure}
+	\begin{wrapfigure}{L}{.25\textwidth}
+		\centering \includegraphics[width=.20\textwidth]{SUM}  \caption{An abundance of parameters in SUM, which was a commonly noted smell in the user study} \label{fig:sum} \end{wrapfigure}
 	
 	Additionally, because the files in the Enron set had name with the author as a
 	prefix, P2 commented that they could use the tool in a company setting to
 	follow up with repeat offenders. For instance, they first encountered a
 	particular author's name when investigating an AVERAGE function with 18
 	distinct arguments for which our participant could not discern any logical
-	order, even after opening the source spreadsheet; the same name popped up again
+	order even after opening the source spreadsheet; the same name popped up again
 	as P2 looked at a RATE function relying on several hard-coded values. P2 said
 	that, if they were a manager or project leader, this recurrence was a sign to
 	talk to the author personally and figure out why these problems were there, as
@@ -805,7 +803,7 @@
 	exhibited the common errors. A beginner might not know the difference.
 	Robillard and Deline, in their study, remarked that good API examples should
 	demonstrate best practices, but, right now, we have no way to assure this with
-	\toolname. As with the problems in achieving unbiased exploration, correcting
+	\toolnameend. As with the problems in achieving unbiased exploration, correcting
 	for this danger may entail a reevaluation of design goals.
 	
 	\section{Future Work} For these user and case studies, we relied solely on
@@ -858,7 +856,7 @@
 	spreadsheet practices as is: the common along with the anomalous, and the
 	well-designed along with the odorous. As seen in the user and case studies,
 	this allows it to take on several potential roles at once, such as an
-	environment for search out bad code smells as well as a repository for examples
+	environment for investigating code smells as well as a repository for examples
 	for learning new techniques. \par
 	
 	The design of the tool still has much room for improvement. Though the

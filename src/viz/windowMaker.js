@@ -33,14 +33,21 @@ function newWindow(d) {
 
     var table = d3.select(win.document.body)
         .append("table")
-        .style("width", "75%");
+        .style("width", "75%")
+        .style("border", "1px solid black");
 
-    var cols = table.append("colgroup");
-    cols.append("col").attr("span", "1").style("width", "60%");
-    cols.append("col").attr("span", "1").style("width", "30%");
-    cols.append("col").attr("span", "1").style("width", "10%");
+    //var cols = table.append("colgroup");
+    //cols.append("col").attr("span", "1").style("width", "60%");
+    //cols.append("col").attr("span", "1").style("width", "30%");
+    //cols.append("col").attr("span", "1").style("width", "10%");
 
-    var rows = table.selectAll("tr")
+    var headers = table.append("thead").append("tr");
+    headers.style("border-bottom-style", "1px solid black");
+    headers.append("th").html("Formula");
+    headers.append("th").html("File");
+    headers.append("th").html("Sheet and Cell");
+
+    var rows = table.append("tbody").selectAll("tr")
         .data(childrenExamples)
         .enter()
         .append("tr");
@@ -49,7 +56,7 @@ function newWindow(d) {
         var row = d3.select(this);
 
         if (i % 2 == 0)
-            row.attr("color", "#eee");
+            row.style("background-color", "#ddd");
 
         d3.json("examples.php?id=" + d, function(error, data) {
             var formula, file, location;
@@ -64,9 +71,9 @@ function newWindow(d) {
                 file = "<a href=\"localhost:8000/sheets/ENRON/" + file + "#" + location + "\">" + file + "</a>";
             }
 
-            row.append("td").html(formula);
-            row.append("td").html(file);
-            row.append("td").html(location);
+            row.append("td").style("width", "600px").style("word-wrap", "break-word").style("padding", "5px").html(formula.replace(/,/g, ", "));
+            row.append("td").style("width", "200px").style("word-wrap", "break-word").style("padding", "5px").html(file);
+            row.append("td").style("width", "100px").style("word-wrap", "break-word").style("padding", "5px").html(location);
         });
     });
 }

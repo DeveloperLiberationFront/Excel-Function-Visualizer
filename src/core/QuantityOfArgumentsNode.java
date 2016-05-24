@@ -58,4 +58,11 @@ public class QuantityOfArgumentsNode extends Node {
   public String toString() {
     return quantity + "";
   }
+
+  @Override
+  public Node[] getChildren() {
+    // TODO Not really needed for the frequency argument...but had
+    //      to add for interface consistency.
+    return children;
+  }
 }

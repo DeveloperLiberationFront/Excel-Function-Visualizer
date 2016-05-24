@@ -24,6 +24,8 @@ public class FunctionNode extends Node {
   
   private int shortestExampleLen = Integer.MAX_VALUE;
   
+  //Ensures that it's not a unary/binary operator.
+  //TODO: + can be either unary or binary...
   private static Matcher nonvariadicFuncs = Pattern.compile("[\\+\\-\\*/\\^&]").matcher("");
     
   /**
@@ -125,16 +127,20 @@ public class FunctionNode extends Node {
     return quantityNode;
   }
   
+  /**
+   * When this function is called, the array "children" should be set to null, while "all_quantities"
+   * is the map used to keep track of the children. We just want to convert the map to the array.
+   * 
+   * If this function also has specific quantities, we need to set the children for those nodes too.
+   * TODO: There's got to be a better way at representing/explaining optional arguments...
+   */
   @Override
   public void setChildren() {
-    //TODO: Other kinds of children too!
     children = all_quantities.values().stream().toArray(ArgumentNode[]::new);
     
     for (ArgumentNode arg : all_quantities.values())
       arg.setChildren();
     
-    //Map<Integer, QuantityOfArgumentsNode> sortedQuantities = new LinkedHashMap<Integer, QuantityOfArgumentsNode>();
-    //Integer[] vals = specific_quantities.keySet().stream().toArray(Integer[]::new);
     if (specific_quantities != null) {
       if (specific_quantities.size() > 1)
         for (QuantityOfArgumentsNode node : specific_quantities.values())
@@ -144,15 +150,17 @@ public class FunctionNode extends Node {
     }
   }
   
+  public Node[] getChildren() {
+    if (children == null) 
+      setChildren();
+    
+    return children;
+  }
+  
   public String getFunction() {
     return function;
   }
   
-  /**
-   * Using {@link #toTreeString(StringBuilder, int)}, this returns a string
-   * which conveys the hierarchical nature of the formulas and displays the
-   * frequency of each kind of argument.
-   */
   @Override
   public String toString() {
     return function; 
