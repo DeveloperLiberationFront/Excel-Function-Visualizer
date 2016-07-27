@@ -23,6 +23,7 @@ import org.apache.poi.xssf.usermodel.XSSFEvaluationWorkbook;
 import utils.POIUtils;
 
 public class Parser {
+  private static FormulaToken.Mode mode = FormulaToken.Mode.NO_CHANGE;
   public static final XSSFEvaluationWorkbook BLANK 
       = XSSFEvaluationWorkbook.create(POIUtils.getWorkbook("./src/utils/sum.xlsx"));
 
@@ -116,7 +117,7 @@ public class Parser {
       } else if (ptg instanceof AttrPtg) {
         form = parseAttr(ptg, formula);
       } else {              
-        form = new FormulaToken(ptg);
+        form = new FormulaToken(ptg, mode);
       }
       
       if (form == null) { 
@@ -181,7 +182,7 @@ public class Parser {
       form = parseFormula(nameTokens, render, sheet, cell);
     } else {
       OperandPtg operand = (OperandPtg) ptg;
-      form = new FormulaToken(operand, cell);
+      form = new FormulaToken(operand, cell, mode);
     }
     
     return form;
@@ -209,14 +210,14 @@ public class Parser {
   }
   
   public static void dontReplace() {
-    FormulaToken.dontReplace();
+    mode = FormulaToken.Mode.NO_CHANGE;
   }
   
   public static void goRelative() {
-    FormulaToken.goRelative();
+    mode = FormulaToken.Mode.R1C1;
   }
   
   public static void replace() {
-    FormulaToken.replace();
+    mode = FormulaToken.Mode.REPLACE;
   }
 }

@@ -15,7 +15,7 @@ import org.apache.poi.ss.formula.ptg.StringPtg;
 import org.apache.poi.ss.util.CellReference;
 
 public class FormulaToken {
-  protected static Mode mode = Mode.REPLACE;
+  protected Mode representationMode;
   protected String tokenStr;
   protected Ptg token;
   private int origLen = Integer.MAX_VALUE;
@@ -30,23 +30,7 @@ public class FormulaToken {
   public FormulaToken() {
     this.tokenStr = "";
     this.token = null;
-  }
-  
-  /**
-   * Names in a spreadsheet require the spreadsheet context in order to parse correctly.
-   * @param token   The Name token.
-   * @param render  The contain spreadsheet.
-   * @param sheet 
-   */
-  public FormulaToken(NamePtg token, FormulaRenderingWorkbook render, int sheet) {
-    this.token = token;
-    this.tokenStr = token.toFormulaString(render).trim();
-    
-    //TODO: Make unique name class?
-    EvaluationName eval = ((FormulaParsingWorkbook) render).getName(tokenStr, sheet);
-    Ptg[] toks = eval.getNameDefinition();
-    FormulaToken expanded = Parser.parseFormula(toks, render, sheet);
-    this.tokenStr = expanded.toString();
+    this.representationMode = Mode.NO_CHANGE;
   }
   
   /**
@@ -55,34 +39,27 @@ public class FormulaToken {
    * @param tok   The discrete token in the formula, expected to not be an operation
    *              token and thus have no arguments.
    */
-  public FormulaToken(Ptg tok) {
-    this(tok, new CellReference(0,0));
+  public FormulaToken(Ptg tok, Mode mode) {
+    this(tok, new CellReference(0,0), mode);
   }
 
-  public FormulaToken(Ptg tok, CellReference cellReference) {
+  public FormulaToken(Ptg tok, CellReference cellReference, Mode mode) {
     this.token = tok;
+    this.representationMode = mode;
     
     switch (mode) {
       case NO_CHANGE:
-        this.tokenStr = tok.toFormulaString().trim();   break;
+        this.tokenStr = tok.toFormulaString().trim();   
+        break;
       case REPLACE:
-        this.tokenStr = getTypeString(tok);               break;
+        this.tokenStr = getTypeString(tok);              
+        break;
       case R1C1:
         this.tokenStr = toR1C1String(tok, cellReference);
+        break;
+      default:
         break;      
     }
-  }
-
-  public static void dontReplace() {
-    mode = Mode.NO_CHANGE;
-  }
-  
-  public static void goRelative() {
-    mode = Mode.R1C1;
-  }
-  
-  public static void replace() {
-    mode = Mode.REPLACE;
   }
 
   /**
@@ -96,19 +73,19 @@ public class FormulaToken {
   private String getTypeString(Ptg tok) {
     String type = "";
     
-    if (tok instanceof RefPtgBase)                                //A1
+    if (tok instanceof RefPtgBase) {
       type = "~REF~";
-    else if (tok instanceof AreaPtgBase)                          //A1:A10
+    } else if (tok instanceof AreaPtgBase) {
       type = "~RANGE~";
-    else if (tok instanceof IntPtg || tok instanceof NumberPtg)   //1 or 1.0
+    } else if (tok instanceof IntPtg || tok instanceof NumberPtg) {
       type = "~NUM~";
-    else if (tok instanceof StringPtg)                            //"str"
+    } else if (tok instanceof StringPtg) {
       type = "~STR~";
-    else if (tok instanceof BoolPtg)                              //TRUE
+    } else if (tok instanceof BoolPtg) {
       type = "~BOOL~";
-    else if (tok instanceof ErrPtg)
+    } else if (tok instanceof ErrPtg) {
       type = "~ERROR~";
-    else {                                                        
+    } else {                                                        
       type = "~OTHER~"; //TODO
       System.out.println(tok.toFormulaString() + " " + tok.getClass());
     }
@@ -117,49 +94,52 @@ public class FormulaToken {
   }
   
   private String toR1C1String(Ptg tok, CellReference cell) {
-    String original = tok.toFormulaString(),
-           relative = "";
+    String original = tok.toFormulaString();
+    String relative = "";
     
     if (tok instanceof AreaPtgBase) {
       String[] limits = original.split(":");
       if (limits.length > 2) {
-        try { limits = findHalves(limits, ':'); } 
-        catch (UnsupportedOperationException e) {
-          throw new UnsupportedOperationException(e.getMessage() + ": " + original);
+        try { 
+          limits = findHalves(limits, ':'); 
+        } catch (UnsupportedOperationException ex) {
+          throw new UnsupportedOperationException(ex.getMessage() + ": " + original);
         }
-      } else if (limits.length == 1) //TODO
-        throw new UnsupportedOperationException("Not a proper area (no colon): " + original);   
+      } else if (limits.length == 1) {
+        throw new UnsupportedOperationException("Not a proper area (no colon): " + original);
+      }   
       
-      String first = limits[0], last = limits[1];
+      String first = limits[0];
+      String last = limits[1];
       
       AreaPtgBase area = (AreaPtgBase) tok;
-      int firstRow = area.getFirstRow(),
-          firstCol = area.getFirstColumn(); 
-      boolean firstRowRel = area.isFirstRowRelative(),
-              firstColRel = area.isFirstColRelative();
-      String firstRef = convertToR1C1(firstRow, firstRowRel, firstCol, firstColRel, cell),
-             newFirst = (first.contains("!") ? first.substring(0, first.lastIndexOf('!') + 1) : "")
+      int firstRow = area.getFirstRow();
+      int firstCol = area.getFirstColumn(); 
+      boolean firstRowRel = area.isFirstRowRelative();
+      boolean firstColRel = area.isFirstColRelative();
+      String firstRef = convertToR1C1(firstRow, firstRowRel, firstCol, firstColRel, cell);
+      String newFirst = (first.contains("!") ? first.substring(0, first.lastIndexOf('!') + 1) : "")
                          + firstRef;    
       
-      int lastRow = area.getLastRow(),
-          lastCol = area.getLastColumn(); 
-      boolean lastRowRel = area.isLastRowRelative(),
-              lastColRel = area.isLastColRelative();
-      String lastRef = convertToR1C1(lastRow, lastRowRel, lastCol, lastColRel, cell),
-             newLast = (last.contains("!") ? last.substring(0, last.lastIndexOf('!') + 1) : "")
+      int lastRow = area.getLastRow();
+      int lastCol = area.getLastColumn(); 
+      boolean lastRowRel = area.isLastRowRelative();
+      boolean lastColRel = area.isLastColRelative();
+      String lastRef = convertToR1C1(lastRow, lastRowRel, lastCol, lastColRel, cell);
+      String newLast = (last.contains("!") ? last.substring(0, last.lastIndexOf('!') + 1) : "")
                        + lastRef;
       
       relative = newFirst + ":" + newLast;      
     } else if (tok instanceof RefPtgBase) {     
       RefPtgBase ref = (RefPtgBase) tok;
-      int refRow = ref.getRow(),
-          refCol = ref.getColumn(); 
-      boolean rowRel = ref.isRowRelative(),
-              colRel = ref.isColRelative();
+      int refRow = ref.getRow();
+      int refCol = ref.getColumn(); 
+      boolean rowRel = ref.isRowRelative();
+      boolean colRel = ref.isColRelative();
       String newRef = convertToR1C1(refRow, rowRel, refCol, colRel, cell);
       
-      relative = (original.contains("!") ? original.substring(0, original.lastIndexOf('!') + 1) : "")
-                  + newRef;
+      relative = (original.contains("!") ? original.substring(0, original.lastIndexOf('!') 
+          + 1) : "") + newRef;
     } else {
       relative = tok.toFormulaString();
     }        
@@ -190,8 +170,7 @@ public class FormulaToken {
     String currentHalf = "";
     int currentHalfIndex = 0;
     
-    int i;
-    for (i = 0; i < limits.length; ++i) {
+    for (int i = 0; i < limits.length; ++i) {
       currentHalf += limits[i];
       //TODO: What if there are suddenly more than 2? What if it doesn't use quotes?
       if (countChar(currentHalf, "'") % 2 == 0) {
@@ -202,13 +181,15 @@ public class FormulaToken {
         currentHalf += split;
       }
       
-      if (currentHalfIndex == 2 && i < limits.length - 1)
+      if (currentHalfIndex == 2 && i < limits.length - 1) {
         throw new UnsupportedOperationException("Unexpected formula construction");
+      }
     }    
     
     //If there were unused segments...
-    if (currentHalfIndex < 2)
+    if (currentHalfIndex < 2) {
       throw new UnsupportedOperationException("Unexpected formula construction");
+    }
     
     return halves;
   }
@@ -222,7 +203,8 @@ public class FormulaToken {
    * @param cell      Originating cell, used for current coordinates.
    * @return          The R1C1 representation of the reference cell from the starting cell.
    */
-  private String convertToR1C1(int row, boolean isRowRel, int col, boolean isColRel, CellReference cell) {
+  private String convertToR1C1(int row, boolean isRowRel, int col, 
+      boolean isColRel, CellReference cell) {
     int cellRow = cell.getRow(), cellCol = cell.getCol();
     String formulaCol = isColRel ? "C[" + (col - cellCol) + "]" : "C" + (col+1);
     String formulaRow = isRowRel ? "R[" + (row - cellRow) + "]" : "R" + (row+1);
@@ -234,8 +216,10 @@ public class FormulaToken {
    * @return
    */
   public String wrap() {
-    if (mode != Mode.REPLACE)
-      this.tokenStr = "(" + tokenStr + ")";   //Don't want to wrap a single leaf node for viz purposes.
+    if (representationMode != Mode.REPLACE) {
+      //Don't want to wrap a single leaf node for viz purposes.
+      this.tokenStr = "(" + tokenStr + ")";
+    }   
     return tokenStr;
   }
   
@@ -317,8 +301,9 @@ public class FormulaToken {
    */
   @Override
   public boolean equals(Object o) {
-    if (o == this)
+    if (o == this) {
       return true;
+    }
     
     if (o instanceof FunctionNode) {
       FunctionNode fsn = (FunctionNode) o;
@@ -326,7 +311,8 @@ public class FormulaToken {
     } else if (o instanceof FormulaToken) {
       FormulaToken ft = (FormulaToken) o;
       return toSimpleString().equals(ft.toSimpleString());
-        //Because simple string differs between FormulaToken and OperationToken, call toSimpleString() instead of tokenStr.
+      //Because simple string differs between FormulaToken and OperationToken, 
+      //call toSimpleString() instead of tokenStr.
     } 
     
     return false;
