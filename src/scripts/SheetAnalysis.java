@@ -18,6 +18,12 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import core.FormulaToken;
 import core.Parser;
 
+/**
+ * End-to-end pipeline for sending spreadsheets to JSON without need for
+ * a database.
+ * @author Justin A. Middleton 
+ * @since 27 July 2016
+ */
 public class SheetAnalysis {
   private static final String INPUT_DIRECTORY = "./sheets/ENRON/";
   private static final String OUTPUT_DIRECTORY = "./src/viz/json";
@@ -51,11 +57,13 @@ public class SheetAnalysis {
       return;
     }
     
-    Orchard trees = new Orchard();
-    Queue<File> directoriesToAnalyze = new ArrayDeque<File>();    
-    directoriesToAnalyze.add(sheetDirectory);
-    
+    Orchard trees = new Orchard();           
+    ExceptionCatcher catcher = new ExceptionCatcher();
+    Queue<File> directoriesToAnalyze = new ArrayDeque<File>();  
+    directoriesToAnalyze.add(sheetDirectory);                   
+                                                                
     while (directoriesToAnalyze.isEmpty()) {
+      
       for (File file : sheetDirectory.listFiles()) {
         if (file.getName().endsWith(".ignore")) {
           continue;
@@ -64,34 +72,46 @@ public class SheetAnalysis {
           continue;
         }
         
-        XSSFWorkbook workbook = null;
+        XSSFWorkbook workbook;
 
         try {
           workbook = new XSSFWorkbook(OPCPackage.open(file, PackageAccess.READ));
         } catch (IOException | InvalidFormatException ex) {
-          // TODO Auto-generated catch block
+          catcher.addFile(file.getName(), ex);
           continue;
         }
         
         FormulaParsingWorkbook parse = XSSFEvaluationWorkbook.create(workbook);
         
         //TODO: R1C1 Correction
-        //TODO: Error handling for parseFormula
         
         for (int i = 0; i < workbook.getNumberOfSheets(); ++i) {
           Sheet sheet = workbook.getSheetAt(i);
           for (Row row : sheet) {
             for (Cell cell : row) {
               if (cell.getCellType() == Cell.CELL_TYPE_FORMULA) {
-                FormulaToken formula = Parser.parseFormula(cell.getCellFormula(), parse, i);;
-                trees.add(formula);
+                FormulaToken formula; 
+                String formulaStr = cell.getCellFormula();
+                
+                try {
+                  formula = Parser.parseFormula(formulaStr, parse, i);
+                } catch (Exception ex) {
+                  catcher.addFormula(formulaStr, ex);
+                  continue;
+                }
+                
+                trees.add(formula);              
               }
             }
           }
         }
-      }
-    }
+        
+      } //end for (File file : sheetDirectory.listFiles())
+      
+    } // end while (directoriesToAnalyze.isEmpty())
     
+    catcher.flushFiles();
+    catcher.flushFormulae();
     trees.flush(OUTPUT_DIRECTORY);
   }
 }

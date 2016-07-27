@@ -23,13 +23,15 @@ import org.apache.poi.xssf.usermodel.XSSFEvaluationWorkbook;
 import utils.POIUtils;
 
 public class Parser {
-  public static final XSSFEvaluationWorkbook BLANK = XSSFEvaluationWorkbook.create(POIUtils.getWorkbook("./src/utils/sum.xlsx"));
+  public static final XSSFEvaluationWorkbook BLANK 
+      = XSSFEvaluationWorkbook.create(POIUtils.getWorkbook("./src/utils/sum.xlsx"));
 
   /**
    * Break down a formula into individual tokens and wrap them up in nested FormulaTokens.
    * @param formula                         Formula to parse.
    * @return                                A FormulaToken which represents the top-level function
-   *                                          of the formula and contains all interior FormulaTokens.
+   *                                          of the formula and contains all interior 
+   *                                          FormulaTokens.
    */
   public static FormulaToken parseFormula(String formula) 
       throws FormulaParseException, UnsupportedOperationException {
@@ -57,20 +59,23 @@ public class Parser {
    * @param parse                           The workbook in which the formula was found.
    * @param cell TODO
    * @return                                A FormulaToken which represents the top-level function
-   *                                          of the formula and contains all interior FormulaTokens.
+   *                                          of the formula and contains all interior 
+   *                                          FormulaTokens.
    * @throws FormulaParseException          If Apache POI can't properly parse the formula.
    *                                          (Like if there's a Name used that it can't resolve)
    * @throws UnsupportedOperationException  If the formula is blank or has quotes after exclamation
    *                                          ( !' ), which I saw in a few and it couldn't parse.
    */
-  public static FormulaToken parseFormula(String formula, FormulaParsingWorkbook parse, int sheet, CellReference cell) 
+  public static FormulaToken parseFormula(String formula, FormulaParsingWorkbook parse, 
+      int sheet, CellReference cell) 
       throws FormulaParseException, UnsupportedOperationException {
     Ptg[] tokens = null;
     
-    if (formula.equals(""))
+    if (formula.equals("")) {
       throw new UnsupportedOperationException("Formula is an empty string.");
-    else if (formula.contains("!'"))
+    } else if (formula.contains("!'")) {
       throw new UnsupportedOperationException("Formula contains illegal single quotes.");
+    }
     
     tokens = FormulaParser.parse(formula, parse, FormulaType.CELL, sheet);
     
@@ -85,19 +90,23 @@ public class Parser {
    * @param tokens  The Ptg tokens from POI.
    * @param render  The rendering workbook which contained the formula.
    */
-  public static FormulaToken parseFormula(Ptg[] tokens, FormulaRenderingWorkbook render, int sheet) {
+  public static FormulaToken parseFormula(Ptg[] tokens, FormulaRenderingWorkbook render, 
+      int sheet) throws FormulaParseException, UnsupportedOperationException {
     return parseFormula(tokens, render, sheet, new CellReference(0, 0));
   }
   
-  public static FormulaToken parseFormula(Ptg[] tokens, FormulaRenderingWorkbook render, int sheet, CellReference cell) {
+  public static FormulaToken parseFormula(Ptg[] tokens, FormulaRenderingWorkbook render, 
+      int sheet, CellReference cell) 
+      throws FormulaParseException, UnsupportedOperationException {
     Stack<FormulaToken> formula = new Stack<FormulaToken>();
     
     for (Ptg ptg : tokens) {
       FormulaToken form = null;
       
       if (ptg instanceof MemFuncPtg || ptg instanceof MemAreaPtg) {
-        continue;   //As per test_16_outermostmissing, MemFuncPtg act as tokens but have no 
-                    //representation in the function, pushing the tokens in the stack off by one.
+        //As per test_16_outermostmissing, MemFuncPtg act as tokens but have no 
+        //representation in the function, pushing the tokens in the stack off by one.
+        continue;   
       } else if (ptg instanceof OperationPtg) {        
         form = operationParse(ptg, formula);       
       } else if (ptg instanceof OperandPtg) {           
@@ -123,7 +132,7 @@ public class Parser {
   }
 
   /**
-   * SUM with one area argument counts as AttrPtg instead of FuncPtg so yeah!
+   * SUM with one area argument counts as AttrPtg instead of FuncPtg.
    * @param ptg
    * @param formula
    * @return
