@@ -22,6 +22,14 @@ import org.apache.poi.xssf.usermodel.XSSFEvaluationWorkbook;
 
 import utils.POIUtils;
 
+/**
+ * My own parser for turning the formulas as strings from workbooks into a recursive class
+ * that captures all of the nesting and can be converted into any other representation I
+ * want, such as JSON. Uses the Apache POI parser to turn strings into tokens, but this
+ * does the rest of the work from there.
+ * @author Justin A. Middleton
+ * @since 28 July 2016
+ */
 public class Parser {
   private static FormulaToken.Mode mode = FormulaToken.Mode.NO_CHANGE;
   public static final XSSFEvaluationWorkbook BLANK 
@@ -58,7 +66,7 @@ public class Parser {
    * Break down a formula into individual tokens and wrap them up in nested FormulaTokens.
    * @param formula                         Formula to parse.
    * @param parse                           The workbook in which the formula was found.
-   * @param cell TODO
+   * @param cell                            The reference to the cell for the formula.
    * @return                                A FormulaToken which represents the top-level function
    *                                          of the formula and contains all interior 
    *                                          FormulaTokens.
@@ -96,6 +104,18 @@ public class Parser {
     return parseFormula(tokens, render, sheet, new CellReference(0, 0));
   }
   
+  /**
+   * The primary function for parsing formulae. Unlike some of the previous function, this
+   * accepts the formula as an array of Ptg (from the POI parser) rather than as a string. It
+   * then turns these Ptgs into my own FormulaToken class.
+   * @param tokens  Array of tokens which represent every discrete part of the formula.
+   * @param render  The workbook that contains the formula.
+   * @param sheet   The number of the workbook sheet with the formula.
+   * @param cell    The cell reference of the formula.
+   * @return        A formula token which contains the structure of the formula.
+   * @throws FormulaParseException
+   * @throws UnsupportedOperationException
+   */
   public static FormulaToken parseFormula(Ptg[] tokens, FormulaRenderingWorkbook render, 
       int sheet, CellReference cell) 
       throws FormulaParseException, UnsupportedOperationException {
@@ -134,9 +154,10 @@ public class Parser {
 
   /**
    * SUM with one area argument counts as AttrPtg instead of FuncPtg.
-   * @param ptg
-   * @param formula
-   * @return
+   * @param ptg       The discrete part of a formula -- in this case, expected to be a SUM
+   *                  function with only one argument.
+   * @param formula   The stack of processed formula tokens so far.
+   * @return          The FormulaToken for SUM containing its single argument.
    */
   private static FormulaToken parseAttr(Ptg ptg, Stack<FormulaToken> formula) {
     AttrPtg attr = (AttrPtg) ptg;
@@ -169,10 +190,11 @@ public class Parser {
    * Wrap operands in FormulaTokens. If the operand is a name, pass in the rendering workbook too.
    * @param ptg     The operand token.
    * @param render  The rendering workbook in which the formula was found.
-   * @param cell 
+   * @param cell    The workbook cell which contains the formula.
    * @return        The new formula token.
    */
-  private static FormulaToken operandParse(Ptg ptg, FormulaRenderingWorkbook render, int sheet, CellReference cell) {
+  private static FormulaToken operandParse(Ptg ptg, FormulaRenderingWorkbook render, 
+      int sheet, CellReference cell) {
     FormulaToken form;
     
     //Name tokens need renderer, others don't.

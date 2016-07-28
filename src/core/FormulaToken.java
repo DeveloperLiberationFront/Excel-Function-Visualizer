@@ -15,6 +15,8 @@ import org.apache.poi.ss.formula.ptg.StringPtg;
 import org.apache.poi.ss.util.CellReference;
 
 public class FormulaToken {
+  //TODO: See if I can remove representationMode -- the wrap() function is the
+  //only thing that uses it.
   protected Mode representationMode;
   protected String tokenStr;
   protected Ptg token;
@@ -86,7 +88,7 @@ public class FormulaToken {
     } else if (tok instanceof ErrPtg) {
       type = "~ERROR~";
     } else {                                                        
-      type = "~OTHER~"; //TODO
+      type = "~OTHER~"; //TODO Be more specific?
       System.out.println(tok.toFormulaString() + " " + tok.getClass());
     }
     
@@ -296,7 +298,8 @@ public class FormulaToken {
   }
   
   /**
-   * Equality based on function name equality. Can be compared to either FormulaToken or FormulaStatsNode.
+   * Equality based on function name equality. Can be compared to either 
+   * FormulaToken or FormulaStatsNode.
    * TODO: Is this double equality dangerous?
    */
   @Override
