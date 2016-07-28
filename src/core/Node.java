@@ -30,7 +30,7 @@ public abstract class Node implements Comparable<Node> {
    * Things with higher frequency should be prioritized higher.
    */
   @Override
-  public int compareTo(Node o) {
-    return o.getFrequency() - this.frequency;
+  public int compareTo(Node ob) {
+    return ob.getFrequency() - this.frequency;
   }
 }

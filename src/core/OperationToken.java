@@ -9,14 +9,14 @@ import org.apache.poi.ss.formula.ptg.OperationPtg;
 
 public class OperationToken extends FormulaToken {
   private FormulaToken[] children;          //The arguments of this function.
-  private String op;                        //A string representation of this token without
-                                            //  any information about arguments.
+  //A string representation of this token without any information about arguments.
+  private String op;           
+  
   /**
    * An Operation token represents a function in the overall formula which itself takes 
    * other tokens as arguments. For example, IF() can take 2 or 3 arguments: so `tok`
    * is the Ptg token that refers to IF() individually, and `args` is an array of the 
-   * tokens that serve as the 2 or 3 arguments.
-   * 
+   * tokens that serve as the 2 or 3 arguments. 
    * Arithmetical operations, like + - * /, also count as operations which take arguments.
    * 
    * @param tok   Spreadsheet operation.
@@ -24,8 +24,9 @@ public class OperationToken extends FormulaToken {
    */
   public OperationToken(OperationPtg tok, FormulaToken[] args) {
     int len = args.length;
-    if (tok.getNumberOfOperands() != len)
-      throw new UnsupportedOperationException("OperationToken: not enough arguments to the operation.");   
+    if (tok.getNumberOfOperands() != len) {
+      throw new UnsupportedOperationException("OperationToken: not enough arguments to the operation.");
+    }   
     
     this.token = tok;
     
@@ -44,8 +45,9 @@ public class OperationToken extends FormulaToken {
    * @param args    Individual FormulaToken arguments.
    */
   public OperationToken(AttrPtg tok, FormulaToken... args) {
-    if (args.length != 1)
-      throw new UnsupportedOperationException("OperationToken: not enough arguments to the operation."); 
+    if (args.length != 1) {
+      throw new UnsupportedOperationException("OperationToken: not enough arguments to the operation.");
+    } 
     
     this.token = tok;  
     this.tokenStr = "SUM(" + args[0] + ")";
@@ -60,17 +62,20 @@ public class OperationToken extends FormulaToken {
    */
   private void addChildren(int len, FormulaToken[] args) {
     children = new FormulaToken[len];
-    for (int i = 0; i < len; ++i)
+    for (int i = 0; i < len; ++i) {
       children[i] = args[i];
+    }
   }
   
+  private static final Matcher NULL = Pattern.compile("null,?").matcher("");  
 
   /**
    * Extracts the operator from the string. Uses an array of blank Strings so all operands
    * are represented as string "null" and thus easier to manipulate.
    * @param func    The operation token.
    * @param len     Number of arguments the argument expects.
-   * @return        The simplest string representation of this operation, either just FOO() or the binary symbol 
+   * @return        The simplest string representation of this operation, either just FOO() 
+   *                or the binary symbol 
    *                (+-/*& etc)
    */
   private String extractOp(OperationPtg func, int len) {
@@ -79,7 +84,6 @@ public class OperationToken extends FormulaToken {
     funcOp = NULL.reset(funcOp).replaceAll("");    
     return funcOp;    
   }
-  private static final Matcher NULL = Pattern.compile("null,?").matcher("");
 
   public String wrap() {
     this.tokenStr = "(" + tokenStr + ")";
@@ -104,7 +108,8 @@ public class OperationToken extends FormulaToken {
   
   /**
    * Builds a hierarchical string of this node and it's children.
-   * @param sb    The stringbuilder passed on from a higher level which contains the whole string so far.
+   * @param sb    The stringbuilder passed on from a higher level which contains the 
+   *              whole string so far.
    * @param depth How many levels down the tree we are now.
    */
   public StringBuilder toTreeString(StringBuilder sb, int depth) {    

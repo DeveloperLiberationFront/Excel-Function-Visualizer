@@ -3,15 +3,19 @@ package scripts;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayDeque;
+import java.util.HashSet;
 import java.util.Queue;
+import java.util.Set;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.openxml4j.opc.PackageAccess;
+import org.apache.poi.ss.formula.FormulaParseException;
 import org.apache.poi.ss.formula.FormulaParsingWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFEvaluationWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -62,9 +66,10 @@ public class SheetAnalysis {
     Queue<File> directoriesToAnalyze = new ArrayDeque<File>();  
     directoriesToAnalyze.add(sheetDirectory);                   
                                                                 
-    while (directoriesToAnalyze.isEmpty()) {
+    while (!directoriesToAnalyze.isEmpty()) {
       
       for (File file : sheetDirectory.listFiles()) {
+        System.out.print(file + ": ");
         if (file.getName().endsWith(".ignore")) {
           continue;
         } else if (file.isDirectory()) {
@@ -82,22 +87,40 @@ public class SheetAnalysis {
         }
         
         FormulaParsingWorkbook parse = XSSFEvaluationWorkbook.create(workbook);
-        
-        //TODO: R1C1 Correction
-        
         for (int i = 0; i < workbook.getNumberOfSheets(); ++i) {
+          System.out.print((i+1) + " ");
           Sheet sheet = workbook.getSheetAt(i);
+          Set<String> seenRelativeFormulae = new HashSet<String>();
+          
           for (Row row : sheet) {
             for (Cell cell : row) {
               if (cell.getCellType() == Cell.CELL_TYPE_FORMULA) {
                 FormulaToken formula; 
-                String formulaStr = cell.getCellFormula();
+                String r1c1;
+                String formulaStr;
+                CellReference cellRef;
                 
                 try {
+                  formulaStr = cell.getCellFormula();
+                } catch (FormulaParseException ex) {
+                  //catcher.addFormula(file + " " + cell.getRowIndex() + "," 
+                  //  + cell.getColumnIndex(), ex);
+                  continue;
+                }
+                
+                try {
+                  cellRef = new CellReference(cell);
                   formula = Parser.parseFormula(formulaStr, parse, i);
+                  r1c1 = formula.toR1C1String(cellRef);                  
                 } catch (Exception ex) {
                   catcher.addFormula(formulaStr, ex);
                   continue;
+                }
+                
+                if (seenRelativeFormulae.contains(r1c1)) {
+                  continue;
+                } else {
+                  seenRelativeFormulae.add(r1c1);
                 }
                 
                 trees.add(formula);              
@@ -106,6 +129,15 @@ public class SheetAnalysis {
           }
         }
         
+        if (catcher.countFiles() > 10) {
+          catcher.flushFiles();
+        }
+        
+        if (catcher.countFormulae() > 1000) {
+          catcher.flushFormulae();
+        }
+        
+        System.out.println();
       } //end for (File file : sheetDirectory.listFiles())
       
     } // end while (directoriesToAnalyze.isEmpty())

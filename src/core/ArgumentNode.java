@@ -49,15 +49,17 @@ public class ArgumentNode extends Node {
   }
   
   public void setChildren() {
-    children = possibleArguments_unsorted.values().stream().toArray(Node[]::new); //new FunctionStatsNode[sort.size()]; 
-    for (Node node : children)
+    children = possibleArguments_unsorted.values().stream().toArray(Node[]::new);
+    for (Node node : children) {
       node.setChildren();
+    }
   }
   
   @Override
   public Node[] getChildren() {
-    if (children == null)
+    if (children == null) {
       setChildren();
+    }
     
     return children;
   }

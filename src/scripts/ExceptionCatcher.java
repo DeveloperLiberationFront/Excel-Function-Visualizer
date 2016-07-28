@@ -18,6 +18,14 @@ public class ExceptionCatcher {
     badFormulae.put(formula, ex);
   }
   
+  public int countFiles() {
+    return badFiles.size();
+  }
+  
+  public int countFormulae() {
+    return badFormulae.size();
+  }
+  
   /**
    * Print out every problematic file and the exception it threw.
    */
@@ -37,7 +45,7 @@ public class ExceptionCatcher {
   private void flush(String output, Map<String, Exception> buffer) {
     BufferedWriter write;
     try {
-      write = new BufferedWriter(new FileWriter(output));
+      write = new BufferedWriter(new FileWriter(output, true));
     } catch (IOException ex) {
       System.err.println("Unable to flush files");
       return;

@@ -1,13 +1,9 @@
 package core;
 
-import org.apache.poi.ss.formula.EvaluationName;
-import org.apache.poi.ss.formula.FormulaParsingWorkbook;
-import org.apache.poi.ss.formula.FormulaRenderingWorkbook;
 import org.apache.poi.ss.formula.ptg.AreaPtgBase;
 import org.apache.poi.ss.formula.ptg.BoolPtg;
 import org.apache.poi.ss.formula.ptg.ErrPtg;
 import org.apache.poi.ss.formula.ptg.IntPtg;
-import org.apache.poi.ss.formula.ptg.NamePtg;
 import org.apache.poi.ss.formula.ptg.NumberPtg;
 import org.apache.poi.ss.formula.ptg.Ptg;
 import org.apache.poi.ss.formula.ptg.RefPtgBase;
@@ -93,6 +89,10 @@ public class FormulaToken {
     }
     
     return type;
+  }
+  
+  public String toR1C1String(CellReference cell) {
+    return toR1C1String(this.token, cell);
   }
   
   private String toR1C1String(Ptg tok, CellReference cell) {

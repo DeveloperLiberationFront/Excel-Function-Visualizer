@@ -17,8 +17,9 @@ public class QuantityOfArgumentsNode extends Node {
   public QuantityOfArgumentsNode(int quantity) {
     this.quantity = quantity;
     children = new ArgumentNode[quantity];
-    for (int i = 0; i < quantity; ++i)
+    for (int i = 0; i < quantity; ++i) {
       children[i] = new ArgumentNode(i);
+    }
   }
   
   public void add(int ex, FormulaToken token) {
@@ -31,8 +32,9 @@ public class QuantityOfArgumentsNode extends Node {
     }
     
     FormulaToken[] tokChildren = token.getChildren();
-    if (tokChildren.length != quantity)
+    if (tokChildren.length != quantity) {
       throw new UnsupportedOperationException("Trying to populate a QOANode with a function holding a different number of args.");
+    }
     
     for (int i = 0; i < tokChildren.length; ++i) {
       FormulaToken child = tokChildren[i];
@@ -46,8 +48,9 @@ public class QuantityOfArgumentsNode extends Node {
   }
 
   public void setChildren() {
-    for (ArgumentNode node : children)
+    for (ArgumentNode node : children) {
       node.setChildren();
+    }
   }
 
   public int getFrequency() {

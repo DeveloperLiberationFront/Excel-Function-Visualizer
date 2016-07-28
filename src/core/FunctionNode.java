@@ -60,10 +60,11 @@ public class FunctionNode extends Node {
    */
   @Override
   public void add(int ex, FormulaToken token) {    
-    if (!this.equals(token))
+    if (!this.equals(token)) {
       throw new UnsupportedOperationException("Trying to pass a FormulaToken which does not "
           + "refer to the same type of token as the FunctionStatsNode: " + token.toSimpleString() 
           + " vs. " + this.function);
+    }
     
     int otherExampleLen = token.getOrigLen();
     if (shortestExampleLen > otherExampleLen) {
@@ -87,23 +88,24 @@ public class FunctionNode extends Node {
   }
 
   /**
-   * Some functions, like SUM can have a variable number of arguments. This function prevents the case of 
-   * trying to access an argument position that hasn't been instantiated yet.
+   * Some functions, like SUM can have a variable number of arguments. This function 
+   * prevents the case of trying to access an argument position that hasn't been 
+   * instantiated yet. 
+   * This function works on the assumption that if we need to create a new argument 
+   * position, it will only ever be one above the current maximum position and never 
+   * more than one above.
    * 
-   * This function works on the assumption that if we need to create a new argument position, it will only
-   * ever be one above the current maximum position and never more than one above.
-   * 
-   * @param i       Position in {@link #all_quantities} we're trying to access.
+   * @param pos     Position in {@link #all_quantities} we're trying to access.
    * @return        A HashMap referring to that position.
    */
-  private ArgumentNode getArgumentAtPosition(int i) {
+  private ArgumentNode getArgumentAtPosition(int pos) {
     ArgumentNode argumentPosition;
     
-    if (i < all_quantities.size()) {
-      argumentPosition = all_quantities.get(i);
+    if (pos < all_quantities.size()) {
+      argumentPosition = all_quantities.get(pos);
     } else {
-      argumentPosition = new ArgumentNode(i);
-      all_quantities.put(i, argumentPosition);
+      argumentPosition = new ArgumentNode(pos);
+      all_quantities.put(pos, argumentPosition);
     }
     
     return argumentPosition;
@@ -128,9 +130,9 @@ public class FunctionNode extends Node {
   }
   
   /**
-   * When this function is called, the array "children" should be set to null, while "all_quantities"
-   * is the map used to keep track of the children. We just want to convert the map to the array.
-   * 
+   * When this function is called, the array "children" should be set to null, while 
+   * "all_quantities" is the map used to keep track of the children. We just want to 
+   * convert the map to the array. 
    * If this function also has specific quantities, we need to set the children for those nodes too.
    * TODO: There's got to be a better way at representing/explaining optional arguments...
    */
@@ -138,21 +140,25 @@ public class FunctionNode extends Node {
   public void setChildren() {
     children = all_quantities.values().stream().toArray(ArgumentNode[]::new);
     
-    for (ArgumentNode arg : all_quantities.values())
+    for (ArgumentNode arg : all_quantities.values()) {
       arg.setChildren();
+    }
     
     if (specific_quantities != null) {
-      if (specific_quantities.size() > 1)
-        for (QuantityOfArgumentsNode node : specific_quantities.values())
-          node.setChildren();    
-      else
+      if (specific_quantities.size() > 1) {
+        for (QuantityOfArgumentsNode node : specific_quantities.values()) {
+          node.setChildren();
+        }
+      } else {
         specific_quantities = null;
+      }
     }
   }
   
   public Node[] getChildren() {
-    if (children == null) 
+    if (children == null) {
       setChildren();
+    }
     
     return children;
   }
@@ -169,18 +175,16 @@ public class FunctionNode extends Node {
   /**
    * When comparing to FunctionStatsNodes, equality must be exact since distinct
    * FSNs can have the exact same content. (Consider the case for SUM(A:A, 2) + SUM(A:A, 2)
-   * and how the two SUM nodes will be constructed.)
-   * 
-   * When comparing to FormulaTokens, equality is based on name.
-   * 
+   * and how the two SUM nodes will be constructed.)   * 
+   * When comparing to FormulaTokens, equality is based on name.   * 
    * TODO: This double-class equality checking might be dangerous.
    */
   @Override
-  public boolean equals(Object o) {   
-    if (o instanceof FunctionNode) {
-      return o == this;
-    } else if (o instanceof FormulaToken) {
-      FormulaToken ft = (FormulaToken) o;
+  public boolean equals(Object ob) {   
+    if (ob instanceof FunctionNode) {
+      return ob == this;
+    } else if (ob instanceof FormulaToken) {
+      FormulaToken ft = (FormulaToken) ob;
       return this.function.equals(ft.toSimpleString());
     } 
     
