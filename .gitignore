@@ -2,4 +2,6 @@
 
 /sheets/
 /backups/
+/doc/svgs/
 *.json
+.checkstyle
