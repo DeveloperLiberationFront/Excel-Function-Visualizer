@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/W32TeX) (preloaded format=pdflatex 2016.3.5)  26 APR 2016 06:45
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/W32TeX) (preloaded format=pdflatex 2016.3.5)  8 AUG 2016 09:42
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -548,31 +548,46 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 <pic/SUM.png, id=64, 181.42781pt x 630.10406pt>
 File: pic/SUM.png Graphic file (type png)
  <use pic/SUM.png>
-Package pdftex.def Info: pic/SUM.png used on input line 656.
+Package pdftex.def Info: pic/SUM.png used on input line 658.
 (pdftex.def)             Requested size: 103.19843pt x 358.4131pt.
  [7 <./pic/lookup-2.png> <./pic/lookup-3.png> <./pic/vlookup.png> <./pic/hlooku
 p.png>]
-Underfull \hbox (badness 3895) in paragraph at lines 672--682
-\OT1/ptm/m/n/10 printed a list of er-rors
+Underfull \hbox (badness 4096) in paragraph at lines 674--684
+[][]\OT1/ptm/m/n/10 The de-tec-tion of bad
  []
 
 
-Underfull \hbox (badness 2735) in paragraph at lines 672--682
-\OT1/ptm/m/n/10 ing for new and pre-vi-
+Underfull \hbox (badness 3009) in paragraph at lines 674--684
+\OT1/ptm/m/n/10 de-sign, how-ever, is cer-
  []
 
 
-Underfull \hbox (badness 6204) in paragraph at lines 672--682
-\OT1/ptm/m/n/10 sign makes no qual-i-ta-
+Underfull \hbox (badness 1895) in paragraph at lines 674--684
+\OT1/ptm/m/n/10 rors could work just as
+ []
+
+
+Underfull \hbox (badness 3189) in paragraph at lines 674--684
+\OT1/ptm/m/n/10 smells. Be-cause the ex-
+ []
+
+
+Underfull \hbox (badness 3657) in paragraph at lines 674--684
+\OT1/ptm/m/n/10 qual-i-ta-tive judg-ment and
+ []
+
+
+Underfull \hbox (badness 1460) in paragraph at lines 674--684
+\OT1/ptm/m/n/10 vi-su-al-izes be-nign de-signs
  []
 
 [8 <./pic/SUM.png>] <pic/index.png, id=77, 481.04718pt x 295.1025pt>
 File: pic/index.png Graphic file (type png)
 
 <use pic/index.png>
-Package pdftex.def Info: pic/index.png used on input line 828.
+Package pdftex.def Info: pic/index.png used on input line 830.
 (pdftex.def)             Requested size: 206.39685pt x 126.61691pt.
- [9 <./pic/index.png>] (./paper.bbl)
+ [9 <./pic/index.png>] (./paper.bbl [10])
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -584,25 +599,27 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[10] (./paper.aux) ) 
+[11
+
+] (./paper.aux) ) 
 Here is how much of TeX's memory you used:
  3115 strings out of 493033
  50543 string characters out of 6137755
- 113636 words of memory out of 5000000
+ 114636 words of memory out of 5000000
  6605 multiletter control sequences out of 15000+600000
  39736 words of font info for 73 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  37i,8n,23p,1021b,282s stack positions out of 5000i,500n,10000p,200000b,80000s
-{c:/texlive/2015/texmf-dist/fonts/enc/dvips/base/8r.enc}<c:
-/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/
-2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb><c:/texlive/2015/texmf
--dist/fonts/type1/urw/times/utmb8a.pfb><c:/texlive/2015/texmf-dist/fonts/type1/
-urw/times/utmbi8a.pfb><c:/texlive/2015/texmf-dist/fonts/type1/urw/times/utmr8a.
-pfb><c:/texlive/2015/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on paper.pdf (10 pages, 471872 bytes).
+{c:/texlive/2015/texmf-dist/fonts/enc/dvips/base/8r.enc}<c:/te
+xlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/201
+5/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb><c:/texlive/2015/texmf-di
+st/fonts/type1/urw/times/utmb8a.pfb><c:/texlive/2015/texmf-dist/fonts/type1/urw
+/times/utmbi8a.pfb><c:/texlive/2015/texmf-dist/fonts/type1/urw/times/utmr8a.pfb
+><c:/texlive/2015/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on paper.pdf (11 pages, 453649 bytes).
 PDF statistics:
- 107 PDF objects out of 1000 (max. 8388607)
- 44 compressed objects within 1 object stream
+ 110 PDF objects out of 1000 (max. 8388607)
+ 46 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  111 words of extra memory for PDF output out of 10000 (max. 10000000)
 

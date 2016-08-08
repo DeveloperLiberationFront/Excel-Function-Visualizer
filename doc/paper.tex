@@ -648,15 +648,17 @@
 	salient force in their exploration. For example, when P3 encountered the
 	initial design of the SUM tree, as seen in Figure \ref{fig:sum}, they readily
 	diagnosed that either a spreadsheet author was "totally incompetent, or [the
-	formula was] just something that's weird." Other than these visual cues, value
+	formula was] just something that's weird." Even though the visualization struggles
+	to scale well for this formula, it calls clearly to a problem in the underlying
+	spreadsheets -- awkward formulae make awkward trees. Other than these visual cues, value
 	errors, prefixed with \#s, also appear in the tree, which P4 said could be
-	useful for tracking these problems if marked well.
+	useful for tracking these problems if marked well. 
 	
 	\begin{wrapfigure}{L}{.25\textwidth}
 		\centering \includegraphics[width=.20\textwidth]{SUM}  \caption{An abundance of parameters in SUM, which was a commonly noted smell in the user study} \label{fig:sum} \end{wrapfigure}
 	
-	Additionally, because the files in the Enron set had name with the author as a
-	prefix, P2 commented that they could use the tool in a company setting to
+	Additionally, because the Enron files had names with the author as a
+	prefix, P2 commented that companies could use the tool to
 	follow up with repeat offenders. For instance, they first encountered a
 	particular author's name when investigating an AVERAGE function with 18
 	distinct arguments for which our participant could not discern any logical
@@ -671,12 +673,12 @@
 	
 	The detection of bad design, however, is certainly not limited to a
 	visualization tool, and some users remarked that a tool which printed a list of
-	errors could suffice just as well for that purpose. However, they also remarked
-	that this visual interface better supports the case when searching for new and
-	previously unknown smells. Because the exploratory design makes no
+	errors could work just as well for that purpose. However, they also said
+	that this visual interface is better when searching for new smells. 
+	Because the exploratory design makes no
 	qualitative judgment and visualizes benign designs with the problematic, it
-	therefore allows for flexible interpretation of what is a smell; that is, a
-	user might not realize a certain design is suboptimal until they see it in the
+	allows for flexible interpretation of what a smell is; that is, a
+	user might not realize a certain design is poor until they see it in the
 	tree and, at the point, find specific examples of where it occurs in the
 	spreadsheets.
 	
