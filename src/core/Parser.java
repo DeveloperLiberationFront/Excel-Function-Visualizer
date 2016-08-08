@@ -31,7 +31,7 @@ import utils.POIUtils;
  * @since 28 July 2016
  */
 public class Parser {
-  private static FormulaToken.Mode mode = FormulaToken.Mode.NO_CHANGE;
+  private static FormulaToken.Mode mode = FormulaToken.Mode.REPLACE;
   public static final XSSFEvaluationWorkbook BLANK 
       = XSSFEvaluationWorkbook.create(POIUtils.getWorkbook("./src/utils/sum.xlsx"));
 

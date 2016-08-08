@@ -92,10 +92,16 @@ public class FormulaToken {
   }
   
   public String toR1C1String(CellReference cell) {
-    return toR1C1String(this.token, cell);
+    return this.toR1C1String(this.token, cell);
   }
   
-  private String toR1C1String(Ptg tok, CellReference cell) {
+  /**
+   * 
+   * @param tok
+   * @param cell
+   * @return
+   */
+  public String toR1C1String(Ptg tok, CellReference cell) {
     String original = tok.toFormulaString();
     String relative = "";
     
@@ -248,6 +254,10 @@ public class FormulaToken {
   
   public int getOrigLen() {
     return origLen;
+  }
+  
+  public Ptg getPtg() {
+    return token;
   }
   
   public String toString() {

@@ -118,7 +118,7 @@ function getQueryVariable(variable) {
 /**
  * Initialize the tree with only one level down expanded.
  */
-var src = "json/j" + getQueryVariable("file") + ".json"; //If python server started in tree folder
+var src = "smalljson/j" + getQueryVariable("file") + ".json"; //If python server started in tree folder
 var root;
 d3.json(src, function(error, json) {
     if (error) throw error;

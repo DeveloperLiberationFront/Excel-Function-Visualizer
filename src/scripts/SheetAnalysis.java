@@ -12,6 +12,10 @@ import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.openxml4j.opc.PackageAccess;
 import org.apache.poi.ss.formula.FormulaParseException;
 import org.apache.poi.ss.formula.FormulaParsingWorkbook;
+import org.apache.poi.ss.formula.ptg.ErrPtg;
+import org.apache.poi.ss.formula.ptg.OperandPtg;
+import org.apache.poi.ss.formula.ptg.Ptg;
+import org.apache.poi.ss.formula.ptg.ScalarConstantPtg;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -20,6 +24,7 @@ import org.apache.poi.xssf.usermodel.XSSFEvaluationWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import core.FormulaToken;
+import core.OperationToken;
 import core.Parser;
 
 /**
@@ -30,7 +35,7 @@ import core.Parser;
  */
 public class SheetAnalysis {
   private static final String INPUT_DIRECTORY = "./sheets/ENRON/";
-  private static final String OUTPUT_DIRECTORY = "./src/viz/json";
+  private static final String OUTPUT_DIRECTORY = "./src/viz/smalljson/";
   
   /**
    * Ingests spreadsheets and outputs JSON files that describe the frequencies
@@ -67,8 +72,8 @@ public class SheetAnalysis {
     directoriesToAnalyze.add(sheetDirectory);                   
                                                                 
     while (!directoriesToAnalyze.isEmpty()) {
-      
-      for (File file : sheetDirectory.listFiles()) {
+      File directory = directoriesToAnalyze.remove();
+      for (File file : directory.listFiles()) {
         System.out.print(file + ": ");
         if (file.getName().endsWith(".ignore")) {
           continue;
@@ -113,6 +118,8 @@ public class SheetAnalysis {
                   formula = Parser.parseFormula(formulaStr, parse, i);
                   r1c1 = formula.toR1C1String(cellRef);                  
                 } catch (Exception ex) {
+                  System.err.println(formulaStr + " : " + ex.getMessage());
+                  //ex.printStackTrace();
                   catcher.addFormula(formulaStr, ex);
                   continue;
                 }
@@ -123,7 +130,9 @@ public class SheetAnalysis {
                   seenRelativeFormulae.add(r1c1);
                 }
                 
-                trees.add(formula);              
+                if (isUseful(formula)) {
+                  trees.add(formula);     
+                }
               }
             }
           }
@@ -145,5 +154,18 @@ public class SheetAnalysis {
     catcher.flushFiles();
     catcher.flushFormulae();
     trees.flush(OUTPUT_DIRECTORY);
+  }
+  
+  /**
+   * Lifted from StoreBetterFunctionsInDB
+   * @param tokens
+   * @return
+   */
+  private static boolean isUseful(FormulaToken formula) {
+    if (!(formula instanceof OperationToken)) {
+      return false;
+    }
+
+    return true;
   }
 }

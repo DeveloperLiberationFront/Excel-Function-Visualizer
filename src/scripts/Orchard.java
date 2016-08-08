@@ -17,6 +17,7 @@ import core.FunctionNode;
 
 public class Orchard {
   private final Map<String, FunctionNode> trees = new HashMap<String, FunctionNode>();
+  private int totalFormulae = 0;
   
   /**
    * 
@@ -27,7 +28,10 @@ public class Orchard {
     if (!trees.containsKey(toplevel)) {
       trees.put(toplevel, new FunctionNode(toplevel));
     }
-    trees.get(toplevel).add(trees.size(), formula);  //TODO: NO MORE DB MEANS NO MORE ID
+    trees.get(toplevel).add(trees.size(), formula);  
+    //TODO: NO MORE DB MEANS NO MORE ID
+    
+    ++totalFormulae;
   }
   
   /**
@@ -69,8 +73,9 @@ public class Orchard {
       
       BufferedWriter write;
       try {
-        write = new BufferedWriter(new FileWriter("./src/viz/json/j" + fileFunc + ".json"));
+        write = new BufferedWriter(new FileWriter(outputDirectory + "j" + fileFunc + ".json"));
         write.write(gson.toJson(allFuncs.get(func)));
+        write.flush();
         write.close();
       } catch (IOException ex) {
         System.err.println("Unable to print JSON for " + func);
@@ -82,11 +87,14 @@ public class Orchard {
     Collections.sort(list);
     
     try {
-      BufferedWriter write = new BufferedWriter(new FileWriter("./src/viz/json/index.json"));
+      BufferedWriter write = new BufferedWriter(new FileWriter(outputDirectory + "index.json"));
       write.write(gson.toJson(list));
+      write.flush();
       write.close();
     } catch (IOException ex) {
       System.err.println("Unable to print index file.");
     }
+    
+    System.out.println("Formulae added: " + totalFormulae);
   }
 }

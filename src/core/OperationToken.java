@@ -6,6 +6,8 @@ import java.util.regex.Pattern;
 
 import org.apache.poi.ss.formula.ptg.AttrPtg;
 import org.apache.poi.ss.formula.ptg.OperationPtg;
+import org.apache.poi.ss.formula.ptg.Ptg;
+import org.apache.poi.ss.util.CellReference;
 
 public class OperationToken extends FormulaToken {
   private FormulaToken[] children;          //The arguments of this function.
@@ -25,13 +27,14 @@ public class OperationToken extends FormulaToken {
   public OperationToken(OperationPtg tok, FormulaToken[] args) {
     int len = args.length;
     if (tok.getNumberOfOperands() != len) {
-      throw new UnsupportedOperationException("OperationToken: not enough arguments to the operation.");
+      throw new UnsupportedOperationException("OperationToken: not enough arguments "
+          + "to the operation.");
     }   
     
     this.token = tok;
     
-    String[] sArgs = Arrays.stream(args).map(s -> s.toString()).toArray(String[]::new);
-    this.tokenStr = tok.toFormulaString(sArgs);
+    String[] strArgs = Arrays.stream(args).map(s -> s.toString()).toArray(String[]::new);
+    this.tokenStr = tok.toFormulaString(strArgs);
     this.op = extractOp(tok, len);
         
     addChildren(len, args);
@@ -46,7 +49,8 @@ public class OperationToken extends FormulaToken {
    */
   public OperationToken(AttrPtg tok, FormulaToken... args) {
     if (args.length != 1) {
-      throw new UnsupportedOperationException("OperationToken: not enough arguments to the operation.");
+      throw new UnsupportedOperationException("OperationToken: not enough arguments "
+          + "to the operation.");
     } 
     
     this.token = tok;  
@@ -122,5 +126,31 @@ public class OperationToken extends FormulaToken {
     }
     
     return sb;
+  }
+  
+  /**
+   * 
+   * @param tok
+   * @param cell
+   * @return
+   */
+  public String toR1C1String(Ptg tok, CellReference cell) {
+    String[] strArgs = new String[children.length];
+    
+    for (int i = 0; i < children.length; ++i) {
+      FormulaToken child = children[i];
+      strArgs[i] = child.toR1C1String(cell);
+    }
+    
+    if (tok instanceof OperationPtg) {
+      OperationPtg opTok = (OperationPtg) tok;      
+      return opTok.toFormulaString(strArgs);
+    } else if (tok instanceof AttrPtg) {
+      AttrPtg opTok = (AttrPtg) tok;
+      return opTok.toFormulaString(strArgs);
+    } else {
+      throw new UnsupportedOperationException("Unexpected OperationPtg type when converting "
+          + "to R1C1: " + tok.getClass());
+    }
   }
 }

@@ -55,7 +55,7 @@ public class ExceptionCatcher {
       Exception ex = buffer.get(str);
       try {
         write.write(str + " : ");
-        write.write(ex + ", " + ex.getMessage());
+        write.write(ex + ", " + ex.getMessage() + "\n");
       } catch (IOException ex2) {
         System.err.println("Unable to print " + str + ":" + ex.getMessage());
       }
