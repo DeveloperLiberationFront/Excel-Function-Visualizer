@@ -428,10 +428,18 @@
 	\subsection{Design Decisions} \label{ssec:decisions} Early in the design, we
 	chose the tree form for its inherent ability to represent the parent-children
 	relationship of formulae as functions and their arguments, which could be yet
-	more functions. By adapting this structure to accommodate a broad range of
+	more functions. By adapting this structure for a broad range of
 	possibilities for nested functions, the branching factor depends alternatively
 	on the number of arguments in a function and the number of possible functions
 	observed as an argument in a function. \par
+	
+	Another of our options was to represent the call trees as simple text hierarchies. 
+	Though this might work well for a single, uncomplicated call structure, we did not
+	do this because our tool combined many of these call trees into a more complicated 
+	structure. To capture the different relationships in the tree and to quantify the
+	frequency of arguments, we would need to be more verbose in our description. As such, we
+	decided that visualizing some dimensions was quicker than writing them out. 
+	\par
 	
 	Guided by the goals in Section \ref{goals}, we faced a number of decisions in
 	how to visualize the data. Below, we've outlined those that
