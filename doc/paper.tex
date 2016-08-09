@@ -734,78 +734,65 @@
 	to such documentation from within the tool without violating any design
 	concerns in Section~\ref{goals}. \par
 	
-	\subsection{Study Limitations} \label{subsec:studylimitations} Though we did not start the study by telling
-	that the data source came from Enron, two users studied the file names to
-	deduce its roots in finance, if not Enron itself. Because of these notorious
-	connotations, then, they might have been inclined from this information to
-	orient their exploration around finance-related functions, potentially limiting
-	their findings or perceived users for the tool. However, one participant also
-	said that, without this essential context, they could not have intelligently
-	explored a dataset in the first place. Comments like these point out the
+	\subsection{Study Limitations} \label{subsec:studylimitations} 
+	
+	In a few ways, these user studies might not fully assess \toolnameposs value.
+	For example, though we did not preface the study by revealing the source of the
+	files, two users studied the file names to deduce its roots in finance, if not
+	Enron itself. Because of these notorious connotations, then, they might have
+	been inclined to orient their exploration around financial functions,
+	potentially restricting their findings. However, one of these participants also
+	said that they could not have intelligently explored a dataset in the first
+	place without this essential context. Comments like these point out the
 	trade-offs of unguided exploration, too: though it might not restrict them to a
 	single purpose, it might, at the same time, not afford them any mindset at all
 	with which to interpret the data. \par
 	
-	Furthermore, the data which users explored was processed and created before we
-	had fully ensured that the tool could extract all of the useful data from the
-	spreadsheets, meaning some of the counts and patterns in the trees were
-	inaccurate. However, we decided that this was not a pressing concern, being
-	that we were primarily concerned with whether any interesting reports could be
-	made at all, not with whether these reports were 100\% accurate assessments of
-	reality. \par
-	
-	Throughout the study, we noticed that users misunderstood some of the icons
+	Throughout the study, we noticed that users misunderstood the design
 	and, as such, their early discoveries were inaccurate. For example, P1
-	interpreted the numbers on the argument boxes to mean that all of the box's
-	children had exactly that many arguments -- that is, clicking on the dark blue
-	``1" would return all the single-argument functions instead of the first
-	argument of a function -- and P2 initially took the solid lines to mean
+	thought that the numbers on argument nodes as the number of arguments instead
+	of the index of that argument -- that is, clicking on the dark blue
+	``1" would return all the single-argument functions instead of the function's
+	first argument -- and P2 initially took the solid lines to mean
 	different paths in formula construction rather than different arguments of the
-	same function. Though the users naturally did not explicitly report
-	misinterpreting the icons, these misunderstandings became clear in their early
-	evaluations of the spreadsheet practice. Though we clarified the meanings when
-	these misunderstandings became apparent, these events point to a failure in the
-	tool to indicate every function clearly.   \par
+	same function. Though these misunderstandings were useful in pinpointing weak
+	parts of the tool, their presence affected many of the participant's observations before we
+	could clarify, reducing the amount of useful information from these sessions.  \par
 	
 	
-	\section{Limitations} We began these studies with the intention of evaluating
-	our progress towards the goals in Section \ref{goals}. Working from these
-	results, we noted many places where the tool aligned well or fell short.
+	\section{Tool Limitations} 
 	
-	\subsection{Unbiased Exploration} The first goal -- that of full exploration --
-	is threatened by the presence of certain formulae that the tool does not
-	display, such as those with nonstandard functions. Because the data collection
-	depends on POI's formula parser, it does not allow for any partial parsing of a
-	formula; it either processes a formula perfectly or throws it out. As such, the
-	visualization does not display anything with syntactical errors or third-party
-	functions that POI cannot parse. This poses larger problems, however, when POI
-	does not support the parsing of certain functions, such as EOMONTH, preventing
-	the healthy growth of those trees. \par
+	We began these studies with the intention of evaluating
+	our progress towards the goals in Section~\ref{goals}. Working from these
+	results, we noted many places where \toolname itself aligned well or fell short.
 	
-	Other than that, we did avoid designing anything that intentionally evaluated
-	formula designs. Nevertheless, \toolname inadvertently emphasizes bad design of
-	certain types, such as all of those in Section~\ref{badsmells} marked by their
-	visual signatures. Even so, our participants found the discovery of bad smell
-	to be the most interesting aspect about it, to the point where they could
-	imagine business scenarios in which micromanagers use it to ensure precise
-	design parameters across a department's spreadsheets! To design in that
+	\subsection{Unbiased Exploration} 
+	
+	The goal of \toolname is exploration without bias, gap, or interruption, but 
+	this version does not solve everything. First, \toolname cannot reliably
+	salvage every formula. When a formula arises that the POI parser cannot handle,
+	whether because of typos or third-party functions, the entire formula is lost;
+	\toolname gets either the full formula or nothing at all. Second, while we 
+	hard-coded nothing that explicitly emphasizes bad design, the nature of the
+	visualization draws attention towards certain offenses, like those in
+	Section~\ref{badsmells}. While these may be fairly obvious, however, they 
+	may distract from subtler, more insidious patterns. \par 
+	
+	Despite this second point, our participants found the discovery of bad smell
+	to be the most interesting aspect about it. To design in that
 	direction, however, would mean a reevaluation of this design goal, since
 	intentionally guiding users toward known smells may guide them away from new,
 	unmarked ones.
 	
 	\subsection{Uncluttered Quantification}
 	
-	A threat to our goals arises from the problem of too much data,
-	particularly in the popular functions, like SUM and IF. We realized early that
-	these functions would overwhelm the user with options in large datasets, so we
-	included features, such as the expansion arrows and the use of generic types
-	instead of values, that would manage the variation. Nevertheless, P3 remarked
-	that they specifically avoided the most popular functions, anticipating a flood
+	We wanted to show everything, but everything overwhelms. We realized that danger
+	early on and included features, such as the expansion arrows and the use of generic types
+	instead of values, that would manage the variation. Nevertheless, P2 and P3 remarked
+	that they often avoided the most popular functions, anticipating a flood
 	of nodes from which they could salvage nothing interesting. P2 corroborated
-	this by explaining how they gravitated toward exploring specific examples in
-	particular value nodes over navigating the full, crowded tree, but they also
-	said that the tool at its best when it compares either every possibility of an
-	argument side-by-side or nothing on that branch at all. Despite our
+	this by explaining how they preferred to explore specific examples in
+	individuals nodes instead of navigating the full, crowded tree. Despite our
 	precautions, balancing the desire to show a lot with the desire not to
 	overwhelm remains a challenge. \par
 	
@@ -813,7 +800,7 @@
 	the index number on each argument node. As discussed in Section~\ref{subsec:studylimitations},
 	users often mistook it for other features, like total number of arguments in the
 	function. Though we kept this feature present for all studies, future versions
-	of the tool would refine features like this to reduce confusion. 
+	of \toolname would refine this design. 
 	
 	\subsection{Informative Qualification}
 	
@@ -822,9 +809,9 @@
 	sections imply a hidden complication: if the tool educates through example but
 	does not explicitly distinguish between good design and bad design, how can we
 	be sure that people will not inadvertently learn bad design from it? In the
-	user study, we discussed its use in education and smell detection by bringing
-	up the issues surrounding the LOOKUP functions; this discussion, though,
-	presupposes a distinguishing eye that knew which examples practiced good design
+	user study, we discussed \toolnameposs use in education and smell detection by bringing
+	up the issues surrounding the LOOKUP functions. This discussion, though,
+	assumes a distinguishing eye that knew which examples practiced good design
 	and which exhibited the common errors. A beginner might not know the
 	difference. Robillard and Deline, in their study, remarked that good API
 	examples should demonstrate best practices, but, right now, we have no way to
