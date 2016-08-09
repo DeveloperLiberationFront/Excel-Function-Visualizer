@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/W32TeX) (preloaded format=pdflatex 2016.3.5)  9 AUG 2016 15:43
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/W32TeX) (preloaded format=pdflatex 2016.3.5)  9 AUG 2016 16:05
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -542,44 +542,44 @@ Overfull \hbox (6.0pt too wide) in paragraph at lines 632--634
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<pic/SUM.png, id=64, 181.42781pt x 630.10406pt>
+[7 <./pic/lookup-2.png> <./pic/lookup-3.png> <./pic/vlookup.png> <./pic/hlookup
+.png>] <pic/SUM.png, id=72, 181.42781pt x 630.10406pt>
 File: pic/SUM.png Graphic file (type png)
  <use pic/SUM.png>
-Package pdftex.def Info: pic/SUM.png used on input line 675.
+Package pdftex.def Info: pic/SUM.png used on input line 678.
 (pdftex.def)             Requested size: 103.19843pt x 358.4131pt.
- [7 <./pic/lookup-2.png> <./pic/lookup-3.png> <./pic/vlookup.png> <./pic/hlooku
-p.png>]
-Underfull \hbox (badness 2865) in paragraph at lines 679--691
+
+Underfull \hbox (badness 2865) in paragraph at lines 682--694
 \OT1/ptm/m/n/10 low up with re-peat of-
  []
 
 
-Underfull \hbox (badness 1728) in paragraph at lines 679--691
+Underfull \hbox (badness 1728) in paragraph at lines 682--694
 \OT1/ptm/m/n/10 af-ter open-ing the source
  []
 
 
-Underfull \hbox (badness 2293) in paragraph at lines 679--691
+Underfull \hbox (badness 2293) in paragraph at lines 682--694
 \OT1/ptm/m/n/10 popped up again as P2
  []
 
 
-Underfull \hbox (badness 2486) in paragraph at lines 679--691
+Underfull \hbox (badness 2486) in paragraph at lines 682--694
 \OT1/ptm/m/n/10 re-ly-ing on sev-eral hard-
  []
 
 
-Underfull \hbox (badness 2573) in paragraph at lines 679--691
+Underfull \hbox (badness 2573) in paragraph at lines 682--694
 \OT1/ptm/m/n/10 to the au-thor per-son-ally
  []
 
 
-Underfull \hbox (badness 1622) in paragraph at lines 679--691
+Underfull \hbox (badness 1622) in paragraph at lines 682--694
 \OT1/ptm/m/n/10 pre-vent more in the fu-
  []
 
 
-Underfull \hbox (badness 1975) in paragraph at lines 679--691
+Underfull \hbox (badness 1975) in paragraph at lines 682--694
 \OT1/ptm/m/n/10 con-cern that aligns with
  []
 
@@ -587,7 +587,7 @@ Underfull \hbox (badness 1975) in paragraph at lines 679--691
 File: pic/index.png Graphic file (type png)
 
 <use pic/index.png>
-Package pdftex.def Info: pic/index.png used on input line 846.
+Package pdftex.def Info: pic/index.png used on input line 849.
 (pdftex.def)             Requested size: 206.39685pt x 126.61691pt.
  [9] (./paper.bbl [10 <./pic/index.png>])
 
@@ -607,7 +607,7 @@ Before submitting the final camera ready copy, remember to:
 Here is how much of TeX's memory you used:
  3116 strings out of 493033
  50568 string characters out of 6137755
- 113652 words of memory out of 5000000
+ 112652 words of memory out of 5000000
  6606 multiletter control sequences out of 15000+600000
  39736 words of font info for 73 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -618,7 +618,7 @@ xlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/201
 st/fonts/type1/urw/times/utmb8a.pfb><c:/texlive/2015/texmf-dist/fonts/type1/urw
 /times/utmbi8a.pfb><c:/texlive/2015/texmf-dist/fonts/type1/urw/times/utmr8a.pfb
 ><c:/texlive/2015/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on paper.pdf (11 pages, 482034 bytes).
+Output written on paper.pdf (11 pages, 486708 bytes).
 PDF statistics:
  110 PDF objects out of 1000 (max. 8388607)
  46 compressed objects within 1 object stream
