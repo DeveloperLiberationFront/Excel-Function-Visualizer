@@ -84,7 +84,7 @@ E.~Aivaloglou, D.~Hoepelman, and F.~Hermans, ``A grammar for spreadsheet
   on}.\hskip 1em plus 0.5em minus 0.4em\relax IEEE, 2015, pp. 121--130.
 
 \bibitem{jansen2015enron}
-B.~Jansen, ``Enron versus euses: a comparison of two spreadsheet corpora,''
+B.~Jansen, ``Enron versus {EUSES}: a comparison of two spreadsheet corpora,''
   \emph{arXiv preprint arXiv:1503.04055}, 2015.
 
 \bibitem{baeza1999modern}
@@ -146,12 +146,12 @@ S.~Badame and D.~Dig, ``Refactoring meets spreadsheet formulas,'' in
   on}.\hskip 1em plus 0.5em minus 0.4em\relax IEEE, 2012, pp. 399--409.
 
 \bibitem{murphy2006java}
-G.~C. Murphy, M.~Kersten, and L.~Findlater, ``How are java software developers
-  using the elipse ide?'' \emph{Software, IEEE}, vol.~23, no.~4, pp. 76--83,
-  2006.
+G.~C. Murphy, M.~Kersten, and L.~Findlater, ``How are {Java} software
+  developers using the {Elipse IDE}?'' \emph{Software, IEEE}, vol.~23, no.~4,
+  pp. 76--83, 2006.
 
 \bibitem{robillard2011field}
-M.~P. Robillard and R.~Deline, ``A field study of api learning obstacles,''
+M.~P. Robillard and R.~Deline, ``A field study of {API} learning obstacles,''
   \emph{Empirical Software Engineering}, vol.~16, no.~6, pp. 703--732, 2011.
 
 \bibitem{hermans2015detecting}

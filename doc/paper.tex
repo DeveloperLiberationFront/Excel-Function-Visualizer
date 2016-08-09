@@ -153,13 +153,12 @@
 	this by amassing spreadsheet collections from diverse sources, industrial to
 	academic. Collections like EUSES~\cite{fisher2005euses},
 	Fuse~\cite{barik2015fuse}, and the Enron corpus~\cite{hermans2015enron} have
-	already fueled productive research across the field, such as in
-	Hermans'~\cite{hermans2012detecting} and Jansen's~\cite{jansen2015code} search
-	for code smells in spreadsheet environments or Aivaloglou and colleague's work
-	on making a grammar to capture every possible spreadsheet program in
-	Excel~\cite{aivaloglou2015grammar}. Additionally, some research has focused on
-	comparing these collections, as Jansen did in 2015, to discover variation in
-	spreadsheet techniques over time and location~\cite{jansen2015enron}.
+	already fueled productive research across the field, such as in the search for
+	code smells in spreadsheet environments~\cite{hermans2012detecting}~\cite{jansen2015code} or the creation of grammars to capture every possible
+	spreadsheet program in Excel~\cite{aivaloglou2015grammar}. Additionally, some
+	research has focused on comparing these collections, as Jansen did in 2015, to
+	discover variation in spreadsheet techniques over time and
+	location~\cite{jansen2015enron}.
 	
 	Considering the value of spreadsheets and all of these resources to describe
 	their use, it becomes necessary that we design tools to better enable the
@@ -214,7 +213,7 @@
 	\toolname is among the latter class, creating standalone visualizations about
 	spreadsheets instead of drawing connections inside the spreadsheet itself. In
 	contrast to the other visualization work, our work focuses on representing functions and how
-	they combine into complex formula, rather than exploring the data structures of any
+	they combine into complex formulae, rather than exploring the data structures of any
 	particular spreadsheet.  \par
 	
 	Many other tools inspect the structure of formulae but often from the
@@ -227,7 +226,7 @@
 	Implicit in this study is an exploration of the Excel API and how people use
 	it. Previous research, such as the first study on the Enron
 	spreadsheets~\cite{hermans2015enron} or in its comparison with the EUSUS
-	corpus~\cite{jansen2015enron}, quantifies how ofter users employ certain
+	corpus~\cite{jansen2015enron}, quantifies how often users employ certain
 	functions but not how they combine them. Researchers have applied such
 	questions to other contexts as well, such as Murphy and colleague's study into
 	how Java developers use Eclipse and what commands they use most
@@ -278,7 +277,7 @@
 		cell in the spreadsheets where the formula was used, contextualizing the
 		functions.
 		
-		\item [!3] \textbf{Do not attempt to explain formulae.} Though the tool will
+		\item [!3] \textbf{Do not attempt to explain formulae.} Though the tool is meant
 		to foster understanding by linking pattern to example, it will not try to be
 		an explanatory tool that articulates what a complex formula accomplishes. Rather,
 		we will provide the structure and context, and the user	must infer this on their own.
@@ -299,9 +298,9 @@
 	First, a word on the IF function. In Excel, it serves as one of the logical
 	functions: given a condition as the first argument that evaluates to either
 	true or false, it takes on the value of either the second or third argument,
-	respectively. Or, as the documentation writes out, "IF(Something is True, then
+	respectively. Or, as the documentation writes out, ``IF(Something is True, then
 	do something, otherwise do something
-	else)"\footnote{https://support.office.com/en-us/article/IF-function-69aed7c9-4e8a-4755-a9bc-aa8bbff73be2?ui=en-US\&rs=en-US\&ad=US}. Furthermore, the third argument is optional; if left out, the function will return a default "FALSE" value if necessary. Examples of this function in practice can be seen in Figure~\ref{fig:ifexample}.
+	else)"\footnote{https://support.office.com/en-us/article/IF-function-69aed7c9-4e8a-4755-a9bc-aa8bbff73be2?ui=en-US\&rs=en-US\&ad=US}. Furthermore, the third argument is optional; if left out, the function will return a default ``FALSE" value if necessary. Examples of this function in practice can be seen in Figure~\ref{fig:ifexample}.
 	
 	\begin{figure}[h] \centering \includegraphics[scale=.9]{ifExample}
 		\caption{Configurations of the IF function} \label{fig:ifexample} \end{figure}
@@ -316,7 +315,7 @@
 	The visualization so far comprises two types of nodes: the circle
 	\includegraphics{glossary-greenonly}, which represents a discrete function in
 	the formula and is size according to its frequency relative to the number of
-	times to root function appeared; and the numbered squares
+	times the root function appeared; and the numbered squares
 	\includegraphics{glossary-blue}, which represent the positions of arguments
 	within its parent function. From this, we can confirm that, of the times it was
 	observed, IF can have at most three arguments passed into it, which corresponds
@@ -334,9 +333,9 @@
 	
 	We see that IF contains a number of comparison operators as its first argument,
 	such as = and $\le$, and boolean-returning functions, like ISNA and AND, with
-	simple equality being the most common and some use as ABS being the least seen
-	of everything actually used. From here, we can further explore the common options among these functions.
-	Clicking on the ``=" node will yield two arguments and expanding each of them
+	simple equality being the most common and ABS being the least. From here, we
+	can further explore the common options among these functions. Clicking on the
+	``=" node will yield two arguments and expanding each of them
 	will peer into the range of common values of equality comparison, which Figure
 	\ref{fig:fullpic} shows. \par
 	
@@ -472,8 +471,8 @@
 	
 	\section{Case Study} The obvious question to pose to any visualization is this:
 	What do the images tell us that the text could not? It is not enough to prove
-	that something can be visualized; we must also demonstrate what we can be
-	gained from any particular visualization. As such, we raised a few tasks in the
+	that something can be visualized; we must also demonstrate what we can
+	gain from any particular visualization. As such, we raised a few tasks in the
 	introduction in which we thought the tool could help: detecting bad smells and
 	guiding spreadsheet education. To demonstrate the tool's applicability, we
 	sought out places in the tree which best exemplify these tasks.
@@ -535,8 +534,8 @@
 	argument of the ``='' operator, already shown expanded in
 	Figure~\ref{fig:fullpic}: among the top five argument types for the position in
 	an IF function were boolean values. This corresponds to designs in which
-	conditions already in a boolean form were then checked against "=TRUE" or
-	"=FALSE", such as in the formula \textit{IF(Formulas!C77=TRUE, "Yes")}, which
+	conditions already in a boolean form were then checked against ``=TRUE" or
+	``=FALSE", such as in the formula \textit{IF(Formulas!C77=TRUE, ``Yes")}, which
 	appears in one of the sheets. Though this practice does not break anything in
 	itself, it nevertheless represents redundant operations in formula design and
 	indicates a possible misunderstanding of how the IF function works over the
@@ -569,7 +568,7 @@
 	For a deeper example, the LOOKUP functions are some of the most popular in
 	Excel yet come with a number of important but silent requirements for proper
 	use, and, as such, they have warranted some extra attention with regards to
-	spreadsheet design. In short, these functions are for "when you need to look in
+	spreadsheet design. In short, these functions are for ``when you need to look in
 	a single row or column and find a value from the same position in a second row
 	or column"\footnote{https://support.office.com/en-us/article/LOOKUP-function-446d94af-663b-451d-8251-369d5e3864cb}. Examples of their use can be found in Figure \ref{fig:lookupexample}, and we will cover each type
 	in more depth to better understand the visualizations for these functions.
@@ -603,7 +602,7 @@
 	
 	All of these variations may seem daunting to a beginner, but \toolname can
 	help. Because of its design, users can distinguish between forms of the same
-	function, as seen in Figure~\ref{fig:lookups} where the one can explore both
+	function, as seen in Figure~\ref{fig:lookups} where one can explore both
 	the frequency with which the spreadsheet programmers used these different forms
 	-- three-argument vector form much more than the array form -- and then
 	retrieve examples of every configuration in the dataset. The same goes for the
@@ -614,13 +613,13 @@
 			three arguments}  \label{fig:lookups} \end{figure}
 	
 	Furthermore, these examples are good as well for exploring how it might bridge
-	issues of bad design with education. In a recent study, Hermans, Aivaloglou,
-	and Jansen probed the Enron dataset for uses of VLOOKUP and HLOOKUP
-	specifically. The issue at hand was the optional fourth argument, which
-	requires that rows are sorted lest it return inaccurate results
-	\cite{hermans2015detecting}. For someone seeking to increase awareness of this
-	problem, it first allows them to answer the question of significance -- "How
-	often do spreadsheet programmers use this function, with these particular
+	issues of bad design with education. In a recent study, Hermans and colleagues
+	probed the Enron dataset for uses of VLOOKUP and HLOOKUP
+	specifically~\cite{hermans2015detecting}. The issue at hand was the optional
+	fourth argument, which requires that rows are sorted lest it return inaccurate
+	results. For someone seeking to increase awareness of this problem, it first
+	allows them to answer the question of significance -- ``How often do
+	spreadsheet programmers use this function, with these particular
 	parameters?" Though \toolname does not discern whether neighboring columns are
 	sorted, it can nevertheless guide the educator to several examples in
 	production where this problem surfaces. \par
@@ -655,7 +654,7 @@
 	distinctive visual signatures as discussed in Section \ref{badsmells} was a
 	salient force in their exploration. For example, when P3 encountered the
 	initial design of the SUM tree, as seen in Figure \ref{fig:sum}, they readily
-	diagnosed that either a spreadsheet author was "totally incompetent, or [the
+	diagnosed that either a spreadsheet author was ``totally incompetent, or [the
 	formula was] just something that's weird." Even though the visualization struggles
 	to scale well for this formula, it calls clearly to a problem in the underlying
 	spreadsheets -- awkward formulae make awkward trees. Other than these visual cues, value
@@ -692,8 +691,8 @@
 	
 	\subsection{Use in Education} Users found \toolname's inclusion of examples to
 	be especially useful since none of the them considered themselves to be experts
-	of Excel, their self-reported proficiencies ranging from "fairly familiar" (P2)
-	to "not extremely familiar" (P4). For example, as P1 explored the VLOOKUP
+	of Excel, their self-reported proficiencies ranging from ``fairly familiar" (P2)
+	to ``not extremely familiar" (P4). For example, as P1 explored the VLOOKUP
 	function, they said they could use the tool to collect more examples than the
 	documentation offers even though they knew the documentation more verbosely
 	explained its function signature. Furthermore, in the process of exploring
