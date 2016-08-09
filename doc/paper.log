@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/W32TeX) (preloaded format=pdflatex 2016.3.5)  9 AUG 2016 10:19
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/W32TeX) (preloaded format=pdflatex 2016.3.5)  9 AUG 2016 15:43
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -545,26 +545,51 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 <pic/SUM.png, id=64, 181.42781pt x 630.10406pt>
 File: pic/SUM.png Graphic file (type png)
  <use pic/SUM.png>
-Package pdftex.def Info: pic/SUM.png used on input line 670.
+Package pdftex.def Info: pic/SUM.png used on input line 675.
 (pdftex.def)             Requested size: 103.19843pt x 358.4131pt.
  [7 <./pic/lookup-2.png> <./pic/lookup-3.png> <./pic/vlookup.png> <./pic/hlooku
 p.png>]
-Underfull \hbox (badness 3407) in paragraph at lines 687--697
-\OT1/ptm/m/n/10 rectly built into spread-
+Underfull \hbox (badness 2865) in paragraph at lines 679--691
+\OT1/ptm/m/n/10 low up with re-peat of-
  []
 
 
-Underfull \hbox (badness 6204) in paragraph at lines 687--697
-\OT1/ptm/m/n/10 sign makes no qual-i-ta-
+Underfull \hbox (badness 1728) in paragraph at lines 679--691
+\OT1/ptm/m/n/10 af-ter open-ing the source
+ []
+
+
+Underfull \hbox (badness 2293) in paragraph at lines 679--691
+\OT1/ptm/m/n/10 popped up again as P2
+ []
+
+
+Underfull \hbox (badness 2486) in paragraph at lines 679--691
+\OT1/ptm/m/n/10 re-ly-ing on sev-eral hard-
+ []
+
+
+Underfull \hbox (badness 2573) in paragraph at lines 679--691
+\OT1/ptm/m/n/10 to the au-thor per-son-ally
+ []
+
+
+Underfull \hbox (badness 1622) in paragraph at lines 679--691
+\OT1/ptm/m/n/10 pre-vent more in the fu-
+ []
+
+
+Underfull \hbox (badness 1975) in paragraph at lines 679--691
+\OT1/ptm/m/n/10 con-cern that aligns with
  []
 
 [8 <./pic/SUM.png>] <pic/index.png, id=77, 481.04718pt x 295.1025pt>
 File: pic/index.png Graphic file (type png)
 
 <use pic/index.png>
-Package pdftex.def Info: pic/index.png used on input line 841.
+Package pdftex.def Info: pic/index.png used on input line 846.
 (pdftex.def)             Requested size: 206.39685pt x 126.61691pt.
- [9 <./pic/index.png>] (./paper.bbl [10])
+ [9] (./paper.bbl [10 <./pic/index.png>])
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -582,7 +607,7 @@ Before submitting the final camera ready copy, remember to:
 Here is how much of TeX's memory you used:
  3116 strings out of 493033
  50568 string characters out of 6137755
- 113651 words of memory out of 5000000
+ 113652 words of memory out of 5000000
  6606 multiletter control sequences out of 15000+600000
  39736 words of font info for 73 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -593,7 +618,7 @@ xlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/201
 st/fonts/type1/urw/times/utmb8a.pfb><c:/texlive/2015/texmf-dist/fonts/type1/urw
 /times/utmbi8a.pfb><c:/texlive/2015/texmf-dist/fonts/type1/urw/times/utmr8a.pfb
 ><c:/texlive/2015/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on paper.pdf (11 pages, 480620 bytes).
+Output written on paper.pdf (11 pages, 482034 bytes).
 PDF statistics:
  110 PDF objects out of 1000 (max. 8388607)
  46 compressed objects within 1 object stream
