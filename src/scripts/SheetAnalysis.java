@@ -67,7 +67,7 @@ public class SheetAnalysis {
     }
     
     Orchard trees = new Orchard();           
-    ExceptionCatcher catcher = new ExceptionCatcher();
+    //ExceptionCatcher catcher = new ExceptionCatcher();
     Queue<File> directoriesToAnalyze = new ArrayDeque<File>();  
     directoriesToAnalyze.add(sheetDirectory);                   
                                                                 
@@ -87,7 +87,7 @@ public class SheetAnalysis {
         try {
           workbook = new XSSFWorkbook(OPCPackage.open(file, PackageAccess.READ));
         } catch (IOException | InvalidFormatException ex) {
-          catcher.addFile(file.getName(), ex);
+          //catcher.addFile(file.getName(), ex);
           continue;
         }
         
@@ -119,8 +119,7 @@ public class SheetAnalysis {
                   r1c1 = formula.toR1C1String(cellRef);                  
                 } catch (Exception ex) {
                   System.err.println(formulaStr + " : " + ex.getMessage());
-                  //ex.printStackTrace();
-                  catcher.addFormula(formulaStr, ex);
+                  //catcher.addFormula(formulaStr, ex);
                   continue;
                 }
                 
@@ -138,21 +137,21 @@ public class SheetAnalysis {
           }
         }
         
-        if (catcher.countFiles() > 10) {
+        /*if (catcher.countFiles() > 10) {
           catcher.flushFiles();
         }
         
         if (catcher.countFormulae() > 1000) {
           catcher.flushFormulae();
-        }
+        }*/
         
         System.out.println();
       } //end for (File file : sheetDirectory.listFiles())
       
     } // end while (directoriesToAnalyze.isEmpty())
     
-    catcher.flushFiles();
-    catcher.flushFormulae();
+    //catcher.flushFiles();
+    //catcher.flushFormulae();
     trees.flush(OUTPUT_DIRECTORY);
   }
   
