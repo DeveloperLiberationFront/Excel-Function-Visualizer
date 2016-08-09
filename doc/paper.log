@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/W32TeX) (preloaded format=pdflatex 2016.3.5)  9 AUG 2016 09:48
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/W32TeX) (preloaded format=pdflatex 2016.3.5)  9 AUG 2016 10:19
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -580,10 +580,10 @@ Before submitting the final camera ready copy, remember to:
 
 ] (./paper.aux) ) 
 Here is how much of TeX's memory you used:
- 3115 strings out of 493033
- 50543 string characters out of 6137755
- 113636 words of memory out of 5000000
- 6605 multiletter control sequences out of 15000+600000
+ 3116 strings out of 493033
+ 50568 string characters out of 6137755
+ 113651 words of memory out of 5000000
+ 6606 multiletter control sequences out of 15000+600000
  39736 words of font info for 73 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  37i,8n,23p,1021b,282s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -593,7 +593,7 @@ xlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/201
 st/fonts/type1/urw/times/utmb8a.pfb><c:/texlive/2015/texmf-dist/fonts/type1/urw
 /times/utmbi8a.pfb><c:/texlive/2015/texmf-dist/fonts/type1/urw/times/utmr8a.pfb
 ><c:/texlive/2015/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on paper.pdf (11 pages, 466225 bytes).
+Output written on paper.pdf (11 pages, 480620 bytes).
 PDF statistics:
  110 PDF objects out of 1000 (max. 8388607)
  46 compressed objects within 1 object stream

@@ -726,7 +726,7 @@
 	to such documentation from within the tool without violating any design
 	concerns in Section~\ref{goals}. \par
 	
-	\subsection{Study Limitations} Though we did not start the study by telling
+	\subsection{Study Limitations} \label{subsec:studylimitations} Though we did not start the study by telling
 	that the data source came from Enron, two users studied the file names to
 	deduce its roots in finance, if not Enron itself. Because of these notorious
 	connotations, then, they might have been inclined from this information to
@@ -787,25 +787,25 @@
 	
 	\subsection{Uncluttered Quantification}
 	
-	We realized early that some of the popular functions would have thousands of
-	variations in large datasets, and showing all of these variations at once would
-	hopelessly overwhelm the user. We therefore made a number of choices, such as
-	the expansion arrows and the use of generic types in place of specific
-	primitive values, that would reduce the variation to something more manageable.
+	A threat to our goals arises from the problem of too much data,
+	particularly in the popular functions, like SUM and IF. We realized early that
+	these functions would overwhelm the user with options in large datasets, so we
+	included features, such as the expansion arrows and the use of generic types
+	instead of values, that would manage the variation. Nevertheless, P3 remarked
+	that they specifically avoided the most popular functions, anticipating a flood
+	of nodes from which they could salvage nothing interesting. P2 corroborated
+	this by explaining how they gravitated toward exploring specific examples in
+	particular value nodes over navigating the full, crowded tree, but they also
+	said that the tool at its best when it compares either every possibility of an
+	argument side-by-side or nothing on that branch at all. Despite our
+	precautions, balancing the desire to show a lot with the desire not to
+	overwhelm remains a challenge. \par
 	
-	Nevertheless, during the user study, P3 remarked that they specifically avoided
-	the most popular functions, anticipating a flood of nodes from which they could
-	salvage nothing interesting. P2 corroborated this by explaining how they
-	gravitated toward exploring specific examples in particular value nodes over
-	navigating the full, crowded tree, but they complicate it further by also
-	saying that the tool at its best when it shows either every possibility of an
-	argument side-by-side (for comparison) or nothing on that branch at all, a
-	balance that is hard to strike with node-dense trees.
-	
-	A threat to our goals, then, arises from the problem of too much data,
-	particularly in the popular functions, like SUM and IF. Despite our
-	precautions, balancing the desire to show every single possibility of design
-	with the desire not to overwhelm remains a challenge. \par
+	Some visual cues turned out to be more confusing than helpful, such as
+	the index number on each argument node. As discussed in Section~\ref{subsec:studylimitations},
+	users often mistook it for other features, like total number of arguments in the
+	function. Though we kept this feature present for all studies, future versions
+	of the tool would refine features like this to reduce confusion. 
 	
 	\subsection{Informative Qualification}
 	
