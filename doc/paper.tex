@@ -120,69 +120,59 @@
 		
 	\end{abstract}
 	
-	\section{Introduction} Spreadsheets surround us. They serve key roles in
-	industry, where as much as 95\% of U.S. financial firms use them
-	daily~\cite{panko2008sarbanes}, and academia, where teachers can use them to
-	track research and students' grades, not to mention many other
-	applications~\cite{ko2011state}. It's this flexibility that grants them their
-	allure: while a novice can still work without much experience, spreadsheets
-	offer hundreds of specialized functions to fulfill a wide range of advanced
+	\section{Introduction} Spreadsheets surround us. They are vital to
+	industry and academia alike, supporting as much as 95\% of U.S. financial firms use them
+	daily~\cite{panko2008sarbanes} and empowering teachers to
+	track research and students' grades~\cite{ko2011state}. This flexibility boosts their
+	allure: while a novice can work with basic offerings, advanced users can choose
+	among the hundreds of specialized functions to fulfill a wide range of
 	needs, from complex statistics to text
 	manipulation~\cite{nardi1990spreadsheet}. As such, it should be no surprise
 	that tens of millions of workers rely on these programs
 	daily~\cite{scaffidi2005estimating}.
 	
-	However, this ubiquity is not without danger; as more people adopt these tools
-	and make larger and more complex sheets, the cost of failure grows too. To
-	illustrate this, the European Spreadsheet Risks Interest Group (EuSpRIG)
-	documents many horror stories of spreadsheets gone
-	wrong\footnote{http://www.eusprig.org/horror-stories.htm}. One story tells of a
-	2013 economics paper which drew connections between debt and national growth.
-	Its findings shaped many political initiatives throughout the United States and
-	Europe. However, other researchers soon discovered that a critical selection
-	error in the research spreadsheets hampered the results and that, by correcting
-	this error, the findings reversed completely! And this is only one of several
-	accounts; even if most spreadsheet errors are relatively benign, poor
-	spreadsheet practice can risk millions, if not billions, of
+	However, this ubiquity is not without danger; as more people make larger and
+	more complex spreadsheets, the cost of failure grows too. The European
+	Spreadsheet Risks Interest Group (EuSpRIG) documents many horror stories of
+	spreadsheets gone wrong\footnote{http://www.eusprig.org/horror-stories.htm},
+	where consequences range from the profuse loss of money to the inaccurate
+	outcomes of elections to the creation of extensive political initiatives based
+	on flawed economics. Even if most spreadsheet errors are relatively benign,
+	poor spreadsheet practice can risk millions, if not billions, of
 	dollars~\cite{powell2009impact}.
-	
-	From these stories, we can see the dire importance of understanding how people
-	actually use spreadsheets. Fortunately, spreadsheet researchers have supported
-	this by amassing spreadsheet collections from diverse sources, industrial to
-	academic. Collections like EUSES~\cite{fisher2005euses},
-	Fuse~\cite{barik2015fuse}, and the Enron corpus~\cite{hermans2015enron} have
-	already fueled productive research across the field, such as in the search for
-	code smells in spreadsheet
+
+	Fortunately, spreadsheet researchers address these dangers by amassing
+	spreadsheet collections from diverse sources, industrial to academic, so
+	researchers can study how people use spreadsheets. Collections like
+	EUSES~\cite{fisher2005euses}, Fuse~\cite{barik2015fuse}, and the Enron
+	corpus~\cite{hermans2015enron} have already produced valueable research, such as the
+	documentation of code smells in spreadsheet
 	environments~\cite{hermans2012detecting}~\cite{jansen2015code} or the creation
-	of grammars to capture every possible spreadsheet program in
-	Excel~\cite{aivaloglou2015grammar}. Additionally, some research has focused on
-	comparing these collections, as Jansen did in 2015, to discover variation in
-	spreadsheet techniques over time and location~\cite{jansen2015enron}.
+	of grammars to describe every possible spreadsheet program in
+	Excel~\cite{aivaloglou2015grammar}. Additionally, some research compares these
+	collections to discover variation in spreadsheet techniques over time and
+	location~\cite{jansen2015enron}.
 	
-	Considering the value of spreadsheets and all of these resources to describe
-	their use, it becomes necessary that we design tools to better enable the
-	exploration of these datasets and simplify the complex concepts that occur in
-	spreadsheet design. One such concept is that of formula construction; functions
-	are an important part of using spreadsheets efficiently, yet the number of
-	potential combinations between them quickly becomes massive when you consider
-	that there are hundreds of them. Tools, then, that empower people to explore
-	questions about which functions are used together in practice have the
-	potential to improve the current design of spreadsheets themselves and educate
-	new generations of spreadsheets users on how to work best.
+	The value of spreadsheets demands that we design tools to better understand
+	these datasets and simplify complexities we find in them. One such complexity
+	is formula construction; functions are an important part of using spreadsheets
+	efficiently, yet the number of potential combinations is massive considering
+	that Excel boasts over 400 functions. Tools that explore these combinations in
+	practice can aid researchers in understanding how people program and in
+	educating new generations of spreadsheets users on how to work best.
 	
 	This paper contributes such a tool, \toolnameend, that attempts to fulfill this
-	need for better exploration by building on the aforementioned spreadsheet
+	need for better exploration of spreadsheet
 	corpora. Working with spreadsheets in Excel, \toolname focuses primarily on the
 	functions, like SUM and IF and hundreds more, which are the building blocks of
 	formulae that determine values across a spreadsheet. The tool creates an
-	interactive, exploratory visualization which captures how people combine these
-	functions in a selected collection of spreadsheets, quantifying the broad
-	patterns of function nesting while also being specific enough to find anomalous
-	formulae and link them back to the specific cell in spreadsheets where they
-	originate. \par
+	interactive visualization which captures how people combine these
+	functions, quantifying the broad
+	patterns of function nesting while also capturing anomalous
+	formulae and their locations. 
 	
-	Alongside the tool, we discuss several of the key decisions we faced during
-	design, such as what to do with redundant formulae in a sheet or how to
+	We also discuss several of the key decisions we faced during
+	design, such as what to do with a sheet's redundant formulae or how to
 	represent optional arguments, and we describe how our overall design goals both
 	helped and hindered this process. We then apply the tool to a number of case
 	studies to evaluate how much it could contribute to several different contexts,
