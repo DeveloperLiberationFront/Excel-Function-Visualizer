@@ -3,7 +3,7 @@
 %% V1.4b
 %% 2015/08/26
 %% by Michael Shell
-%% See:
+%% See:f
 %% http://www.michaelshell.org/
 %% for current contact information.
 %%
@@ -61,7 +61,7 @@
 % The latest version can be obtained at:
 % http://www.ctan.org/pkg/cite
 % The documentation is contained in the cite.sty file itself.
-
+\usepackage{xspace}
 
 % *** GRAPHICS RELATED PACKAGES ***
 %
@@ -85,7 +85,7 @@
 \usepackage{textcomp} %\usepackage{svg}
 %\setsvg{inkscape = inkscape -z -D, svgpath = svgs/}
 
-\newcommand{\toolname}{Perquimans } \newcommand{\toolnameend}{Perquimans}
+\newcommand{\toolname}{Perquimans\xspace} \newcommand{\toolnameend}{Perquimans}
 \newcommand{\toolnameposs}{Perquimans' }
 
 \begin{document} \title{\toolnameend: A Tool for Visualizing Patterns of
@@ -95,9 +95,8 @@
 	% author names and affiliations
 	% use a multiple column layout for up to three different
 	% affiliations
-	\author{ \IEEEauthorblockN{Justin A. Middleton, Emerson Murphy-Hill}
-		\IEEEauthorblockA{North Carolina State University, Raleigh, USA\\ \{jamiddl2,
-			ermurph3\}@ncsu.edu }}
+	\author{ \IEEEauthorblockN{Justin A. Middleton and Emerson Murphy-Hill}
+		\IEEEauthorblockA{North Carolina State University, Raleigh, USA\\ jamiddl2@ncsu.edu, emerson@csc.ncsu.edu }}
 	
 	% use for special paper notices
 	%\IEEEspecialpapernotice{(Invited Paper)}
