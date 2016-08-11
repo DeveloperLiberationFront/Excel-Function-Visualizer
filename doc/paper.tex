@@ -121,15 +121,14 @@
 	\end{abstract}
 	
 	\section{Introduction} Spreadsheets surround us. They are vital to
-	industry and academia alike, supporting as much as 95\% of U.S. financial firms use them
-	daily~\cite{panko2008sarbanes} and empowering teachers to
-	track research and students' grades~\cite{ko2011state}. This flexibility boosts their
+	industry and academia alike, supporting as much as 95\% of U.S. financial firms
+	use them daily~\cite{panko2008sarbanes} and empowering teachers to track
+	research and students' grades~\cite{ko2011state}. This flexibility boosts their
 	allure: while a novice can work with basic offerings, advanced users can choose
-	among the hundreds of specialized functions to fulfill a wide range of
-	needs, from complex statistics to text
-	manipulation~\cite{nardi1990spreadsheet}. As such, it should be no surprise
-	that tens of millions of workers rely on these programs
-	daily~\cite{scaffidi2005estimating}.
+	among the hundreds of specialized functions to fulfill a wide range of needs,
+	from complex statistics to text manipulation~\cite{nardi1990spreadsheet}. As
+	such, it should be no surprise that tens of millions of workers rely on these
+	programs daily~\cite{scaffidi2005estimating}.
 	
 	However, this ubiquity is not without danger; as more people make larger and
 	more complex spreadsheets, the cost of failure grows too. The European
@@ -140,13 +139,13 @@
 	on flawed economics. Even if most spreadsheet errors are relatively benign,
 	poor spreadsheet practice can risk millions, if not billions, of
 	dollars~\cite{powell2009impact}.
-
+	
 	Fortunately, spreadsheet researchers address these dangers by amassing
 	spreadsheet collections from diverse sources, industrial to academic, so
 	researchers can study how people use spreadsheets. Collections like
 	EUSES~\cite{fisher2005euses}, Fuse~\cite{barik2015fuse}, and the Enron
-	corpus~\cite{hermans2015enron} have already produced valueable research, such as the
-	documentation of code smells in spreadsheet
+	corpus~\cite{hermans2015enron} have already produced valueable research, such
+	as the documentation of code smells in spreadsheet
 	environments~\cite{hermans2012detecting}~\cite{jansen2015code} or the creation
 	of grammars to describe every possible spreadsheet program in
 	Excel~\cite{aivaloglou2015grammar}. Additionally, some research compares these
@@ -162,32 +161,29 @@
 	educating new generations of spreadsheets users on how to work best.
 	
 	This paper contributes such a tool, \toolnameend, that attempts to fulfill this
-	need for better exploration of spreadsheet
-	corpora. Working with spreadsheets in Excel, \toolname focuses primarily on the
-	functions, like SUM and IF and hundreds more, which are the building blocks of
-	formulae that determine values across a spreadsheet. The tool creates an
-	interactive visualization which captures how people combine these
-	functions, quantifying the broad
-	patterns of function nesting while also capturing anomalous
-	formulae and their locations. 
+	need for better exploration of spreadsheet corpora. Working with spreadsheets
+	in Excel, \toolname focuses primarily on the functions, like SUM and IF and
+	hundreds more, which are the building blocks of formulae that determine values
+	across a spreadsheet. The tool creates an interactive visualization which
+	captures how people combine these functions, quantifying the broad patterns of
+	function nesting while also capturing anomalous formulae and their locations.
 	
-	We also discuss several of the key decisions we faced during
-	design, such as what to do with a sheet's redundant formulae or how to
-	represent optional arguments, and we describe how our overall design goals both
-	helped and hindered this process. We then apply the tool to a number of case
-	studies to evaluate how much it could contribute to several different contexts,
-	most notably code smell detection and spreadsheet education. To better
-	understand how people might use \toolnameend, we also conducted a user study to
-	judge how usable and intuitive the tool actually is. This grounds the
-	discussion of its potential uses while also underscoring some of its inherent
-	limitations and setting the way for future extensions and improvements upon the
-	concept.
+	We also discuss several of the key decisions we faced during design, such as
+	what to do with a sheet's redundant formulae or how to represent optional
+	arguments, and we describe how our overall design goals both helped and
+	hindered this process. We then apply the tool to a number of case studies to
+	evaluate how much it could contribute to several different contexts, most
+	notably code smell detection and spreadsheet education. To better understand
+	how people might use \toolnameend, we also conducted a user study to judge how
+	usable and intuitive the tool actually is. This grounds the discussion of its
+	potential uses while also underscoring some of its inherent limitations and
+	setting the way for future extensions and improvements upon the concept.
 	
 	\section{Related Work} \label{related-work} Visualizations excel for their
 	ability to communicate information quickly and
 	efficiently~\cite{baeza1999modern}; the visualization of spreadsheets,
-	therefore, has offered much room for research. Several previous tools work
-	within a spreadsheet, seeking to clarify the connections between the visible
+	therefore, offers much room for research. Several previous tools work
+	within a spreadsheet, clarifying connections between the visible
 	values in cells, the formulae that produce them, and the dependencies between
 	cells that inform them. Igarashi and colleague's fluid
 	visualizations~\cite{igarashi1998fluid}, for example, do this by imposing
@@ -196,23 +192,24 @@
 	color and border that were related through similar functions, neighbors, or
 	references~\cite{clermont2003scalable}, and Hipfl extended this work by
 	incorporating the layouts and labels of spreadsheets~\cite{hipfl2008using}.
+	
 	Other tools focus on creating visualizations external to the sheets. Hermans
 	and colleagues address a spreadsheet programmer's information needs by making
 	dataflow diagrams from individual sheets through the tools
 	GyroSAT~\cite{hermans2011supporting} and Breviz~\cite{hermans2011breviz}.
-	\toolname is among the latter class, creating standalone visualizations about
+	\toolname is among this type, creating standalone visualizations about
 	spreadsheets instead of drawing connections inside the spreadsheet itself. In
 	contrast to the other visualization work, our work focuses on representing
 	functions and how they combine into complex formulae, rather than exploring the
 	data structures of any particular spreadsheet.  \par
 	
-	Many other tools inspect the structure of formulae but often from the
+	Many other tools inspect the structure of formulae but from the
 	perspective of finding bad design.  Following Fowler's initial description of
 	code smells in object-oriented design~\cite{fowler2009refactoring}, many
 	researchers have applied similar observations to spreadsheets and have
 	cataloged classes of problematic
-	formulae~\cite{hermans2012detecting}~\cite{cunha2012towards}~\cite{asavametha2012detecting}, often accompanying them with detection tools~\cite{abreu2014smelling} and investigations into real datasets~\cite{jansen2015code}. For example, Hermans, leveraging her work with the aforementioned dataflow diagrams, has worked with assessing common inter-worksheet smells, such as feature envy and inappropriate intimacy, wherein references between worksheets (rather than cells) in a file suggest a problem~\cite{hermans2012detectinginter}. Other tools, like Badame's Excel refactoring~\cite{badame2012refactoring}, are concerned more with understanding the formula in service of changing them. However, these studies define standards of poor design and orient their searches around them. Though \toolname supports the search for bad design, as we will see, the tool itself takes a much more agnostic approach in presentation, offering examples without regard for design quality. \par
-	
+	formulae~\cite{hermans2012detecting}~\cite{cunha2012towards}~\cite{asavametha2012detecting}, often accompanying them with detection tools~\cite{abreu2014smelling} and investigations into real datasets~\cite{jansen2015code}. For example, Hermans, leveraging her work with the aforementioned dataflow diagrams, has worked with assessing common inter-worksheet smells, such as feature envy and inappropriate intimacy, wherein references between worksheets (rather than cells) in a file suggest a problem~\cite{hermans2012detectinginter}. Other tools, like Badame's Excel refactoring~\cite{badame2012refactoring}, are concerned more with understanding the formula in service of changing them. Though \toolname supports the search for bad design, as we will see, the tool itself takes a much more agnostic approach in presentation, offering examples without regard for design quality. \par
+
 	Implicit in this study is an exploration of the Excel API and how people use
 	it. Previous research, such as the first study on the Enron
 	spreadsheets~\cite{hermans2015enron} or in its comparison with the EUSUS
@@ -222,8 +219,8 @@
 	how Java developers use Eclipse and what commands they use most
 	often~\cite{murphy2006java}. Others focus on the documentation of the API
 	itself: Robillard and DeLine, for example conducted a series of surveys and
-	interviews to diagnose common problems with learning APIs, and they found that
-	code examples, one of the focuses of this tool, is one of the most important
+	interviews to diagnose common problems with learning APIs. They found that
+	code examples, which is one of the focuses of this tool, is one of the most important
 	aids to have in learning a new system~\cite{robillard2011field}. Though this
 	paper applies the tool to the Enron corpus specifically, the tool itself is not
 	limited to this; it can be readily applied to any collection of Excel
