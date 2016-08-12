@@ -236,54 +236,35 @@
 	
 	\begin{itemize}
 		
-		\item [1] \textbf{Provide an interactive environment for free exploration.}
-		There are a lot of data in some of these spreadsheet corpora, and the user
-		should be able to pick for themselves which to explore while ignoring the
-		rest. Furthermore, this exploration should not be designed around answering
-		one specific question but rather helping to answer a variety of questions.
+		\item [1] \textbf{Unbiased Exploration} First, provide an interactive
+		environment for free exploration. There are a lot of data in some of these
+		spreadsheet corpora, and the user should be able to pick for themselves which
+		to explore while ignoring the rest. Second, avoid judgments about good and bad
+		design. Though users may certainly approach the tool with the intention of
+		exploring particular formulae, a formula visualization tool will not
+		prioritize any on metrics of good or bad practice.
 		
-		\item [!1] \textbf{Do not make judgments about good and bad design.} Though
-		users may certainly approach the tool with the intention of exploring
-		particular formulae, a formula visualization tool will not prioritize any on
-		metrics of good or bad practice.
+		\item [2] \textbf{Uncluttered Quantification} \toolname should emphasize the
+		quantitative patterns in formula construction and address the questions of how
+		often the spreadsheet programmers used a certain function and where they used
+		it. To do this, it must show metrics, such as frequency of use and depth of
+		function nesting, but it must not overwhelm with numbers. Though everything
+		should be accessible in accordance with the first goal, we should reduce noise with our design.
 		
-		\item [2] \textbf{Emphasize the quantitative patterns in formula
-			construction.} The tool should address the questions of how often the
-		spreadsheet programmers used a certain function and where they used it. To do
-		this, it must show metrics, such as frequency of use and depth of function
-		nesting, of the dataset it conveys.
-		
-		\item [!2] \textbf{Do not overwhelm with numbers.} For popular functions
-		especially, we anticipate that we'll have to show a lot of related data at
-		once. Though everything should be accessible in accordance with Goal 1, we
-		should design in a way that reduces noise.
-		
-		\item [3] \textbf{Promote a qualitative understanding of the patterns.} The
-		tool should supplement its observations with concrete instances of relevant
+		\item [3] \textbf{Informative Qualification} The tool should promote a qualitative understanding of the patterns by providing concrete instances of relevant
 		formulae from the corpus. Ideally, it should even direct users to the exact
 		cell in the spreadsheets where the formula was used, contextualizing the
 		functions.
 		
-		\item [!3] \textbf{Do not attempt to explain formulae.} Though the tool is
-		meant to foster understanding by linking pattern to example, it will not try
-		to be an explanatory tool that articulates what a complex formula
-		accomplishes. Rather, we will provide the structure and context, and the user
-		must infer this on their own.
-		
 	\end{itemize}
 	
-	Though we kept these guidelines in mind through the development of \toolname,
-	we nevertheless reached a number of points in which these principles
-	conflicted. For a discussion of these decisions, see Section
-	\ref{ssec:decisions}.
-	
 	\subsection{Walkthrough of the Tool} \label{sec:walkthrough}Before discussing
-	the minutiae of tool's development, we will give a basic example of how to use
+	the tool's development, we will give a basic example of how to use
 	the tool. For this, we will work from the visualization built on the Enron
 	corpus to answer this question: \textit{ What kinds of functions do people use
 		to define the condition in an IF function?} \par
 	
-	First, a word on the IF function. In Excel, it serves as one of the logical
+	In Excel, the IF functions is one of the logical
 	functions: given a condition as the first argument that evaluates to either
 	true or false, it takes on the value of either the second or third argument,
 	respectively. Or, as the documentation writes out, ``IF(Something is True, then
@@ -295,14 +276,14 @@
 	
 	When the user first approaches the tree for a given top-level function -- that
 	is, a function nested within none other -- only a few nodes are visible, as
-	shown in Figure \ref{fig:startpic}. \par
+	shown in Figure~\ref{fig:startpic}. \par
 	
 	\begin{figure}[h] \centering \includegraphics[scale=.4]{start} \caption{How the
 			IF tree looks at the start} \label{fig:startpic} \end{figure}
 	
 	The visualization so far comprises two types of nodes: the circle
 	\includegraphics{glossary-greenonly}, which represents a discrete function in
-	the formula and is size according to its frequency relative to the number of
+	the formula and is sized according to its frequency relative to the number of
 	times the root function appeared; and the numbered squares
 	\includegraphics{glossary-blue}, which represent the positions of arguments
 	within its parent function. From this, we can confirm that, of the times it was
