@@ -61,13 +61,14 @@
 % The latest version can be obtained at:
 % http://www.ctan.org/pkg/cite
 % The documentation is contained in the cite.sty file itself.
+\usepackage{subfigure}
 
 
 % *** GRAPHICS RELATED PACKAGES ***
 %
 \ifCLASSINFOpdf \usepackage[pdftex]{graphicx} \usepackage{wrapfig} % declare the
 \graphicspath{{pic/}} % and their extensions so you won't have to specify these
-\DeclareGraphicsExtensions{.png} \else % or other class option (dvipsone,
+\DeclareGraphicsExtensions{.pdf,.png} \else % or other class option (dvipsone,
 % dvipdf, if not using dvips). graphicx
 % will default to the driver specified in the system graphics.cfg if no
 % driver is specified.
@@ -312,7 +313,7 @@
 	is, a function nested within none other -- only a few nodes are visible, as
 	shown in Figure \ref{fig:startpic}. \par
 	
-	\begin{figure}[h] \centering \includegraphics[scale=.4]{start} \caption{How the
+	\begin{figure}[h] \centering \includegraphics[width=.4\columnwidth]{start} \caption{How the
 			IF tree looks at the start} \label{fig:startpic} \end{figure}
 	
 	The visualization so far comprises two types of nodes: the circle
@@ -330,7 +331,7 @@
 	option to display the rest by clicking the arrow
 	\includegraphics{glossary-arrow}.
 	
-	\begin{figure}[h] \centering \includegraphics[scale=.4]{IFexpand}
+	\begin{figure}[h] \centering \includegraphics[width=0.7\columnwidth]{IFexpand}
 		\caption{First argument of the IF tree} \label{fig:expandif} \end{figure}
 	
 	We see that IF contains a number of comparison operators as its first argument,
@@ -341,7 +342,7 @@
 	the range of common values of equality comparison, which Figure
 	\ref{fig:fullpic} shows. \par
 	
-	\begin{figure*}[t] \centering \includegraphics[scale=.5]{IFargslabel}
+	\begin{figure*}[t] \centering \includegraphics[width=0.8\textwidth]{IFargslabel}
 		\caption{A picture of \toolname displaying the common arguments to the IF
 			function's first parameter} \centering \label{fig:fullpic} \end{figure*}
 	
@@ -403,8 +404,17 @@
 		on. See Figure~\ref{fig:optional} for how the data between tree types differs.
 	\end{itemize}
 	
-	\begin{figure}[h] \centering \includegraphics[width =
-		.46\textwidth]{comparison} \includegraphics[]{comparison-ss} \caption{The
+	\begin{figure}[h] 
+		\centering
+		\begin{subfigure}
+		  \centering
+		  \includegraphics[width=.4\linewidth]{comparison1}
+		\end{subfigure}%
+		\begin{subfigure}
+		  \centering
+		  \includegraphics[width=.4\linewidth]{comparison2}
+		\end{subfigure} 
+		\includegraphics[]{comparison-ss} \caption{The
 			contents of the default tree (left) and the optional argument trees (right)}
 		\label{fig:optional} \end{figure}
 	
