@@ -64,6 +64,7 @@
 
 \usepackage{xspace}
 \usepackage{subfigure}
+\usepackage{url}
 
 
 % *** GRAPHICS RELATED PACKAGES ***
@@ -204,14 +205,14 @@
 	spreadsheets instead of drawing connections inside the spreadsheet itself. In
 	contrast to the other visualization work, our work focuses on representing
 	functions and how they combine into complex formulae, rather than exploring the
-	data structures of any particular spreadsheet.  \par
+	data structures of any particular spreadsheet. 
 	
 	Many other tools inspect the structure of formulae but from the
 	perspective of finding bad design.  Following Fowler's initial description of
 	code smells in object-oriented design~\cite{fowler2009refactoring}, many
 	researchers have applied similar observations to spreadsheets and have
 	cataloged classes of problematic
-	formulae~\cite{hermans2012detecting}~\cite{cunha2012towards}~\cite{asavametha2012detecting}, often accompanying them with detection tools~\cite{abreu2014smelling} and investigations into real datasets~\cite{jansen2015code}. For example, Hermans, leveraging her work with the aforementioned dataflow diagrams, has worked with assessing common inter-worksheet smells, such as feature envy and inappropriate intimacy, wherein references between worksheets (rather than cells) in a file suggest a problem~\cite{hermans2012detectinginter}. Other tools, like Badame's Excel refactoring~\cite{badame2012refactoring}, are concerned more with understanding the formula in service of changing them. Though \toolname supports the search for bad design, as we will see, the tool itself takes a much more agnostic approach in presentation, offering examples without regard for design quality. \par
+	formulae~\cite{hermans2012detecting}~\cite{cunha2012towards}~\cite{asavametha2012detecting}, often accompanying them with detection tools~\cite{abreu2014smelling} and investigations into real datasets~\cite{jansen2015code}. For example, Hermans, leveraging her work with the aforementioned dataflow diagrams, has worked with assessing common inter-worksheet smells, such as feature envy and inappropriate intimacy, wherein references between worksheets (rather than cells) in a file suggest a problem~\cite{hermans2012detectinginter}. Other tools, like Badame's Excel refactoring~\cite{badame2012refactoring}, are concerned more with understanding the formula in service of changing them. Though \toolname supports the search for bad design, as we will see, the tool itself takes a much more agnostic approach in presentation, offering examples without regard for design quality.
 
 	Implicit in this study is an exploration of the Excel API and how people use
 	it. Previous research, such as the first study on the Enron
@@ -262,67 +263,65 @@
 	\end{itemize}
 	
 	\subsection{Walkthrough of the Tool} \label{sec:walkthrough}Before discussing
-	the tool's development, we will give a basic example of how to use
-	the tool. For this, we will work from the visualization built on the Enron
+	\toolnameposs development, we will give a basic example of how to use
+	it. We will work from the visualization built on the Enron
 	corpus to answer this question: \textit{ What kinds of functions do people use
-		to define the condition in an IF function?} \par
+		to define the condition in an IF function?}
 	
-	In Excel, the IF functions is one of the logical
-	functions: given a condition as the first argument that evaluates to either
-	true or false, it takes on the value of either the second or third argument,
-	respectively. Or, as the documentation writes out, ``IF(Something is True, then
-	do something, otherwise do something
-	else)"\footnote{https://support.office.com/en-us/article/IF-function-69aed7c9-4e8a-4755-a9bc-aa8bbff73be2?ui=en-US\&rs=en-US\&ad=US}. Furthermore, the third argument is optional; if left out, the function will return a default ``FALSE" value if necessary. Examples of this function in practice can be seen in Figure~\ref{fig:ifexample}.
+	In Excel, the IF functions is one of the logical functions: given a condition
+	as the first argument that evaluates to either true or false, it takes on the
+	value of either the second or third argument respectively. Or, as the
+	documentation writes out, ``IF(Something is True, then do something, otherwise
+	do something
+	else)"\footnote{\url{https://support.office.com/en-us/article/IF-function-69aed7c9-4e8a-4755-a9bc-aa8bbff73be2?ui=en-US\&rs=en-US\&ad=US}}. Furthermore, the third argument is optional; if left out, the function will return a default ``FALSE" value if necessary. Examples of this function in practice can be seen in Figure~\ref{fig:ifexample}.
 	
 	\begin{figure}[h] \centering \includegraphics[width=\columnwidth]{ifExample}
 		\caption{Configurations of the IF function} \label{fig:ifexample} \end{figure}
 	
 	When the user first approaches the tree for a given top-level function -- that
 	is, a function nested within none other -- only a few nodes are visible, as
-	shown in Figure~\ref{fig:startpic}. \par
+	shown in Figure~\ref{fig:startpic}. 
 	
 	\begin{figure}[h] \centering \includegraphics[width=.4\columnwidth]{start} \caption{How the
 			IF tree looks at the start} \label{fig:startpic} \end{figure}
 	
-	The visualization so far comprises two types of nodes: the circle
-	\includegraphics{glossary-greenonly}, which represents a discrete function in
-	the formula and is sized according to its frequency relative to the number of
-	times the root function appeared; and the numbered squares
-	\includegraphics{glossary-blue}, which represent the positions of arguments
-	within its parent function. From this, we can confirm that, of the times it was
-	observed, IF can have at most three arguments passed into it, which corresponds
-	with its specifications in the API. \par
+	The visualization so far comprises two types of nodes. The first are the
+	circles \includegraphics{glossary-greenonly}, which represens a discrete
+	function in the formula. These are sized according to their frequency relative
+	to the number of times the root function appeared. The second kind of node are
+	the numbered squares \includegraphics{glossary-blue}, which represent the
+	positions of arguments within its parent function. Looking back at the tree, we
+	can confirm that IF functions in this dataset had at most three arguments
+	passed into them, which corresponds with its specifications in the API. 
 	
-	Knowing that it is the first argument which contains the conditionals, we click
-	on the square labeled ``1" to explore. To save space, when the tool finds more
-	than 10 unique arguments in a position, it displays only the first ten, with an
-	option to display the rest by clicking the arrow
+	Knowing that the first argument of IF contains the conditionals, we click on
+	the square labeled ``1" to explore. When the tool finds more than 10 unique
+	arguments in a position, it saves space by displaying only the first ten and
+	includes an option to display the rest by clicking the arrow
 	\includegraphics{glossary-arrow}.
 	
 	\begin{figure}[h] \centering \includegraphics[width=0.7\columnwidth]{IFexpand}
 		\caption{First argument of the IF tree} \label{fig:expandif} \end{figure}
 	
-	We see that IF contains a number of comparison operators as its first argument,
-	such as = and $\le$, and boolean-returning functions, like ISNA and AND, with
-	simple equality being the most common and ABS being the least. From here, we
+	In Figure~\ref{fig:expandif}, we see that IF's first arguments are most often comparison operators,
+	such as = and $\le$, and boolean-returning functions, like ISNA and AND. Of these,
+	simple equality is the most common and ABS is the least. From here, we
 	can further explore the common options among these functions. Clicking on the
-	``=" node will yield two arguments and expanding each of them will peer into
-	the range of common values of equality comparison, which Figure
-	\ref{fig:fullpic} shows. \par
+	``=" node will yield two arguments and expanding each of them will show
+	the common values on either side of the equals sign, as in Figure~\ref{fig:fullpic}. 
 	
 	\begin{figure*}[t] \centering \includegraphics[width=0.8\textwidth]{IFargslabel}
 		\caption{A picture of \toolname displaying the common arguments to the IF
 			function's first parameter} \centering \label{fig:fullpic} \end{figure*}
 	
-	For both sides of the equal sign, the operator has certain types of arguments
+	The equality operator has certain types of arguments
 	which predominate over the others: on the left side is most often a reference
-	to another cell; on the right, a string or number literal, which makes sense
+	to another cell; on the right is a string or number literal, which makes sense
 	for the case of confirming a value in another cell before assigning this one.
 	Furthermore, a tooltip accompanies each function node in the tree, providing a
 	concrete example of a function that uses this structure. If this single
-	instance is not enough, then the user also has the option to double-click the
-	individual function node, which will open up a new tab with a table of many
-	more examples from dataset.
+	instance is not enough, then the user also has the option to open up a new
+	window with a table of many more examples from dataset.
 	
 	\subsection{Glyph Glossary}
 	
