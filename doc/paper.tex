@@ -65,7 +65,7 @@
 \usepackage{xspace}
 \usepackage{subfigure}
 \usepackage{url}
-\usepackage{hyperref}
+\usepackage[bookmarks=false]{hyperref}
 
 % *** GRAPHICS RELATED PACKAGES ***
 %
@@ -100,7 +100,7 @@
 	% use a multiple column layout for up to three different
 	% affiliations
 	\author{ \IEEEauthorblockN{Justin Middleton and Emerson Murphy-Hill}
-		\IEEEauthorblockA{North Carolina State University, Raleigh, USA\\ jamiddl2@ncsu.edu, emerson@csc.ncsu.edu }}
+		\IEEEauthorblockA{North Carolina State University\\Raleigh, North Carolina, USA\\ jamiddl2@ncsu.edu, emerson@csc.ncsu.edu }}
 	
 	% use for special paper notices
 	%\IEEEspecialpapernotice{(Invited Paper)}
@@ -242,7 +242,7 @@
 		spreadsheet corpora, and the user should be able to pick for themselves which
 		to explore while ignoring the rest. Second, avoid judgments about good and bad
 		design. Though users may certainly approach the tool with the intention of
-		exploring particular formulae, a formula visualization tool will not
+		exploring particular formulae, our formula visualization tool will not
 		prioritize any on metrics of good or bad practice.
 		
 		\item [2] \textbf{Uncluttered Quantification} \toolname should emphasize the
@@ -309,7 +309,7 @@
 	the common values on either side of the equals sign, as in Figure~\ref{fig:fullpic}. 
 	
 	\begin{figure*}[t] \centering \includegraphics[width=0.8\textwidth]{IFargslabel}
-		\caption{A picture of \toolname displaying the common arguments to the \texttt{IF}
+		\caption{\toolname displaying the common arguments to the \texttt{IF}
 			function's first parameter} \centering \label{fig:fullpic} \end{figure*}
 	
 	The equality operator has certain types of arguments
@@ -414,7 +414,7 @@
 	visualizing some dimensions was quicker than writing them out.
 	
 	In balancing this chosen form with the goals in Section~\ref{goals}, we faced a
-	number of decisions in how to visualize the data. Below, we've outlined those
+	number of decisions in how to visualize the data. Below, we have outlined those
 	that had the largest impact in the values that appear in the tree.
 	\begin{itemize}
 		
@@ -432,7 +432,7 @@
 		
 		\ \ For example, in the pictured \texttt{IF} function, we found that people
 		often use another \texttt{IF} statement as the second or third arguments of
-		the top-level \texttt{IF}. If we only consider functions exactly where they're
+		the top-level \texttt{IF}. If we only consider functions exactly where they are
 		found embedded in the formula, then information about the same function --
 		\texttt{IF}, in this case -- will be scattered across different trees with no
 		way to aggregate them and see, for example, how many times \texttt{IF} was
@@ -541,7 +541,7 @@
 	combinations are only a click away.
 	
 	%Lookup example
-	For a deeper example, the LOOKUP functions are some of the most popular in
+	For a deeper example, the \texttt{LOOKUP} functions are some of the most popular in
 	Excel yet come with a number of important but silent requirements for proper
 	use, and, as such, they have warranted some extra attention with regards to
 	spreadsheet design. In short, these functions are for ``when you need to look
@@ -551,7 +551,7 @@
 	
 	\begin{figure}[h] \centering
 		\includegraphics[width=.5\textwidth]{lookupexample} \caption{Demonstrations of
-			LOOKUP and VLOOKUP} \label{fig:lookupexample} \end{figure}
+			\texttt{LOOKUP} and \texttt{VLOOKUP}} \label{fig:lookupexample} \end{figure}
 	
 	\texttt{LOOKUP} has two forms: vector and array. In either case, the first argument is
 	the value which you are trying to match in another column. If the formula is in
@@ -597,11 +597,11 @@
 	this problem surfaces. 
 	
 	\begin{figure}[h] \centering \includegraphics[width=.5\textwidth]{lookup-2}
-		\includegraphics[width=.5\textwidth]{lookup-3} \caption{LOOKUP with two and
+		\includegraphics[width=.5\textwidth]{lookup-3} \caption{\texttt{LOOKUP} with two and
 			three arguments}  \label{fig:lookups} \end{figure}
 	
 	\begin{figure}[h] \centering \includegraphics[width=.5\textwidth]{vlookup}
-		\includegraphics[width=.5\textwidth]{hlookup} \caption{VLOOKUP and HLOOKUP with
+		\includegraphics[width=.5\textwidth]{hlookup} \caption{\texttt{VLOOKUP} and \texttt{HLOOKUP} with
 			four arguments} \label{fig:vhlookups}\end{figure}
 	
 	\section{User Study} \label{sec:userstudy} 
@@ -634,7 +634,7 @@
 	
 		\begin{wrapfigure}{O}{.25\textwidth} \centering
 			\includegraphics[width=.20\textwidth]{SUM}  \caption{An abundance of parameters
-				in SUM, which was a commonly noted smell in the user study} \label{fig:sum}
+				in \texttt{SUM}, which was a commonly noted smell in the user study} \label{fig:sum}
 		\end{wrapfigure}
 
 	The participants were most vocal about their findings when they discovered
@@ -674,7 +674,7 @@
 	design is poor until they see it in the tree and, at the point, find specific
 	examples of where it occurs in the spreadsheets.
 	
-	\subsection{Use in Education} Users found \toolname's inclusion of examples to
+	\subsection{Use in Education} Users found \toolname' inclusion of examples to
 	be especially useful since none of the them considered themselves to be experts
 	of Excel, their self-reported proficiencies ranging from ``fairly familiar"
 	(P2) to ``not extremely familiar" (P4). For example, as P1 explored the \texttt{VLOOKUP}
@@ -804,7 +804,7 @@
 	well. 
 	
 	\begin{figure} \centering \includegraphics[width=.4\textwidth]{index}
-		\caption{A difficult question: how often is MATCH used in both the second and
+		\caption{A difficult question: how often is \texttt{MATCH} used in both the second and
 			third arguments?} \label{fig:index} \end{figure}
 	
 	Though our focus was specifically on function combination, there are several
