@@ -364,11 +364,12 @@
 		\textbf{Optional argument trees} are variations of trees that show only
 		formulae with a specific number of arguments. For example, the function
 		\texttt{AND} can take any number of arguments, up to 255. By default, the tree
-		shows data from \texttt{AND} functions with any number of arguments, but these
-		trees, which have argument nodes of a lighter blue color, can show how
-		\texttt{AND} was used when \textit{only} two arguments were passed into it, or
-		\textit{only} four, and so on. See Figure~\ref{fig:optional} for how the data
-		between tree types differs.
+		shows data from \texttt{AND} functions with any number of arguments, and an
+		example of the \texttt{AND} tree with sample contents is shown on the left of
+		Figure~\ref{fig:optional}. Optional argument trees, however, have argument
+		nodes of a lighter blue color and show how \texttt{AND} was used when
+		\textit{exactly} two arguments were passed into it, or \textit{exactly} four,
+		without including uses of this function with any other number of arguments.
 	\end{itemize}
 	
 	\begin{figure}[h] 
@@ -382,7 +383,7 @@
 		  \includegraphics[width=.4\linewidth]{comparison2}
 		\end{subfigure} 
 		\includegraphics[]{comparison-ss} \caption{The
-			contents of the default tree (left) and the optional argument trees (right)}
+			contents of the default tree (left) and the optional argument tree with 4 arguments (right)}
 		\label{fig:optional} \end{figure}
 	
 	
