@@ -391,7 +391,7 @@
 	\subsection{Implementation Details} The visualization is the product of two processes: \begin{itemize} \item \textit{Collection}: Given a set of
 		Excel sheets, the tool, written in Java, uses Apache
 		POI\footnote{https://poi.apache.org/} to identify and iterate over every cell
-		containing a valid formula. Afterward, it calls POI's formula parser to break
+		containing a valid formula. Afterward, it calls POI's formula parser to decompose
 		the formula text into an ordered set of individual tokens, which the tool then
 		parses into the tree-like form. When all formulae have been analyzed like this,
 		it produces JSON files for each top-level function in the set.
@@ -407,22 +407,18 @@
 	\subsection{Design Decisions} \label{ssec:decisions} Early in the design, we
 	chose the tree form for its inherent ability to represent the parent-children
 	relationship of formulae as functions and their arguments, which could be yet
-	more functions. By adapting this structure for a broad range of possibilities
-	for nested functions, the branching factor depends alternatively on the number
-	of arguments in a function and the number of possible functions observed as an
-	argument in a function. 
+	more functions. One option that we did not take was to represent the call trees
+	as simple text hierarchies. Though that might work well for a single,
+	uncomplicated call structure, we did not do this because our tool combined many
+	of these call trees into a more complicated structure. To capture the different
+	relationships in the tree and to quantify the frequency of arguments, we would
+	need to be more verbose in our description. As such, we decided that
+	visualizing some dimensions was quicker than writing them out.
 	
-	Another of our options was to represent the call trees as simple text
-	hierarchies. Though this might work well for a single, uncomplicated call
-	structure, we did not do this because our tool combined many of these call
-	trees into a more complicated structure. To capture the different relationships
-	in the tree and to quantify the frequency of arguments, we would need to be
-	more verbose in our description. As such, we decided that visualizing some
-	dimensions was quicker than writing them out. 
-	
-	Guided by the goals in Section \ref{goals}, we faced a number of decisions in
-	how to visualize the data. Below, we've outlined those that had the largest
-	impact in the values that appear in the tree. \begin{itemize}
+	In balancing this chosen form with the goals in Section~\ref{goals}, we faced a
+	number of decisions in how to visualize the data. Below, we've outlined those
+	that had the largest impact in the values that appear in the tree.
+	\begin{itemize}
 		
 		\item \textit{Copied formulae}: Excel allows users to spread a formula over an
 		area, repeating the same task in each cell with minor adjustments. Without
@@ -433,17 +429,17 @@
 		R1C1 formulae once per worksheet.
 		
 		\item \textit{Importance of depth}: When a function appears within another,
-		should it be analyzed only as a nested function or would it also be valid to
-		analyze the nested function on its own? 
+		should it be analyzed only as a nested function or should \toolname
+		analyze the nested function as a top-level function as well? 
 		
-		\ \ For example, in the pictured IF function, we found that people often use
-		another IF statement as the second or third arguments of the top-level IF. If
+		\ \ For example, in the pictured \texttt{IF} function, we found that people often use
+		another IF statement as the second or third arguments of the top-level \texttt{IF}. If
 		we only consider functions exactly where they're found embedded in the
-		formula, then information about the same function -- IF, in this case -- will
+		formula, then information about the same function -- \texttt{IF}, in this case -- will
 		be scattered across different trees with no way to aggregate them. If we
 		record every instance of a function by ignoring their context -- that is,
-		including an IF embedded within a SUM function in the same node as the
-		top-level IF -- then the tool will represent some functions in multiple nodes
+		including an \texttt{IF} embedded within a \texttt{SUM} function in the same node as the
+		top-level \texttt{IF} -- then the tool will represent some functions in multiple nodes
 		to capture every possible level of nesting. For now, we only include the
 		first, with the latter to be added as an option in the future.
 		
