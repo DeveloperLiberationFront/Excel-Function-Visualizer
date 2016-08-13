@@ -410,7 +410,7 @@
 	more functions. By adapting this structure for a broad range of possibilities
 	for nested functions, the branching factor depends alternatively on the number
 	of arguments in a function and the number of possible functions observed as an
-	argument in a function. \par
+	argument in a function. 
 	
 	Another of our options was to represent the call trees as simple text
 	hierarchies. Though this might work well for a single, uncomplicated call
@@ -418,7 +418,7 @@
 	trees into a more complicated structure. To capture the different relationships
 	in the tree and to quantify the frequency of arguments, we would need to be
 	more verbose in our description. As such, we decided that visualizing some
-	dimensions was quicker than writing them out. \par
+	dimensions was quicker than writing them out. 
 	
 	Guided by the goals in Section \ref{goals}, we faced a number of decisions in
 	how to visualize the data. Below, we've outlined those that had the largest
@@ -434,7 +434,7 @@
 		
 		\item \textit{Importance of depth}: When a function appears within another,
 		should it be analyzed only as a nested function or would it also be valid to
-		analyze the nested function on its own? \par
+		analyze the nested function on its own? 
 		
 		\ \ For example, in the pictured IF function, we found that people often use
 		another IF statement as the second or third arguments of the top-level IF. If
@@ -466,7 +466,7 @@
 	Section~\ref{related-work}. While some of the smells lie beyond the scope of
 	the tool, such as those characterizing inter-worksheet connections, others have
 	structures which create distinctive features within the tree, leading to easy
-	detection through our visualization: \par
+	detection through our visualization: 
 	
 	\begin{itemize}
 		
@@ -506,7 +506,7 @@
 	the tool, we isolated an instance where the programmer used a single-argument
 	SUM where the argument was a series of 32 contiguous cells added with the +
 	operation -- ``SUM(C6+C7+C8+C9+C10+C11+C12+C13+...+C37)" -- representing a
-	technically valid but unusual and problematic design.\par
+	technically valid but unusual and problematic design.
 	
 	However, because \toolname makes no judgments beforehand about which designs to
 	emphasize as good or bad, the tool can be used to find strange or suboptimal
@@ -532,7 +532,7 @@
 	\toolname aligns entirely with the last; when a user chooses to explore a
 	particular function node, they will see examples of that formula as it was used
 	in a working environment, with the specifics depending on the dataset the tool
-	is using. \par
+	is using. 
 	
 	Furthermore, Robillard and Deline's study makes the case for examples that show
 	``API usage patterns involving more than one method
@@ -604,7 +604,7 @@
 	spreadsheet programmers use this function, with these particular parameters?"
 	Though \toolname does not discern whether neighboring columns are sorted, it
 	can nevertheless guide the educator to several examples in production where
-	this problem surfaces. \par
+	this problem surfaces. 
 	
 	\begin{figure}[h] \centering \includegraphics[width=.5\textwidth]{vlookup}
 		\includegraphics[width=.5\textwidth]{hlookup} \caption{VLOOKUP and HLOOKUP with
@@ -620,7 +620,7 @@
 	to open the floor for questions like on which functions employees most depended
 	and which sheets contained the most dangerous formula practice. We clarified,
 	furthermore, that their observations could be directed either at the quality of
-	the data conveyed by the tool or at the tool's design itself. \par
+	the data conveyed by the tool or at the tool's design itself.
 	
 	We had four participants, labeled P1 through P4. Only P4 had no experience with
 	spreadsheets in a professional environment, having used spreadsheets
@@ -689,7 +689,7 @@
 	explained its function signature. Furthermore, in the process of exploring
 	trees, P1 and P3 also gravitated towards some functions they had not used
 	before, such as PV and IPMT, looking for new features in Excel to explore and
-	learn. \par
+	learn. 
 	
 	Additionally, \toolname offers a simple way of finding examples where certain
 	functions were used together, demonstrated when P4 took special interest in how
@@ -697,7 +697,7 @@
 	date functions like DATE and MONTH as lookup values in VLOOKUP. Though a
 	standard text-search tool might yield the same results for a function alone,
 	combinations can require more complex text queries, whereas here, the
-	information is already captured in nodes.  \par
+	information is already captured in nodes. 
 	
 	However, we found that even though a user can explore all of a function's
 	configurations, this does not mean that they will learn exactly what it does.
@@ -709,7 +709,7 @@
 	environment is not enough to teach users \textit{when} to use a function.
 	However, we could address this in future designs, perhaps, by linking directly
 	to such documentation from within the tool without violating any design
-	concerns in Section~\ref{goals}. \par
+	concerns in Section~\ref{goals}. 
 	
 	\subsection{Study Limitations} \label{subsec:studylimitations} 
 	
@@ -723,7 +723,7 @@
 	place without this essential context. Comments like these point out the
 	trade-offs of unguided exploration, too: though it might not restrict them to a
 	single purpose, it might, at the same time, not afford them any mindset at all
-	with which to interpret the data. \par
+	with which to interpret the data. 
 	
 	Throughout the study, we noticed that users misunderstood the design
 	and, as such, their early discoveries were inaccurate. For example, P1
@@ -734,8 +734,7 @@
 	different paths in formula construction rather than different arguments of the
 	same function. Though these misunderstandings were useful in pinpointing weak
 	parts of the tool, their presence affected many of the participant's observations before we
-	could clarify, reducing the amount of useful information from these sessions.  \par
-	
+	could clarify, reducing the amount of useful information from these sessions.
 	
 	\section{Tool Limitations} 
 	
@@ -753,7 +752,7 @@
 	hard-coded nothing that explicitly emphasizes bad design, the nature of the
 	visualization draws attention towards certain offenses, like those in
 	Section~\ref{badsmells}. While these may be fairly obvious, however, they 
-	may distract from subtler, more insidious patterns. \par 
+	may distract from subtler, more insidious patterns.
 	
 	Despite this second point, our participants found the discovery of bad smell
 	to be the most interesting aspect about it. To design in that
@@ -771,7 +770,7 @@
 	this by explaining how they preferred to explore specific examples in
 	individuals nodes instead of navigating the full, crowded tree. Despite our
 	precautions, balancing the desire to show a lot with the desire not to
-	overwhelm remains a challenge. \par
+	overwhelm remains a challenge.
 	
 	Some visual cues turned out to be more confusing than helpful, such as
 	the index number on each argument node. As discussed in Section~\ref{subsec:studylimitations},
@@ -808,7 +807,7 @@
 	Sheets\footnote{https://www.google.com/sheets/about/}, we have no
 	guarantee that practices and functions will hold across these varied programs, even within
 	similar domains. This, then, warrants further analysis, in which good visualization might serve
-	well. \par	
+	well. 
 	
 	\begin{figure} \centering \includegraphics[width=.4\textwidth]{index}
 		\caption{A difficult question: how often is MATCH used in both the second and
@@ -836,7 +835,7 @@
 	is: the common along with the anomalous, and the well-designed along with the
 	odorous. As seen in the user and case studies, this allows it to take on
 	several potential roles at once, such as an environment for investigating code
-	smells as well as a repository for examples for learning new techniques. \par
+	smells as well as a repository for examples for learning new techniques.
 	
 	The design of the tool still has much room for improvement. Though the
 	exploratory philosophy fostered certain goals well, such as the ability to
@@ -846,7 +845,7 @@
 	examine the good or the bad design exclusively was not fully supported by a
 	tool that claimed to know neither. Many of the problems, however, were not
 	essential to this design conflict and will be overcome in future iterations of
-	design by refining icons and improving maneuverability. \par
+	design by refining icons and improving maneuverability.
 	
 	Either way, the visualization of these large datasets represents an important
 	step in improving practice overall. By taking these voluminous oceans of data
