@@ -66,7 +66,6 @@
 \usepackage{subfigure}
 \usepackage{url}
 
-
 % *** GRAPHICS RELATED PACKAGES ***
 %
 \ifCLASSINFOpdf \usepackage[pdftex]{graphicx} \usepackage{wrapfig} % declare the
@@ -146,7 +145,7 @@
 	
 	Fortunately, spreadsheet researchers address these dangers by amassing
 	spreadsheet collections from diverse sources, industrial to academic, so
-	researchers can study how people use spreadsheets. Collections like
+	they can study how people use spreadsheets. Collections like
 	EUSES~\cite{fisher2005euses}, Fuse~\cite{barik2015fuse}, and the Enron
 	corpus~\cite{hermans2015enron} have already produced valueable research, such
 	as the documentation of code smells in spreadsheet
@@ -222,7 +221,7 @@
 	questions to other contexts as well, such as Murphy and colleague's study into
 	how Java developers use Eclipse and what commands they use most
 	often~\cite{murphy2006java}. Others focus on the documentation of the API
-	itself: Robillard and DeLine, for example conducted a series of surveys and
+	itself: Robillard and DeLine, for example, conducted a series of surveys and
 	interviews to diagnose common problems with learning APIs. They found that
 	code examples, which is one of the focuses of this tool, is one of the most important
 	aids to have in learning a new system~\cite{robillard2011field}. Though this
@@ -266,14 +265,14 @@
 	\toolnameposs development, we will give a basic example of how to use
 	it. We will work from the visualization built on the Enron
 	corpus to answer this question: \textit{ What kinds of functions do people use
-		to define the condition in an IF function?}
+		to define the condition in an \texttt{IF} function?}
 	
-	In Excel, the IF functions is one of the logical functions: given a condition
+	In Excel, the \texttt{IF} functions is one of the logical functions: given a condition
 	as the first argument that evaluates to either true or false, it takes on the
 	value of either the second or third argument respectively. Or, as the
-	documentation writes out, ``IF(Something is True, then do something, otherwise
+	documentation writes out, ``\texttt{IF(Something is True, then do something, otherwise
 	do something
-	else)"\footnote{\url{https://support.office.com/en-us/article/IF-function-69aed7c9-4e8a-4755-a9bc-aa8bbff73be2?ui=en-US\&rs=en-US\&ad=US}}. Furthermore, the third argument is optional; if left out, the function will return a default ``FALSE" value if necessary. Examples of this function in practice can be seen in Figure~\ref{fig:ifexample}.
+	else)}"\footnote{\url{https://support.office.com/en-us/article/IF-function-69aed7c9-4e8a-4755-a9bc-aa8bbff73be2?ui=en-US\&rs=en-US\&ad=US}}. Furthermore, the third argument is optional; if left out, the function will return a default ``FALSE" value if necessary. Examples of this function in practice can be seen in Figure~\ref{fig:ifexample}.
 	
 	\begin{figure}[h] \centering \includegraphics[width=\columnwidth]{ifExample}
 		\caption{Configurations of the IF function} \label{fig:ifexample} \end{figure}
@@ -286,32 +285,32 @@
 			IF tree looks at the start} \label{fig:startpic} \end{figure}
 	
 	The visualization so far comprises two types of nodes. The first are the
-	circles \includegraphics{glossary-greenonly}, which represens a discrete
-	function in the formula. These are sized according to their frequency relative
+	circles \includegraphics{glossary-greenonly}, which represents a discrete
+	function in the formula. These nodes are sized according to their frequency relative
 	to the number of times the root function appeared. The second kind of node are
 	the numbered squares \includegraphics{glossary-blue}, which represent the
 	positions of arguments within its parent function. Looking back at the tree, we
-	can confirm that IF functions in this dataset had at most three arguments
+	can confirm that \texttt{IF} functions in this dataset had at most three arguments
 	passed into them, which corresponds with its specifications in the API. 
 	
-	Knowing that the first argument of IF contains the conditionals, we click on
+	Knowing that the first argument of \texttt{IF} contains the conditionals, we click on
 	the square labeled ``1" to explore. When the tool finds more than 10 unique
 	arguments in a position, it saves space by displaying only the first ten and
 	includes an option to display the rest by clicking the arrow
 	\includegraphics{glossary-arrow}.
 	
 	\begin{figure}[h] \centering \includegraphics[width=0.7\columnwidth]{IFexpand}
-		\caption{First argument of the IF tree} \label{fig:expandif} \end{figure}
+		\caption{First argument of the \texttt{IF} tree} \label{fig:expandif} \end{figure}
 	
-	In Figure~\ref{fig:expandif}, we see that IF's first arguments are most often comparison operators,
-	such as = and $\le$, and boolean-returning functions, like ISNA and AND. Of these,
+	In Figure~\ref{fig:expandif}, we see that \texttt{IF}'s first arguments are most often comparison operators,
+	such as = and $\le$, and boolean-returning functions, like \texttt{ISNA} and \texttt{AND}. Of these,
 	simple equality is the most common and ABS is the least. From here, we
 	can further explore the common options among these functions. Clicking on the
 	``=" node will yield two arguments and expanding each of them will show
 	the common values on either side of the equals sign, as in Figure~\ref{fig:fullpic}. 
 	
 	\begin{figure*}[t] \centering \includegraphics[width=0.8\textwidth]{IFargslabel}
-		\caption{A picture of \toolname displaying the common arguments to the IF
+		\caption{A picture of \toolname displaying the common arguments to the \texttt{IF}
 			function's first parameter} \centering \label{fig:fullpic} \end{figure*}
 	
 	The equality operator has certain types of arguments
@@ -325,50 +324,51 @@
 	
 	\subsection{Glyph Glossary}
 	
-	From these images, we can provide a quick glossary of glyphs within the
-	visualization to aid interpretation. \begin{itemize} \item
-		\includegraphics{glossary-green} - \textbf{Function nodes} are green circles
+	From these images, we provide glossary of glyphs to better interpret the visualizations. \begin{itemize} \item
+		\includegraphics{glossary-green} \textbf{Function nodes} are green circles
 		labeled with the function name. Their size is determined by their relative
 		frequency, scaled logarithmically, to the frequency of the root node in the
 		tree. They may have any number of arguments, including zero, as determined by
 		the API. Users can select any of these nodes to view the examples from the
 		provided dataset that use this function in the node's position in the tree.
 		
-		\item \vspace{.25cm}\includegraphics{glossary-leaf} - \textbf{Value nodes} are
-		white circles with a generic label. They represent elements of a formula which
+		\item \vspace{.25cm}\includegraphics{glossary-leaf} \textbf{Value nodes} are
+		white circles with a generic label. They represent elements of a formula that
 		accept no arguments, like references (A1), ranges (A1:A10), numbers, boolean
-		values, strings, and errors. However, \toolname treats still functions with
-		zero arguments, like NOW, as function nodes. Like function nodes, these also
-		contain examples.
+		values, strings, and errors. However, \toolname still treats functions with
+		zero arguments, like \texttt{NOW}, as function nodes. Like function nodes,
+		these also link to examples.
 		
-		\item  \vspace{.25cm} \includegraphics{glossary-blue} - \textbf{Argument
-			nodes} are dark blue squares labeled with a number. The number is the position
-		of an argument within the function in the parent node. In Figure
-		\ref{fig:expandif} for example, argument node 1 shows every function or value
-		that was seen in the first argument.
+		\item  \vspace{.25cm} \includegraphics{glossary-blue} \textbf{Argument nodes}
+		are dark blue squares labeled with a number. The number is the position of an
+		argument within the function of the parent node. In Figure~\ref{fig:expandif}
+		for example, argument node 1 shows every function or value that was seen in
+		the first argument.
 		
-		\item  \vspace{.25cm} \includegraphics{glossary-solidline} - \textbf{Solid
+		\item  \vspace{.25cm} \includegraphics{glossary-solidline} \textbf{Solid
 			lines} represent a function's list of parameters. As such, they connect the
 		function nodes to argument nodes.
 		
-		\item  \vspace{.25cm} \includegraphics{glossary-fadingline} - \textbf{Fading
-			lines} represents how a formula author can use several different possible
-		functions or values within a single argument position. As such, they connect
-		argument nodes to function or value nodes.
+		\item  \vspace{.25cm} \includegraphics{glossary-fadingline} \textbf{Fading
+			lines} represents how a formula author can choose from several possible
+		functions or values within a single argument position. As such, these lines
+		connect argument nodes to function or value nodes.
 		
-		\item  \vspace{.25cm} \includegraphics{glossary-arrow} - \textbf{Expansion
+		\item  \vspace{.25cm} \includegraphics{glossary-arrow} \textbf{Expansion
 			arrows} appear within an argument node when there are over 10 possible
 		functions or values in an argument position. By default, only the first 10
 		will be shown along with this arrow; clicking this will show the rest as well.
 		
-		\item  \vspace{.25cm} \includegraphics[scale=.75]{glossary-lightblue} -
+		\item  \vspace{.25cm}
+		$\vcenter{\hbox{\includegraphics[scale=.75]{glossary-lightblue}}}$
 		\textbf{Optional argument trees} are variations of trees that show only
-		formulae with a specific number of arguments. For example, the function AND
-		can take any number of arguments, up to 255. By default, the tree shows data
-		from AND functions with any number of arguments, but these trees, which have
-		argument nodes of a lighter blue color, can show how AND was used when
-		\textit{only} two arguments were passed into it, or \textit{only} four, and so
-		on. See Figure~\ref{fig:optional} for how the data between tree types differs.
+		formulae with a specific number of arguments. For example, the function
+		\texttt{AND} can take any number of arguments, up to 255. By default, the tree
+		shows data from \texttt{AND} functions with any number of arguments, but these
+		trees, which have argument nodes of a lighter blue color, can show how
+		\texttt{AND} was used when \textit{only} two arguments were passed into it, or
+		\textit{only} four, and so on. See Figure~\ref{fig:optional} for how the data
+		between tree types differs.
 	\end{itemize}
 	
 	\begin{figure}[h] 
@@ -387,8 +387,7 @@
 	
 	
 	
-	\subsection{Implementation Details} The visualization is the product of two
-	discrete processes: \begin{itemize} \item \textit{Collection}: Given a set of
+	\subsection{Implementation Details} The visualization is the product of two processes: \begin{itemize} \item \textit{Collection}: Given a set of
 		Excel sheets, the tool, written in Java, uses Apache
 		POI\footnote{https://poi.apache.org/} to identify and iterate over every cell
 		containing a valid formula. Afterward, it calls POI's formula parser to break
