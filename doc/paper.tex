@@ -421,7 +421,7 @@
 	\begin{itemize}
 		
 		\item \textit{Copied formulae}: Excel allows users to spread a formula over an
-		area, repeating the same task in each cell with minor adjustments. Without
+		area, repeating the same formula in each cell with minor adjustments. Without
 		checking for this, the analysis may not reveal the functions most commonly
 		used together but rather the formulae most often applied to large areas. To
 		combat this, we converted formulae from their native A1 format to the relative
@@ -445,21 +445,21 @@
 		
 	\end{itemize}
 	
-	\section{Case Study} The obvious question to pose to any visualization is this:
+	\section{Case Study} The obvious question to pose any visualization is this:
 	What do the images tell us that the text could not? It is not enough to prove
 	that something can be visualized; we must also demonstrate what we can gain
-	from any particular visualization. As such, we raised a few tasks in the
-	introduction in which we thought the tool could help: detecting bad smells and
+	from any particular visualization. For this purpose, we outlined a few tasks in the
+	introduction in which we thought the tool could help, particularly detecting bad smells and
 	guiding spreadsheet education. To demonstrate the tool's applicability, we
 	sought out places in the tree which best exemplify these tasks.
 	
 	\subsection{Bad Smells} \label{badsmells} Fowler's description of code
-	smells~\cite{fowler2009refactoring} underscored an important point of code
+	smells~\cite{fowler2009refactoring} underscores an important point of code
 	quality: between elegant, efficient code and bug-crippled spaghetti, there is a
 	spectrum of code designs which, by themselves, are not faulty but nevertheless
-	suggest vulnerabilities in code design. Since then, researchers have applied
+	suggest problems in code design. Since then, researchers have applied
 	these concepts to spreadsheet programming, as discussed in
-	Section~\ref{related-work}. While some of the smells lie beyond the scope of
+	Section~\ref{related-work}. While some of the documented code smells lie beyond the scope of
 	the tool, such as those characterizing inter-worksheet connections, others have
 	structures which create distinctive features within the tree, leading to easy
 	detection through our visualization: 
@@ -468,7 +468,7 @@
 		
 		\item \textit{Multiple Operations}: A single formula comprises numerous
 		functions and operators~\cite{hermans2012detecting}. As a result, the formula
-		tends to be prohibitively complex. In the visualization, since each nested and
+		tends to be complex. In the visualization, since each nested and
 		combined function creates yet another level of depth within the tree, these
 		constructions can result in long, horizontal chains of nodes, as seen in
 		Figure~\ref{fig:longsum}.
@@ -476,14 +476,14 @@
 		\item \textit{Long Parameter List}: A function uses numerous arguments, making
 		it harder to understand~\cite{asavametha2012detecting}. This is not a problem
 		for many functions which have a limited number of arguments that it accepts.
-		However, for functions that accept arguments indefinitely, such as SUM and
-		CONCATENATE, it creates tall towers of argument nodes from a single function
+		However, for functions that accept arguments indefinitely, such as \texttt{SUM} and
+		\texttt{CONCATENATE}, it creates tall towers of argument nodes from a single function
 		node.
 		
-		\item \textit{Conditional Complexity}: A logical function, particularly IF,
+		\item \textit{Conditional Complexity}: A logical function, particularly \texttt{IF},
 		nests several other logical functions inside of it, reducing code
 		readability~\cite{hermans2012detecting}. These can be traced manually in the
-		trees for the logical functions. IF, for example, will have several more IF
+		trees for the logical functions. \texttt{IF}, for example, will have several more \texttt{IF}
 		function nodes within its second or third arguments, which in turn might have
 		more of the same nested within them.
 		
@@ -493,34 +493,32 @@
 		\caption{The horizontal length of a tree may indicate complex or redundant
 			design} \label{fig:longsum} \end{figure*}
 	
-	Some code issues are meaningful not for the space they occupy but for how they
-	clash with a function's expectations. For example, Excel offers a number of
-	functions that accept any number arguments given to them, up to a
-	resource-defined limit. SUM, for example, simply adds every argument given to
-	it. This also means that it can accept only one argument, and when the user
-	does so, they pass in a range of cells over 90\% of the time. However, using
-	the tool, we isolated an instance where the programmer used a single-argument
-	SUM where the argument was a series of 32 contiguous cells added with the +
-	operation -- ``SUM(C6+C7+C8+C9+C10+C11+C12+C13+...+C37)" -- representing a
-	technically valid but unusual and problematic design.
+	Aside from these three, some code issues are meaningful not for the space they
+	occupy but for how they clash with a function's expectations. For example,
+	Excel offers a number of functions that accept as many arguments given to
+	them, up to a resource-defined limit. \texttt{SUM}, for example, simply sums up every
+	argument given to it. This also means that it can accept only one argument, and
+	when the user does so, they pass in a range of cells over 90\% of the time.
+	However, using \toolname, we found an instance where the programmer used a
+	single-argument \texttt{SUM} where the argument was a series of 32 contiguous cells
+	added with the + operation -- ``\texttt{SUM(C6+C7+C8+C9+C10+C11+C12+C13+...+C37)}" --
+	representing a correct but redundant design.
 	
 	However, because \toolname makes no judgments beforehand about which designs to
 	emphasize as good or bad, the tool can be used to find strange or suboptimal
 	designs that exist outside these readily visible categories. Consider the
-	second argument of the ``='' operator, already shown expanded in
+	second argument of the \texttt{``=''} operator, already shown expanded in
 	Figure~\ref{fig:fullpic}: among the top five argument types for the position in
-	an IF function were boolean values. This corresponds to designs in which
-	conditions already in a boolean form were then checked against ``=TRUE" or
-	``=FALSE", such as in the formula \textit{IF(Formulas!C77=TRUE, ``Yes")}, which
+	an \texttt{IF} function were boolean values. This corresponds to designs in which
+	conditions already in a boolean form were then checked against \texttt{``=TRUE"} or
+	\texttt{``=FALSE"}, such as in the formula \texttt{IF(Formulas!C77=TRUE, ``Yes")}, which
 	appears in one of the sheets. Though this practice does not break anything in
 	itself, it nevertheless represents redundant operations in formula design and
-	indicates a possible misunderstanding of how the IF function works over the
-	hundreds of examples of this boolean comparison that our tool can return.
+	indicates a possible misunderstanding of how the IF function works.
 	
 	\subsection{Education} When Robillard and Deline researched common obstacles
 	for programmers learning new APIs, they concluded that one of the most
-	important elements of a good API was the use of code examples to demonstrate
-	function use~\cite{robillard2011field}. Examples in APIs, furthermore, come in
+	important elements of a good API was the use of code examples~\cite{robillard2011field}. Examples in APIs, furthermore, come in
 	a variety of forms: small snippets or tutorials that show only the intended
 	function, sample applications that incorporate the function in a broader
 	context, or even production code that employs the function but was not
@@ -529,7 +527,7 @@
 	particular function node, they will see examples of that formula as it was used
 	in a working environment, with the specifics depending on the dataset the tool
 	is using. 
-	
+
 	Furthermore, Robillard and Deline's study makes the case for examples that show
 	``API usage patterns involving more than one method
 	call"~\cite{robillard2011field}. Examples that show only a single function,
@@ -538,9 +536,9 @@
 	suited for this focus on combination; consider again the question in the
 	walkthrough (Section \ref{sec:walkthrough}), asking which functions and
 	operations are used as conditions in IF. The design of this tool emphasizes the
-	connection, then, between what functions like ISNA and AND return and what IF
-	accepts, and specific examples for any of these combinations are only a click
-	away.
+	connection, then, between what functions like \texttt{ISNA} and \texttt{AND}
+	return and what \texttt{IF} accepts, and specific examples for any of these
+	combinations are only a click away.
 	
 	%Lookup example
 	For a deeper example, the LOOKUP functions are some of the most popular in
@@ -549,7 +547,7 @@
 	spreadsheet design. In short, these functions are for ``when you need to look
 	in a single row or column and find a value from the same position in a second
 	row or
-	column"\footnote{https://support.office.com/en-us/article/LOOKUP-function-446d94af-663b-451d-8251-369d5e3864cb}. Examples of their use can be found in Figure \ref{fig:lookupexample}, and we will cover each type in more depth to better understand the visualizations for these functions.
+	column"\footnote{\url{https://support.office.com/en-us/article/LOOKUP-function-446d94af-663b-451d-8251-369d5e3864cb}}. Examples of their use can be found in Figure~\ref{fig:lookupexample}, and we will cover each type in more depth to better understand the visualizations for these functions.
 	
 	\begin{figure}[h] \centering
 		\includegraphics[width=.5\textwidth]{lookupexample} \caption{Demonstrations of
@@ -558,9 +556,9 @@
 	LOOKUP has two forms: vector and array. In either case, the first argument is
 	the value which you are trying to match in another column. If the formula is in
 	the vector form, that column is the second argument, so in
-	Figure~\ref{fig:lookupexample}, the formula in cell D2 (\textit{=LOOKUP(3,
+	Figure~\ref{fig:lookupexample}, the formula in cell D2 (\texttt{=LOOKUP(3,
 		A2:A6, B2:B6)}) will search for the value of 3 between cells A2 and A6. The
-	value the formula returns then comes from the corresponding cell in the
+	value that the formula returns then comes from the corresponding cell in the
 	optional third argument's column; since the lookup values matches the value in
 	cell A4, it returns the value from cell B4. The array form of the LOOKUP works
 	the same way, except that the second argument is a two-dimensional table where
@@ -569,13 +567,13 @@
 	substitute rows for columns.
 	
 	VLOOKUP works closely with this array form, except the user defines in its
-	third argument which column from which to return values. In \textit{=VLOOKUP(3,
+	third argument which column from which to return values. In \texttt{=VLOOKUP(3,
 		A2:B6, 2)}, the argument ``2" tells to return the value from the second column,
 	which is \textit{B2:B6} here. Furthermore, it also accepts a boolean value for
 	an optional argument: when set to FALSE, it returns only exact matches, and
 	when TRUE or left out, it approximates the match to the closest value beneath
 	it. We demonstrate this in Figure~\ref{fig:lookupexample} in the bottom two
-	VLOOKUP functions, one returning ``Friday" and the other an error. HLOOKUP
+	\texttt{VLOOKUP} functions, one returning ``Friday" and the other an error. \texttt{HLOOKUP}
 	works identically but focuses on rows instead of columns.
 	
 	All of these variations may seem daunting to a beginner, but \toolname can
@@ -620,7 +618,7 @@
 	
 	We had four participants, labeled P1 through P4. Only P4 had no experience with
 	spreadsheets in a professional environment, having used spreadsheets
-	intermittently through university and hobbies. P1 through P3 all had varying
+	intermittently through education and hobbies. P1 through P3 all had varying
 	levels of experience with spreadsheets in a professional capacity: P1 for 1
 	year, P3 for 3, and P2 for 5. All participants were graduate students at the
 	time of study but with some prior experience in industry, and we presented each
@@ -634,30 +632,30 @@
 	
 	\subsection{Use in Smell Tracking}
 	
-	The participants were most vocal about their findings when they discovered, by
-	purpose or accident, instances of heinous design in the dataset. Many times,
-	they noted these examples shortly after opening a new tree, suggesting that the
-	distinctive visual signatures as discussed in Section \ref{badsmells} was a
-	salient force in their exploration. For example, when P3 encountered the
+		\begin{wrapfigure}{O}{.25\textwidth} \centering
+			\includegraphics[width=.20\textwidth]{SUM}  \caption{An abundance of parameters
+				in SUM, which was a commonly noted smell in the user study} \label{fig:sum}
+		\end{wrapfigure}
+
+	The participants were most vocal about their findings when they discovered
+	instances of design they considered problematic. Many times, they noted these
+	examples shortly after opening a new tree, suggesting that the distinctive
+	visual signatures of code smells as discussed in Section~\ref{badsmells} were a salient force
+	in their exploration. For example, when P3 encountered the
 	initial design of the SUM tree, as seen in Figure \ref{fig:sum}, they readily
 	diagnosed that either a spreadsheet author was ``totally incompetent, or [the
 	formula was] just something that's weird." Even though the visualization
 	struggles to scale well for this formula, it calls clearly to a problem in the
 	underlying spreadsheets -- awkward formulae make awkward trees. Other than
 	these visual cues, value errors, prefixed with \#s, also appear in the tree,
-	which P4 said could be useful for tracking these problems if marked well.
-	
-	\begin{wrapfigure}{L}{.25\textwidth} \centering
-		\includegraphics[width=.20\textwidth]{SUM}  \caption{An abundance of parameters
-			in SUM, which was a commonly noted smell in the user study} \label{fig:sum}
-	\end{wrapfigure}
+	which P4 said could be useful for tracking these problems if they're easy to find.
 	
 	Additionally, because the Enron files had names with the author as a prefix, P2
 	commented that companies could use the tool to follow up with repeat offenders.
 	For instance, they first encountered a particular author's name when
-	investigating an AVERAGE function with 18 distinct arguments for which our
+	investigating an \texttt{AVERAGE} function with 18 distinct arguments for which our
 	participant could not discern any logical order even after opening the source
-	spreadsheet; the same name popped up again as P2 looked at a RATE function
+	spreadsheet; the same name popped up again as P2 looked at a \texttt{RATE} function
 	relying on several hard-coded values. P2 said that, if they were a manager or
 	project leader, this recurrence was a sign to talk to the author personally and
 	figure out why these problems were there, as to prevent more in the future.
@@ -679,25 +677,25 @@
 	\subsection{Use in Education} Users found \toolname's inclusion of examples to
 	be especially useful since none of the them considered themselves to be experts
 	of Excel, their self-reported proficiencies ranging from ``fairly familiar"
-	(P2) to ``not extremely familiar" (P4). For example, as P1 explored the VLOOKUP
+	(P2) to ``not extremely familiar" (P4). For example, as P1 explored the \texttt{VLOOKUP}
 	function, they said they could use the tool to collect more examples than the
 	documentation offers even though they knew the documentation more verbosely
 	explained its function signature. Furthermore, in the process of exploring
 	trees, P1 and P3 also gravitated towards some functions they had not used
-	before, such as PV and IPMT, looking for new features in Excel to explore and
+	before, such as \texttt{PV} and \texttt{IPMT}, looking for new features in Excel to explore and
 	learn. 
 	
 	Additionally, \toolname offers a simple way of finding examples where certain
 	functions were used together, demonstrated when P4 took special interest in how
-	people frequently used MATCH as the second argument of INDEX or how they used
-	date functions like DATE and MONTH as lookup values in VLOOKUP. Though a
+	people frequently used \texttt{MATCH} as the second argument of \texttt{INDEX} or how they used
+	date functions like \texttt{DATE} and \texttt{MONTH} as lookup values in \texttt{VLOOKUP}. Though a
 	standard text-search tool might yield the same results for a function alone,
 	combinations can require more complex text queries, whereas here, the
 	information is already captured in nodes. 
 	
 	However, we found that even though a user can explore all of a function's
 	configurations, this does not mean that they will learn exactly what it does.
-	P1, examining unfamiliar functions like KURT and PV, could describe precisely
+	P1, examining unfamiliar functions like\texttt{KURT} and \texttt{PV}, could describe precisely
 	what types of arguments it accepted and how many. But even after exploring the
 	spreadsheets for context, they could not accurately describe what the functions
 	produced without consulting the official documentation. Whether through
@@ -810,7 +808,7 @@
 			third arguments?} \label{fig:index} \end{figure}
 	
 	Though our focus was specifically on function combination, there are several
-	other elements of a formula's context that we do no currently consider. For
+	other elements of a formula's context that we do not currently consider. For
 	example, \toolname does not current capture argument combination; in Figure
 	\ref{fig:index}, it is impossible to state how often the function MATCH
 	occurred in both the second and third arguments or whether they were more often
