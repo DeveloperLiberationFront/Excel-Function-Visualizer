@@ -65,6 +65,7 @@
 \usepackage{xspace}
 \usepackage{subfigure}
 \usepackage{url}
+\usepackage{hyperref}
 
 % *** GRAPHICS RELATED PACKAGES ***
 %
@@ -272,7 +273,7 @@
 	value of either the second or third argument respectively. Or, as the
 	documentation writes out, ``\texttt{IF(Something is True, then do something, otherwise
 	do something
-	else)}"\footnote{\url{https://support.office.com/en-us/article/IF-function-69aed7c9-4e8a-4755-a9bc-aa8bbff73be2?ui=en-US\&rs=en-US\&ad=US}}. Furthermore, the third argument is optional; if left out, the function will return a default ``FALSE" value if necessary. Examples of this function in practice can be seen in Figure~\ref{fig:ifexample}.
+	else)}"\footnote{\href{https://support.office.com/en-us/article/IF-function-69aed7c9-4e8a-4755-a9bc-aa8bbff73be2}{https://support.office.com/en-us/article/IF-function-69aed7c9-4e8a-4755-a9bc-aa8bbff73be2}}. Furthermore, the third argument is optional; if left out, the function will return a default ``FALSE" value if necessary. Examples of this function in practice can be seen in Figure~\ref{fig:ifexample}.
 	
 	\begin{figure}[h] \centering \includegraphics[width=\columnwidth]{ifExample}
 		\caption{Configurations of the IF function} \label{fig:ifexample} \end{figure}
@@ -390,7 +391,7 @@
 	
 	\subsection{Implementation Details} The visualization is the product of two processes: \begin{itemize} \item \textit{Collection}: Given a set of
 		Excel sheets, the tool, written in Java, uses Apache
-		POI\footnote{https://poi.apache.org/} to identify and iterate over every cell
+		POI\footnote{\href{https://poi.apache.org/}{https://poi.apache.org/}} to identify and iterate over every cell
 		containing a valid formula. Afterward, it calls POI's formula parser to decompose
 		the formula text into an ordered set of individual tokens, which the tool then
 		parses into the tree-like form. When all formulae have been analyzed like this,
@@ -398,11 +399,11 @@
 		
 		\item \textit{Presentation}: The JSON files, meanwhile, feed into the
 		presentation code, implemented in Javascript with much help from the
-		visualization library D3\footnote{https://d3js.org/}. We chose D3 primarily
+		visualization library D3\footnote{\href{https://d3js.org/}{https://d3js.org/}}. We chose D3 primarily
 		for its accessibility: given the JSON, the visualization can be simply
 		embedded into a webpage accessible through a browser. \end{itemize} A
 	demonstration of \toolname can be found at
-	https://github.com/DeveloperLiberationFront/Excel-Function-Visualizer.
+	\href{https://github.com/DeveloperLiberationFront/Excel-Function-Visualizer}{https://github.com/DeveloperLiberationFront/Excel-Function-Visualizer}.
 	
 	\subsection{Design Decisions} \label{ssec:decisions} Early in the design, we
 	chose the tree form for its inherent ability to represent the parent-children
@@ -547,13 +548,13 @@
 	spreadsheet design. In short, these functions are for ``when you need to look
 	in a single row or column and find a value from the same position in a second
 	row or
-	column"\footnote{\url{https://support.office.com/en-us/article/LOOKUP-function-446d94af-663b-451d-8251-369d5e3864cb}}. Examples of their use can be found in Figure~\ref{fig:lookupexample}, and we will cover each type in more depth to better understand the visualizations for these functions.
+	column"\footnote{\href{https://support.office.com/en-us/article/LOOKUP-function-446d94af-663b-451d-8251-369d5e3864cb}{https://support.office.com/en-us/article/LOOKUP-function-446d94af-663b-451d-8251-369d5e3864cb}}. Examples of their use can be found in Figure~\ref{fig:lookupexample}, and we will cover each type in more depth to better understand the visualizations for these functions.
 	
 	\begin{figure}[h] \centering
 		\includegraphics[width=.5\textwidth]{lookupexample} \caption{Demonstrations of
 			LOOKUP and VLOOKUP} \label{fig:lookupexample} \end{figure}
 	
-	LOOKUP has two forms: vector and array. In either case, the first argument is
+	\texttt{LOOKUP} has two forms: vector and array. In either case, the first argument is
 	the value which you are trying to match in another column. If the formula is in
 	the vector form, that column is the second argument, so in
 	Figure~\ref{fig:lookupexample}, the formula in cell D2 (\texttt{=LOOKUP(3,
@@ -566,7 +567,7 @@
 	Also, depending on the dimensions of the lookup table, the function may
 	substitute rows for columns.
 	
-	VLOOKUP works closely with this array form, except the user defines in its
+	\texttt{VLOOKUP} works closely with this array form, except the user defines in its
 	third argument which column from which to return values. In \texttt{=VLOOKUP(3,
 		A2:B6, 2)}, the argument ``2" tells to return the value from the second column,
 	which is \textit{B2:B6} here. Furthermore, it also accepts a boolean value for
@@ -581,7 +582,7 @@
 	function, as seen in Figure~\ref{fig:lookups} where one can explore both the
 	frequency with which the spreadsheet programmers used these different forms --
 	three-argument vector form much more than the array form -- and then retrieve
-	examples of every configuration in the dataset. The same goes for the V/HLOOKUP
+	examples of every configuration in the dataset. The same goes for the \texttt{V/HLOOKUP}
 	functions, as shown partially in Figure~\ref{fig:vhlookups}.
 	
 	\begin{figure}[h] \centering \includegraphics[width=.5\textwidth]{lookup-2}
@@ -797,8 +798,8 @@
 	which people use spreadsheets, but other corpora, like EUSES and Fuse, draw from
 	other domains and industries. As Jansen found in his comparison of
 	spreadsheets Enron and EUSES \cite{jansen2015enron}, different companies rely
-	on different functions. For other types of spreadsheet, such as Gnumeric\footnote{http://www.gnumeric.org/} or Google
-	Sheets\footnote{https://www.google.com/sheets/about/}, we have no
+	on different functions. For other types of spreadsheet, such as Gnumeric\footnote{\href{http://www.gnumeric.org/}{http://www.gnumeric.org/}} or Google
+	Sheets\footnote{\href{https://www.google.com/sheets/about/}{https://www.google.com/sheets/about/}}, we have no
 	guarantee that practices and functions will hold across these varied programs, even within
 	similar domains. This, then, warrants further analysis, in which good visualization might serve
 	well. 
@@ -854,8 +855,9 @@
 	from the Laboratory for Analytic Sciences (LAS). Any opinions, findings,
 	conclusions, or recommendations expressed in this material are those of the
 	author(s) and do not necessarily reflect the views of the LAS and/or any agency
-	or entity of the United States Government. I also thank the anonymous reviewers
-	who advised the direction of this paper.
+	or entity of the United States Government. We also thank the anonymous reviewers
+	who advised the direction of this paper, the study participants for their comments,
+	and Shivom Gargava for his help.
 	
 	% references section
 	
