@@ -30,33 +30,37 @@ public class FunctionNode extends Node {
     
   /**
    * Represents a certain type of function or primitive type that can appear in a formula. Stores
-   * the number of times that this function has been observed here, and it records every type of argument
-   * that has been passed into a function like this, if any.
+   * the number of times that this function has been observed here, and it records every type of 
+   * argument that has been passed into a function like this, if any.
    * 
-   * NOTE: In a single tree of FunctionStatsNodes, there may be several nodes which represent the
-   * same kind of formula, but they are not the same because they occur in different places in the
-   * tree.
+   * <p>NOTE: In a single tree of FunctionStatsNodes, there may be several nodes which represent 
+   * the same kind of formula, but they are not the same because they occur in different places in 
+   * the tree.
    * 
-   * Therefore, a tree which has been generated from the formula `SUM(SUM(A:A), 10)` will have at least
-   * two nodes with the function "SUM()". They are not the same.
+   * <p>Therefore, a tree which has been generated from the formula `SUM(SUM(A:A), 10)` will have 
+   * at least two nodes with the function "SUM()". They are not the same.
    * 
-   * @param token The type of formula token that this node wraps.
+   * @param func The type of formula token that this node wraps.
    */
   public FunctionNode(String func) {    
     this.function = func;
-    if (!nonvariadicFuncs.reset(func).matches())
+    if (!nonvariadicFuncs.reset(func).matches()) {
       specific_quantities = new LinkedHashMap<Integer, QuantityOfArgumentsNode>();
+    }
   }
   
   /**
    * Record the occurrence of whatever type of formula element the parameter `token` is, and then
    * recursively record the occurrences of all of `tokens` children further down in the tree.
-   * @param ex 
-   * @param token   The type of formula token to record, which should be of the same type as this stats node.
    * 
-   * Example: If we have the formula IF(A1<A2, SUM(B1:B10), 0), then we want to say we have observed
-   * 1 more instance of a formula which has IF() as its uppermost function, and then record that it has
-   * the tokens `<`, SUM(), and 0 (<NUM>) one level below that, and so on.
+   * <p>Example: If we have the formula IF(A1 < A2, SUM(B1:B10), 0), then we want to say we have 
+   * observed 1 more instance of a formula which has IF() as its uppermost function, and then 
+   * record that it has the tokens < , SUM(), and 0 ( < NUM > ) one level below that, and so 
+   * on.
+   * 
+   * @param ex 
+   * @param token   The type of formula token to record, which should be of the same type as this 
+   *                stats node.
    */
   @Override
   public void add(int ex, FormulaToken token) {    
