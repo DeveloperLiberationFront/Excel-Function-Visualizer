@@ -22,10 +22,11 @@ public class LeafNode extends Node {
 
   @Override
   public void add(int ex, FormulaToken token) {
-    if (!function.equals(token.toString()))
+    if (!function.equals(token.toString())) {
       throw new UnsupportedOperationException("Trying to pass a FormulaToken which does not "
           + "refer to the same type of token as the FunctionStatsNode: " + token.toSimpleString() 
           + " vs. " + this.function);
+    }
     
     increment();
     int otherExampleLen = token.getOrigLen();
@@ -43,6 +44,7 @@ public class LeafNode extends Node {
   }
   
   public static final Node[] NO_CHILDREN = {};
+  
   public Node[] getChildren() {
     return NO_CHILDREN;
   }
