@@ -37,6 +37,9 @@ var margin = {
     empty_col = "white",
     empty_hover = "lightgray";
 
+d3.select(self.frameElement)
+    .style("height", height + "px");
+
 var scale; //To be determined when when tree chosen.
 
 var diagonal = d3.svg.diagonal()
@@ -51,10 +54,15 @@ var tree = d3.layout.tree()
     //.size([height, width])
     .nodeSize([square_side, square_side])
     .sort(function(a, b) {
-        var order = b.frequency - a.frequency;
-        if (order == 0)
-            if (a.function) order = a.function.localeCompare(b.function);
-            else order = a.position - b.position;
+        var order = 0;
+
+        if (isFunction(a) && isFunction(b)) {
+          order = (b.frequency - a.frequency)
+            || a.function.localeCompare(b.function);
+        } else if (isPosition(a) && isPosition(b)) {
+          order = a.position - b.position;
+        }
+
         return order;
     });
 
@@ -64,7 +72,8 @@ var tree = d3.layout.tree()
 var zoomer = d3.behavior.zoom()
     .scaleExtent([.5, 8])
     .on("zoom", function() {
-        svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")")
+        svg.attr("transform", "translate(" + d3.event.translate + ")scale("
+          + d3.event.scale + ")")
     })
 
 /**
@@ -72,25 +81,28 @@ var zoomer = d3.behavior.zoom()
  */
 var svg = d3.select("body")
     .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
     .call(zoomer)
-    .on("dblclick.zoom", null)
+      .on("dblclick.zoom", null)
     .append("g")
-    .attr("transform", "translate(" + view_start_x + "," + view_start_y + ")");
+      .attr("transform", "translate(" + view_start_x + ","
+        + view_start_y + ")");
 
 zoomer.translate([view_start_x, view_start_y]);
 
 //gist.github.com/pnavarrc/20950640812489f13246
-var gradient = svg.append("defs")
-    .append("linearGradient")
-    .attr("id", "gradient")
-    .attr("gradientUnits", "userSpaceOnUse")
-    .attr("spreadMethod", "repeat")
-    .attr("x1", "0px")
-    .attr("y1", "0px")
-    .attr("x2", "250px")
-    .attr("y2", "0px");
+var interfunc_gap = 125,
+    func_arg_gap = 75,  //func_arg_gap >= 2*interfunc_gap
+    gradient = svg.append("defs")
+      .append("linearGradient")
+      .attr("id", "gradient")
+      .attr("gradientUnits", "userSpaceOnUse")
+      .attr("spreadMethod", "repeat")
+      .attr("x1", "0px")
+      .attr("y1", "0px")
+      .attr("x2", (interfunc_gap*2).toString() + "px")
+      .attr("y2", "0px");
 
 gradient.append("stop")
     .attr("offset", ".4")
@@ -102,7 +114,7 @@ gradient.append("stop")
     .attr("stop-color", "black")
     .attr("stop-opacity", "0");
 
-/**TODO: FROM SOMEWHERE ELSE**/
+//https://css-tricks.com/snippets/javascript/get-url-variables/
 function getQueryVariable(variable) {
     var query = window.location.search.substring(1);
     var vars = query.split("&");
@@ -112,7 +124,8 @@ function getQueryVariable(variable) {
             return pair[1];
         }
     }
-    return (false);
+
+    return false;
 }
 
 /**
@@ -137,84 +150,186 @@ d3.json(src, function(error, json) {
         var other_depth = collapse(c);
         root.max_depth = Math.max(other_depth, root.max_depth);
     });
+
+    //TODO: Kludgy
+    collapse(root);
     initQuantities(root);
     center(root);
+    toggleChildren(root);
     update(root);
 })
 
-function collapse(d) {
-    if (d.children && d.children.length > 0) {
-        //For when they have optional arguments.
-        if (isFunction(d)) //If it is a function node and not an argument node...
-            initQuantities(d);
+//Informs each node what the deepest path extending from it is.
+function collapse(node) {
+  //Three places for children to be: d.children, d._children, d._holding
+  if (node.children && node.children.length > 0) {
+    node._children = node.children;
+    node.children = null;
 
-        d._children = d.children;
-        d.children = null;
-
-        d.max_depth = 0;
-        d._children.forEach(function(c) {
-            c.parent = d;
-            var new_possible_max = collapse(c) + (isFunction(d) ? 0 : 1);
-            d.max_depth = Math.max(new_possible_max, d.max_depth);
-        });
-
-        //Sorts arguments by frequency, leaves only the first 10 and hides
-        //the rest.
-        if (!isFunction(d) && d._children.length > 10) {
-            d._children.sort(function(a, b) {
-                return b.frequency - a.frequency;
-            });
-            d._holding = d._children.splice(10);
-            d._children.splice(d._children.length, 0, {
-                "function": "",
-                "frequency": -1,
-                "parent": this
-            });
-        }
+    if (node.max_depth) {
+      node._children.forEach(collapse)
     } else {
-        d.children = null;
-        d.max_depth = 0;
+      node.max_depth = 0;
+      node._children.forEach(function(child) {
+        child.parent = node;
+        var new_possible_max = collapse(child)
+          + (isFunction(node) ? 0 : 1);
+        node.max_depth = Math.max(new_possible_max, node.max_depth);
+      });
     }
 
-    return d.max_depth; //Should have been set by parent.
+  //If there are no children shown or withheld, then this is a leaf.
+} else if (!node._children) {
+      node.children = null;
+      node.max_depth = 0;
+  }
+
+  //Otherwise there are children already collapsed. Max_depth is already set.
+  return node.max_depth;
+}
+
+//TODO: This conversion from string to int is kludgy; normalize.
+var inf = 100; //ONLY USED FOR OPTIONAL ARGUMENT STUFF
+function initQuantities(d) {
+    if (d.init) return;
+    else d.init = true;
+
+    if (isFunction(d))  initFunction(d);
+    else                initPosition(d);
+}
+
+/**
+Converts the 3-leveled JSON (function-qoa-position) to 2 levels (function-
+position) and store the qoas in a side array.
+*/
+function initFunction(d) {
+  if (!d._children || d._children.length == 0) {
+    return;
+  } else if (d._children.length == 1) {
+    var single_qoa = d._children[0];
+
+    d._children = single_qoa._children;
+    d.quantity_index = 0;
+    d.quantities = single_qoa._children;
+
+    return;
+  }
+
+  //Put all varieties of argument numbers into one array, and remember the max.
+  var quantities = [];
+  var max_qoa = 0;
+  for (qoa_index = 0; qoa_index < d._children.length; ++qoa_index) {
+    var qoa = d._children[qoa_index];
+    quantities.push(qoa);
+    max_qoa = Math.max(max_qoa, qoa.qoa);
+  }
+
+  //Create an array that will represent all quantities combined into one tree,
+  //which will be the default tree.
+  var all = { qoa: inf, children: null, _children: [], frequency: 0 };
+  for (index = 0; index < max_qoa; ++index) {
+    all._children.push({ position: (index + 1), _children: [], frequency: 0 });
+  }
+
+  //Take all the children from these nodes and put them in the appropriate
+  //index in my "all" array.
+  for (qoa_index = 0; qoa_index < d._children.length; ++qoa_index) {
+    var qoa = d._children[qoa_index];
+
+    for (arg_index = 0; arg_index < qoa._children.length; ++arg_index) {
+      var arg = qoa._children[arg_index];
+      var pos = all._children[arg.position - 1];
+
+      pos.frequency += arg.frequency;
+      pos._children = pos._children.concat(arg._children);
+    }
+  }
+
+  quantities.push(all);
+  d.quantities = quantities;
+  d._children = all._children;
+  d.quantity_index = quantities.length - 1;
+}
+
+/**
+The initFunction above modifies the contents of the position file to contain
+possible duplicates for functions -- this will consolidate them.
+*/
+function initPosition(d) {
+  if (!d._children) return;
+
+  //consolidates
+  var uniqueFunctions = {}
+  for (index = 0; index < d._children.length; ++index) {
+    var child = d._children[index];
+    var func = uniqueFunctions[child.function];
+    if (func != null) {
+
+      func.frequency += child.frequency;
+      if (isLeaf(func)) {
+        func.allExamples.forEach(function(c) { func.allExamples.add(c); });
+      } else {
+        func._children = func._children.concat(child.children)
+      }
+
+    } else {
+
+      if (isLeaf(child)) {
+        var exampleSet = d3.set(child.allExamples);
+        child.allExamples = exampleSet
+      }
+      uniqueFunctions[child.function] = child;
+
+    }
+  }
+
+  d._children = []
+  Object.keys(uniqueFunctions).forEach(function(key) {
+    d._children.push(uniqueFunctions[key]);
+  });
+
+  //Sorts arguments by frequency, leaves only the first 10 and hides
+  //the rest.
+  if (!isFunction(d) && d._children.length > 10) {
+      d._children.sort(function(a, b) {
+          return b.frequency - a.frequency;
+      });
+      d._holding = d._children.splice(10);
+      d._children.splice(d._children.length, 0, {
+          "function": "",
+          "frequency": -1,
+          "parent": this
+      });
+  }
 }
 
 //If the function does not have a position value set, then it is an argument node.
 function isFunction(d) {
-    return d.position == null;
+    return d.function != null;
 }
 
-//TODO: This conversion from string to int is kludgy; normalize.
-var inf = "100"; //ONLY USED FOR OPTIONAL ARGUMENT STUFF
-function initQuantities(d) {
-    d.quantities = [];
-
-    if (d.specific_quantities != null) {
-        for (q in d.specific_quantities)
-            d.quantities.push(d.specific_quantities[q]);
-    }
-
-    d.quantities.push({
-        children: d.children,
-        example: d.example,
-        frequency: d.frequency,
-        quantity: parseInt(inf, 10)
-    });
-
-    d.specific_quantities = null;
-    d.quantity = inf;
-    d.quantity_index = d.quantities.length - 1;
+function isPosition(d) {
+  return d.position != null;
 }
 
-d3.select(self.frameElement)
-    .style("height", height + "px");
+function isLeaf(d) {
+  return d.allExamples != null;
+}
+
+//Works with the idea that the "all" variant is the final one in the
+//`quantities` array.
+function isParentShowingAll(d) {
+  var par = d.parent;
+  if (!par || !isFunction(par) || isLeaf(par))
+    return false;
+  else
+    return par.quantity_index == par.quantities.length - 1;
+}
 
 /**
  * Update the tree after a clicking event.
  */
-var i = 0;
-var interfunc_gap = 125, //times two, technically; must work with gradient regularity
-    func_arg_gap = 75;
+var node_num = 0;
 
 /**
  * Central function; updates what the graph looks like when the nodes change.
@@ -233,7 +348,7 @@ function update(src) {
 
     var node = svg.selectAll("g")
         .data(nodes, function(d) {
-            return d.id || (d.id = ++i);
+            return d.id || (d.id = ++node_num);
         });
 
     enterNode(node, src);
@@ -317,10 +432,10 @@ function enterNode(node, src) {
 
     rects.append("text")
         .text(function(d) {
-            return d.position + 1;
+            return d.position;
         })
         .attr("dx", function(d) {
-            return d.position + 1 > 9 ? -7 : -3;
+            return d.position > 9 ? -7 : -3;
         })
         .attr("dy", 5);
 
@@ -357,23 +472,21 @@ var tip = d3.select("body")
 var tip_x = 3,
     tip_y = -53;
 
+var b = "<b>",
+    bb = "</b>",
+    i = "<i>",
+    ii = "</i>",
+    br = "<br/>"; //Helpful markup.
 function mouseover(d) {
-    var b = "<b>",
-        bb = "</b>",
-        i = "<i>",
-        ii = "</i>",
-        br = "<br/>",
-        func = "func: " + b + d.function+bb + br,
+    var func = "func: " + b + d.function + bb + br,
         freq = "count: " + d.frequency.toLocaleString() + br;
-          //+ " (" + (100 * d.frequency / (d.parent || d).frequency).toFixed(2) + "%)"
-          //+ " [" + (100 * d.frequency / root.frequency).toFixed(3) + "%]"+ br,
         depth = "depth: " + (d.depth/2) + br; //+ " of max " + d.max_depth + br,
         id = d.example;
 
     var hovered = d3.select("#n" + d.id);
 
     var ex;
-    if (d.fullExample) {
+    /**if (d.fullExample) {
         ex = "ex: " + i + d.fullExample + ii + br;
     } else {
         ex = "ex: " + i + "unavailable" + ii + br;
@@ -385,7 +498,7 @@ function mouseover(d) {
             var ex = "ex: " + i + d.fullExample + ii + br;
             tip.attr("height", null).html(func + freq + depth + ex)
         });
-    }
+    }*/
 
     tip.html(func + freq + depth + ex)
         .style("left", (d3.event.pageX + tip_x) + "px")
@@ -440,7 +553,8 @@ function rect_mouseover(d) {
 
 function rect_mouseout(d) {
     d3.select("#n" + d.id).select("rect").style("fill", function(d) {
-        return d._children ? (d.parent.quantity == inf ? rect_col : alternate_rect) : rect_empty; //SKYBLUE
+        return d._children ? (isParentShowingAll(d)
+          ? rect_col : alternate_rect) : rect_empty; //SKYBLUE
     });
 }
 
@@ -459,14 +573,16 @@ function updateNode(node) {
             return scale(d.frequency);
         })
         .style("fill", function(d) {
-            return d._children ? circle_col : (d.children ? circle_empty : empty_col);
+            return d._children ? circle_col : (d.children ? circle_empty
+              : empty_col);
         });
 
     nodeUpdate.select("rect:not(.tooltip)")
         .attr("width", square_side)
         .attr("height", square_side)
         .style("fill", function(d) {
-            return d._children ? (d.parent.quantity == inf ? rect_col : alternate_rect) : rect_empty; //SKYBLUE
+            return d._children ? (isParentShowingAll(d) ? rect_col
+              : alternate_rect) : rect_empty; //SKYBLUE
         });
 
     nodeUpdate.select("polygon")
@@ -592,6 +708,7 @@ function toggleChildren(d) {
         d._children = d.children;
         d.children = null;
     } else {
+        initQuantities(d);
         d.children = d._children;
         d._children = null;
     }
@@ -608,7 +725,7 @@ function expandSubLevel(d) {
         toggleChildren(d);
 
     var expandNotReduce = false;
-    var children = d.children ? d.children : d._children;
+    var children = d.children || d._children;
     if (!children) return; //Nothing to see here.
     if (d._holding) children.concat(d._holding);
 
@@ -638,21 +755,22 @@ function changeQuantities(d) {
     if (d3.event.shiftKey) {
         d.quantity_index = (d.quantity_index + 1) % d.quantities.length;
     } else if (d3.event.ctrlKey) {
-        d.quantity_index = (d.quantity_index == 0) ? d.quantities.length - 1 : d.quantity_index - 1;
+        d.quantity_index = (d.quantity_index == 0) ? d.quantities.length - 1
+          : d.quantity_index - 1;
     }
 
     var replacement = d.quantities[d.quantity_index];
-    d.children = replacement.children;
-    d.example = replacement.example;
-    d.fullExample = null; //TODO: Keep example?
-    d.frequency = replacement.frequency;
-    d.quantity = replacement.quantity;
 
-    d.children.forEach(collapse);
+    d.children    = replacement.children;
+    d._children   = replacement._children;
+    d.example     = replacement.example;
+    d.frequency   = replacement.frequency;
+    d.init        = false;
 
     //Reset tooltip.
     mouseleave(d);
     mouseover(d);
+    initQuantities(d);
 }
 
 /**
