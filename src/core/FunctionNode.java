@@ -106,7 +106,7 @@ public class FunctionNode extends Node {
     }
 
     public void fill(FormulaToken[] children) {
-      increment()
+      increment();
       for (int i = 0; i < children.length; ++i) {
         ArgumentNode position = this.children.get(i);
         FormulaToken child = children[i];

@@ -75,6 +75,7 @@ var zoomer = d3.behavior.zoom()
         svg.attr("transform", "translate(" + d3.event.translate + ")scale("
           + d3.event.scale + ")")
     })
+zoomer.translate([view_start_x, view_start_y]);
 
 /**
  * Create the svg box in which you will see everything.
@@ -89,8 +90,6 @@ var svg = d3.select("body")
       .attr("transform", "translate(" + view_start_x + ","
         + view_start_y + ")");
 
-zoomer.translate([view_start_x, view_start_y]);
-
 //gist.github.com/pnavarrc/20950640812489f13246
 var interfunc_gap = 125,
     func_arg_gap = 75,  //func_arg_gap >= 2*interfunc_gap
@@ -103,12 +102,10 @@ var interfunc_gap = 125,
       .attr("y1", "0px")
       .attr("x2", (interfunc_gap*2).toString() + "px")
       .attr("y2", "0px");
-
 gradient.append("stop")
     .attr("offset", ".4")
     .attr("stop-color", "black")
     .attr("stop-opacity", ".75");
-
 gradient.append("stop")
     .attr("offset", ".8")
     .attr("stop-color", "black")
@@ -146,161 +143,168 @@ d3.json(src, function(error, json) {
         .range([5, 25])
         .nice();
 
-    root.children.forEach(function(c) {
-        var other_depth = collapse(c);
-        root.max_depth = Math.max(other_depth, root.max_depth);
-    });
-
-    //TODO: Kludgy
-    collapse(root);
+    startCollapsing(root);
     initQuantities(root);
-    center(root);
     toggleChildren(root);
+
+    center(root);
     update(root);
 })
 
-//Informs each node what the deepest path extending from it is.
-function collapse(node) {
-  //Three places for children to be: d.children, d._children, d._holding
-  if (node.children && node.children.length > 0) {
-    node._children = node.children;
-    node.children = null;
+function startCollapsing(parent) {
+  parent.max_depth = 0;
 
-    if (node.max_depth) {
-      node._children.forEach(collapse)
-    } else {
-      node.max_depth = 0;
-      node._children.forEach(function(child) {
-        child.parent = node;
-        var new_possible_max = collapse(child)
-          + (isFunction(node) ? 0 : 1);
-        node.max_depth = Math.max(new_possible_max, node.max_depth);
-      });
-    }
+  if (parent.children && parent.children.length > 0) {
+    parent.children.forEach(function(child) {
+      var possible_max = startCollapsing(child) + (isFunction(parent) ? 0 : 1);
+      parent.max_depth = Math.max(possible_max, parent.max_depth);
+    });
 
-  //If there are no children shown or withheld, then this is a leaf.
-} else if (!node._children) {
-      node.children = null;
-      node.max_depth = 0;
+    toggleChildren(parent);
+
+  } else if (parent.children && parent.children.length == 0) {
+    parent.children = null;
   }
 
-  //Otherwise there are children already collapsed. Max_depth is already set.
-  return node.max_depth;
+  return parent.max_depth;
 }
 
-//TODO: This conversion from string to int is kludgy; normalize.
 var inf = 100; //ONLY USED FOR OPTIONAL ARGUMENT STUFF
 function initQuantities(d) {
-    if (d.init) return;
-    else d.init = true;
-
     if (isFunction(d))  initFunction(d);
     else                initPosition(d);
+    d.init = true;
 }
 
 /**
 Converts the 3-leveled JSON (function-qoa-position) to 2 levels (function-
 position) and store the qoas in a side array.
 */
-function initFunction(d) {
-  if (!d._children || d._children.length == 0) {
+function initFunction(func_node) {
+  if (!func_node._children || func_node._children.length == 0)
     return;
-  } else if (d._children.length == 1) {
-    var single_qoa = d._children[0];
-
-    d._children = single_qoa._children;
-    d.quantity_index = 0;
-    d.quantities = single_qoa._children;
-
+  else if (func_node._children.length == 1) {
+    var single_qoa = func_node._children[0];
+    func_node.quantities = [single_qoa];
+    func_node._children = single_qoa;
+    func_node.quantity_index = 0;
     return;
   }
 
   //Put all varieties of argument numbers into one array, and remember the max.
   var quantities = [];
   var max_qoa = 0;
-  for (qoa_index = 0; qoa_index < d._children.length; ++qoa_index) {
-    var qoa = d._children[qoa_index];
-    quantities.push(qoa);
-    max_qoa = Math.max(max_qoa, qoa.qoa);
+  for (var qoa_index = 0; qoa_index < func_node._children.length; ++qoa_index) {
+    var qoa_node = func_node._children[qoa_index];
+    qoa_node.frequency = qoa_node.frequency;
+    quantities.push(qoa_node);
+    max_qoa = Math.max(max_qoa, qoa_node.qoa);
   }
+  //End of loop: quantities array contains all "qoa" objects contained in
+  //func_node, max_qoa contains the maximum qoa value.
 
   //Create an array that will represent all quantities combined into one tree,
   //which will be the default tree.
-  var all = { qoa: inf, children: null, _children: [], frequency: 0 };
-  for (index = 0; index < max_qoa; ++index) {
+  var all = {
+    qoa: inf,
+    children: null,
+    _children: [],
+    frequency: 0,
+    parent: func_node
+  };
+  for (var index = 0; index < max_qoa; ++index) {
     all._children.push({ position: (index + 1), _children: [], frequency: 0 });
   }
+  //End of loop: all object's children array has length = max_qoa
 
   //Take all the children from these nodes and put them in the appropriate
   //index in my "all" array.
-  for (qoa_index = 0; qoa_index < d._children.length; ++qoa_index) {
-    var qoa = d._children[qoa_index];
+  for (var qoa_index = 0; qoa_index < func_node._children.length; ++qoa_index) {
+    var qoa_node = func_node._children[qoa_index];
+    all.frequency += qoa_node.frequency;
 
-    for (arg_index = 0; arg_index < qoa._children.length; ++arg_index) {
-      var arg = qoa._children[arg_index];
-      var pos = all._children[arg.position - 1];
+    for (arg_index = 0; arg_index < qoa_node._children.length; ++arg_index) {
+      var arg_node = qoa_node._children[arg_index];
+      var position = all._children[arg_node.position - 1];
 
-      pos.frequency += arg.frequency;
-      pos._children = pos._children.concat(arg._children);
+      arg_node.parent = func_node;
+      position.frequency += arg_node.frequency;
+      position._children = position._children.concat(arg_node._children);
     }
   }
 
   quantities.push(all);
-  d.quantities = quantities;
-  d._children = all._children;
-  d.quantity_index = quantities.length - 1;
+  func_node.quantities = quantities;
+  setInfo(func_node, all);
+  func_node.quantity_index = quantities.length - 1;
+
+  func_node.quantities.forEach(console.log);
 }
 
 /**
 The initFunction above modifies the contents of the position file to contain
 possible duplicates for functions -- this will consolidate them.
 */
-function initPosition(d) {
-  if (!d._children) return;
+function initPosition(position_node) {
+  consolidate(position_node, "function");
+  truncateLongList(position_node);
+}
+
+function consolidate(node, duped_field) {
+  if (!node._children) return;
 
   //consolidates
-  var uniqueFunctions = {}
-  for (index = 0; index < d._children.length; ++index) {
-    var child = d._children[index];
-    var func = uniqueFunctions[child.function];
-    if (func != null) {
+  var unique_children = {}
 
-      func.frequency += child.frequency;
-      if (isLeaf(func)) {
-        func.allExamples.forEach(function(c) { func.allExamples.add(c); });
-      } else {
-        func._children = func._children.concat(child.children)
-      }
+  for (var index = 0; index < node._children.length; ++index) {
+    var node_child = node._children[index],
+        id_field = node_child[duped_field],
+        unique_child = unique_children[id_field];
+
+    if (unique_child != null) {
+
+      unique_child.frequency += node_child.frequency;
+      if (isLeaf(node_child))
+        unique_child.allExamples.forEach(node_child.allExamples.add);
+      else
+        unique_child._children = unique_child._children.concat(node_child.children);
 
     } else {
 
-      if (isLeaf(child)) {
-        var exampleSet = d3.set(child.allExamples);
-        child.allExamples = exampleSet
-      }
-      uniqueFunctions[child.function] = child;
+      if (isLeaf(node_child))
+        node_child.allExamples = d3.set(node_child.allExamples);
+      unique_children[id_field] = node_child;
 
     }
   }
 
-  d._children = []
-  Object.keys(uniqueFunctions).forEach(function(key) {
-    d._children.push(uniqueFunctions[key]);
+  node._children = [];
+  Object.keys(unique_children).forEach(function(key) {
+    node._children.push(unique_children[key]);
   });
+}
 
+function truncateLongList(position_node) {
   //Sorts arguments by frequency, leaves only the first 10 and hides
   //the rest.
-  if (!isFunction(d) && d._children.length > 10) {
-      d._children.sort(function(a, b) {
+  if (!isFunction(position_node) && position_node._children.length > 10) {
+      position_node._children.sort(function(a, b) {
           return b.frequency - a.frequency;
       });
-      d._holding = d._children.splice(10);
-      d._children.splice(d._children.length, 0, {
+      position_node._holding = position_node._children.splice(10);
+      position_node._children.splice(position_node._children.length, 0, {
           "function": "",
           "frequency": -1,
           "parent": this
       });
   }
+}
+
+function setInfo(accept, give) {
+  accept.children    = give.children;
+  accept._children   = give._children;
+  accept.example     = give.example;
+  accept.frequency   = give.frequency;
 }
 
 //If the function does not have a position value set, then it is an argument node.
@@ -327,13 +331,9 @@ function isParentShowingAll(d) {
 }
 
 /**
- * Update the tree after a clicking event.
- */
-var node_num = 0;
-
-/**
  * Central function; updates what the graph looks like when the nodes change.
  */
+var node_num = 0;
 function update(src) {
     var nodes = tree.nodes(root),
         links = tree.links(nodes);
@@ -708,7 +708,7 @@ function toggleChildren(d) {
         d._children = d.children;
         d.children = null;
     } else {
-        initQuantities(d);
+        if (!d.init) initQuantities(d);
         d.children = d._children;
         d._children = null;
     }
@@ -752,6 +752,8 @@ function expandSubLevel(d) {
  * When they reach they end, they revert to the default.
  */
 function changeQuantities(d) {
+    if (!isFunction(d) || !d.children || d.quantities.length <= 1) return;
+
     if (d3.event.shiftKey) {
         d.quantity_index = (d.quantity_index + 1) % d.quantities.length;
     } else if (d3.event.ctrlKey) {
@@ -761,16 +763,11 @@ function changeQuantities(d) {
 
     var replacement = d.quantities[d.quantity_index];
 
-    d.children    = replacement.children;
-    d._children   = replacement._children;
-    d.example     = replacement.example;
-    d.frequency   = replacement.frequency;
-    d.init        = false;
-
+    setInfo(d, replacement);
+    if (!d.children) toggleChildren(d);
     //Reset tooltip.
     mouseleave(d);
     mouseover(d);
-    initQuantities(d);
 }
 
 /**
