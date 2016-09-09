@@ -183,10 +183,17 @@ position) and store the qoas in a side array.
 function initFunction(func_node) {
   if (!func_node._children || func_node._children.length == 0)
     return;
-  else if (func_node._children.length == 1) {
+
+  consolidate(func_node, "qoa");
+  func_node._children.forEach(function(child) {
+    consolidate(child, "position");
+  });
+
+  if (func_node._children.length == 1) {
     var single_qoa = func_node._children[0];
+
     func_node.quantities = [single_qoa];
-    func_node._children = single_qoa;
+    setInfo(func_node, single_qoa);
     func_node.quantity_index = 0;
     return;
   }
@@ -196,7 +203,6 @@ function initFunction(func_node) {
   var max_qoa = 0;
   for (var qoa_index = 0; qoa_index < func_node._children.length; ++qoa_index) {
     var qoa_node = func_node._children[qoa_index];
-    qoa_node.frequency = qoa_node.frequency;
     quantities.push(qoa_node);
     max_qoa = Math.max(max_qoa, qoa_node.qoa);
   }
@@ -205,7 +211,7 @@ function initFunction(func_node) {
 
   //Create an array that will represent all quantities combined into one tree,
   //which will be the default tree.
-  var all = {
+  var all_qoa = {
     qoa: inf,
     children: null,
     _children: [],
@@ -213,19 +219,19 @@ function initFunction(func_node) {
     parent: func_node
   };
   for (var index = 0; index < max_qoa; ++index) {
-    all._children.push({ position: (index + 1), _children: [], frequency: 0 });
+    all_qoa._children.push({ position: (index + 1), _children: [], frequency: 0 });
   }
   //End of loop: all object's children array has length = max_qoa
 
   //Take all the children from these nodes and put them in the appropriate
   //index in my "all" array.
-  for (var qoa_index = 0; qoa_index < func_node._children.length; ++qoa_index) {
-    var qoa_node = func_node._children[qoa_index];
-    all.frequency += qoa_node.frequency;
+  for (var qoa_index = 0; qoa_index < quantities.length; ++qoa_index) {
+    var qoa_node = quantities[qoa_index];
+    all_qoa.frequency += qoa_node.frequency;
 
-    for (arg_index = 0; arg_index < qoa_node._children.length; ++arg_index) {
+    for (var arg_index = 0; arg_index < qoa_node._children.length; ++arg_index) {
       var arg_node = qoa_node._children[arg_index];
-      var position = all._children[arg_node.position - 1];
+      var position = all_qoa._children[arg_node.position - 1];
 
       arg_node.parent = func_node;
       position.frequency += arg_node.frequency;
@@ -233,12 +239,10 @@ function initFunction(func_node) {
     }
   }
 
-  quantities.push(all);
+  quantities.push(all_qoa);
   func_node.quantities = quantities;
-  setInfo(func_node, all);
+  setInfo(func_node, all_qoa);
   func_node.quantity_index = quantities.length - 1;
-
-  func_node.quantities.forEach(console.log);
 }
 
 /**
@@ -253,7 +257,6 @@ function initPosition(position_node) {
 function consolidate(node, duped_field) {
   if (!node._children) return;
 
-  //consolidates
   var unique_children = {}
 
   for (var index = 0; index < node._children.length; ++index) {
@@ -265,15 +268,16 @@ function consolidate(node, duped_field) {
 
       unique_child.frequency += node_child.frequency;
       if (isLeaf(node_child))
-        unique_child.allExamples.forEach(node_child.allExamples.add);
+        node_child.allExamples.forEach(unique_child.allExamples.add);
       else
-        unique_child._children = unique_child._children.concat(node_child.children);
+        unique_child._children = unique_child._children.concat(node_child._children);
 
     } else {
 
-      if (isLeaf(node_child))
-        node_child.allExamples = d3.set(node_child.allExamples);
-      unique_children[id_field] = node_child;
+      var clone = JSON.parse(JSON.stringify(node_child)); //TODO: Is clone necessary?
+      if (isLeaf(clone))
+        clone.allExamples = d3.set(node_child.allExamples);
+      unique_children[id_field] = clone;
 
     }
   }
