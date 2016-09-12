@@ -291,7 +291,7 @@ function truncateLongList(position_node) {
   //the rest.
   var kids = position_node._children;
   if (isPosition(position_node) && kids && kids.length > 10) {
-      position_node._children.sort(function(a, b) {
+      kids.sort(function(a, b) {
           return b.frequency - a.frequency;
       });
 
@@ -834,13 +834,12 @@ function test(parent) {
   if (isFunction(parent) && !isArrow(parent)) {
 
     for (var qoa_index = 0; qoa_index < parent.quantities.length; ++qoa_index) {
-      changeQuantities(parent, true);
-
       if (!parent.children) toggleChildren(parent);
       if (!parent.children) continue; //if still no children, there's nothing.
+      changeQuantities(parent, true);
 
-      freqCheckFunction(parent);
       testAllChildren(parent);
+      freqCheckFunction(parent);
     }
 
   } else if (isPosition(parent)) {
@@ -848,8 +847,8 @@ function test(parent) {
     if (!parent.children) toggleChildren(parent);
     if (parent._holding) toggleHoldingNodes(parent);
 
-    freqCheckPosition(parent);
     testAllChildren(parent);
+    freqCheckPosition(parent);
 
   }
 }
@@ -866,7 +865,7 @@ function freqCheckPosition(parent) {
   parent.children.forEach(function(child) {
     freqOfChildren += child.frequency;
   });
-  
+
   if (parent.children.length > 10) ++freqOfChildren; //to compensate for arrow -1
 
   if (parent.frequency != freqOfChildren) {
