@@ -1,8 +1,6 @@
 package core;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -16,16 +14,10 @@ public class FunctionNode extends Node {
   private Map<Integer, QOANode> all_quantities = new LinkedHashMap<Integer, QOANode>();
 
   @Expose
-  private int example;
+  private Example example = null;
 
   @Expose
   private QOANode[] children = null;
-
-  private int shortestExampleLen = Integer.MAX_VALUE;
-
-  //Ensures that it's not a unary/binary operator.
-  //TODO: + can be either unary or binary...
-  private static Matcher nonvariadicFuncs = Pattern.compile("[\\+\\-\\*/\\^&]").matcher("");
 
   /**
    * Represents a certain type of function or primitive type that can appear in a formula. Stores
@@ -43,10 +35,6 @@ public class FunctionNode extends Node {
    */
   public FunctionNode(String func) {
     this.function = func;
-    if (!nonvariadicFuncs.reset(func).matches()) {
-      this.function = func; //TODO
-      //specific_quantities = new LinkedHashMap<Integer, QuantityOfArgumentsNode>();
-    }
   }
 
   /**
@@ -63,22 +51,24 @@ public class FunctionNode extends Node {
    *                stats node.
    */
   @Override
-  public void add(int ex, FormulaToken token) {
+  public void add(FormulaToken token, Example newExample) {
     if (!this.equals(token)) {
       throw new UnsupportedOperationException("Trying to pass a FormulaToken which does not "
           + "refer to the same type of token as the FunctionStatsNode: " + token.toSimpleString()
           + " vs. " + this.function);
     }
 
-    setExampleIfBetter(ex, token);
+    //setExampleIfBetter
+    if (example == null || example.getFormulaLength() > newExample.getFormulaLength()) {
+      example = newExample;
+    }
+    
     increment();
-    FormulaToken[] children = token.getChildren();
-
-    QOANode goodsize = getArgumentNodes(children.length);
-    goodsize.fill(children);
+    QOANode goodsize = getQOANode(token.getChildren().length);
+    goodsize.add(token, newExample);
   }
 
-  private QOANode getArgumentNodes(int numChildren) {
+  private QOANode getQOANode(int numChildren) {
     QOANode goodsize;
     if (all_quantities.containsKey(numChildren)) {
       goodsize = all_quantities.get(numChildren);
@@ -87,61 +77,6 @@ public class FunctionNode extends Node {
       all_quantities.put(numChildren, goodsize);
     }
     return goodsize;
-  }
-
-  /**QuantityOfArgumentsNode*/
-  private class QOANode extends Node {
-    @Expose
-    private int qoa;
-
-    @Expose
-    private List<ArgumentNode> children;
-
-    public QOANode(int quantity) {
-      this.qoa = quantity;
-      this.children = new ArrayList<ArgumentNode>();
-      for (int i = 0; i < quantity; ++i) {
-        this.children.add(new ArgumentNode(i + 1));
-      }
-    }
-
-    public void fill(FormulaToken[] children) {
-      increment();
-      for (int i = 0; i < children.length; ++i) {
-        ArgumentNode position = this.children.get(i);
-        FormulaToken child = children[i];
-        position.add(0, child); //TODO: 0 is placeholder...
-      }
-    }
-
-    public void setChildren() {
-      for (ArgumentNode child : children) {
-        child.setChildren();
-      }
-    }
-
-    @Override
-    public void add(int ex, FormulaToken token) {
-      // TODO Auto-generated method stub
-    }
-
-    @Override
-    public Node[] getChildren() {
-      return (Node[]) children.toArray();
-    }
-
-    @Override
-    public String toString() {
-      return qoa + "";
-    }
-  }
-
-  private void setExampleIfBetter(int ex, FormulaToken token) {
-    int otherExampleLen = token.getOrigLen();
-    if (shortestExampleLen > otherExampleLen) {
-      example = ex;
-      shortestExampleLen = otherExampleLen;
-    }
   }
 
   /**

@@ -12,32 +12,32 @@ import com.google.gson.annotations.Expose;
  * @author dlf
  *
  */
-public class ArgumentNode extends Node {
+public class PositionNode extends Node {
   @Expose
   private int position;
   
-  private Map<String, Node> possibleArguments_unsorted = new HashMap<String, Node>();
+  private Map<String, Node> childrenMap = new HashMap<String, Node>();
   
   @Expose
   private Node[] children = null;  //because it preserves insertion order
   
-  public ArgumentNode(int pos) {
+  public PositionNode(int pos) {
     this.position = pos;
   }
   
-  public void add(int ex, FormulaToken child) {
+  public void add(FormulaToken child, Example example) {
     String func = child.toSimpleString();
     increment();
 
-    Node statsNode;
-    if (possibleArguments_unsorted.containsKey(func)) {
-      statsNode = possibleArguments_unsorted.get(func);
+    Node funcNode;
+    if (childrenMap.containsKey(func)) {
+      funcNode = childrenMap.get(func);
     } else {
-      statsNode = isLeafToken(func) ? new LeafNode(func) : new FunctionNode(func);
-      possibleArguments_unsorted.put(child.toSimpleString(), statsNode);
+      funcNode = isLeafToken(func) ? new LeafNode(func) : new FunctionNode(func);
+      childrenMap.put(child.toSimpleString(), funcNode);
     }
     
-    statsNode.add(ex, child);
+    funcNode.add(child, example);
   }
   
   private boolean isLeafToken(String tok) {
@@ -45,11 +45,11 @@ public class ArgumentNode extends Node {
   }
 
   public ArrayList<Node> getPossibilities() {
-    return new ArrayList<Node>(possibleArguments_unsorted.values());
+    return new ArrayList<Node>(childrenMap.values());
   }
   
   public void setChildren() {
-    children = possibleArguments_unsorted.values().stream().toArray(Node[]::new);
+    children = childrenMap.values().stream().toArray(Node[]::new);
     for (Node node : children) {
       node.setChildren();
     }

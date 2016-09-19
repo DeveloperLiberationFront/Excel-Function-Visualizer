@@ -23,6 +23,7 @@ import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFEvaluationWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import core.Example;
 import core.FormulaToken;
 import core.OperationToken;
 import core.Parser;
@@ -70,7 +71,8 @@ public class SheetAnalysis {
     //ExceptionCatcher catcher = new ExceptionCatcher();
     Queue<File> directoriesToAnalyze = new ArrayDeque<File>();  
     directoriesToAnalyze.add(sheetDirectory);                   
-                                                                
+                            
+    int exampleID = 0;
     while (!directoriesToAnalyze.isEmpty()) {
       File directory = directoriesToAnalyze.remove();
       for (File file : directory.listFiles()) {
@@ -130,7 +132,10 @@ public class SheetAnalysis {
                 }
                 
                 if (isUseful(formula)) {
-                  trees.add(formula);     
+                  String cellLocation = "'" + sheet.getSheetName() + "'!" + 
+                      CellReference.convertNumToColString(cell.getColumnIndex()) + (cell.getRowIndex());
+                  Example example = new Example(++exampleID, formula.toString(), file.getName(), cellLocation);
+                  trees.add(formula, example);     
                 }
               }
             }

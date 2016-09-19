@@ -12,6 +12,7 @@ import java.util.Map;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import core.Example;
 import core.FormulaToken;
 import core.FunctionNode;
 
@@ -23,13 +24,12 @@ public class Orchard {
    * 
    * @param formula
    */
-  public void add(FormulaToken formula) {
+  public void add(FormulaToken formula, Example example) {
     String toplevel = formula.toSimpleString();
     if (!trees.containsKey(toplevel)) {
       trees.put(toplevel, new FunctionNode(toplevel));
     }
-    trees.get(toplevel).add(trees.size(), formula);  
-    //TODO: NO MORE DB MEANS NO MORE ID
+    trees.get(toplevel).add(formula, example);  
     
     ++totalFormulae;
   }
