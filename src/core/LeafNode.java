@@ -14,7 +14,9 @@ public class LeafNode extends Node {
   @Expose
   private ArrayList<Example> allExamples = new ArrayList<Example>();
 
+  public static final Node[] NO_CHILDREN = {};
   public LeafNode(String func) {
+    this.children = NO_CHILDREN;
     this.function = func;
   }
 
@@ -34,17 +36,6 @@ public class LeafNode extends Node {
     }
     
     allExamples.add(newExample);
-  }
-
-  @Override
-  public void setChildren() {
-    // Nothing    
-  }
-  
-  public static final Node[] NO_CHILDREN = {};
-  
-  public Node[] getChildren() {
-    return NO_CHILDREN;
   }
 
   @Override

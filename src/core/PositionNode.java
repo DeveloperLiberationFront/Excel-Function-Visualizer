@@ -18,10 +18,8 @@ public class PositionNode extends Node {
   
   private Map<String, Node> childrenMap = new HashMap<String, Node>();
   
-  @Expose
-  private Node[] children = null;  //because it preserves insertion order
-  
   public PositionNode(int pos) {
+    this.children = null;
     this.position = pos;
   }
   
@@ -50,18 +48,7 @@ public class PositionNode extends Node {
   
   public void setChildren() {
     children = childrenMap.values().stream().toArray(Node[]::new);
-    for (Node node : children) {
-      node.setChildren();
-    }
-  }
-  
-  @Override
-  public Node[] getChildren() {
-    if (children == null) {
-      setChildren();
-    }
-    
-    return children;
+    super.setChildren();
   }
   
   @Override

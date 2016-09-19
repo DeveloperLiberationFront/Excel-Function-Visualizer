@@ -16,9 +16,6 @@ public class FunctionNode extends Node {
   @Expose
   private Example example = null;
 
-  @Expose
-  private QOANode[] children = null;
-
   /**
    * Represents a certain type of function or primitive type that can appear in a formula. Stores
    * the number of times that this function has been observed here, and it records every type of
@@ -34,6 +31,7 @@ public class FunctionNode extends Node {
    * @param func The type of formula token that this node wraps.
    */
   public FunctionNode(String func) {
+    this.children = null;
     this.function = func;
   }
 
@@ -70,12 +68,14 @@ public class FunctionNode extends Node {
 
   private QOANode getQOANode(int numChildren) {
     QOANode goodsize;
+    
     if (all_quantities.containsKey(numChildren)) {
       goodsize = all_quantities.get(numChildren);
     } else {
       goodsize = new QOANode(numChildren);
       all_quantities.put(numChildren, goodsize);
     }
+    
     return goodsize;
   }
 
@@ -87,19 +87,8 @@ public class FunctionNode extends Node {
    */
   @Override
   public void setChildren() {
-    children = all_quantities.values().stream().toArray(QOANode[]::new);
-
-    for (QOANode child : children) {
-      child.setChildren();
-    }
-  }
-
-  public Node[] getChildren() {
-    if (children == null) {
-      setChildren();
-    }
-
-    return children;
+    children = all_quantities.values().stream().toArray(Node[]::new);
+    super.setChildren();
   }
 
   public String getFunction() {
@@ -132,7 +121,7 @@ public class FunctionNode extends Node {
 
   /**
    * Hashcode based on function string.
-   * @return
+   * @return  The hashcode of the string function name.
    */
   @Override
   public int hashCode() {
