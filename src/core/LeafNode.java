@@ -9,42 +9,33 @@ public class LeafNode extends Node {
   private String function;
   
   @Expose
-  private int example;
+  private String example = null;
   
   @Expose
   private ArrayList<Integer> allExamples = new ArrayList<Integer>();
-  
-  private int shortestExampleLen = Integer.MAX_VALUE;
 
+  public static final Node[] NO_CHILDREN = {};
   public LeafNode(String func) {
+    this.children = NO_CHILDREN;
     this.function = func;
   }
 
   @Override
-  public void add(int ex, FormulaToken token) {
-    if (!function.equals(token.toString()))
+  public void add(Token token, Example newExample) {
+    if (!function.equals(token.toString())) {
       throw new UnsupportedOperationException("Trying to pass a FormulaToken which does not "
           + "refer to the same type of token as the FunctionStatsNode: " + token.toSimpleString() 
           + " vs. " + this.function);
+    }
     
     increment();
-    int otherExampleLen = token.getOrigLen();
-    if (shortestExampleLen > otherExampleLen) {
-      example = ex;
-      shortestExampleLen = otherExampleLen;
-    }    
     
-    allExamples.add(ex);
-  }
-
-  @Override
-  public void setChildren() {
-    // Nothing    
-  }
-  
-  public static final Node[] NO_CHILDREN = {};
-  public Node[] getChildren() {
-    return NO_CHILDREN;
+    //setExampleIfBetter
+    if (example == null || example.length() > newExample.getFormulaLength()) {
+      example = newExample.getFormula();
+    }
+    
+    allExamples.add(newExample.getID());
   }
 
   @Override

@@ -12,31 +12,29 @@ import java.util.Map;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import core.FormulaToken;
+import core.Example;
+import core.Token;
 import core.FunctionNode;
 
 public class Orchard {
   private final Map<String, FunctionNode> trees = new HashMap<String, FunctionNode>();
+  private final Map<String, Map<Integer, Example>> examples 
+      = new HashMap<String, Map<Integer, Example>>();
   private int totalFormulae = 0;
   
-  /**
-   * 
-   * @param formula
-   */
-  public void add(FormulaToken formula) {
+  public void add(Token formula, Example example) {
     String toplevel = formula.toSimpleString();
     if (!trees.containsKey(toplevel)) {
       trees.put(toplevel, new FunctionNode(toplevel));
+      examples.put(toplevel, new HashMap<Integer, Example>());
     }
-    trees.get(toplevel).add(trees.size(), formula);  
-    //TODO: NO MORE DB MEANS NO MORE ID
+    
+    trees.get(toplevel).add(formula, example);      
+    examples.get(toplevel).put(example.getID(), example);
     
     ++totalFormulae;
   }
   
-  /**
-   * 
-   */
   public void flush(String outputDirectory) {
     //Lifted from AllTrees.java
     ArrayList<FunctionNode> sort = new ArrayList<FunctionNode>(trees.values());
@@ -79,6 +77,15 @@ public class Orchard {
         write.close();
       } catch (IOException ex) {
         System.err.println("Unable to print JSON for " + func);
+      }
+      
+      try {
+        write = new BufferedWriter(new FileWriter(outputDirectory + "ex" + fileFunc + ".json"));
+        write.write(gson.toJson(examples.get(func)));
+        write.flush();
+        write.close();
+      } catch (IOException ex) {
+        System.err.println("Unable to print example JSON for " + func);
       }
       
       list.add(fileFunc);

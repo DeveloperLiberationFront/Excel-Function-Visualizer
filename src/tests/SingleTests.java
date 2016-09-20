@@ -8,7 +8,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Before;
 import org.junit.Test;
 
-import core.FormulaToken;
+import core.Token;
 import core.Parser;
 import utils.POIUtils;
 import utils.TestUtils;

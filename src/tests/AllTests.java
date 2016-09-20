@@ -10,7 +10,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import core.FormulaToken;
+import core.Token;
 import core.Parser;
 import utils.TestUtils;
 

@@ -9,8 +9,8 @@ import org.apache.poi.ss.formula.ptg.OperationPtg;
 import org.apache.poi.ss.formula.ptg.Ptg;
 import org.apache.poi.ss.util.CellReference;
 
-public class OperationToken extends FormulaToken {
-  private FormulaToken[] children;          //The arguments of this function.
+public class FunctionToken extends Token {
+  private Token[] children;          //The arguments of this function.
   //A string representation of this token without any information about arguments.
   private String op;           
   
@@ -24,7 +24,7 @@ public class OperationToken extends FormulaToken {
    * @param tok   Spreadsheet operation.
    * @param args    All the arguments in the function defined by token.
    */
-  public OperationToken(OperationPtg tok, FormulaToken[] args) {
+  public FunctionToken(OperationPtg tok, Token[] args) {
     int len = args.length;
     if (tok.getNumberOfOperands() != len) {
       throw new UnsupportedOperationException("OperationToken: not enough arguments "
@@ -35,6 +35,10 @@ public class OperationToken extends FormulaToken {
     
     String[] strArgs = Arrays.stream(args).map(s -> s.toString()).toArray(String[]::new);
     this.tokenStr = tok.toFormulaString(strArgs);
+    
+    String[] origArgs = Arrays.stream(args).map(s -> s.toOrigString()).toArray(String[]::new);
+    this.origStr = tok.toFormulaString(origArgs);
+    
     this.op = extractOp(tok, len);
         
     addChildren(len, args);
@@ -42,21 +46,16 @@ public class OperationToken extends FormulaToken {
   
   /**
    * Constructor used primarily for single-arg SUM. We expect only one arg.
-   * Vararged for automatic conversion to array. (TODO: Is that good form?)
    * 
    * @param tok   String representation of the function, including arguments.
    * @param args    Individual FormulaToken arguments.
    */
-  public OperationToken(AttrPtg tok, FormulaToken... args) {
-    if (args.length != 1) {
-      throw new UnsupportedOperationException("OperationToken: not enough arguments "
-          + "to the operation.");
-    } 
-    
+  public FunctionToken(AttrPtg tok, Token arg) {  
     this.token = tok;  
-    this.tokenStr = "SUM(" + args[0] + ")";
+    this.tokenStr = "SUM(" + arg + ")";
+    this.origStr = "SUM(" + arg.toOrigString() + ")";
     this.op = "SUM()";
-    addChildren(args.length, args);
+    addChildren(1, new Token[] {arg});
   }
 
   /**
@@ -64,8 +63,8 @@ public class OperationToken extends FormulaToken {
    * @param len   Number of expected children for this function.
    * @param args  The array of children to this node.
    */
-  private void addChildren(int len, FormulaToken[] args) {
-    children = new FormulaToken[len];
+  private void addChildren(int len, Token[] args) {
+    children = new Token[len];
     for (int i = 0; i < len; ++i) {
       children[i] = args[i];
     }
@@ -94,7 +93,7 @@ public class OperationToken extends FormulaToken {
     return tokenStr;
   }
   
-  public FormulaToken[] getChildren() {
+  public Token[] getChildren() {
     return children;
   }
 
@@ -110,6 +109,10 @@ public class OperationToken extends FormulaToken {
     return op;
   }
   
+  public String toOrigString() {
+    return this.origStr;
+  }
+  
   /**
    * Builds a hierarchical string of this node and it's children.
    * @param sb    The stringbuilder passed on from a higher level which contains the 
@@ -121,24 +124,18 @@ public class OperationToken extends FormulaToken {
     sb.append(this.op);
     sb.append("\n");
     
-    for (FormulaToken child : children) {
+    for (Token child : children) {
       child.toTreeString(sb, depth + 1);
     }
     
     return sb;
   }
   
-  /**
-   * 
-   * @param tok
-   * @param cell
-   * @return
-   */
   public String toR1C1String(Ptg tok, CellReference cell) {
     String[] strArgs = new String[children.length];
     
     for (int i = 0; i < children.length; ++i) {
-      FormulaToken child = children[i];
+      Token child = children[i];
       strArgs[i] = child.toR1C1String(cell);
     }
     

@@ -23,8 +23,9 @@ import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFEvaluationWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import core.FormulaToken;
-import core.OperationToken;
+import core.Example;
+import core.Token;
+import core.FunctionToken;
 import core.Parser;
 
 /**
@@ -35,7 +36,7 @@ import core.Parser;
  */
 public class SheetAnalysis {
   private static final String INPUT_DIRECTORY = "./sheets/ENRON/";
-  private static final String OUTPUT_DIRECTORY = "./src/viz/smalljson/";
+  private static final String OUTPUT_DIRECTORY = "./src/viz/json/";
   
   /**
    * Ingests spreadsheets and outputs JSON files that describe the frequencies
@@ -67,10 +68,11 @@ public class SheetAnalysis {
     }
     
     Orchard trees = new Orchard();           
-    //ExceptionCatcher catcher = new ExceptionCatcher();
+    ExceptionCatcher catcher = new ExceptionCatcher();
     Queue<File> directoriesToAnalyze = new ArrayDeque<File>();  
     directoriesToAnalyze.add(sheetDirectory);                   
-                                                                
+                            
+    int exampleId = 0;
     while (!directoriesToAnalyze.isEmpty()) {
       File directory = directoriesToAnalyze.remove();
       for (File file : directory.listFiles()) {
@@ -87,20 +89,23 @@ public class SheetAnalysis {
         try {
           workbook = new XSSFWorkbook(OPCPackage.open(file, PackageAccess.READ));
         } catch (IOException | InvalidFormatException ex) {
-          //catcher.addFile(file.getName(), ex);
+          catcher.addFile(file.getName(), ex);
+          continue;
+        } catch (OutOfMemoryError ex) {
+          System.err.println(ex);
           continue;
         }
         
         FormulaParsingWorkbook parse = XSSFEvaluationWorkbook.create(workbook);
         for (int i = 0; i < workbook.getNumberOfSheets(); ++i) {
-          System.out.print((i+1) + " ");
+          System.out.print((i + 1) + " ");
           Sheet sheet = workbook.getSheetAt(i);
           Set<String> seenRelativeFormulae = new HashSet<String>();
           
           for (Row row : sheet) {
             for (Cell cell : row) {
               if (cell.getCellType() == Cell.CELL_TYPE_FORMULA) {
-                FormulaToken formula; 
+                Token formula; 
                 String r1c1;
                 String formulaStr;
                 CellReference cellRef;
@@ -108,8 +113,8 @@ public class SheetAnalysis {
                 try {
                   formulaStr = cell.getCellFormula();
                 } catch (FormulaParseException ex) {
-                  //catcher.addFormula(file + " " + cell.getRowIndex() + "," 
-                  //  + cell.getColumnIndex(), ex);
+                  catcher.addFormula(file + " " + cell.getRowIndex() + "," 
+                      + cell.getColumnIndex(), ex);
                   continue;
                 }
                 
@@ -118,8 +123,8 @@ public class SheetAnalysis {
                   formula = Parser.parseFormula(formulaStr, parse, i);
                   r1c1 = formula.toR1C1String(cellRef);                  
                 } catch (Exception ex) {
-                  System.err.println(formulaStr + " : " + ex.getMessage());
-                  //catcher.addFormula(formulaStr, ex);
+                  //System.err.println(formulaStr + " : " + ex.getMessage());
+                  catcher.addFormula(formulaStr, ex);
                   continue;
                 }
                 
@@ -130,28 +135,39 @@ public class SheetAnalysis {
                 }
                 
                 if (isUseful(formula)) {
-                  trees.add(formula);     
+                  String cellLocation = "'" + sheet.getSheetName() + "'!"  
+                      + CellReference.convertNumToColString(cell.getColumnIndex()) 
+                      + (cell.getRowIndex() + 1);
+                  Example example = new Example(++exampleId, formula.toOrigString(), 
+                      file.getName(), cellLocation);
+                  trees.add(formula, example);     
                 }
               }
             }
           }
         }
         
-        /*if (catcher.countFiles() > 10) {
+        if (catcher.countFiles() > 10) {
           catcher.flushFiles();
         }
         
         if (catcher.countFormulae() > 1000) {
           catcher.flushFormulae();
-        }*/
+        }
         
         System.out.println();
+        
+        try {
+          workbook.close();
+        } catch (IOException ex) {
+          System.err.println("Cannot close workbook.");
+        }
       } //end for (File file : sheetDirectory.listFiles())
       
     } // end while (directoriesToAnalyze.isEmpty())
     
-    //catcher.flushFiles();
-    //catcher.flushFormulae();
+    catcher.flushFiles();
+    catcher.flushFormulae();
     trees.flush(OUTPUT_DIRECTORY);
   }
   
@@ -160,8 +176,8 @@ public class SheetAnalysis {
    * @param tokens
    * @return
    */
-  private static boolean isUseful(FormulaToken formula) {
-    if (!(formula instanceof OperationToken)) {
+  private static boolean isUseful(Token formula) {
+    if (!(formula instanceof FunctionToken)) {
       return false;
     }
 

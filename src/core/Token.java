@@ -10,13 +10,13 @@ import org.apache.poi.ss.formula.ptg.RefPtgBase;
 import org.apache.poi.ss.formula.ptg.StringPtg;
 import org.apache.poi.ss.util.CellReference;
 
-public class FormulaToken {
+public class Token {
   //TODO: See if I can remove representationMode -- the wrap() function is the
   //only thing that uses it.
   protected Mode representationMode;
   protected String tokenStr;
+  protected String origStr;
   protected Ptg token;
-  private int origLen = Integer.MAX_VALUE;
   
   public enum Mode {
     NO_CHANGE,
@@ -25,8 +25,9 @@ public class FormulaToken {
   }
   
   //TODO: Don't like this blank string possibility, but OperationToken needs a blank super...
-  public FormulaToken() {
+  public Token() {
     this.tokenStr = "";
+    this.origStr = "";
     this.token = null;
     this.representationMode = Mode.NO_CHANGE;
   }
@@ -37,17 +38,18 @@ public class FormulaToken {
    * @param tok   The discrete token in the formula, expected to not be an operation
    *              token and thus have no arguments.
    */
-  public FormulaToken(Ptg tok, Mode mode) {
+  public Token(Ptg tok, Mode mode) {
     this(tok, new CellReference(0,0), mode);
   }
 
-  public FormulaToken(Ptg tok, CellReference cellReference, Mode mode) {
+  public Token(Ptg tok, CellReference cellReference, Mode mode) {
+    this.origStr = tok.toFormulaString().trim();
     this.token = tok;
     this.representationMode = mode;
     
     switch (mode) {
       case NO_CHANGE:
-        this.tokenStr = tok.toFormulaString().trim();   
+        this.tokenStr = this.origStr;
         break;
       case REPLACE:
         this.tokenStr = getTypeString(tok);              
@@ -85,7 +87,7 @@ public class FormulaToken {
       type = "~ERROR~";
     } else {                                                        
       type = "~OTHER~"; //TODO Be more specific?
-      System.out.println(tok.toFormulaString() + " " + tok.getClass());
+      //System.out.println(tok.toFormulaString() + " " + tok.getClass());
     }
     
     return type;
@@ -228,32 +230,15 @@ public class FormulaToken {
       //Don't want to wrap a single leaf node for viz purposes.
       this.tokenStr = "(" + tokenStr + ")";
     }   
+    
     return tokenStr;
   }
   
   /**
    * @return  An empty array; if it's not an operation, it should have no children.
    */
-  public FormulaToken[] getChildren() {
-    return new FormulaToken[0];
-  }
-  
-  /**
-   * This is to store the length of the original formula turned into tokens. Since the length
-   * can differ between how the parser can reconstruct it and what it was originally, I want
-   * to store the number with this extra step rather than trying to recalculate.
-   * 
-   * Mainly so I can pick out the shortest example from the database to display.
-   * @param origLen   The length in characters of the original formula.
-   */
-  public void setOrigLen(int origLen) {
-    this.origLen = origLen;
-    for (FormulaToken child : getChildren())
-      child.setOrigLen(origLen);
-  }
-  
-  public int getOrigLen() {
-    return origLen;
+  public Token[] getChildren() {
+    return new Token[0];
   }
   
   public Ptg getPtg() {
@@ -270,6 +255,10 @@ public class FormulaToken {
    */
   public String toSimpleString() {
     return toString();
+  }
+  
+  public String toOrigString() {
+    return this.origStr;
   }
   
   /**
@@ -321,8 +310,8 @@ public class FormulaToken {
     if (o instanceof FunctionNode) {
       FunctionNode fsn = (FunctionNode) o;
       return this.tokenStr.equals(fsn.getFunction());
-    } else if (o instanceof FormulaToken) {
-      FormulaToken ft = (FormulaToken) o;
+    } else if (o instanceof Token) {
+      Token ft = (Token) o;
       return toSimpleString().equals(ft.toSimpleString());
       //Because simple string differs between FormulaToken and OperationToken, 
       //call toSimpleString() instead of tokenStr.

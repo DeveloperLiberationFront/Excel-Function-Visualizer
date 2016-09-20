@@ -37,72 +37,72 @@ var margin = {
     empty_col = "white",
     empty_hover = "lightgray";
 
-var scale; //To be determined when when tree chosen.
+d3.select(self.frameElement)
+    .style("height", height + "px");
 
+var scale; //To be determined when when tree chosen.
 var diagonal = d3.svg.diagonal()
     .projection(function(d) {
         return [d.y, d.x];
     });
-
-/**
- * Create the tree and define it's general behavior.
- */
 var tree = d3.layout.tree()
     //.size([height, width])
     .nodeSize([square_side, square_side])
     .sort(function(a, b) {
-        var order = b.frequency - a.frequency;
-        if (order == 0)
-            if (a.function) order = a.function.localeCompare(b.function);
-            else order = a.position - b.position;
+        var order = 0;
+
+        if (isFunction(a) && isFunction(b)) {
+          order = (b.frequency - a.frequency)
+            || a.function.localeCompare(b.function);
+        } else if (isPosition(a) && isPosition(b)) {
+          order = a.position - b.position;
+        }
+
         return order;
     });
-
-/**
- * Define the zooming behavior for the svg element below this.
- */
 var zoomer = d3.behavior.zoom()
-    .scaleExtent([.5, 8])
+    .scaleExtent([.1, 8])
     .on("zoom", function() {
-        svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")")
+        svg.attr("transform", "translate(" + d3.event.translate + ")scale("
+          + d3.event.scale + ")")
     })
+zoomer.translate([view_start_x, view_start_y]);
 
 /**
  * Create the svg box in which you will see everything.
  */
 var svg = d3.select("body")
     .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
     .call(zoomer)
-    .on("dblclick.zoom", null)
+      .on("dblclick.zoom", null)
     .append("g")
-    .attr("transform", "translate(" + view_start_x + "," + view_start_y + ")");
-
-zoomer.translate([view_start_x, view_start_y]);
+      .attr("transform", "translate(" + view_start_x + ","
+        + view_start_y + ")");
 
 //gist.github.com/pnavarrc/20950640812489f13246
-var gradient = svg.append("defs")
-    .append("linearGradient")
-    .attr("id", "gradient")
-    .attr("gradientUnits", "userSpaceOnUse")
-    .attr("spreadMethod", "repeat")
-    .attr("x1", "0px")
-    .attr("y1", "0px")
-    .attr("x2", "250px")
-    .attr("y2", "0px");
-
+var interfunc_gap = 125,
+    func_arg_gap = 75,  //func_arg_gap >= 2*interfunc_gap
+    gradient = svg.append("defs")
+      .append("linearGradient")
+      .attr("id", "gradient")
+      .attr("gradientUnits", "userSpaceOnUse")
+      .attr("spreadMethod", "repeat")
+      .attr("x1", "0px")
+      .attr("y1", "0px")
+      .attr("x2", (interfunc_gap*2).toString() + "px")
+      .attr("y2", "0px");
 gradient.append("stop")
     .attr("offset", ".4")
     .attr("stop-color", "black")
     .attr("stop-opacity", ".75");
-
 gradient.append("stop")
     .attr("offset", ".8")
     .attr("stop-color", "black")
     .attr("stop-opacity", "0");
 
-/**TODO: FROM SOMEWHERE ELSE**/
+//https://css-tricks.com/snippets/javascript/get-url-variables/
 function getQueryVariable(variable) {
     var query = window.location.search.substring(1);
     var vars = query.split("&");
@@ -112,13 +112,14 @@ function getQueryVariable(variable) {
             return pair[1];
         }
     }
-    return (false);
+
+    return false;
 }
 
 /**
  * Initialize the tree with only one level down expanded.
  */
-var src = "smalljson/j" + getQueryVariable("file") + ".json"; //If python server started in tree folder
+var src = "json/j" + getQueryVariable("file") + ".json"; //If python server started in tree folder
 var root;
 d3.json(src, function(error, json) {
     if (error) throw error;
@@ -126,99 +127,228 @@ d3.json(src, function(error, json) {
     root = json;
     root.x0 = 0;
     root.y0 = 0;
-    root.max_depth = 0;
 
     scale = d3.scale.log()
         .domain([1, root.frequency])
         .range([5, 25])
         .nice();
 
-    root.children.forEach(function(c) {
-        var other_depth = collapse(c);
-        root.max_depth = Math.max(other_depth, root.max_depth);
-    });
-    initQuantities(root);
+    collapseAll(root);
+    flattenJSON(root);
+    toggleChildren(root);
+
     center(root);
     update(root);
 })
 
-function collapse(d) {
-    if (d.children && d.children.length > 0) {
-        //For when they have optional arguments.
-        if (isFunction(d)) //If it is a function node and not an argument node...
-            initQuantities(d);
+function collapseAll(parent) {
+  parent.longest_path = 0;
 
-        d._children = d.children;
-        d.children = null;
+  if (parent.children) {
+    var len = parent.children.length;
 
-        d.max_depth = 0;
-        d._children.forEach(function(c) {
-            c.parent = d;
-            var new_possible_max = collapse(c) + (isFunction(d) ? 0 : 1);
-            d.max_depth = Math.max(new_possible_max, d.max_depth);
-        });
+    if (len > 0) {
+      var child_is_new_level = isFunction(parent) ? 0 : 1
+      parent.children.forEach(function(child) {
+        var longest_of_children = collapseAll(child),
+            possible_max = longest_of_children + child_is_new_level;
+        parent.longest_path = Math.max(possible_max, parent.longest_path);
+      });
 
-        //Sorts arguments by frequency, leaves only the first 10 and hides
-        //the rest.
-        if (!isFunction(d) && d._children.length > 10) {
-            d._children.sort(function(a, b) {
-                return b.frequency - a.frequency;
-            });
-            d._holding = d._children.splice(10);
-            d._children.splice(d._children.length, 0, {
-                "function": "",
-                "frequency": -1,
-                "parent": this
-            });
-        }
-    } else {
-        d.children = null;
-        d.max_depth = 0;
+      toggleChildren(parent);
+    } else if (len == 0) {
+      parent.children = null;
+      parent._children = null;
     }
+  }
 
-    return d.max_depth; //Should have been set by parent.
+  return parent.longest_path;
+}
+
+var inf = 100; //ONLY USED FOR OPTIONAL ARGUMENT STUFF
+function flattenJSON(node) {
+    if (isFunction(node)) initFunction(node);
+    else                  initPosition(node);
+    node.init = true;
+}
+
+/**
+Converts the 3-leveled JSON (function-qoa-position) to 2 levels (function-
+position) and store the qoas in a side array.
+*/
+function initFunction(func_node) {
+  //PRECONDITION: collapseAll has been called, and nodes, if
+  //              they have any children, have them in _children
+  var kids = func_node._children;
+
+  //Setting children to null ensures that no node has
+  //a children array of length 0.
+  if (!kids) return;
+
+  consolidate(func_node, "qoa");
+  kids.forEach(function(child) { consolidate(child, "position"); });
+
+  //Put all varieties of argument numbers into one array, and remember the max.
+  var quantities = [],
+      max_qoa = 0;
+  for (var qoa_index = 0; qoa_index < kids.length; ++qoa_index) {
+    var qoa_node = kids[qoa_index];
+    quantities.push(qoa_node);
+    max_qoa = Math.max(max_qoa, qoa_node.qoa);
+  }
+
+  var default_info;
+  if (quantities.length > 1) {
+    default_info = combineAllQuantities(quantities, max_qoa);
+    quantities.push(default_info);
+  } else if (quantities.length == 1) {
+    default_info = kids[0];
+  }
+
+  default_info["example"] = func_node["example"];
+  func_node.quantities = quantities;
+  setInfo(func_node, default_info);
+  func_node.quantity_index = quantities.length - 1;
+}
+
+function combineAllQuantities(quantities, max_qoa) {
+  //Create an array that will represent all quantities combined into one tree,
+  //which will be the default tree.
+  var positions = [];
+  for (var index = 0; index < max_qoa; ++index) {
+    positions.push({ position: (index + 1), _children: [], frequency: 0 });
+  }
+
+  var all_qoa = {
+    qoa: inf,
+    children: null,
+    _children: positions,
+    frequency: 0,
+  };
+
+  //Take all the children from these nodes and put them in the appropriate
+  //index in my "all" array.
+  for (var qoa_index = 0; qoa_index < quantities.length; ++qoa_index) {
+    var qoa_node = quantities[qoa_index];
+    all_qoa.frequency += qoa_node.frequency;
+
+    for (var arg_index = 0; arg_index < qoa_node._children.length; ++arg_index) {
+      var arg_node = qoa_node._children[arg_index],
+          position = all_qoa._children[arg_node.position - 1];
+
+      position.frequency += arg_node.frequency;
+      position._children = position._children.concat(arg_node._children);
+    }
+  }
+
+  return all_qoa;
+}
+
+/**
+The initFunction above modifies the contents of the position file to contain
+possible duplicates for functions -- this will consolidate them.
+*/
+function initPosition(position_node) {
+  consolidate(position_node, "function");
+  truncateLongList(position_node);
+}
+
+function consolidate(node, duped_field) {
+  if (!node._children) return;
+
+  var unique_children = {}
+  for (var index = 0; index < node._children.length; ++index) {
+    var node_child = node._children[index],
+        id_field = node_child[duped_field],
+        unique_child = unique_children[id_field];
+
+    if (unique_child == null) {
+
+      var clone = JSON.parse(JSON.stringify(node_child));
+      if (isLeaf(clone))
+        clone.allExamples = d3.set(node_child.allExamples);
+      unique_children[id_field] = clone;
+
+    } else {
+
+      unique_child.frequency += node_child.frequency;
+      if (isLeaf(node_child)) {
+        node_child.allExamples.forEach(function(ex) {
+          unique_child.allExamples.add(ex);
+        });
+      } else
+        unique_child._children = unique_child._children.concat(node_child._children);
+
+    }
+  }
+
+  node._children = [];
+  Object.keys(unique_children).forEach(function(key) {
+    node._children.push(unique_children[key]);
+  });
+}
+
+function truncateLongList(position_node) {
+  //Sorts arguments by frequency, leaves only the first 10 and hides
+  //the rest.
+  var kids = position_node._children;
+  if (isPosition(position_node) && kids && kids.length > 10) {
+      kids.sort(function(a, b) {
+          return b.frequency - a.frequency;
+      });
+
+      position_node._holding = kids.splice(10);
+
+      kids.splice(kids.length, 0, {
+          "function": "",
+          "frequency": -1,
+          "parent": this
+      });
+  }
+}
+
+function setInfo(accept, give) {
+  accept.children    = give.children;
+  accept._children   = give._children;
+  accept.example     = give.example;
+  accept.frequency   = give.frequency;
 }
 
 //If the function does not have a position value set, then it is an argument node.
 function isFunction(d) {
-    return d.position == null;
+    return d.function != null;
 }
 
-//TODO: This conversion from string to int is kludgy; normalize.
-var inf = "100"; //ONLY USED FOR OPTIONAL ARGUMENT STUFF
-function initQuantities(d) {
-    d.quantities = [];
-
-    if (d.specific_quantities != null) {
-        for (q in d.specific_quantities)
-            d.quantities.push(d.specific_quantities[q]);
-    }
-
-    d.quantities.push({
-        children: d.children,
-        example: d.example,
-        frequency: d.frequency,
-        quantity: parseInt(inf, 10)
-    });
-
-    d.specific_quantities = null;
-    d.quantity = inf;
-    d.quantity_index = d.quantities.length - 1;
+function isPosition(d) {
+  return d.position != null;
 }
 
-d3.select(self.frameElement)
-    .style("height", height + "px");
+function isLeaf(d) {
+  return d.allExamples != null;
+}
 
-/**
- * Update the tree after a clicking event.
- */
-var i = 0;
-var interfunc_gap = 125, //times two, technically; must work with gradient regularity
-    func_arg_gap = 75;
+function isArrow(d) {
+  return d.frequency == -1;
+}
+
+//Works with the idea that the "all" variant is the final one in the
+//`quantities` array.
+function isParentShowingAll(d) {
+  var par = d.parent;
+  return isShowingAll(par);
+}
+
+function isShowingAll(node) {
+  if (!node || !isFunction(node) || isLeaf(node))
+    return false;
+  else
+    return node.quantity_index == node.quantities.length - 1;
+}
 
 /**
  * Central function; updates what the graph looks like when the nodes change.
  */
+var node_num = 0;
 function update(src) {
     var nodes = tree.nodes(root),
         links = tree.links(nodes);
@@ -233,7 +363,7 @@ function update(src) {
 
     var node = svg.selectAll("g")
         .data(nodes, function(d) {
-            return d.id || (d.id = ++i);
+            return d.id || (d.id = ++node_num);
         });
 
     enterNode(node, src);
@@ -317,12 +447,16 @@ function enterNode(node, src) {
 
     rects.append("text")
         .text(function(d) {
-            return d.position + 1;
+            return d.position;
         })
         .attr("dx", function(d) {
-            return d.position + 1 > 9 ? -7 : -3;
+            return d.position > 9 ? -7 : -3;
         })
         .attr("dy", 5);
+
+    rects.on("mouseover", mouseover)
+        .on("mousemove", mousemove)
+        .on("mouseleave", mouseleave);
 
     //ENTER EXPAND NODES//////////////////////////////////////
     expand.append("polygon")
@@ -356,40 +490,24 @@ var tip = d3.select("body")
  */
 var tip_x = 3,
     tip_y = -53;
-
+var b = "<b>",
+    bb = "</b>",
+    i = "<i>",
+    ii = "</i>",
+    br = "<br/>"; //Helpful markup.
 function mouseover(d) {
-    var b = "<b>",
-        bb = "</b>",
-        i = "<i>",
-        ii = "</i>",
-        br = "<br/>",
-        func = "func: " + b + d.function+bb + br,
-        freq = "count: " + d.frequency.toLocaleString() + br;
-          //+ " (" + (100 * d.frequency / (d.parent || d).frequency).toFixed(2) + "%)"
-          //+ " [" + (100 * d.frequency / root.frequency).toFixed(3) + "%]"+ br,
-        depth = "depth: " + (d.depth/2) + br; //+ " of max " + d.max_depth + br,
-        id = d.example;
+    var func = "func: " + b + d.function + bb + br,
+        freq = "count: " + d.frequency.toLocaleString() + br,
+        depth = "depth: " + (d.depth/2) + br, //+ " of max " + d.longest_path + br
+        ex = d.example;
 
-    var hovered = d3.select("#n" + d.id);
+    var hovered = d3.select("#n" + d.id),
+        pageX = (d3.event && d3.event.pageX) || 0,
+        pageY = (d3.event && d3.event.pageY) || 0;
 
-    var ex;
-    if (d.fullExample) {
-        ex = "ex: " + i + d.fullExample + ii + br;
-    } else {
-        ex = "ex: " + i + "unavailable" + ii + br;
-        d3.json("examples.php?id=" + id, function(error, data) {
-            if (error) throw error;
-            else if (!data) return;
-
-            d.fullExample = data["formula"].replace(/</g, "&lt;").replace(/>/g, "&gt;");
-            var ex = "ex: " + i + d.fullExample + ii + br;
-            tip.attr("height", null).html(func + freq + depth + ex)
-        });
-    }
-
-    tip.html(func + freq + depth + ex)
-        .style("left", (d3.event.pageX + tip_x) + "px")
-        .style("top", (d3.event.pageY + tip_y) + "px")
+    tip.html((d.function ? func + freq + depth + ex : freq))
+        .style("left", (pageX + tip_x) + "px")
+        .style("top", (pageY + tip_y) + "px")
         .style("display", "inline");
 
     hovered.select("circle")
@@ -398,12 +516,6 @@ function mouseover(d) {
             else if (d.children) return empty_hover; //Get gray.
             else return empty_col; //Don't change if no children.
         });
-
-    /*d3.selectAll("svg g").style("fill-opacity", ".25");
-    (function opaqueTree(c) {
-      d3.select("#n" + c.id).style("fill-opacity", 1);
-      if (c.parent) opaqueTree(c.parent);
-    })(d);*/
 }
 
 /**
@@ -440,7 +552,8 @@ function rect_mouseover(d) {
 
 function rect_mouseout(d) {
     d3.select("#n" + d.id).select("rect").style("fill", function(d) {
-        return d._children ? (d.parent.quantity == inf ? rect_col : alternate_rect) : rect_empty; //SKYBLUE
+        return d._children ? (isParentShowingAll(d)
+          ? rect_col : alternate_rect) : rect_empty; //SKYBLUE
     });
 }
 
@@ -459,14 +572,16 @@ function updateNode(node) {
             return scale(d.frequency);
         })
         .style("fill", function(d) {
-            return d._children ? circle_col : (d.children ? circle_empty : empty_col);
+            return d._children ? circle_col : (d.children ? circle_empty
+              : empty_col);
         });
 
     nodeUpdate.select("rect:not(.tooltip)")
         .attr("width", square_side)
         .attr("height", square_side)
         .style("fill", function(d) {
-            return d._children ? (d.parent.quantity == inf ? rect_col : alternate_rect) : rect_empty; //SKYBLUE
+            return d._children ? (isParentShowingAll(d) ? rect_col
+              : alternate_rect) : rect_empty; //SKYBLUE
         });
 
     nodeUpdate.select("polygon")
@@ -573,8 +688,11 @@ function exitLink(link, src) {
  */
 function click(d) {
     //Circles just have toggle functionality: click, and see all.
+    //if (d3.event.shiftKey && d3.event.ctrlKey) {
+    //    test(d);
+    //} else
     if (d3.event.shiftKey || d3.event.ctrlKey) {
-        changeQuantities(d);
+        changeQuantities(d, d3.event.shiftKey);
     } else if (d3.event.altKey) {
         expandSubLevel(d);
     } else {
@@ -592,6 +710,7 @@ function toggleChildren(d) {
         d._children = d.children;
         d.children = null;
     } else {
+        if (!d.init) flattenJSON(d);
         d.children = d._children;
         d._children = null;
     }
@@ -608,7 +727,7 @@ function expandSubLevel(d) {
         toggleChildren(d);
 
     var expandNotReduce = false;
-    var children = d.children ? d.children : d._children;
+    var children = d.children || d._children;
     if (!children) return; //Nothing to see here.
     if (d._holding) children.concat(d._holding);
 
@@ -634,23 +753,21 @@ function expandSubLevel(d) {
  * Ctrl click goes to highest possible first, then goes down.
  * When they reach they end, they revert to the default.
  */
-function changeQuantities(d) {
-    if (d3.event.shiftKey) {
+function changeQuantities(d, goUpIfTrue) {
+    if (!isFunction(d) || !d.children || d.quantities.length <= 1) return;
+
+    if (goUpIfTrue) {
         d.quantity_index = (d.quantity_index + 1) % d.quantities.length;
-    } else if (d3.event.ctrlKey) {
-        d.quantity_index = (d.quantity_index == 0) ? d.quantities.length - 1 : d.quantity_index - 1;
+    } else {
+        d.quantity_index = (d.quantity_index == 0) ? d.quantities.length - 1
+          : d.quantity_index - 1;
     }
 
     var replacement = d.quantities[d.quantity_index];
-    d.children = replacement.children;
-    d.example = replacement.example;
-    d.fullExample = null; //TODO: Keep example?
-    d.frequency = replacement.frequency;
-    d.quantity = replacement.quantity;
 
-    d.children.forEach(collapse);
+    setInfo(d, replacement);
+    if (!d.children) toggleChildren(d);
 
-    //Reset tooltip.
     mouseleave(d);
     mouseover(d);
 }
@@ -660,20 +777,22 @@ function changeQuantities(d) {
  * tenth most commonly used, this shows the rest (or hides them if shown already)
  */
 function expandclick(d) {
+    if (!isArrow(d)) return; //ONLY WORKS WITH THE ARROWS
+
     var par = d.parent;
-
-    if (par._holding) {
-        par.children = par.children.concat(par._holding);
-        par._holding = null;
-    } else {
-        par._holding = par.children.splice(10)
-            .filter(function(i) {
-                return i.frequency != -1;
-            });
-        par.children.splice(par.children.length, 0, d);
-    }
-
+    toggleHoldingNodes(par);
     update(par);
+}
+
+function toggleHoldingNodes(par) {
+  if (par._holding) {
+      par.children = par.children.concat(par._holding);
+      par._holding = null;
+  } else if (par.children.length > 10) {
+      var arrow = par.children.pop();
+      par._holding = par.children.splice(10);
+      par.children.splice(par.children.length, 0, arrow);
+  }
 }
 
 //http://bl.ocks.org/robschmuecker/7880033
@@ -685,4 +804,67 @@ function center(d) {
         .attr("transform", "translate(" + x + "," + y + ")scale(" + scale + ")");
     zoomer.scale(scale);
     zoomer.translate([x, y]);
+}
+
+var nodes_tested = 0;
+function test(parent) {
+  console.log("Testing node " + (++nodes_tested).toString() + "...");
+  if (isLeaf(parent)) return;
+
+  flattenJSON(parent);
+  if (isFunction(parent) && !isArrow(parent)) {
+
+    for (var qoa_index = 0; qoa_index < parent.quantities.length; ++qoa_index) {
+      if (!parent.children) toggleChildren(parent);
+      if (!parent.children) continue; //if still no children, there's nothing.
+      changeQuantities(parent, true);
+
+      testAllChildren(parent);
+      freqCheckFunction(parent);
+    }
+
+  } else if (isPosition(parent)) {
+
+    if (!parent.children) toggleChildren(parent);
+    if (parent._holding) toggleHoldingNodes(parent);
+
+    testAllChildren(parent);
+    freqCheckPosition(parent);
+
+  }
+}
+
+function testAllChildren(parent) {
+  for (var child_index = 0; child_index < parent.children.length; ++child_index) {
+    var child = parent.children[child_index];
+    test(child);
+  }
+}
+
+function freqCheckPosition(parent) {
+  var freqOfChildren = 0;
+  parent.children.forEach(function(child) {
+    freqOfChildren += child.frequency;
+  });
+
+  if (parent.children.length > 10) ++freqOfChildren; //to compensate for arrow -1
+
+  if (parent.frequency != freqOfChildren) {
+    update(parent);
+    throw "Frequencies don't match: " + parent.frequency.toString()
+      + " != " + freqOfChildren.toString();
+  }
+}
+
+function freqCheckFunction(parent) {
+    var showingAll = isShowingAll(parent);
+
+    parent.children.forEach(function(child) {
+      if ((showingAll && parent.frequency < child.frequency) ||
+          (!showingAll && parent.frequency != child.frequency)) {
+        update(parent);
+        throw "Frequencies don't match: " + parent.frequency.toString()
+          + " ~ " + child.frequency.toString();
+      }
+    });
 }

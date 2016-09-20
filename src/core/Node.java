@@ -6,11 +6,24 @@ public abstract class Node implements Comparable<Node> {
   @Expose
   protected int frequency = 0;  
   
-  public abstract void add(int ex, FormulaToken token);
-
-  public abstract void setChildren();
+  public abstract void add(Token token, Example example);
   
-  public abstract Node[] getChildren();
+  @Expose
+  protected Node[] children = null;  //because it preserves insertion order
+
+  public void setChildren() {
+    for (Node child : children) {
+      child.setChildren();
+    }
+  }
+  
+  public Node[] getChildren() {
+    if (children == null) {
+      setChildren();
+    }
+    
+    return children;
+  }
 
   /**
    * Record this type of function as being used one more time.
