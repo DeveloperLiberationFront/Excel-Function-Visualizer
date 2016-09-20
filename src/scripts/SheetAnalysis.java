@@ -36,7 +36,7 @@ import core.Parser;
  */
 public class SheetAnalysis {
   private static final String INPUT_DIRECTORY = "./sheets/ENRON/";
-  private static final String OUTPUT_DIRECTORY = "./src/viz/examplejson/";
+  private static final String OUTPUT_DIRECTORY = "./src/viz/json/";
   
   /**
    * Ingests spreadsheets and outputs JSON files that describe the frequencies

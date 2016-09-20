@@ -688,9 +688,10 @@ function exitLink(link, src) {
  */
 function click(d) {
     //Circles just have toggle functionality: click, and see all.
-    if (d3.event.shiftKey && d3.event.ctrlKey) {
-        test(d);
-    } else if (d3.event.shiftKey || d3.event.ctrlKey) {
+    //if (d3.event.shiftKey && d3.event.ctrlKey) {
+    //    test(d);
+    //} else 
+    if (d3.event.shiftKey || d3.event.ctrlKey) {
         changeQuantities(d, d3.event.shiftKey);
     } else if (d3.event.altKey) {
         expandSubLevel(d);

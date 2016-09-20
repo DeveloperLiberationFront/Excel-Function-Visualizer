@@ -6,6 +6,9 @@ import com.google.gson.annotations.Expose;
 class QOANode extends Node {
   @Expose
   private int qoa;
+  
+  @Expose
+  private String example = null;
 
   public QOANode(int quantity) {
     this.qoa = quantity;
@@ -16,14 +19,19 @@ class QOANode extends Node {
   }
 
   @Override
-  public void add(Token token, Example example) {
+  public void add(Token token, Example newExample) {
     Token[] children = token.getChildren();
     
     increment();
     for (int i = 0; i < children.length; ++i) {
       PositionNode position = (PositionNode) this.children[i];
       Token child = children[i];
-      position.add(child, example); 
+      position.add(child, newExample); 
+    }
+    
+    //setExampleIfBetter
+    if (example == null || example.length() > newExample.getFormulaLength()) {
+      example = newExample.getFormula();
     }
   }
 
