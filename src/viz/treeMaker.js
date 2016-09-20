@@ -119,7 +119,7 @@ function getQueryVariable(variable) {
 /**
  * Initialize the tree with only one level down expanded.
  */
-var src = "smalljson/j" + getQueryVariable("file") + ".json"; //If python server started in tree folder
+var src = "json/j" + getQueryVariable("file") + ".json"; //If python server started in tree folder
 var root;
 d3.json(src, function(error, json) {
     if (error) throw error;
@@ -201,9 +201,11 @@ function initFunction(func_node) {
   if (quantities.length > 1) {
     default_info = combineAllQuantities(quantities, max_qoa);
     quantities.push(default_info);
-  } else (quantities.length == 1)
+  } else if (quantities.length == 1) {
     default_info = kids[0];
+  }
 
+  default_info["example"] = func_node["example"];
   func_node.quantities = quantities;
   setInfo(func_node, default_info);
   func_node.quantity_index = quantities.length - 1;
@@ -495,28 +497,12 @@ var b = "<b>",
     br = "<br/>"; //Helpful markup.
 function mouseover(d) {
     var func = "func: " + b + d.function + bb + br,
-        freq = "count: " + d.frequency.toLocaleString() + br;
-        depth = "depth: " + (d.depth/2) + br; //+ " of max " + d.longest_path + br,
-        id = d.example;
+        freq = "count: " + d.frequency.toLocaleString() + br,
+        depth = "depth: " + (d.depth/2) + br, //+ " of max " + d.longest_path + br
+        ex = d.example;
 
-    var hovered = d3.select("#n" + d.id);
-
-    var ex;
-    /*if (d.fullExample) {
-        ex = "ex: " + i + d.fullExample + ii + br;
-    } else {
-        ex = "ex: " + i + "unavailable" + ii + br;
-        d3.json("examples.php?id=" + id, function(error, data) {
-            if (error) throw error;
-            else if (!data) return;
-
-            d.fullExample = data["formula"].replace(/</g, "&lt;").replace(/>/g, "&gt;");
-            var ex = "ex: " + i + d.fullExample + ii + br;
-            tip.attr("height", null).html(func + freq + depth + ex)
-        });
-    }*/
-
-    var pageX = (d3.event && d3.event.pageX) || 0,
+    var hovered = d3.select("#n" + d.id),
+        pageX = (d3.event && d3.event.pageX) || 0,
         pageY = (d3.event && d3.event.pageY) || 0;
 
     tip.html((d.function ? func + freq + depth + ex : freq))
@@ -530,12 +516,6 @@ function mouseover(d) {
             else if (d.children) return empty_hover; //Get gray.
             else return empty_col; //Don't change if no children.
         });
-
-    /*d3.selectAll("svg g").style("fill-opacity", ".25");
-    (function opaqueTree(c) {
-      d3.select("#n" + c.id).style("fill-opacity", 1);
-      if (c.parent) opaqueTree(c.parent);
-    })(d);*/
 }
 
 /**

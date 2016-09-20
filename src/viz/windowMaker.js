@@ -52,28 +52,29 @@ function newWindow(d) {
         .enter()
         .append("tr");
 
-    rows.each(function(d, i) {
-        var row = d3.select(this);
-
-        if (i % 2 == 0)
-            row.style("background-color", "#ddd");
-
-        d3.json("examples.php?id=" + d, function(error, data) {
-            var formula, file, location;
-            if (error) {
-                formula = "unavailable";
-                file = "unavailable";
-                location = "unavailable";
-            } else {
-                formula = data["formula"].replace(/</g, "&lt;").replace(/>/g, "&gt;");
-                location = "'" + data["sheetName"] + "'!" + data["col"] + (parseInt(data["row"], 10) + 1);
-                file = data["file"];
-                file = "<a href=\"localhost:8000/sheets/ENRON/" + file + "#" + location + "\">" + file + "</a>";
-            }
-
-            row.append("td").style("width", "600px").style("word-wrap", "break-word").style("padding", "5px").html(formula.replace(/,/g, ", "));
-            row.append("td").style("width", "200px").style("word-wrap", "break-word").style("padding", "5px").html(file);
-            row.append("td").style("width", "100px").style("word-wrap", "break-word").style("padding", "5px").html(location);
-        });
+    var exsrc = "json/ex" + getQueryVariable("file") + ".json";
+    d3.json(exsrc, function(error, json) {
+      if (error) throw error;
+      fillRows(rows, childrenExamples, json);
     });
+}
+
+function fillRows(rows, examples, json) {
+  rows.each(function(d, i) {
+      var row = d3.select(this);
+
+      if (i % 2 == 0)
+          row.style("background-color", "#ddd");
+
+      var formula, file, location;
+      var data = json[examples[i]];
+      formula = data["formula"].replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      location = data["location"];
+      file = data["file"];
+      //file = "<a href=\"localhost:8000/sheets/ENRON/" + file + "#" + location + "\">" + file + "</a>";
+
+      row.append("td").style("width", "600px").style("word-wrap", "break-word").style("padding", "5px").html(formula.replace(/,/g, ", "));
+      row.append("td").style("width", "200px").style("word-wrap", "break-word").style("padding", "5px").html(file);
+      row.append("td").style("width", "100px").style("word-wrap", "break-word").style("padding", "5px").html(location);
+  });
 }
