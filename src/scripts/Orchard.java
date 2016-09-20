@@ -13,19 +13,16 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import core.Example;
-import core.FormulaToken;
+import core.Token;
 import core.FunctionNode;
 
 public class Orchard {
   private final Map<String, FunctionNode> trees = new HashMap<String, FunctionNode>();
-  private final Map<String, Map<Integer, Example>> examples = new HashMap<String, Map<Integer, Example>>();
+  private final Map<String, Map<Integer, Example>> examples 
+      = new HashMap<String, Map<Integer, Example>>();
   private int totalFormulae = 0;
   
-  /**
-   * 
-   * @param formula
-   */
-  public void add(FormulaToken formula, Example example) {
+  public void add(Token formula, Example example) {
     String toplevel = formula.toSimpleString();
     if (!trees.containsKey(toplevel)) {
       trees.put(toplevel, new FunctionNode(toplevel));
@@ -38,9 +35,6 @@ public class Orchard {
     ++totalFormulae;
   }
   
-  /**
-   * 
-   */
   public void flush(String outputDirectory) {
     //Lifted from AllTrees.java
     ArrayList<FunctionNode> sort = new ArrayList<FunctionNode>(trees.values());

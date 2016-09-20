@@ -6,7 +6,7 @@ public abstract class Node implements Comparable<Node> {
   @Expose
   protected int frequency = 0;  
   
-  public abstract void add(FormulaToken token, Example example);
+  public abstract void add(Token token, Example example);
   
   @Expose
   protected Node[] children = null;  //because it preserves insertion order

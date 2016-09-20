@@ -23,7 +23,7 @@ public class PositionNode extends Node {
     this.position = pos;
   }
   
-  public void add(FormulaToken child, Example example) {
+  public void add(Token child, Example example) {
     String func = child.toSimpleString();
     increment();
 

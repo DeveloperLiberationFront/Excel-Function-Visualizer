@@ -49,7 +49,7 @@ public class FunctionNode extends Node {
    *                stats node.
    */
   @Override
-  public void add(FormulaToken token, Example newExample) {
+  public void add(Token token, Example newExample) {
     if (!this.equals(token)) {
       throw new UnsupportedOperationException("Trying to pass a FormulaToken which does not "
           + "refer to the same type of token as the FunctionStatsNode: " + token.toSimpleString()
@@ -111,8 +111,8 @@ public class FunctionNode extends Node {
   public boolean equals(Object ob) {
     if (ob instanceof FunctionNode) {
       return ob == this;
-    } else if (ob instanceof FormulaToken) {
-      FormulaToken ft = (FormulaToken) ob;
+    } else if (ob instanceof Token) {
+      Token ft = (Token) ob;
       return this.function.equals(ft.toSimpleString());
     }
 

@@ -3,7 +3,6 @@ package core;
 import com.google.gson.annotations.Expose;
 
 public class Example {
-  @Expose
   private int id;
   
   @Expose
@@ -42,7 +41,10 @@ public class Example {
     return this.location;
   }
   
-  public String toString() {    
+  public String toString() {
+
+
+    
     return id + ";" + formula + ";" + file + ";" + location;
   }
 }

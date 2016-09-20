@@ -21,7 +21,7 @@ public class LeafNode extends Node {
   }
 
   @Override
-  public void add(FormulaToken token, Example newExample) {
+  public void add(Token token, Example newExample) {
     if (!function.equals(token.toString())) {
       throw new UnsupportedOperationException("Trying to pass a FormulaToken which does not "
           + "refer to the same type of token as the FunctionStatsNode: " + token.toSimpleString() 

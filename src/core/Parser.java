@@ -31,7 +31,7 @@ import utils.POIUtils;
  * @since 28 July 2016
  */
 public class Parser {
-  private static FormulaToken.Mode mode = FormulaToken.Mode.REPLACE;
+  private static Token.Mode mode = Token.Mode.REPLACE;
   public static final XSSFEvaluationWorkbook BLANK 
       = XSSFEvaluationWorkbook.create(POIUtils.getWorkbook("./src/utils/sum.xlsx"));
 
@@ -42,22 +42,22 @@ public class Parser {
    *                                          of the formula and contains all interior 
    *                                          FormulaTokens.
    */
-  public static FormulaToken parseFormula(String formula) 
+  public static Token parseFormula(String formula) 
       throws FormulaParseException, UnsupportedOperationException {
     return parseFormula(formula, BLANK, 0, new CellReference(0, 0));
   }
   
-  public static FormulaToken parseFormula(String formula, FormulaParsingWorkbook parse, int sheet)
+  public static Token parseFormula(String formula, FormulaParsingWorkbook parse, int sheet)
       throws FormulaParseException, UnsupportedOperationException {
     return parseFormula(formula, parse, sheet, new CellReference(0, 0));
   }
   
-  public static FormulaToken parseFormula(String formula, int row, int col) 
+  public static Token parseFormula(String formula, int row, int col) 
       throws FormulaParseException, UnsupportedOperationException {
     return parseFormula(formula, BLANK, 0, new CellReference(row, col));
   }
   
-  public static FormulaToken parseFormula(Cell cell, FormulaParsingWorkbook parse, int sheet)
+  public static Token parseFormula(Cell cell, FormulaParsingWorkbook parse, int sheet)
       throws FormulaParseException, UnsupportedOperationException {
     return parseFormula(cell.getCellFormula(), parse, sheet, new CellReference(cell));    
   }
@@ -75,7 +75,7 @@ public class Parser {
    * @throws UnsupportedOperationException  If the formula is blank or has quotes after exclamation
    *                                          ( !' ), which I saw in a few and it couldn't parse.
    */
-  public static FormulaToken parseFormula(String formula, FormulaParsingWorkbook parse, 
+  public static Token parseFormula(String formula, FormulaParsingWorkbook parse, 
       int sheet, CellReference cell) 
       throws FormulaParseException, UnsupportedOperationException {
     Ptg[] tokens = null;
@@ -89,8 +89,7 @@ public class Parser {
     tokens = FormulaParser.parse(formula, parse, FormulaType.CELL, sheet);
     
     FormulaRenderingWorkbook render = (FormulaRenderingWorkbook) parse;
-    FormulaToken tree = parseFormula(tokens, render, sheet, cell);
-    tree.setOrigLen(formula.length());
+    Token tree = parseFormula(tokens, render, sheet, cell);
     return tree;
   }
   
@@ -99,7 +98,7 @@ public class Parser {
    * @param tokens  The Ptg tokens from POI.
    * @param render  The rendering workbook which contained the formula.
    */
-  public static FormulaToken parseFormula(Ptg[] tokens, FormulaRenderingWorkbook render, 
+  public static Token parseFormula(Ptg[] tokens, FormulaRenderingWorkbook render, 
       int sheet) throws FormulaParseException, UnsupportedOperationException {
     return parseFormula(tokens, render, sheet, new CellReference(0, 0));
   }
@@ -116,13 +115,13 @@ public class Parser {
    * @throws FormulaParseException
    * @throws UnsupportedOperationException
    */
-  public static FormulaToken parseFormula(Ptg[] tokens, FormulaRenderingWorkbook render, 
+  public static Token parseFormula(Ptg[] tokens, FormulaRenderingWorkbook render, 
       int sheet, CellReference cell) 
       throws FormulaParseException, UnsupportedOperationException {
-    Stack<FormulaToken> formula = new Stack<FormulaToken>();
+    Stack<Token> formula = new Stack<Token>();
     
     for (Ptg ptg : tokens) {
-      FormulaToken form = null;
+      Token form = null;
       
       if (ptg instanceof MemFuncPtg || ptg instanceof MemAreaPtg) {
         //As per test_16_outermostmissing, MemFuncPtg act as tokens but have no 
@@ -137,7 +136,7 @@ public class Parser {
       } else if (ptg instanceof AttrPtg) {
         form = parseAttr(ptg, formula);
       } else {              
-        form = new FormulaToken(ptg, mode);
+        form = new Token(ptg, mode);
       }
       
       if (form == null) { 
@@ -148,7 +147,7 @@ public class Parser {
       
     }
     
-    FormulaToken finalFormula = formula.pop();        
+    Token finalFormula = formula.pop();        
     return finalFormula;
   }
 
@@ -159,15 +158,15 @@ public class Parser {
    * @param formula   The stack of processed formula tokens so far.
    * @return          The FormulaToken for SUM containing its single argument.
    */
-  private static FormulaToken parseAttr(Ptg ptg, Stack<FormulaToken> formula) {
+  private static Token parseAttr(Ptg ptg, Stack<Token> formula) {
     AttrPtg attr = (AttrPtg) ptg;
     
-    FormulaToken form = null;
+    Token form = null;
     String formulaStr = attr.toFormulaString().trim();
     
     if (formulaStr.equalsIgnoreCase("sum")) {
-      FormulaToken arg = formula.pop();
-      form = new OperationToken(attr, arg);
+      Token arg = formula.pop();
+      form = new FunctionToken(attr, arg);
     }
     
     return form;
@@ -180,8 +179,8 @@ public class Parser {
    * @param formula   All FormulaTokens so far.
    * @return          The newly-wrapped formula token.
    */
-  private static FormulaToken parseParen(Stack<FormulaToken> formula) {
-    FormulaToken last = formula.pop();
+  private static Token parseParen(Stack<Token> formula) {
+    Token last = formula.pop();
     last.wrap();    
     return last;    
   }
@@ -193,9 +192,9 @@ public class Parser {
    * @param cell    The workbook cell which contains the formula.
    * @return        The new formula token.
    */
-  private static FormulaToken operandParse(Ptg ptg, FormulaRenderingWorkbook render, 
+  private static Token operandParse(Ptg ptg, FormulaRenderingWorkbook render, 
       int sheet, CellReference cell) {
-    FormulaToken form;
+    Token form;
     
     //Name tokens need renderer, others don't.
     if (ptg instanceof NamePtg) {
@@ -204,7 +203,7 @@ public class Parser {
       form = parseFormula(nameTokens, render, sheet, cell);
     } else {
       OperandPtg operand = (OperandPtg) ptg;
-      form = new FormulaToken(operand, cell, mode);
+      form = new Token(operand, cell, mode);
     }
     
     return form;
@@ -216,30 +215,30 @@ public class Parser {
    * @param formula The stack of all tokens so far, which includes the arguments this will need.
    * @return        The new formula token.
    */
-  private static FormulaToken operationParse(Ptg ptg, Stack<FormulaToken> formula) {
+  private static Token operationParse(Ptg ptg, Stack<Token> formula) {
     OperationPtg op = (OperationPtg) ptg;
     
     int len = op.getNumberOfOperands();
-    FormulaToken[] operands = new FormulaToken[len];
+    Token[] operands = new Token[len];
     
     //Start from the end, else arguments are filled in backwards.
     for (int i = len - 1; i >= 0; --i) {
       operands[i] = formula.pop();
     }
     
-    FormulaToken form = new OperationToken(op, operands);
+    Token form = new FunctionToken(op, operands);
     return form;
   }
   
   public static void dontReplace() {
-    mode = FormulaToken.Mode.NO_CHANGE;
+    mode = Token.Mode.NO_CHANGE;
   }
   
   public static void goRelative() {
-    mode = FormulaToken.Mode.R1C1;
+    mode = Token.Mode.R1C1;
   }
   
   public static void replace() {
-    mode = FormulaToken.Mode.REPLACE;
+    mode = Token.Mode.REPLACE;
   }
 }

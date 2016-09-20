@@ -24,8 +24,8 @@ import org.apache.poi.xssf.usermodel.XSSFEvaluationWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import core.Example;
-import core.FormulaToken;
-import core.OperationToken;
+import core.Token;
+import core.FunctionToken;
 import core.Parser;
 
 /**
@@ -105,7 +105,7 @@ public class SheetAnalysis {
           for (Row row : sheet) {
             for (Cell cell : row) {
               if (cell.getCellType() == Cell.CELL_TYPE_FORMULA) {
-                FormulaToken formula; 
+                Token formula; 
                 String r1c1;
                 String formulaStr;
                 CellReference cellRef;
@@ -138,7 +138,7 @@ public class SheetAnalysis {
                   String cellLocation = "'" + sheet.getSheetName() + "'!"  
                       + CellReference.convertNumToColString(cell.getColumnIndex()) 
                       + (cell.getRowIndex());
-                  Example example = new Example(++exampleId, formulaStr, 
+                  Example example = new Example(++exampleId, formula.toOrigString(), 
                       file.getName(), cellLocation);
                   trees.add(formula, example);     
                 }
@@ -176,8 +176,8 @@ public class SheetAnalysis {
    * @param tokens
    * @return
    */
-  private static boolean isUseful(FormulaToken formula) {
-    if (!(formula instanceof OperationToken)) {
+  private static boolean isUseful(Token formula) {
+    if (!(formula instanceof FunctionToken)) {
       return false;
     }
 

@@ -16,13 +16,13 @@ class QOANode extends Node {
   }
 
   @Override
-  public void add(FormulaToken token, Example example) {
-    FormulaToken[] children = token.getChildren();
+  public void add(Token token, Example example) {
+    Token[] children = token.getChildren();
     
     increment();
     for (int i = 0; i < children.length; ++i) {
       PositionNode position = (PositionNode) this.children[i];
-      FormulaToken child = children[i];
+      Token child = children[i];
       position.add(child, example); 
     }
   }

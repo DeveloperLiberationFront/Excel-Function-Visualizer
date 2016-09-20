@@ -3,7 +3,7 @@ package tests;
 import org.junit.Before;
 import org.junit.Test;
 
-import core.FormulaToken;
+import core.Token;
 import core.Parser;
 import utils.TestUtils;
 
