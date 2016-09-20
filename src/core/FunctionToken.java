@@ -53,6 +53,7 @@ public class FunctionToken extends Token {
   public FunctionToken(AttrPtg tok, Token arg) {  
     this.token = tok;  
     this.tokenStr = "SUM(" + arg + ")";
+    this.origStr = "SUM(" + arg.toOrigString() + ")";
     this.op = "SUM()";
     addChildren(1, new Token[] {arg});
   }

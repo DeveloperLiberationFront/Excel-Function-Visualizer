@@ -137,7 +137,7 @@ public class SheetAnalysis {
                 if (isUseful(formula)) {
                   String cellLocation = "'" + sheet.getSheetName() + "'!"  
                       + CellReference.convertNumToColString(cell.getColumnIndex()) 
-                      + (cell.getRowIndex());
+                      + (cell.getRowIndex() + 1);
                   Example example = new Example(++exampleId, formula.toOrigString(), 
                       file.getName(), cellLocation);
                   trees.add(formula, example);     
