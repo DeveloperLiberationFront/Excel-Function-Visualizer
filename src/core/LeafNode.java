@@ -9,10 +9,10 @@ public class LeafNode extends Node {
   private String function;
   
   @Expose
-  private Example example = null;
+  private String example = null;
   
   @Expose
-  private ArrayList<Example> allExamples = new ArrayList<Example>();
+  private ArrayList<String> allExamples = new ArrayList<String>();
 
   public static final Node[] NO_CHILDREN = {};
   public LeafNode(String func) {
@@ -31,11 +31,11 @@ public class LeafNode extends Node {
     increment();
     
     //setExampleIfBetter
-    if (example == null || example.getFormulaLength() > newExample.getFormulaLength()) {
-      example = newExample;
+    if (example == null || example.length() > newExample.getFormulaLength()) {
+      example = newExample.getFormula();
     }
     
-    allExamples.add(newExample);
+    allExamples.add(newExample.toString());
   }
 
   @Override

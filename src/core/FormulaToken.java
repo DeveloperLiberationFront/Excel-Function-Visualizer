@@ -85,7 +85,7 @@ public class FormulaToken {
       type = "~ERROR~";
     } else {                                                        
       type = "~OTHER~"; //TODO Be more specific?
-      System.out.println(tok.toFormulaString() + " " + tok.getClass());
+      //System.out.println(tok.toFormulaString() + " " + tok.getClass());
     }
     
     return type;

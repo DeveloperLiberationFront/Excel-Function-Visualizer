@@ -41,4 +41,14 @@ public class Example {
   public String getLocation() {
     return this.location;
   }
+  
+  public String toString() {
+    if (formula.contains(";") || location.contains(";")) {
+      System.out.println(formula);
+      System.out.println(location);
+      System.exit(0);
+    }
+    
+    return id + ";" + formula + ";" + file + ";" + location;
+  }
 }

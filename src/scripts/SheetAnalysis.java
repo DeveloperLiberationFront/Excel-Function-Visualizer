@@ -36,7 +36,7 @@ import core.Parser;
  */
 public class SheetAnalysis {
   private static final String INPUT_DIRECTORY = "./sheets/ENRON/";
-  private static final String OUTPUT_DIRECTORY = "./src/viz/smalljson/";
+  private static final String OUTPUT_DIRECTORY = "./src/viz/examplejson/";
   
   /**
    * Ingests spreadsheets and outputs JSON files that describe the frequencies
@@ -68,7 +68,7 @@ public class SheetAnalysis {
     }
     
     Orchard trees = new Orchard();           
-    //ExceptionCatcher catcher = new ExceptionCatcher();
+    ExceptionCatcher catcher = new ExceptionCatcher();
     Queue<File> directoriesToAnalyze = new ArrayDeque<File>();  
     directoriesToAnalyze.add(sheetDirectory);                   
                             
@@ -89,7 +89,10 @@ public class SheetAnalysis {
         try {
           workbook = new XSSFWorkbook(OPCPackage.open(file, PackageAccess.READ));
         } catch (IOException | InvalidFormatException ex) {
-          //catcher.addFile(file.getName(), ex);
+          catcher.addFile(file.getName(), ex);
+          continue;
+        } catch (OutOfMemoryError ex) {
+          System.err.println(ex);
           continue;
         }
         
@@ -110,8 +113,8 @@ public class SheetAnalysis {
                 try {
                   formulaStr = cell.getCellFormula();
                 } catch (FormulaParseException ex) {
-                  //catcher.addFormula(file + " " + cell.getRowIndex() + "," 
-                  //  + cell.getColumnIndex(), ex);
+                  catcher.addFormula(file + " " + cell.getRowIndex() + "," 
+                    + cell.getColumnIndex(), ex);
                   continue;
                 }
                 
@@ -120,8 +123,8 @@ public class SheetAnalysis {
                   formula = Parser.parseFormula(formulaStr, parse, i);
                   r1c1 = formula.toR1C1String(cellRef);                  
                 } catch (Exception ex) {
-                  System.err.println(formulaStr + " : " + ex.getMessage());
-                  //catcher.addFormula(formulaStr, ex);
+                  //System.err.println(formulaStr + " : " + ex.getMessage());
+                  catcher.addFormula(formulaStr, ex);
                   continue;
                 }
                 
@@ -142,21 +145,28 @@ public class SheetAnalysis {
           }
         }
         
-        /*if (catcher.countFiles() > 10) {
+        if (catcher.countFiles() > 10) {
           catcher.flushFiles();
         }
         
         if (catcher.countFormulae() > 1000) {
           catcher.flushFormulae();
-        }*/
+        }
         
         System.out.println();
+        
+        try {
+          workbook.close();
+        } catch (IOException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
       } //end for (File file : sheetDirectory.listFiles())
       
     } // end while (directoriesToAnalyze.isEmpty())
     
-    //catcher.flushFiles();
-    //catcher.flushFormulae();
+    catcher.flushFiles();
+    catcher.flushFormulae();
     trees.flush(OUTPUT_DIRECTORY);
   }
   

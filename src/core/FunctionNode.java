@@ -14,7 +14,7 @@ public class FunctionNode extends Node {
   private Map<Integer, QOANode> all_quantities = new LinkedHashMap<Integer, QOANode>();
 
   @Expose
-  private Example example = null;
+  private String example = null;
 
   /**
    * Represents a certain type of function or primitive type that can appear in a formula. Stores
@@ -57,8 +57,8 @@ public class FunctionNode extends Node {
     }
 
     //setExampleIfBetter
-    if (example == null || example.getFormulaLength() > newExample.getFormulaLength()) {
-      example = newExample;
+    if (example == null || example.length() > newExample.getFormulaLength()) {
+      example = newExample.getFormula();
     }
     
     increment();
