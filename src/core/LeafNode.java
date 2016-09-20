@@ -12,7 +12,7 @@ public class LeafNode extends Node {
   private String example = null;
   
   @Expose
-  private ArrayList<String> allExamples = new ArrayList<String>();
+  private ArrayList<Integer> allExamples = new ArrayList<Integer>();
 
   public static final Node[] NO_CHILDREN = {};
   public LeafNode(String func) {
@@ -35,7 +35,7 @@ public class LeafNode extends Node {
       example = newExample.getFormula();
     }
     
-    allExamples.add(newExample.toString());
+    allExamples.add(newExample.getID());
   }
 
   @Override

@@ -18,6 +18,7 @@ import core.FunctionNode;
 
 public class Orchard {
   private final Map<String, FunctionNode> trees = new HashMap<String, FunctionNode>();
+  private final Map<String, Map<Integer, Example>> examples = new HashMap<String, Map<Integer, Example>>();
   private int totalFormulae = 0;
   
   /**
@@ -28,8 +29,11 @@ public class Orchard {
     String toplevel = formula.toSimpleString();
     if (!trees.containsKey(toplevel)) {
       trees.put(toplevel, new FunctionNode(toplevel));
+      examples.put(toplevel, new HashMap<Integer, Example>());
     }
-    trees.get(toplevel).add(formula, example);  
+    
+    trees.get(toplevel).add(formula, example);      
+    examples.get(toplevel).put(example.getID(), example);
     
     ++totalFormulae;
   }
@@ -79,6 +83,15 @@ public class Orchard {
         write.close();
       } catch (IOException ex) {
         System.err.println("Unable to print JSON for " + func);
+      }
+      
+      try {
+        write = new BufferedWriter(new FileWriter(outputDirectory + "ex" + fileFunc + ".json"));
+        write.write(gson.toJson(examples.get(func)));
+        write.flush();
+        write.close();
+      } catch (IOException ex) {
+        System.err.println("Unable to print example JSON for " + func);
       }
       
       list.add(fileFunc);

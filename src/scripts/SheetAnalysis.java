@@ -72,7 +72,7 @@ public class SheetAnalysis {
     Queue<File> directoriesToAnalyze = new ArrayDeque<File>();  
     directoriesToAnalyze.add(sheetDirectory);                   
                             
-    int exampleID = 0;
+    int exampleId = 0;
     while (!directoriesToAnalyze.isEmpty()) {
       File directory = directoriesToAnalyze.remove();
       for (File file : directory.listFiles()) {
@@ -98,7 +98,7 @@ public class SheetAnalysis {
         
         FormulaParsingWorkbook parse = XSSFEvaluationWorkbook.create(workbook);
         for (int i = 0; i < workbook.getNumberOfSheets(); ++i) {
-          System.out.print((i+1) + " ");
+          System.out.print((i + 1) + " ");
           Sheet sheet = workbook.getSheetAt(i);
           Set<String> seenRelativeFormulae = new HashSet<String>();
           
@@ -114,7 +114,7 @@ public class SheetAnalysis {
                   formulaStr = cell.getCellFormula();
                 } catch (FormulaParseException ex) {
                   catcher.addFormula(file + " " + cell.getRowIndex() + "," 
-                    + cell.getColumnIndex(), ex);
+                      + cell.getColumnIndex(), ex);
                   continue;
                 }
                 
@@ -135,9 +135,11 @@ public class SheetAnalysis {
                 }
                 
                 if (isUseful(formula)) {
-                  String cellLocation = "'" + sheet.getSheetName() + "'!" + 
-                      CellReference.convertNumToColString(cell.getColumnIndex()) + (cell.getRowIndex());
-                  Example example = new Example(++exampleID, formula.toString(), file.getName(), cellLocation);
+                  String cellLocation = "'" + sheet.getSheetName() + "'!"  
+                      + CellReference.convertNumToColString(cell.getColumnIndex()) 
+                      + (cell.getRowIndex());
+                  Example example = new Example(++exampleId, formulaStr, 
+                      file.getName(), cellLocation);
                   trees.add(formula, example);     
                 }
               }
@@ -157,9 +159,8 @@ public class SheetAnalysis {
         
         try {
           workbook.close();
-        } catch (IOException e) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
+        } catch (IOException ex) {
+          System.err.println("Cannot close workbook.");
         }
       } //end for (File file : sheetDirectory.listFiles())
       

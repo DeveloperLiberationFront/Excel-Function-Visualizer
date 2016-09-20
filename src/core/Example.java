@@ -42,13 +42,7 @@ public class Example {
     return this.location;
   }
   
-  public String toString() {
-    if (formula.contains(";") || location.contains(";")) {
-      System.out.println(formula);
-      System.out.println(location);
-      System.exit(0);
-    }
-    
+  public String toString() {    
     return id + ";" + formula + ";" + file + ";" + location;
   }
 }
